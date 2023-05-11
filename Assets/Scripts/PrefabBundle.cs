@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class PrefabBundle
 {
-    [SerializeField]
-    private GameObject _Human;
+    [SerializeField] private GameObject _Human;
     public GameObject Human
     {
         get

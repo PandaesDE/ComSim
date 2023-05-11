@@ -4,30 +4,21 @@ using UnityEngine;
 
 public static class Gamevariables
 {
-    [SerializeField]
-    private static readonly Vector2 _PlaygroundSize = new Vector2(100f, 100f);
-
-
-    //Prefabs
-    private static GameObject _PREFAB_Human;
-
-
-    //Getter & Setter
+    [SerializeField] private static readonly Vector2 _PlaygroundSize = new Vector2(100f, 100f);
     public static Vector2 playgroundSize
     {
-        get
-        {
-            return _PlaygroundSize;
-        }
+        get { return _PlaygroundSize; }
     }
 
+    //Prefabs
+    [SerializeField] private static GameObject _PREFAB_Human;
     public static GameObject PREFAB_Human
     {
-        get
-        {
-            return _PREFAB_Human;
-        }
+        get { return _PREFAB_Human; }
     }
+
+
+
 
     public static void initializePrefabs(PrefabBundle b)
     {

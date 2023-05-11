@@ -7,7 +7,7 @@ public class SystemNode : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Spawner.spawnHuman(0, 0);
+        Spawner.spawnHumans(25000);
     }
 
     // Update is called once per frame
