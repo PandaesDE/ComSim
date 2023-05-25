@@ -16,6 +16,28 @@ public class Spawner : MonoBehaviour
 
     }
 
+    #region Animal
+    public void spawnAnimals(int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            spawnAnimal(Util.getRandomCoordinateInPlayground());
+        }
+    }
+
+    public void spawnAnimal(Vector2 c)
+    {
+        spawnAnimal(c.x, c.y);
+    }
+
+    public void spawnAnimal(float posX, float posY)
+    {
+        Instantiate(gameVariables.PREFAB_Animal, new Vector2(posX, posY), Quaternion.identity);
+    }
+    #endregion
+
+
+    #region Human
     public void spawnHumans(int amount)
     {
         for (int i = 0; i < amount; i++)
@@ -29,7 +51,8 @@ public class Spawner : MonoBehaviour
         spawnHuman(posX, posY, Util.getRandomGender());
     }
 
-    public void spawnHuman(int posX, int posY, gender g) { 
+    public void spawnHuman(int posX, int posY, gender g)
+    {
         if (g == gender.MALE)
         {
             Instantiate(gameVariables.PREFAB_Human_Male, new Vector2(posX, posY), Quaternion.identity);
@@ -41,5 +64,7 @@ public class Spawner : MonoBehaviour
             return;
         }
     }
+    #endregion
+
 
 }

@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 8802855880057005263}
   - component: {fileID: 8483804280055891860}
-  - component: {fileID: 5000725800314580453}
-  - component: {fileID: -6785039487749313931}
+  - component: {fileID: 8087947731247183123}
+  - component: {fileID: -7978789381425883111}
   m_Layer: 0
-  m_Name: Male
+  m_Name: Animal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.5801887, g: 0.6081761, b: 1, a: 1}
+  m_Color: {r: 0.5566038, g: 0.018378438, b: 0.11378705, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -86,7 +86,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5000725800314580453
+--- !u!114 &8087947731247183123
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,14 +95,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 346594161483134204}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ccd163d3a2874954f9b92e3f39ad39e6, type: 3}
+  m_Script: {fileID: 11500000, guid: 2969f40af8b033245a4e241a1a88f00e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {x: 0, y: 0}
-  speed: 5
-  hunger: 100
-  thirst: 100
---- !u!61 &-6785039487749313931
+--- !u!61 &-7978789381425883111
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

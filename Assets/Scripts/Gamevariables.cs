@@ -9,6 +9,7 @@ public class Gamevariables : MonoBehaviour
     //Prefabs
     [SerializeField] public GameObject PREFAB_Human_Male;
     [SerializeField] public GameObject PREFAB_Human_Female;
+    [SerializeField] public GameObject PREFAB_Animal;
     public static Vector2 playgroundSize
     {
         get { return _PlaygroundSize; }

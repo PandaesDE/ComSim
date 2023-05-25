@@ -15,6 +15,8 @@ public class SystemNode : MonoBehaviour
     void Start()
     {
         spawner.spawnHumans(25);
+        spawner.spawnAnimals(25);
+
     }
 
     // Update is called once per frame

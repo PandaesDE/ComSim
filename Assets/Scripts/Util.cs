@@ -20,7 +20,7 @@ public static class Util
             position.y > destination.y - errorVal &&
             position.y < destination.y + errorVal;
     }
-    public static Vector2 getRandomValueInPlayground()
+    public static Vector2 getRandomCoordinateInPlayground()
     {
         float halfW = Gamevariables.playgroundSize.x/2;
         float halfH = Gamevariables.playgroundSize.y/2;
