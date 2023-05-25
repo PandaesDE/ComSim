@@ -15,6 +15,12 @@ public class Human : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Util.isDestinationReached(transform.position, target))
+        {
+            target = Util.getRandomValueInPlayground();
+        }
         transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * speed);
     }
+
+
 }

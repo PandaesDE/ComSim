@@ -2,27 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class Gamevariables
+public class Gamevariables : MonoBehaviour
 {
     [SerializeField] private static readonly Vector2 _PlaygroundSize = new Vector2(100f, 100f);
+
+    //Prefabs
+    [SerializeField] public GameObject PREFAB_Human_Male;
+    [SerializeField] public GameObject PREFAB_Human_Female;
     public static Vector2 playgroundSize
     {
         get { return _PlaygroundSize; }
-    }
-
-    //Prefabs
-    [SerializeField] private static GameObject _PREFAB_Human;
-    public static GameObject PREFAB_Human
-    {
-        get { return _PREFAB_Human; }
-    }
-
-
-
-
-    public static void initializePrefabs(PrefabBundle b)
-    {
-        _PREFAB_Human = b.Human;
     }
 
 }
