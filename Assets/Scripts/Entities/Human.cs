@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Human : MonoBehaviour
+public class Human : Creature
 {
     [SerializeField] private Vector2 target;
     private float speed = 5f;
@@ -47,22 +47,27 @@ public class Human : MonoBehaviour
         thirstSubtractor();
     }
 
-    private void hungerSubtractor()
+    protected void hungerSubtractor()
     {
         hunger -= Time.deltaTime;
         if (hunger <= 0) death();
     }
 
-    private void thirstSubtractor()
+    protected void thirstSubtractor()
     {
         thirst -= Time.deltaTime;
         if (thirst <= 0) death();
     }
     #endregion
 
-    private void death()
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        Destroy(gameObject);
+        Debug.Log("OTE");
+        if (collision.CompareTag(tags.ANIMAL))
+        {
+            Debug.Log("OTE ANIMAL");
+            takeDamage();
+        }
     }
 
 }
