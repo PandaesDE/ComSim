@@ -18,9 +18,13 @@ public class MapGenerator : MonoBehaviour
     public float xOrg;
     public float yOrg;
 
+    public int octaves;
+    public float persistence;
+    public float frequency;
+    public float amplitude;
+
     // The number of cycles of the basic noise pattern that are repeated
     // over the width and height of the texture.
-    public float scale = 1.0F;
 
     private Texture2D noiseTex;
     private Color[] pix;
@@ -31,6 +35,10 @@ public class MapGenerator : MonoBehaviour
     void Start()
     {
         initializeMapGradient();
+        persistence = -.5f;
+        frequency = .6f;
+        octaves = 8;
+        amplitude = 1;
         rend = GetComponent<SpriteRenderer>();
 
         // Set up the texture and a Color array to hold pixels during processing.
@@ -42,24 +50,29 @@ public class MapGenerator : MonoBehaviour
 
     void initializeMapGradient()
     {
-        GradientColorKey[] colorKey;
-        GradientAlphaKey[] alphaKey;
         mapGradient = new Gradient();
+        GradientColorKey[] colorKey = new GradientColorKey[7];
+        GradientAlphaKey[] alphaKey = new GradientAlphaKey[7];
+        int index = 0;
 
-        // Populate the color keys at the relative time 0 and 1 (0 and 100%)
-        colorKey = new GradientColorKey[2];
-        colorKey[0].color = Color.red;
-        colorKey[0].time = 0.0f;
-        colorKey[1].color = Color.blue;
-        colorKey[1].time = 1.0f;
-
-        alphaKey = new GradientAlphaKey[2];
-        alphaKey[0].alpha = 1.0f;
-        alphaKey[0].time = 0.0f;
-        alphaKey[1].alpha = 0.0f;
-        alphaKey[1].time = 1.0f;
+        addColorKey(Color.blue, 0.0f);
+        addColorKey(Color.blue, 0.2f);
+        addColorKey(new Color32(228, 208, 10, 255), 0.21f);
+        addColorKey(new Color32(121, 199, 99, 255), 0.3f);
+        addColorKey(new Color32(79, 121, 66, 255), 0.6f);
+        addColorKey(Color.grey, 0.8f);
+        addColorKey(Color.white, 1.0f);
 
         mapGradient.SetKeys(colorKey, alphaKey);
+
+        void addColorKey(Color c, float t)
+        {
+            colorKey[index].color = c;
+            colorKey[index].time = t;
+            alphaKey[index].alpha = 1.0f;
+            alphaKey[index].time = t;
+            index++;
+        }
     }
 
     void CalcNoise()
@@ -72,9 +85,9 @@ public class MapGenerator : MonoBehaviour
             float x = 0.0F;
             while (x < noiseTex.width)
             {
-                float xCoord = xOrg + x / noiseTex.width * scale;
-                float yCoord = yOrg + y / noiseTex.height * scale;
-                float sample = Mathf.PerlinNoise(xCoord, yCoord);
+                float xCoord = xOrg + x / noiseTex.width;
+                float yCoord = yOrg + y / noiseTex.height;
+                float sample = OctavePerlin(xCoord, yCoord);
                 pix[(int)y * noiseTex.width + (int)x] = mapGradient.Evaluate(sample);
                 x++;
             }
@@ -84,6 +97,28 @@ public class MapGenerator : MonoBehaviour
         // Copy the pixel data to the texture and load it into the GPU.
         noiseTex.SetPixels(pix);
         noiseTex.Apply();
+    }
+
+
+    //https://adrianb.io/2014/08/09/perlinnoise.html
+    float OctavePerlin(float x, float y)
+    {
+        float total = 0;
+        float maxValue = 0;  // Used for normalizing result to 0.0 - 1.0
+        float tempAmp = amplitude;
+        float tempFreq = frequency;
+
+        for (int i = 0; i < octaves; i++)
+        {
+            total += Mathf.PerlinNoise(x * tempFreq, y * tempFreq) * tempAmp;
+
+            maxValue += tempAmp;
+
+            tempAmp *= persistence;
+            tempFreq *= 2f;
+        }
+
+        return total / maxValue;
     }
 
 
