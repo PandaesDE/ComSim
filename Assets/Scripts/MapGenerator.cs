@@ -51,17 +51,18 @@ public class MapGenerator : MonoBehaviour
     void initializeMapGradient()
     {
         mapGradient = new Gradient();
-        GradientColorKey[] colorKey = new GradientColorKey[7];
-        GradientAlphaKey[] alphaKey = new GradientAlphaKey[7];
+        GradientColorKey[] colorKey = new GradientColorKey[8];
+        GradientAlphaKey[] alphaKey = new GradientAlphaKey[8];
         int index = 0;
 
-        addColorKey(Color.blue, 0.0f);
-        addColorKey(Color.blue, 0.2f);
-        addColorKey(new Color32(228, 208, 10, 255), 0.21f);
-        addColorKey(new Color32(121, 199, 99, 255), 0.3f);
-        addColorKey(new Color32(79, 121, 66, 255), 0.6f);
-        addColorKey(Color.grey, 0.8f);
-        addColorKey(Color.white, 1.0f);
+        addColorKey(new Color32(19, 49, 138, 255), 0.0f);       // Water dark
+        addColorKey(new Color32(135, 170, 232, 255), 0.2f);     // Water light
+        addColorKey(new Color32(247, 246, 195, 255), 0.21f);    // Sand
+        addColorKey(new Color32(121, 199, 99, 255), 0.3f);      // Grass
+        addColorKey(new Color32(79, 121, 66, 255), 0.6f);       // Grass dark
+        addColorKey(new Color32(87, 85, 80, 255), 0.61f);       // Stone
+        addColorKey(new Color32(163, 163, 163, 255), 0.8f);     // Mountain
+        addColorKey(Color.white, 1.0f);                         // Snow
 
         mapGradient.SetKeys(colorKey, alphaKey);
 
