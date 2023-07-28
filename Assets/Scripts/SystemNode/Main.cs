@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SystemNode : MonoBehaviour
+public class Main : MonoBehaviour
 {
     private Spawner spawner;
 

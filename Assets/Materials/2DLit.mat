@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 2DLit
-  m_Shader: {fileID: -6465566751694194690, guid: b4d6a0a5ff59ce74680b75f3e947014c, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: f1f3cca316f1be0458e78a2010a1e72d, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
