@@ -19,11 +19,15 @@ public class InputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (Input.mouseScrollDelta.y != 0) //zoom
+        //on scroll
+        if (Input.mouseScrollDelta.y != 0)
         {
-            Camera.main.orthographicSize += Input.mouseScrollDelta.y; // clamp to above 0
-            Camera.main.transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, -10); //wonky
+            //zoom
+            float zoom = Camera.main.orthographicSize - Input.mouseScrollDelta.y;
+            zoom = Mathf.Clamp(zoom, 10, 75);
+            Camera.main.orthographicSize = zoom;
+            //IDEA: zoom to where mouse is
+            //Camera.main.transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, -10); //wonky
         }
     }
 }
