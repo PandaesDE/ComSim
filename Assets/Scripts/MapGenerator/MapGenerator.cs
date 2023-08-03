@@ -3,6 +3,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 // Create a texture and fill it with Perlin noise.
 // Try varying the xOrg, yOrg and scale values in the inspector
@@ -11,70 +12,80 @@ using UnityEngine;
 public class MapGenerator : MonoBehaviour
 {
     // Width and height of the texture in pixels.
-    public int pixWidth;
-    public int pixHeight;
+    [SerializeField] private int CELLS_HORIZONTAL;
+    [SerializeField] private int CELLS_VERTICAL;
+
+    //Tilemap
+    [SerializeField] private Tilemap tilemap;
+    [SerializeField] private TileBase tb_water;
+    private float[,] map;
 
     // The origin of the sampled area in the plane.
-    public float xOrg;
-    public float yOrg;
+    [SerializeField] private float xOrg;
+    [SerializeField] private float yOrg;
 
-    public int octaves;
-    public float persistence;
-    public float frequency;
-    public float amplitude;
+    [SerializeField] private int octaves;
+    [SerializeField] private float persistence;
+    [SerializeField] private float frequency;
+    [SerializeField] private float amplitude;
 
     // The number of cycles of the basic noise pattern that are repeated
     // over the width and height of the texture.
 
-    private Texture2D noiseTex;
-    private Color[] pix;
-    private SpriteRenderer rend;
-
-
     private MapStyle mapStyle;
 
-
-    void Start()
+    private void Awake()
     {
+        CELLS_HORIZONTAL = 100;
+        CELLS_VERTICAL = 100;
         persistence = -.5f;
         frequency = .6f;
         octaves = 8;
         amplitude = 1;
-        rend = GetComponent<SpriteRenderer>();
         mapStyle = new MapStyle();
 
-        // Set up the texture and a Color array to hold pixels during processing.
-        noiseTex = new Texture2D(pixWidth, pixHeight);
-        pix = new Color[noiseTex.width * noiseTex.height];
-        rend.sprite = Sprite.Create(noiseTex, new Rect(0, 0, 100, 100), new Vector2(0.5f, 0.5f));
-
+        map = new float[CELLS_HORIZONTAL, CELLS_VERTICAL];
     }
 
-    
-
-    void CalcNoise()
+    void Start()
     {
-        // For each pixel in the texture...
-        float y = 0.0F;
+        //CalcNoise();
+        RenderMap();
+    }   
 
-        while (y < noiseTex.height)
-        {
-            float x = 0.0F;
-            while (x < noiseTex.width)
-            {
-                float xCoord = xOrg + x / noiseTex.width;
-                float yCoord = yOrg + y / noiseTex.height;
-                float sample = OctavePerlin(xCoord, yCoord);
-                pix[(int)y * noiseTex.width + (int)x] = mapStyle.getColor(sample, MapStyle.mapStyles.NORMAL);
-                x++;
-            }
-            y++;
-        }
-
-        // Copy the pixel data to the texture and load it into the GPU.
-        noiseTex.SetPixels(pix);
-        noiseTex.Apply();
+    void Update()
+    {
+        //CalcNoise(); only for live updates
     }
+
+    #region Tilemap approach
+    //https://blog.unity.com/engine-platform/procedural-patterns-you-can-use-with-tilemaps-part-1
+    private void RenderMap()
+    {
+        //Clear the map (ensures we dont overlap)
+        tilemap.ClearAllTiles();
+        //Loop through the width of the map
+        for (int x = 0; x < CELLS_HORIZONTAL; x++)
+        {
+            //Loop through the height of the map
+            for (int y = 0; y < CELLS_VERTICAL; y++)
+            {
+                float xCoord = xOrg + (float)x / CELLS_HORIZONTAL;
+                float yCoord = yOrg + (float)y / CELLS_VERTICAL;
+                float sample = OctavePerlin(xCoord, yCoord);
+                if (sample < .5f)
+                {
+                    tilemap.SetTile(new Vector3Int(x - CELLS_HORIZONTAL/2, y - CELLS_VERTICAL / 2, 0), tb_water);
+                }
+                else
+                {
+                    tilemap.SetTile(new Vector3Int(x - CELLS_HORIZONTAL / 2, y - CELLS_VERTICAL / 2, 0), null);
+                }
+                map[x, y] = sample;
+            }
+        }
+    }
+    #endregion
 
 
     //https://adrianb.io/2014/08/09/perlinnoise.html
@@ -100,8 +111,5 @@ public class MapGenerator : MonoBehaviour
 
 
 
-    void Update()
-    {
-        CalcNoise();
-    }
+   
 }

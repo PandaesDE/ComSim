@@ -21,7 +21,7 @@ public class MapStyle
         SNOW
     }
 
-    public enum mapStyles
+    public enum styles
     {
         NORMAL,
         GRADIENT
@@ -33,9 +33,9 @@ public class MapStyle
         initializeMapGradient();
     }
 
-    public Color getColor(float sample, mapStyles ms)
+    public Color getColor(float sample, styles ms)
     {
-        if (ms.Equals(mapStyles.GRADIENT))
+        if (ms.Equals(styles.GRADIENT))
         {
             return getGradientColor(sample);
         }
