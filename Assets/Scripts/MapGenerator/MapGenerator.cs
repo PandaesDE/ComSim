@@ -18,6 +18,8 @@ public class MapGenerator : MonoBehaviour
     //Tilemap
     [SerializeField] private Tilemap tilemap;
     [SerializeField] private TileBase tb_water;
+    [SerializeField] private TileBaseSelector tbs;
+
     private float[,] map;
 
     // The origin of the sampled area in the plane.
@@ -32,7 +34,6 @@ public class MapGenerator : MonoBehaviour
     // The number of cycles of the basic noise pattern that are repeated
     // over the width and height of the texture.
 
-    private MapStyle mapStyle;
 
     private void Awake()
     {
@@ -42,20 +43,18 @@ public class MapGenerator : MonoBehaviour
         frequency = .6f;
         octaves = 8;
         amplitude = 1;
-        mapStyle = new MapStyle();
 
         map = new float[CELLS_HORIZONTAL, CELLS_VERTICAL];
     }
 
     void Start()
     {
-        //CalcNoise();
         RenderMap();
     }   
 
     void Update()
     {
-        //CalcNoise(); only for live updates
+
     }
 
     #region Tilemap approach
@@ -73,14 +72,9 @@ public class MapGenerator : MonoBehaviour
                 float xCoord = xOrg + (float)x / CELLS_HORIZONTAL;
                 float yCoord = yOrg + (float)y / CELLS_VERTICAL;
                 float sample = OctavePerlin(xCoord, yCoord);
-                if (sample < .5f)
-                {
-                    tilemap.SetTile(new Vector3Int(x - CELLS_HORIZONTAL/2, y - CELLS_VERTICAL / 2, 0), tb_water);
-                }
-                else
-                {
-                    tilemap.SetTile(new Vector3Int(x - CELLS_HORIZONTAL / 2, y - CELLS_VERTICAL / 2, 0), null);
-                }
+
+                tilemap.SetTile(new Vector3Int(x - CELLS_HORIZONTAL/2, y - CELLS_VERTICAL / 2, 0), tbs.getTileBase(sample));
+                
                 map[x, y] = sample;
             }
         }

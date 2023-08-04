@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3656515360126002716}
   - component: {fileID: 1117015381332702086}
   m_Layer: 0
-  m_Name: GO_Water
+  m_Name: GO_Grass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 0144a4c335395c94fb58ca48d1c6b804, type: 3}
-  m_Color: {r: 0.3066038, g: 0.68768716, b: 1, a: 1}
+  m_Color: {r: 0.19099344, g: 0.4811321, b: 0.17475079, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
