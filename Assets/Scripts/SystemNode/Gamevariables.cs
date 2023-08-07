@@ -6,6 +6,10 @@ public class Gamevariables : MonoBehaviour
 {
     [SerializeField] private static readonly Vector2 _PlaygroundSize = new Vector2(100f, 100f);
 
+    [SerializeField] public static string SEED = "";
+    [SerializeField] public static int AMOUNT_SPAWN_HUMAN = 0;
+    [SerializeField] public static int AMOUNT_SPAWN_ANIMAL = 0;
+
     //Prefabs
     [SerializeField] public GameObject PREFAB_Human_Male;
     [SerializeField] public GameObject PREFAB_Human_Female;

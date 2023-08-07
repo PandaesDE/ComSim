@@ -13,7 +13,8 @@ public class Spawner : MonoBehaviour
 
     private void Start()
     {
-
+        spawnHumans(Gamevariables.AMOUNT_SPAWN_HUMAN);
+        spawnAnimals(Gamevariables.AMOUNT_SPAWN_ANIMAL);
     }
 
     #region Animal

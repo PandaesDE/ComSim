@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: TB_Snow
   m_EditorClassIdentifier: 
   m_DefaultSprite: {fileID: 0}
-  m_DefaultGameObject: {fileID: 6647578400627049961, guid: fb5a890c26aadb545b4ce631451bc832, type: 3}
+  m_DefaultGameObject: {fileID: 6647578400627049961, guid: 18ae08d1b0ccd86499524b824aa2e8e3, type: 3}
   m_DefaultColliderType: 1
   m_TilingRules: []

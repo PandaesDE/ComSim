@@ -49,6 +49,7 @@ public class MapGenerator : MonoBehaviour
 
     void Start()
     {
+        convertSeed();
         RenderMap();
     }   
 
@@ -80,6 +81,14 @@ public class MapGenerator : MonoBehaviour
         }
     }
     #endregion
+
+    //CHATGPT
+    public void convertSeed()
+    {
+        int range = 10000;
+        xOrg = Mathf.Abs(Gamevariables.SEED.GetHashCode() % range);
+        yOrg = Mathf.Abs(Gamevariables.SEED.GetHashCode() % range);
+    }
 
 
     //https://adrianb.io/2014/08/09/perlinnoise.html
