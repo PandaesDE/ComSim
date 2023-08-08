@@ -18,14 +18,32 @@ public class SettingsMenu : MonoBehaviour
     {
         btn_Home.onClick.AddListener(toHome);
 
+        displaySerializedSettings();
+    }
 
+    private void displaySerializedSettings()
+    {
+        ConfigManager.SettingsData settings = ConfigManager.ReadSettings();
+        ipt_Seed.text = settings.Seed;
+        ipt_Humans.text = "" + settings.Human_Amount_Start ;
+        ipt_Animals.text = "" + settings.Animal_Amount_Start;
     }
 
     private void toHome()
     {
-        Gamevariables.SEED = ipt_Seed.text;
-        Gamevariables.AMOUNT_SPAWN_HUMAN = int.Parse(ipt_Humans.text);
-        Gamevariables.AMOUNT_SPAWN_ANIMAL = int.Parse(ipt_Animals.text);
+        ConfigManager.SettingsData settings = ConfigManager.ReadSettings();
+        preventNullOrEmptyInputs();
+        settings.Seed = ipt_Seed.text;
+        settings.Human_Amount_Start = int.Parse(ipt_Humans.text);
+        settings.Animal_Amount_Start = int.Parse(ipt_Animals.text);
+        ConfigManager.SaveSettings(settings);
         SceneManager.LoadScene("MainMenu");
+    }
+
+    private void preventNullOrEmptyInputs()
+    {
+        if (string.IsNullOrEmpty(ipt_Seed.text)) ipt_Seed.text = "";
+        if (string.IsNullOrEmpty(ipt_Humans.text)) ipt_Humans.text = "0";
+        if (string.IsNullOrEmpty(ipt_Animals.text)) ipt_Animals.text = "0";
     }
 }
