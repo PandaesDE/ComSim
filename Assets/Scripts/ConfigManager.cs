@@ -14,12 +14,12 @@ public class ConfigManager : MonoBehaviour
     }
 
     //Chat-GPT
-    private static void LoadSettings()
+    public static void LoadSettings()
     {
         LoadSettings(ReadSettings());
     }
 
-    private static void LoadSettings(SettingsData settings)
+    public static void LoadSettings(SettingsData settings)
     {
         Gamevariables.SEED = settings.Seed;
         Gamevariables.HUMAN_AMOUNT_START = settings.Human_Amount_Start;
@@ -30,7 +30,6 @@ public class ConfigManager : MonoBehaviour
     {
         string json = JsonUtility.ToJson(settings, true);
         System.IO.File.WriteAllText(Path.Combine(Application.persistentDataPath, "Settings.json"), json);
-        LoadSettings(settings);
     }
 
     public static SettingsData ReadSettings()
