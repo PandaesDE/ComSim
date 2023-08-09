@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class InputManager : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] Button btn_PAUSE;
+    [SerializeField] Button btn_HOME;
 
     private void Awake()
     {
         btn_PAUSE.onClick.AddListener(pauseGame);
+        btn_HOME.onClick.AddListener(toMainMenu);
     }
 
     void Start()
@@ -41,6 +44,11 @@ public class InputManager : MonoBehaviour
             //Camera.main.transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, -10); //wonky
         }
         #endregion
+    }
+
+    private void toMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 
     private void pauseGame()
