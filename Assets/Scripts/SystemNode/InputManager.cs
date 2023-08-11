@@ -30,9 +30,6 @@ public class InputManager : MonoBehaviour
         {
             pauseGame();
         }
-        #endregion
-        #region In Game Inputs which are unavailable during pause
-        if (Gamevariables.GAME_PAUSED) return;
         //on scroll
         if (Input.mouseScrollDelta.y != 0)
         {
@@ -43,6 +40,10 @@ public class InputManager : MonoBehaviour
             //IDEA: zoom to where mouse is
             //Camera.main.transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, -10); //wonky
         }
+        #endregion
+        #region In Game Inputs which are unavailable during pause
+        if (Gamevariables.GAME_PAUSED) return;
+        
         #endregion
     }
 

@@ -22,8 +22,8 @@ public static class Util
     }
     public static Vector2 getRandomCoordinateInPlayground()
     {
-        float halfW = Gamevariables.playgroundSize.x/2;
-        float halfH = Gamevariables.playgroundSize.y/2;
+        int halfW = (int)Gamevariables.playgroundSize.x/2;
+        int halfH = (int)Gamevariables.playgroundSize.y/2;
         return new Vector2(Random.Range(-halfW, halfW), Random.Range(-halfH, halfH));
     }
 }

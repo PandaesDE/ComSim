@@ -38,6 +38,7 @@ public class Human : Creature
         }
         needSubtractor();
         transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * speed);
+        LogTile(transform.position);
     }
 
     #region needSubtractor

@@ -16,8 +16,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private int CELLS_VERTICAL;
 
     //Tilemap
-    [SerializeField] private Tilemap tilemap;
-    [SerializeField] private TileBase tb_water;
+    [SerializeField] public Tilemap tilemap;
     [SerializeField] private TileBaseSelector tbs;
 
     private float[,] map;
@@ -25,6 +24,7 @@ public class MapGenerator : MonoBehaviour
     // The origin of the sampled area in the plane.
     [SerializeField] private float xOrg;
     [SerializeField] private float yOrg;
+    [SerializeField] private float zoom;
 
     [SerializeField] private int octaves;
     [SerializeField] private float persistence;
@@ -37,8 +37,9 @@ public class MapGenerator : MonoBehaviour
 
     private void Awake()
     {
-        CELLS_HORIZONTAL = 100;
+        CELLS_HORIZONTAL = 200;
         CELLS_VERTICAL = 100;
+        zoom = 100; 
         persistence = -.5f;
         frequency = .6f;
         octaves = 8;
@@ -75,8 +76,8 @@ public class MapGenerator : MonoBehaviour
             //Loop through the height of the map
             for (int y = 0; y < CELLS_VERTICAL; y++)
             {
-                float xCoord = xOrg + (float)x / CELLS_HORIZONTAL;
-                float yCoord = yOrg + (float)y / CELLS_VERTICAL;
+                float xCoord = xOrg + (float)x / zoom;
+                float yCoord = yOrg + (float)y / zoom;
                 float sample = OctavePerlin(xCoord, yCoord);
 
                 tilemap.SetTile(new Vector3Int(x - CELLS_HORIZONTAL/2, y - CELLS_VERTICAL / 2, 0), tbs.getTileBase(sample));
