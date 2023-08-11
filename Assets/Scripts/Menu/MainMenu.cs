@@ -14,8 +14,6 @@ public class MainMenu : MonoBehaviour
     {
         btn_Start.onClick.AddListener(toSimulation);
         btn_Settings.onClick.AddListener(toSettings);
-
-        ConfigManager.LoadSettings();
     }
 
     private void toSimulation()

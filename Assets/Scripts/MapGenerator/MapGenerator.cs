@@ -58,6 +58,11 @@ public class MapGenerator : MonoBehaviour
 
     }
 
+    private void FixedUpdate()
+    {
+        //RenderMap();
+    }
+
     #region Tilemap approach
     //https://blog.unity.com/engine-platform/procedural-patterns-you-can-use-with-tilemaps-part-1
     private void RenderMap()
@@ -109,7 +114,7 @@ public class MapGenerator : MonoBehaviour
             tempFreq *= 2f;
         }
 
-        return total / maxValue;
+        return Mathf.Clamp(total / maxValue, 0, 1);
     }
 
 

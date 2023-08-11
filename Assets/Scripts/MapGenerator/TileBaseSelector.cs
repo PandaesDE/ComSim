@@ -29,7 +29,7 @@ public class TileBaseSelector : MonoBehaviour
         {
             return tb_stone;
         }
-        if (sample < 1f)
+        if (sample <= 1f)
         {
             return tb_snow;
         }

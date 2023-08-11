@@ -35,7 +35,6 @@ public class ConfigManager : MonoBehaviour
     public static SettingsData ReadSettings()
     {
         string filePath = Path.Combine(Application.persistentDataPath, "Settings.json");
-        TextAsset jsonFile = Resources.Load<TextAsset>("Settings");
         if (!File.Exists(filePath))
         {
             Debug.LogWarning("Config file not found!");
