@@ -11,9 +11,9 @@ public class Female : Human
     }
 
     // Update is called once per frame
-    protected override void Update()
+    protected void Update()
     {
-        base.Update();
+        
     }
 
 

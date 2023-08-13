@@ -17,7 +17,7 @@ public class MapGenerator : MonoBehaviour
 
     //Tilemap
     [SerializeField] public Tilemap tilemap;
-    [SerializeField] private TileBaseSelector tbs;
+    [SerializeField] public TileBaseManager tbm;
 
     private float[,] map;
 
@@ -45,6 +45,7 @@ public class MapGenerator : MonoBehaviour
         octaves = 8;
         amplitude = 1;
 
+        tbm = GetComponent<TileBaseManager>();
         map = new float[CELLS_HORIZONTAL, CELLS_VERTICAL];
     }
 
@@ -80,7 +81,7 @@ public class MapGenerator : MonoBehaviour
                 float yCoord = yOrg + (float)y / zoom;
                 float sample = OctavePerlin(xCoord, yCoord);
 
-                tilemap.SetTile(new Vector3Int(x - CELLS_HORIZONTAL/2, y - CELLS_VERTICAL / 2, 0), tbs.getTileBase(sample));
+                tilemap.SetTile(new Vector3Int(x - CELLS_HORIZONTAL/2, y - CELLS_VERTICAL / 2, 0), tbm.getTileBase(sample));
                 
                 map[x, y] = sample;
             }

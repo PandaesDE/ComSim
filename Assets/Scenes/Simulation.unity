@@ -319,7 +319,6 @@ GameObject:
   m_Component:
   - component: {fileID: 747089657}
   - component: {fileID: 747089662}
-  - component: {fileID: 747089658}
   - component: {fileID: 747089659}
   - component: {fileID: 747089661}
   m_Layer: 0
@@ -344,21 +343,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &747089658
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 747089654}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a4187221ee5dda408baa6732c534fab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PREFAB_Human_Male: {fileID: 346594161483134204, guid: e73b3c833cd0d4d4194ee8e736719253, type: 3}
-  PREFAB_Human_Female: {fileID: 346594161483134204, guid: 54fbb59f8ac483948b86d8c2e8435bb3, type: 3}
-  PREFAB_Animal: {fileID: 346594161483134204, guid: 8aca4ba671169d246bfbd78edeb4e144, type: 3}
 --- !u!114 &747089659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,6 +355,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c668d9df5656c142bfab5c298b66bcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PREFAB_Human_Male: {fileID: 346594161483134204, guid: e73b3c833cd0d4d4194ee8e736719253, type: 3}
+  PREFAB_Human_Female: {fileID: 346594161483134204, guid: 54fbb59f8ac483948b86d8c2e8435bb3, type: 3}
+  PREFAB_Animal: {fileID: 346594161483134204, guid: 8aca4ba671169d246bfbd78edeb4e144, type: 3}
 --- !u!114 &747089661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -871,7 +858,7 @@ MonoBehaviour:
   CELLS_HORIZONTAL: 0
   CELLS_VERTICAL: 0
   tilemap: {fileID: 1939928361}
-  tbs: {fileID: 1078496220}
+  tbm: {fileID: 0}
   xOrg: 0
   yOrg: 0
   zoom: 0

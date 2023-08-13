@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class TileBaseSelector : MonoBehaviour
+public class TileBaseManager : MonoBehaviour
 { 
     [SerializeField] private TileBase tb_water;
     [SerializeField] private TileBase tb_sand;
@@ -35,4 +35,11 @@ public class TileBaseSelector : MonoBehaviour
         }
         return null;
     }
+
+    public bool isWater(TileBase tb)
+    {
+        return tb.Equals(tb_water);
+    }
 }
+
+

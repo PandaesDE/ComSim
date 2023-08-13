@@ -8,12 +8,14 @@ public class Creature : MonoBehaviour
     [SerializeField] protected Vector2 target;
 
     private Tilemap tilemap;
+    protected TileBaseManager tbm;
     private int health = 100;
 
     private void Awake()
     {
         target = Util.getRandomCoordinateInPlayground();
         tilemap = GameObject.Find("Playground/Grid/Tilemap").GetComponent<Tilemap>();
+        tbm = GameObject.Find("Playground").GetComponent<TileBaseManager>();
     }
 
     protected void FixedUpdate()
@@ -25,16 +27,14 @@ public class Creature : MonoBehaviour
         MoveTowards(target);
     }
 
-    protected void LogTile(Vector3 coord)
+    protected TileBase GetTile(Vector3 coord)
     {
-        Vector3Int coordInt = new Vector3Int((int)coord.x, (int)coord.y, (int)coord.z);
-        LogTile(coordInt);
+        return GetTile(new Vector3Int((int)coord.x, (int)coord.y, (int)coord.z));
     }
 
-    protected void LogTile(Vector3Int coord)
+    protected TileBase GetTile(Vector3Int coord)
     {
-        TileBase tb = tilemap.GetTile(coord);
-        Debug.Log(tb.name);
+        return tilemap.GetTile(coord);
     }
 
     protected void MoveTowards(Vector3 destination)

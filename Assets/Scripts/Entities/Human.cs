@@ -17,29 +17,22 @@ public class Human : Creature
                 - expectation: people in groups are more likely to survive a predator
      */
 
-
-
-
-    // Update is called once per frame
-    protected virtual void Update()
-    {
-        /*  For Self:
-         *  virtual: lets the child class know that this method can be overwritten
-         *  has to be at least protected/ or public in both parent and child class
-         */
-        
-        
-    }
-
     protected new void FixedUpdate()
     {
         base.FixedUpdate();
         needSubtractor();
-        LogTile(transform.position);
+        drink();
     }
 
 
-
+    #region needSatisfier
+    private void drink()
+    {
+        if (tbm.isWater(GetTile(transform.position))) {
+            thirst = Mathf.Clamp(thirst + 1, 0, 100);
+        }
+    }
+    #endregion
     #region needSubtractor
     private void needSubtractor()
     {
@@ -52,6 +45,7 @@ public class Human : Creature
         hunger -= Time.deltaTime;
         if (hunger <= 0) death();
     }
+
 
     protected void thirstSubtractor()
     {
