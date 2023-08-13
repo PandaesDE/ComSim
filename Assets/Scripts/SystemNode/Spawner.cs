@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    private Gamevariables gameVariables;
+    [SerializeField] public GameObject PREFAB_Human_Male;
+    [SerializeField] public GameObject PREFAB_Human_Female;
+    [SerializeField] public GameObject PREFAB_Animal;
 
     private void Awake()
     {
-        gameVariables = GetComponent<Gamevariables>();
     }
 
     private void Start()
@@ -28,12 +29,12 @@ public class Spawner : MonoBehaviour
 
     public void spawnAnimal(Vector2 c)
     {
-        spawnAnimal(c.x, c.y);
+        spawnAnimal((int)c.x, (int)c.y);
     }
 
-    public void spawnAnimal(float posX, float posY)
+    public void spawnAnimal(int posX, int posY)
     {
-        Instantiate(gameVariables.PREFAB_Animal, new Vector2(posX, posY), Quaternion.identity);
+        Instantiate(PREFAB_Animal, new Vector2((float)posX+.5f, (float)posY+.5f), Quaternion.identity);
     }
     #endregion
 
@@ -43,25 +44,25 @@ public class Spawner : MonoBehaviour
     {
         for (int i = 0; i < amount; i++)
         {
-            spawnHuman(0, 0);
+            spawnHuman(new Vector2(0,0));
 
         }
     }
-    public void spawnHuman(int posX, int posY)
+    public void spawnHuman(Vector2 c)
     {
-        spawnHuman(posX, posY, Util.getRandomGender());
+        spawnHuman((int)c.x, (int)c.y, Util.getRandomGender());
     }
 
     public void spawnHuman(int posX, int posY, gender g)
     {
         if (g == gender.MALE)
         {
-            Instantiate(gameVariables.PREFAB_Human_Male, new Vector2(posX, posY), Quaternion.identity);
+            Instantiate(PREFAB_Human_Male, new Vector2((float)posX+.5f, (float)posY + .5f), Quaternion.identity);
             return;
         }
         if (g == gender.FEMALE)
         {
-            Instantiate(gameVariables.PREFAB_Human_Female, new Vector2(posX, posY), Quaternion.identity);
+            Instantiate(PREFAB_Human_Female, new Vector2((float)posX + .5f, (float)posY + .5f), Quaternion.identity);
             return;
         }
     }

@@ -318,6 +318,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 747089657}
+  - component: {fileID: 747089662}
   - component: {fileID: 747089658}
   - component: {fileID: 747089659}
   - component: {fileID: 747089661}
@@ -384,6 +385,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   btn_PAUSE: {fileID: 1064332950}
   btn_HOME: {fileID: 925463632}
+--- !u!114 &747089662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747089654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fbf97d4c41b6284fbd1eef75de3386e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &925463630
 GameObject:
   m_ObjectHideFlags: 0
@@ -858,10 +871,10 @@ MonoBehaviour:
   CELLS_HORIZONTAL: 0
   CELLS_VERTICAL: 0
   tilemap: {fileID: 1939928361}
-  tb_water: {fileID: 11400000, guid: 85605d0a35d2004469e8638b9b26ac88, type: 2}
   tbs: {fileID: 1078496220}
   xOrg: 0
   yOrg: 0
+  zoom: 0
   octaves: 0
   persistence: 0
   frequency: 0

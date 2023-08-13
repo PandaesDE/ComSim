@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Human : Creature
 {
-    [SerializeField] private Vector2 target;
+
     private float speed = 5f;
     [SerializeField] private float hunger = 100f;
     [SerializeField] private float thirst = 100f;
@@ -19,27 +19,26 @@ public class Human : Creature
 
 
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        target = Util.getRandomCoordinateInPlayground();
-    }
 
     // Update is called once per frame
-   protected virtual void Update()
+    protected virtual void Update()
     {
         /*  For Self:
          *  virtual: lets the child class know that this method can be overwritten
          *  has to be at least protected/ or public in both parent and child class
          */
-        if (Util.isDestinationReached(transform.position, target))
-        {
-            target = Util.getRandomCoordinateInPlayground();
-        }
+        
+        
+    }
+
+    protected new void FixedUpdate()
+    {
+        base.FixedUpdate();
         needSubtractor();
-        transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * speed);
         LogTile(transform.position);
     }
+
+
 
     #region needSubtractor
     private void needSubtractor()

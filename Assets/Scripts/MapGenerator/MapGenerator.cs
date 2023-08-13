@@ -37,8 +37,8 @@ public class MapGenerator : MonoBehaviour
 
     private void Awake()
     {
-        CELLS_HORIZONTAL = 200;
-        CELLS_VERTICAL = 100;
+        CELLS_HORIZONTAL = 300;
+        CELLS_VERTICAL = 200;
         zoom = 100; 
         persistence = -.5f;
         frequency = .6f;
