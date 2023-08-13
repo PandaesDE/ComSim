@@ -5,7 +5,7 @@ using UnityEngine;
 public class Human : Creature
 {
 
-    private float speed = 5f;
+    //private float speed = 5f;
     [SerializeField] private float hunger = 100f;
     [SerializeField] private float thirst = 100f;
     //[SerializeField] private int age = 0;

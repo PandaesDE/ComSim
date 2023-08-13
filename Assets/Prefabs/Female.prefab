@@ -47,7 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6193fe419ce446b4da277ba95683bb27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilemap: {fileID: 0}
   target: {x: 0, y: 0}
   hunger: 100
   thirst: 100
@@ -71,7 +70,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5be07cf54c976a84aaf6a1150e4d36cc, type: 2}
+  - {fileID: 2100000, guid: 20155b856eab2094a8768a59f9c123f5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
