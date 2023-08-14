@@ -6,9 +6,13 @@ using UnityEngine;
 public class DayNightCycle : MonoBehaviour
 {
     [SerializeField] private new Light2D light;
+    [SerializeField] private int ticks = 0;
+    [SerializeField] private string display_time = "00:00";
+
     private int ticksPerHour;
     private int ticksPerDay;
-    [SerializeField] private int ticks = 0;
+
+    private int time = 0;
 
     // Start is called before the first frame update
     private void Awake()
@@ -30,13 +34,30 @@ public class DayNightCycle : MonoBehaviour
 
     private void FixedUpdate()
     {
+        display_time = calculateDisplayTime();
         light.intensity = Mathf.Clamp(calculateLightIntensity(), .1f, 1f);
         ticks++;
     }
 
+    private string calculateDisplayTime()
+    {
+        int minutesPerHour = 60;
+
+        int display_hours = time / ticksPerHour;
+        float display_minutes = minutesPerHour * ((time %ticksPerHour)/ (float)ticksPerHour);
+        string hourPrefix = "";
+        string minutesPrefix = "";
+
+
+        if (display_hours < 10) hourPrefix = "0";
+        if (display_minutes < 10) minutesPrefix = "0";
+
+        return hourPrefix + display_hours + ":" + minutesPrefix + display_minutes;
+    }
+
     private float calculateLightIntensity()
     {
-        int time = ticks % ticksPerDay;
+        time = ticks % ticksPerDay;
 
         int DARK_morningTicks = 6 * ticksPerHour;
         int UPRISE_morningTicks = 4 * ticksPerHour;
