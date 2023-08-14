@@ -10,8 +10,7 @@ public class DayNightCycle : MonoBehaviour
 
     private UI ui;
 
-    private int ticksPerHour;
-    private int ticksPerDay;
+
 
     private int time = 0;
 
@@ -19,9 +18,6 @@ public class DayNightCycle : MonoBehaviour
     private void Awake()
     {
         ui = GetComponent<UI>();
-
-        ticksPerHour = 4; //4 -> each tick ~ 15min
-        ticksPerDay = 24 * ticksPerHour;
     }
 
     void Start()
@@ -44,7 +40,7 @@ public class DayNightCycle : MonoBehaviour
 
     private void displayUI()
     {
-        ui.displayDay(1 + ticks / ticksPerDay);
+        ui.displayDay(1 + ticks / (Gamevariables.TICKS_PER_HOUR * Gamevariables.HOURS_PER_DAY));
         ui.displayTime(calculateDisplayTime());
     }
 
@@ -52,8 +48,8 @@ public class DayNightCycle : MonoBehaviour
     {
         int minutesPerHour = 60;
 
-        int display_hours = time / ticksPerHour;
-        float display_minutes = minutesPerHour * ((time %ticksPerHour)/ (float)ticksPerHour);
+        int display_hours = time / Gamevariables.TICKS_PER_HOUR;
+        float display_minutes = minutesPerHour * ((time % Gamevariables.TICKS_PER_HOUR) / (float)Gamevariables.TICKS_PER_HOUR);
         string hourPrefix = "";
         string minutesPrefix = "";
 
@@ -66,12 +62,12 @@ public class DayNightCycle : MonoBehaviour
 
     private float calculateLightIntensity()
     {
-        time = ticks % ticksPerDay;
+        time = ticks % (Gamevariables.TICKS_PER_HOUR * Gamevariables.HOURS_PER_DAY);
 
-        int DARK_morningTicks = 6 * ticksPerHour;
-        int UPRISE_morningTicks = 4 * ticksPerHour;
-        int BRIGHT_dayTicks = 10 * ticksPerHour;
-        int DOWNFALL_eveningTicks = 2 * ticksPerHour; 
+        int DARK_morningTicks = 6 * Gamevariables.TICKS_PER_HOUR;
+        int UPRISE_morningTicks = 4 * Gamevariables.TICKS_PER_HOUR;
+        int BRIGHT_dayTicks = 10 * Gamevariables.TICKS_PER_HOUR;
+        int DOWNFALL_eveningTicks = 2 * Gamevariables.TICKS_PER_HOUR; 
 
 
         if (time <= DARK_morningTicks)
