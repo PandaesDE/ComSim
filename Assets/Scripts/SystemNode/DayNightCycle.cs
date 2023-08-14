@@ -7,7 +7,8 @@ public class DayNightCycle : MonoBehaviour
 {
     [SerializeField] private new Light2D light;
     [SerializeField] private int ticks = 0;
-    [SerializeField] private string display_time = "00:00";
+
+    private UI ui;
 
     private int ticksPerHour;
     private int ticksPerDay;
@@ -17,6 +18,8 @@ public class DayNightCycle : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
+        ui = GetComponent<UI>();
+
         ticksPerHour = 4; //4 -> each tick ~ 15min
         ticksPerDay = 24 * ticksPerHour;
     }
@@ -34,9 +37,15 @@ public class DayNightCycle : MonoBehaviour
 
     private void FixedUpdate()
     {
-        display_time = calculateDisplayTime();
+        displayUI();
         light.intensity = Mathf.Clamp(calculateLightIntensity(), .1f, 1f);
         ticks++;
+    }
+
+    private void displayUI()
+    {
+        ui.displayDay(1 + ticks / ticksPerDay);
+        ui.displayTime(calculateDisplayTime());
     }
 
     private string calculateDisplayTime()
