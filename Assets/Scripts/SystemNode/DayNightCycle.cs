@@ -8,7 +8,7 @@ public class DayNightCycle : MonoBehaviour
     [SerializeField] private new Light2D light;
     private int ticksPerHour;
     private int ticksPerDay;
-    private int ticks = 0;
+    [SerializeField] private int ticks = 0;
 
     // Start is called before the first frame update
     private void Awake()
@@ -30,20 +30,38 @@ public class DayNightCycle : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float intensity = calculateLightIntensity();
-        light.intensity = Mathf.Clamp(intensity, .1f, 1f);
+        light.intensity = Mathf.Clamp(calculateLightIntensity(), .1f, 1f);
         ticks++;
     }
 
     private float calculateLightIntensity()
     {
         int time = ticks % ticksPerDay;
-        int DARK_morningHours = 6;
-        int nightHours = 2;
-        int dayHours = 24 - DARK_morningHours - nightHours;
-        if (time <= DARK_morningHours * ticksPerHour) return 0;
-        if (time <= nightHours * ticksPerHour) return 0;
-        return (float)time/ticksPerDay - DARK_morningHours * ticksPerHour + nightHours * ticksPerHour;
+
+        int DARK_morningTicks = 6 * ticksPerHour;
+        int UPRISE_morningTicks = 4 * ticksPerHour;
+        int BRIGHT_dayTicks = 10 * ticksPerHour;
+        int DOWNFALL_eveningTicks = 2 * ticksPerHour; 
+
+
+        if (time <= DARK_morningTicks)
+            return 0;
+
+        if (time <= DARK_morningTicks + UPRISE_morningTicks)
+            return getPercentage(time - DARK_morningTicks, UPRISE_morningTicks);
+
+        if (time <= DARK_morningTicks + UPRISE_morningTicks + BRIGHT_dayTicks)
+            return 1f;
+
+        if (time <= DARK_morningTicks + UPRISE_morningTicks + BRIGHT_dayTicks + DOWNFALL_eveningTicks)
+            return 1f - getPercentage(time - DARK_morningTicks - UPRISE_morningTicks - BRIGHT_dayTicks, DOWNFALL_eveningTicks);
+
+        return 0;
+
+        float getPercentage(int val, int max)
+        {
+            return (float)val/(float)max;
+        }
     }
 }
  
