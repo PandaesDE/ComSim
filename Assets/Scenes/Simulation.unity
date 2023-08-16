@@ -692,7 +692,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   light: {fileID: 1465996686}
   ticks: 0
-  display_time: 
 --- !u!114 &747089664
 MonoBehaviour:
   m_ObjectHideFlags: 0

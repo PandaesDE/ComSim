@@ -16,7 +16,13 @@ public class Human : Creature
                 - expectation: people in groups are more likely to survive a predator
      */
 
-    protected new void FixedUpdate()
+    protected override void Awake()
+    {
+        base.Awake();
+        weight = 80;
+    }
+
+    protected override void FixedUpdate()
     {
         base.FixedUpdate();
 

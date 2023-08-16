@@ -18,6 +18,8 @@ public class Creature : MonoBehaviour
     [SerializeField] private float hunger = 100f;
     [SerializeField] private float thirst = 100f;
 
+    protected int weight;
+
     protected enum direction
     {
         NORTH,
@@ -26,14 +28,14 @@ public class Creature : MonoBehaviour
         WEST
     }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         target = Util.getRandomCoordinateInPlayground();
         tilemap = GameObject.Find("Playground/Grid/Tilemap").GetComponent<Tilemap>();
         tbm = GameObject.Find("Playground").GetComponent<TileBaseManager>();
     }
 
-    protected void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         //movement
         if (Util.isDestinationReached(transform.position, target))
@@ -59,8 +61,14 @@ public class Creature : MonoBehaviour
     }
 
     #region Movement
+    /*  Movement is relative to the fixed update
+        - which means that increasing the tickrate, will result in faster movement, but not faster hunger, thirst and day night cycle
+        - it is yet not decided whether or not this will be fixed
+     */
     protected void MoveTowards(Vector3 destination)
     {
+        
+
         Vector3 vect = destination - transform.position;
         if (Mathf.Abs(vect.x) > Mathf.Abs(vect.y))
         {
@@ -161,6 +169,11 @@ public class Creature : MonoBehaviour
 
     protected void death()
     {
-        Destroy(gameObject);
+        Corpse c = GetComponent<Corpse>();
+        c.enabled = true;
+        c.setWeight(weight);
+
+        GetComponent<Creature>().enabled = false;
+        
     }
 }
