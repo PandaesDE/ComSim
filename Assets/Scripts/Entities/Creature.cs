@@ -35,20 +35,6 @@ public class Creature : MonoBehaviour
         tbm = GameObject.Find("Playground").GetComponent<TileBaseManager>();
     }
 
-    protected virtual void FixedUpdate()
-    {
-        //movement
-        if (Util.isDestinationReached(transform.position, target))
-        {
-            target = Util.getRandomCoordinateInPlayground();
-        }
-        MoveTowards(target);
-
-        //needs
-        needSubtractor();
-        drink();
-
-    }
 
     protected TileBase GetTile(Vector3 coord)
     {
@@ -119,7 +105,7 @@ public class Creature : MonoBehaviour
     #endregion
 
     #region needSatisfier
-    private void drink()
+    protected void drink()
     {
         if (tbm.isWater(GetTile(transform.position)))
         {
@@ -128,7 +114,7 @@ public class Creature : MonoBehaviour
     }
     #endregion
     #region needSubtractor
-    private void needSubtractor()
+    protected void needSubtractor()
     {
         hungerSubtractor();
         thirstSubtractor();

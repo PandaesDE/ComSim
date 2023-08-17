@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Human : Creature
+public class Human : Omnivore
 {
 
     //private float speed = 5f;
@@ -22,10 +22,17 @@ public class Human : Creature
         weight = 80;
     }
 
-    protected override void FixedUpdate()
+    protected void FixedUpdate()
     {
-        base.FixedUpdate();
+        if (Util.isDestinationReached(transform.position, target))
+        {
+            target = Util.getRandomCoordinateInPlayground();
+        }
+        MoveTowards(target);
 
+        //needs
+        needSubtractor();
+        drink();
     }
 
 
