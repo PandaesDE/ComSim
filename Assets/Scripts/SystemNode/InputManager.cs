@@ -7,20 +7,23 @@ using UnityEngine.UI;
 
 public class InputManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    UI ui;
+
     [SerializeField] Button btn_PAUSE;
     [SerializeField] Button btn_HOME;
+    [SerializeField] Slider sdr_TicksPerSecond;
+    [SerializeField] Slider sdr_TicksToTime;
 
     private void Awake()
     {
+        ui = GetComponent<UI>();
+
         btn_PAUSE.onClick.AddListener(pauseGame);
         btn_HOME.onClick.AddListener(toMainMenu);
+        sdr_TicksPerSecond.onValueChanged.AddListener(changeTicksPerSecond);
+        sdr_TicksToTime.onValueChanged.AddListener(changeTicksToTime);
     }
 
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
@@ -45,6 +48,19 @@ public class InputManager : MonoBehaviour
         if (Gamevariables.GAME_PAUSED) return;
         
         #endregion
+    }
+
+    private void changeTicksPerSecond(float val)
+    {
+        Time.fixedDeltaTime = val;
+        ui.displayTicksPerSeconds(1 / val);
+    }
+
+    private void changeTicksToTime(float val)
+    {
+        val *= 5;
+        Gamevariables.TICKS_PER_HOUR = (int)(Gamevariables.MINUTES_PER_HOUR / val);
+        ui.displayTicksToTime((int)val);
     }
 
     private void toMainMenu()

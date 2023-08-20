@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 8483804280055891860}
   - component: {fileID: -6785039487749313931}
   - component: {fileID: 8143531474005186583}
+  - component: {fileID: 3967402302768459001}
+  - component: {fileID: 1997042856518043458}
   m_Layer: 0
   m_Name: Female
   m_TagString: Untagged
@@ -63,6 +65,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8757832f68dd957439787996f88e38aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  decayTicks: 0
 --- !u!212 &8483804280055891860
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -162,3 +165,53 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!68 &3967402302768459001
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346594161483134204}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: 0, y: 0}
+  - {x: 11.490666, y: 9.641813}
+  - {x: 9.641814, y: 11.490666}
+  - {x: 7.4999995, y: 12.990381}
+  - {x: 5.1303024, y: 14.095389}
+  - {x: 2.6047235, y: 14.772116}
+  - {x: -0.0000006556708, y: 15}
+  - {x: -2.604723, y: 14.772116}
+  - {x: -5.130302, y: 14.095389}
+  - {x: -7.500001, y: 12.990381}
+  - {x: -9.641814, y: 11.490666}
+  - {x: -11.490666, y: 9.641814}
+  - {x: 0, y: 0}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0
+--- !u!114 &1997042856518043458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346594161483134204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fea2fe856bf45da499efe7882694f1dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 15
+  smoothness: 10
+  totalAngle: 100
+  offsetRotation: 40
+  pizzaSlice: 1

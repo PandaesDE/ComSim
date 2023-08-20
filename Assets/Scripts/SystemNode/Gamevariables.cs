@@ -10,8 +10,9 @@ public class Gamevariables
     [SerializeField] public static bool GAME_PAUSED = false;
 
     //Time
-    [SerializeField] public static readonly int TICKS_PER_HOUR = 1;
+    [SerializeField] public static int TICKS_PER_HOUR = 1;
     [SerializeField] public static readonly int HOURS_PER_DAY = 24;
+    [SerializeField] public static readonly int MINUTES_PER_HOUR = 60;
 
     //Prefabs
 
