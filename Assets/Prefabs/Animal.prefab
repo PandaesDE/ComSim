@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: -7978789381425883111}
   - component: {fileID: -968116199679311896}
   - component: {fileID: 2338662618230875790}
-  - component: {fileID: 2403863639072802015}
   m_Layer: 0
   m_Name: Animal
   m_TagString: Animal
@@ -198,20 +197,3 @@ EdgeCollider2D:
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
---- !u!114 &2403863639072802015
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 346594161483134204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fea2fe856bf45da499efe7882694f1dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  radius: 15
-  smoothness: 10
-  totalAngle: 100
-  offsetRotation: 40
-  pizzaSlice: 1

@@ -53,53 +53,54 @@ public class Creature : MonoBehaviour
      */
     protected void MoveTowards(Vector3 destination)
     {
-        
-
         Vector3 vect = destination - transform.position;
         if (Mathf.Abs(vect.x) > Mathf.Abs(vect.y))
         {
             if (vect.x > 0)
             {
-                TurnTo(direction.EAST);
-                transform.position += Vector3.right;
+                MoveTo(direction.EAST);
             } else
             {
-                TurnTo(direction.WEST);
-                transform.position += Vector3.left;
+                MoveTo(direction.WEST);
             }
         }
         else
         {
             if (vect.y > 0)
             {
-                TurnTo(direction.NORTH);
-                transform.position += Vector3.up;
+                MoveTo(direction.NORTH);
             } else
             {
-                TurnTo(direction.SOUTH);
-                transform.position += Vector3.down;
+                MoveTo(direction.SOUTH);
             }
         }
     }
 
-    protected void TurnTo(direction dir)
+    protected void MoveTo(direction dir)
     {
-        direct = dir;
         if (dir == direction.NORTH)
         {
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
+            transform.position += Vector3.up;
+            return;
         }
         if (dir == direction.EAST)
         {
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.right);
+            transform.position += Vector3.right;
+            return;
         }
         if (dir == direction.SOUTH)
         {
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.down);
+            transform.position += Vector3.down;
+            return;
         }
         if (dir == direction.WEST)
         {
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.left);
+            transform.position += Vector3.left;
+            return;
         }
     }
     #endregion

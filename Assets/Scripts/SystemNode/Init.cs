@@ -7,17 +7,12 @@ public class Init : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
+        initGameSettings();
         ConfigManager.LoadSettings();
     }
 
-    void Start()
+    private void initGameSettings()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Time.fixedDeltaTime = Gamevariables.TICKRATE;
     }
 }

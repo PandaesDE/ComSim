@@ -968,8 +968,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   btn_PAUSE: {fileID: 1064332950}
   btn_HOME: {fileID: 925463632}
-  sdr_TicksPerSecond: {fileID: 0}
-  sdr_TicksToTime: {fileID: 0}
+  sdr_TicksPerSecond: {fileID: 1595497643}
+  sdr_TicksToTime: {fileID: 592486142}
 --- !u!114 &747089662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1010,7 +1010,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   display_Day: {fileID: 575581665}
   display_Time: {fileID: 804479572}
-  display_TicksToTime: {fileID: 0}
+  display_TicksToTime: {fileID: 217588626}
   display_TicksPerSecond: {fileID: 1935055477}
 --- !u!1 &772533996
 GameObject:
@@ -1935,7 +1935,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1138407113}
   m_Layer: 5
-  m_Name: TicksPerHour
+  m_Name: TicksToTime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2698,10 +2698,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 1272612183}
   m_HandleRect: {fileID: 1591752392}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: 0.01
+  m_MaxValue: 5
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 0.1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

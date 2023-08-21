@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Human : Omnivore
+public class Human : Creature
 {
 
     //private float speed = 5f;
