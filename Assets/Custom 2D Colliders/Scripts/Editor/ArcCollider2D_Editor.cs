@@ -33,17 +33,17 @@ using System.Collections;
 public class ArcCollider_Editor : Editor {
     
     ArcCollider2D ac;
-    EdgeCollider2D edgeCollider;
+    PolygonCollider2D edgeCollider;
     Vector2 off;
 
     void OnEnable()
     {
         ac = (ArcCollider2D)target;
 
-        edgeCollider = ac.GetComponent<EdgeCollider2D>();
+        edgeCollider = ac.GetComponent<PolygonCollider2D>();
         if (edgeCollider == null) {
-            ac.gameObject.AddComponent<EdgeCollider2D>();
-            edgeCollider = ac.GetComponent<EdgeCollider2D>();
+            ac.gameObject.AddComponent<PolygonCollider2D>();
+            edgeCollider = ac.GetComponent<PolygonCollider2D>();
         }
         edgeCollider.points = ac.getPoints(edgeCollider.offset);
     }
