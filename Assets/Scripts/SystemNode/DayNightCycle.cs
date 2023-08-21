@@ -20,17 +20,6 @@ public class DayNightCycle : MonoBehaviour
         ui = GetComponent<UI>();
     }
 
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     private void FixedUpdate()
     {
         displayUI();

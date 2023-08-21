@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,21 +7,43 @@ public class InputManager : MonoBehaviour
 {
     UI ui;
 
-    [SerializeField] Button btn_PAUSE;
-    [SerializeField] Button btn_HOME;
-    [SerializeField] Slider sdr_TicksPerSecond;
-    [SerializeField] Slider sdr_TicksToTime;
-
     private void Awake()
     {
         ui = GetComponent<UI>();
-
-        btn_PAUSE.onClick.AddListener(pauseGame);
-        btn_HOME.onClick.AddListener(toMainMenu);
-        sdr_TicksPerSecond.onValueChanged.AddListener(changeTicksPerSecond);
-        sdr_TicksToTime.onValueChanged.AddListener(changeTicksToTime);
     }
 
+
+    #region initialize input Elements
+    /*  UI Elements are all within the UI.cs File
+     *  The functionality is handled in this File
+     */
+
+    public void initializePauseButton(Button btn)
+    {
+        btn.onClick.AddListener(pauseGame);
+    }
+
+    public void initializeHomeButton(Button btn)
+    {
+        btn.onClick.AddListener(toMainMenu);
+    }
+
+    public void initializeTicksPerSecondSlider(Slider sdr)
+    {
+        sdr.onValueChanged.AddListener(changeTicksPerSecond);
+        float tps = 1 / Time.fixedDeltaTime;
+        ui.displayTicksPerSeconds(tps);
+        sdr.value = tps;
+    }
+
+    public void initializeTicksToTimeSlider(Slider sdr)
+    {
+        sdr.onValueChanged.AddListener(changeTicksToTime);
+        int ttt = (int)((float)Gamevariables.MINUTES_PER_HOUR / (float)Gamevariables.TICKS_PER_HOUR);
+        ui.displayTicksToTime(ttt);
+        sdr.value = ttt;
+    }
+    #endregion
 
     // Update is called once per frame
     void Update()
@@ -74,11 +94,11 @@ public class InputManager : MonoBehaviour
         if (Gamevariables.GAME_PAUSED)
         {
             Time.timeScale = 0;
-            btn_PAUSE.transform.GetChild(0).GetComponent<TMP_Text>().text = "R";
+            ui.displayPauseButtonText("R");
         } else
         {
             Time.timeScale = 1;
-            btn_PAUSE.transform.GetChild(0).GetComponent<TMP_Text>().text = "P";
+            ui.displayPauseButtonText("P");
         }
     }
 }

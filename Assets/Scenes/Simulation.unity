@@ -755,7 +755,7 @@ GameObject:
   - component: {fileID: 592486141}
   - component: {fileID: 592486142}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: sdr_TicksToTime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -966,10 +966,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3af5e18eff953448bf64d81a6974995, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  btn_PAUSE: {fileID: 1064332950}
-  btn_HOME: {fileID: 925463632}
-  sdr_TicksPerSecond: {fileID: 1595497643}
-  sdr_TicksToTime: {fileID: 592486142}
 --- !u!114 &747089662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1012,6 +1008,10 @@ MonoBehaviour:
   display_Time: {fileID: 804479572}
   display_TicksToTime: {fileID: 217588626}
   display_TicksPerSecond: {fileID: 1935055477}
+  btn_PAUSE: {fileID: 1064332950}
+  btn_HOME: {fileID: 925463632}
+  sdr_TicksPerSecond: {fileID: 1595497643}
+  sdr_TicksToTime: {fileID: 592486142}
 --- !u!1 &772533996
 GameObject:
   m_ObjectHideFlags: 0
@@ -1312,7 +1312,7 @@ GameObject:
   - component: {fileID: 925463633}
   - component: {fileID: 925463632}
   m_Layer: 5
-  m_Name: Home
+  m_Name: btn_Home
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1614,7 +1614,7 @@ GameObject:
   - component: {fileID: 1064332951}
   - component: {fileID: 1064332950}
   m_Layer: 5
-  m_Name: Pause
+  m_Name: btn_Pause
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2625,7 +2625,7 @@ GameObject:
   - component: {fileID: 1595497642}
   - component: {fileID: 1595497643}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: sdr_TicksPerSecond
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
