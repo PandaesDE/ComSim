@@ -7,6 +7,11 @@ public class Creature : MonoBehaviour
 {
     [SerializeField] protected Vector2 target;
 
+
+    //Physics
+    protected Rigidbody2D rb2D;
+
+    //Map
     private Tilemap tilemap;
     protected TileBaseManager tbm;
 
@@ -30,9 +35,15 @@ public class Creature : MonoBehaviour
 
     protected virtual void Awake()
     {
+        rb2D = GetComponent<Rigidbody2D>();
         target = Util.getRandomCoordinateInPlayground();
         tilemap = GameObject.Find("Playground/Grid/Tilemap").GetComponent<Tilemap>();
         tbm = GameObject.Find("Playground").GetComponent<TileBaseManager>();
+    }
+
+    public void setTarget(Vector2 coord)
+    {
+        target = coord;
     }
 
 
@@ -78,28 +89,33 @@ public class Creature : MonoBehaviour
 
     protected void MoveTo(direction dir)
     {
+        Vector2 velocity;
         if (dir == direction.NORTH)
         {
+            velocity = Vector2.up;
+            rb2D.MovePosition(rb2D.position + velocity);
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
-            transform.position += Vector3.up;
             return;
         }
         if (dir == direction.EAST)
         {
+            velocity = Vector2.right;
+            rb2D.MovePosition(rb2D.position + velocity);
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.right);
-            transform.position += Vector3.right;
             return;
         }
         if (dir == direction.SOUTH)
         {
+            velocity = Vector2.down;
+            rb2D.MovePosition(rb2D.position + velocity);
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.down);
-            transform.position += Vector3.down;
             return;
         }
         if (dir == direction.WEST)
         {
+            velocity = Vector2.left;
+            rb2D.MovePosition(rb2D.position + velocity);
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.left);
-            transform.position += Vector3.left;
             return;
         }
     }
@@ -135,16 +151,6 @@ public class Creature : MonoBehaviour
     }
     #endregion
 
-    protected virtual void OnTriggerEnter2D(Collider2D collision)
-    {
-        Debug.Log("OTE");
-        if (collision.CompareTag(tags.ANIMAL))
-        {
-            Debug.Log("OTE ANIMAL");
-            takeDamage();
-        }
-    }
-
     protected void takeDamage()
     {
         health -= 20;
@@ -161,6 +167,6 @@ public class Creature : MonoBehaviour
         c.setWeight(weight);
 
         GetComponent<Creature>().enabled = false;
-        
+        GetComponent<Senses>().enabled = false;
     }
 }

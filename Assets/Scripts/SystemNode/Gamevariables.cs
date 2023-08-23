@@ -4,7 +4,7 @@ public class Gamevariables
 {
     //init Settings
     public static readonly Vector2 playgroundSize = new Vector2(100f, 100f);
-    public static readonly float TICKRATE = 5;
+    public static readonly float TICKRATE = .5f;
 
     public static string SEED = "";
     public static int HUMAN_AMOUNT_START = 0;

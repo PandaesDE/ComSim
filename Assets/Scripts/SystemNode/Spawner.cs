@@ -14,9 +14,23 @@ public class Spawner : MonoBehaviour
 
     private void Start()
     {
-        spawnHumans(Gamevariables.HUMAN_AMOUNT_START);
-        spawnAnimals(Gamevariables.ANIMAL_AMOUNT_START);
+        //spawnHumans(Gamevariables.HUMAN_AMOUNT_START);
+        //spawnAnimals(Gamevariables.ANIMAL_AMOUNT_START);
+        sensesCheckSetup();
     }
+
+    #region DEBUG Functions
+
+    private void sensesCheckSetup()
+    {
+        int a = 20;
+        Human hum = spawnHuman(new Vector2(a, 0));
+        Animal ani = spawnAnimal(new Vector2(-a, 0));
+        hum.setTarget(new Vector2(-a, 0));
+        ani.setTarget(new Vector2(a, 0));
+    }
+
+    #endregion
 
     #region Animal
     public void spawnAnimals(int amount)
@@ -27,14 +41,16 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    public void spawnAnimal(Vector2 c)
+    public Animal spawnAnimal(Vector2 c)
     {
-        spawnAnimal((int)c.x, (int)c.y);
+        return spawnAnimal((int)c.x, (int)c.y);
     }
 
-    public void spawnAnimal(int posX, int posY)
+    public Animal spawnAnimal(int posX, int posY)
     {
-        Instantiate(PREFAB_Animal, new Vector2((float)posX+.5f, (float)posY+.5f), Quaternion.identity);
+        GameObject spawn = null;
+        spawn = Instantiate(PREFAB_Animal, new Vector2((float)posX+.5f, (float)posY+.5f), Quaternion.identity);
+        return spawn.GetComponent<Animal>();
     }
     #endregion
 
@@ -48,23 +64,24 @@ public class Spawner : MonoBehaviour
 
         }
     }
-    public void spawnHuman(Vector2 c)
+    public Human spawnHuman(Vector2 c)
     {
-        spawnHuman((int)c.x, (int)c.y, Util.getRandomGender());
+        return spawnHuman((int)c.x, (int)c.y, Util.getRandomGender());
     }
 
-    public void spawnHuman(int posX, int posY, gender g)
+    public Human spawnHuman(int posX, int posY, gender g)
     {
+        GameObject spawn = null;
         if (g == gender.MALE)
         {
-            Instantiate(PREFAB_Human_Male, new Vector2((float)posX+.5f, (float)posY + .5f), Quaternion.identity);
-            return;
-        }
-        if (g == gender.FEMALE)
+            spawn = Instantiate(PREFAB_Human_Male, new Vector2((float)posX+.5f, (float)posY + .5f), Quaternion.identity);
+        } else 
         {
-            Instantiate(PREFAB_Human_Female, new Vector2((float)posX + .5f, (float)posY + .5f), Quaternion.identity);
-            return;
+            spawn = Instantiate(PREFAB_Human_Female, new Vector2((float)posX + .5f, (float)posY + .5f), Quaternion.identity);
         }
+        return spawn.GetComponent<Human>();
+
+
     }
     #endregion
 

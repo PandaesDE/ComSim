@@ -26,7 +26,7 @@ public class Human : Creature
     {
         if (Util.isDestinationReached(transform.position, target))
         {
-            target = Util.getRandomCoordinateInPlayground();
+            //target = Util.getRandomCoordinateInPlayground();
         }
         MoveTowards(target);
 
