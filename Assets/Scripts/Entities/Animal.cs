@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class Animal : Creature
 {
+    List<System.Type> foodTypes = new()
+    {
+        typeof(Human)
+    };
+
     protected override void Awake()
     {
-        base.Awake();
         weight = 130;
+
+        base.Awake();
     }
 
     protected void FixedUpdate()
@@ -21,6 +27,12 @@ public class Animal : Creature
         //needs
         needSubtractor();
         drink();
+    }
+
+    protected override void initFoodTypes()
+    {
+        Senses s = transform.GetChild(0).GetComponent<Senses>();
+        s.setFoodTypes(foodTypes);
     }
 
 }

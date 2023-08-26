@@ -15,18 +15,22 @@ public class Human : Creature
                 - chance to stay close to other people (gets inhereted to children)
                 - expectation: people in groups are more likely to survive a predator
      */
+    List<System.Type> foodTypes = new()
+    {
+        typeof(Animal)
+    };
 
     protected override void Awake()
     {
-        base.Awake();
         weight = 80;
+        base.Awake();
     }
 
     protected void FixedUpdate()
     {
         if (Util.isDestinationReached(transform.position, target))
         {
-            //target = Util.getRandomCoordinateInPlayground();
+            target = Util.getRandomCoordinateInPlayground();
         }
         MoveTowards(target);
 
@@ -35,7 +39,13 @@ public class Human : Creature
         drink();
     }
 
+    protected override void initFoodTypes()
+    {
+        Senses s = transform.GetChild(0).GetComponent<Senses>();
+        s.setFoodTypes(foodTypes);
+    }
 
-    
+
+
 
 }

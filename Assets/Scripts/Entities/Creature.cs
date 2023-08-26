@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Creature : MonoBehaviour
+public abstract class Creature : MonoBehaviour
 {
     [SerializeField] protected Vector2 target;
 
@@ -16,9 +16,9 @@ public class Creature : MonoBehaviour
     protected TileBaseManager tbm;
 
     //Brain
-    protected List<GameObject> spottedFood;
-    protected List<GameObject> spottedWater;
-    protected List<GameObject> spottedMate;
+    protected Dictionary<int, Vector2Int> spottedFood;
+    protected Dictionary<int, Vector2Int> spottedWater;
+    protected Dictionary<int, Vector2Int> spottedMate;
 
     //Movement
     protected direction direct;
@@ -44,12 +44,57 @@ public class Creature : MonoBehaviour
         target = Util.getRandomCoordinateInPlayground();
         tilemap = GameObject.Find("Playground/Grid/Tilemap").GetComponent<Tilemap>();
         tbm = GameObject.Find("Playground").GetComponent<TileBaseManager>();
+
+        spottedFood = new Dictionary<int, Vector2Int>();
+        spottedWater = new Dictionary<int, Vector2Int>();
+        spottedMate = new Dictionary<int, Vector2Int>();
+
+        initFoodTypes();
     }
+
+    #region Brain
+    public void AddFoodSource(GameObject food)
+    {
+        Vector2Int foodCoords = Util.convertVector3ToVector2Int(food.transform.position);
+        spottedFood[food.GetInstanceID()] = foodCoords;
+    }
+
+    public void RemoveFoodSource(int ID)
+    {
+        spottedFood.Remove(ID);
+    }
+
+    public void AddWaterSource(GameObject water)
+    {
+        Vector2Int waterCoords = Util.convertVector3ToVector2Int(water.transform.position);
+        spottedWater[water.GetInstanceID()] = waterCoords;
+    }
+
+    public void RemoveWaterSource(int ID)
+    {
+        spottedWater.Remove(ID);
+    }
+
+    public void AddPotentialMate(GameObject mate)
+    {
+        Vector2Int mateCoords = Util.convertVector3ToVector2Int(mate.transform.position);
+        spottedMate[mate.GetInstanceID()] = mateCoords;
+    }
+
+    public void RemovePotentialMate(int ID)
+    {
+        spottedMate.Remove(ID);
+    }
+
+    protected abstract void initFoodTypes();
+
+    #endregion
 
     public void setTarget(Vector2 coord)
     {
         target = coord;
     }
+
 
 
     protected TileBase GetTile(Vector3 coord)

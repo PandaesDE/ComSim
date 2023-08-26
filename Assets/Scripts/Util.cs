@@ -26,4 +26,9 @@ public static class Util
         int halfH = (int)Gamevariables.playgroundSize.y/2;
         return new Vector2(Random.Range(-halfW, halfW), Random.Range(-halfH, halfH));
     }
+
+    public static Vector2Int convertVector3ToVector2Int(Vector3 v)
+    {
+        return new Vector2Int((int)v.x, (int)v.y);
+    }
 }
