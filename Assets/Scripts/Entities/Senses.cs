@@ -25,7 +25,7 @@ public class Senses : MonoBehaviour
     {
         if (other.gameObject != gameObject && other.gameObject.layer != LayerMask.NameToLayer("Vision"))
         {
-            //Debug.Log("Trigger-Enter:" + other.name);
+            Debug.Log("Trigger-Enter:" + other.name);
 
         }
     }

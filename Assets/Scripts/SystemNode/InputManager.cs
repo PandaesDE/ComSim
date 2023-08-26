@@ -13,38 +13,6 @@ public class InputManager : MonoBehaviour
     }
 
 
-    #region initialize input Elements
-    /*  UI Elements are all within the UI.cs File
-     *  The functionality is handled in this File
-     */
-
-    public void initializePauseButton(Button btn)
-    {
-        btn.onClick.AddListener(pauseGame);
-    }
-
-    public void initializeHomeButton(Button btn)
-    {
-        btn.onClick.AddListener(toMainMenu);
-    }
-
-    public void initializeTicksPerSecondSlider(Slider sdr)
-    {
-        sdr.onValueChanged.AddListener(changeTicksPerSecond);
-        float tps = 1 / Time.fixedDeltaTime;
-        ui.displayTicksPerSeconds(tps);
-        sdr.value = tps;
-    }
-
-    public void initializeTicksToTimeSlider(Slider sdr)
-    {
-        sdr.onValueChanged.AddListener(changeTicksToTime);
-        int ttt = (int)((float)Gamevariables.MINUTES_PER_HOUR / (float)Gamevariables.TICKS_PER_HOUR);
-        ui.displayTicksToTime(ttt);
-        sdr.value = ttt;
-    }
-    #endregion
-
     // Update is called once per frame
     void Update()
     {
@@ -70,35 +38,36 @@ public class InputManager : MonoBehaviour
         #endregion
     }
 
-    private void changeTicksPerSecond(float val)
-    {
-        Time.fixedDeltaTime = val;
-        ui.displayTicksPerSeconds(1 / val);
-    }
-
-    private void changeTicksToTime(float val)
-    {
-        val *= 5;
-        Gamevariables.TICKS_PER_HOUR = (int)(Gamevariables.MINUTES_PER_HOUR / val);
-        ui.displayTicksToTime((int)val);
-    }
-
-    private void toMainMenu()
+    public void toMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
     }
 
-    private void pauseGame()
+    public void pauseGame()
     {
         Gamevariables.GAME_PAUSED = !Gamevariables.GAME_PAUSED;
         if (Gamevariables.GAME_PAUSED)
         {
             Time.timeScale = 0;
             ui.displayPauseButtonText("R");
-        } else
+        }
+        else
         {
             Time.timeScale = 1;
             ui.displayPauseButtonText("P");
         }
+    }
+
+    public void changeTicksPerSecond(float val)
+    {
+        Time.fixedDeltaTime = val;
+        ui.displayTicksPerSeconds(1 / val);
+    }
+
+    public void changeTicksToTime(float val)
+    {
+        val *= 5;
+        Gamevariables.TICKS_PER_HOUR = (int)(Gamevariables.MINUTES_PER_HOUR / val);
+        ui.displayTicksToTime((int)val);
     }
 }

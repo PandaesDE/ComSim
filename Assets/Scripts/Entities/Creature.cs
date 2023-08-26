@@ -172,6 +172,6 @@ public class Creature : MonoBehaviour
         c.setWeight(weight);
 
         GetComponent<Creature>().enabled = false;
-        GetComponent<Senses>().enabled = false;
+        transform.GetChild(0).GetComponent<Senses>().enabled = false;
     }
 }

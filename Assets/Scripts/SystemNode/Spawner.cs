@@ -14,8 +14,9 @@ public class Spawner : MonoBehaviour
 
     private void Start()
     {
-        spawnHumans(Gamevariables.HUMAN_AMOUNT_START);
-        spawnAnimals(Gamevariables.ANIMAL_AMOUNT_START);
+        //spawnHumans(Gamevariables.HUMAN_AMOUNT_START);
+        //spawnAnimals(Gamevariables.ANIMAL_AMOUNT_START);
+        sensesCheckSetup();
     }
 
     #region DEBUG Functions

@@ -22,10 +22,26 @@ public class UI : MonoBehaviour
     private void Awake()
     {
         im = GetComponent<InputManager>();
-        im.initializePauseButton(btn_PAUSE);
-        im.initializeHomeButton(btn_HOME);
-        im.initializeTicksPerSecondSlider(sdr_TicksPerSecond);
-        im.initializeTicksToTimeSlider(sdr_TicksToTime);
+        btn_PAUSE.onClick.AddListener(im.pauseGame);
+        btn_HOME.onClick.AddListener(im.toMainMenu);
+        initializeTicksPerSecondSlider();
+        initializeTicksToTimeSlider();
+
+        void initializeTicksPerSecondSlider()
+        {
+            sdr_TicksPerSecond.onValueChanged.AddListener(im.changeTicksPerSecond);
+            float tps = 1 / Time.fixedDeltaTime;
+            displayTicksPerSeconds(tps);
+            sdr_TicksPerSecond.value = tps;
+        }
+
+        void initializeTicksToTimeSlider()
+        {
+            sdr_TicksToTime.onValueChanged.AddListener(im.changeTicksToTime);
+            int ttt = (int)((float)Gamevariables.MINUTES_PER_HOUR / (float)Gamevariables.TICKS_PER_HOUR);
+            displayTicksToTime(ttt);
+            sdr_TicksToTime.value = ttt;
+        }
     }
 
     public void displayTicksToTime(int min)
