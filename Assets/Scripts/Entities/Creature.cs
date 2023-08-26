@@ -15,10 +15,15 @@ public class Creature : MonoBehaviour
     private Tilemap tilemap;
     protected TileBaseManager tbm;
 
-    //movement
+    //Brain
+    protected List<GameObject> spottedFood;
+    protected List<GameObject> spottedWater;
+    protected List<GameObject> spottedMate;
+
+    //Movement
     protected direction direct;
 
-    //needs
+    //Needs
     private int health = 100;
     [SerializeField] private float hunger = 100f;
     [SerializeField] private float thirst = 100f;
