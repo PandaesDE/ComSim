@@ -67,7 +67,7 @@ public class InputManager : MonoBehaviour
     public void changeTicksToTime(float val)
     {
         val *= 5;
-        Gamevariables.TICKS_PER_HOUR = (int)(Gamevariables.MINUTES_PER_HOUR / val);
+        Gamevariables.MINUTES_PER_TICK = (int)val;
         ui.displayTicksToTime((int)val);
     }
 }

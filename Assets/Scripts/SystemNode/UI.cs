@@ -38,9 +38,8 @@ public class UI : MonoBehaviour
         void initializeTicksToTimeSlider()
         {
             sdr_TicksToTime.onValueChanged.AddListener(im.changeTicksToTime);
-            int ttt = (int)((float)Gamevariables.MINUTES_PER_HOUR / (float)Gamevariables.TICKS_PER_HOUR);
-            displayTicksToTime(ttt);
-            sdr_TicksToTime.value = ttt;
+            displayTicksToTime(Gamevariables.MINUTES_PER_TICK);
+            sdr_TicksToTime.value = Gamevariables.MINUTES_PER_TICK;
         }
     }
 

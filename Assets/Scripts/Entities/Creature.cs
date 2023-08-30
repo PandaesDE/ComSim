@@ -187,16 +187,22 @@ public abstract class Creature : MonoBehaviour
         thirstSubtractor();
     }
 
-    protected void hungerSubtractor(float subPerHour = .6f) //7 days without food
+
+    /*
+     * subPerHour Default = 7 days without food
+     */
+    protected void hungerSubtractor(float subPerHour = .6f)
     {
-        hunger -= subPerHour / (float)Gamevariables.TICKS_PER_HOUR;
+        hunger -= subPerHour * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
         if (hunger <= 0) death();
     }
 
-
-    protected void thirstSubtractor(float subPerHour = 1.38f) //3 days without water
+    /*
+     * subPerMinute Default = 3 days without water
+     */
+    protected void thirstSubtractor(float subPerHour = 1.38f)
     {
-        thirst -= subPerHour / (float)Gamevariables.TICKS_PER_HOUR;
+        thirst -= subPerHour * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
         if (thirst <= 0) death();
     }
     #endregion

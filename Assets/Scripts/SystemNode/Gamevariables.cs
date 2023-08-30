@@ -12,9 +12,11 @@ public class Gamevariables
     public static bool GAME_PAUSED = false;
 
     //Time
-    public static int TICKS_PER_HOUR = 1;
     public static readonly int HOURS_PER_DAY = 24;
     public static readonly int MINUTES_PER_HOUR = 60;
+
+    public static int MINUTES_PER_TICK = 1;
+
 
     //Prefabs
 

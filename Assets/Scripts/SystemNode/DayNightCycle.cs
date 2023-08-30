@@ -6,13 +6,14 @@ using UnityEngine;
 public class DayNightCycle : MonoBehaviour
 {
     [SerializeField] private new Light2D light;
-    [SerializeField] private int ticks = 0;
+    [SerializeField] private int passed_time_minutes = 0;
+    private int clock_minutes = 0;
+
 
     private UI ui;
 
 
 
-    private int time = 0;
 
     // Start is called before the first frame update
     private void Awake()
@@ -22,23 +23,22 @@ public class DayNightCycle : MonoBehaviour
 
     private void FixedUpdate()
     {
-        displayUI();
+        passed_time_minutes += Gamevariables.MINUTES_PER_TICK;
         light.intensity = Mathf.Clamp(calculateLightIntensity(), .1f, 1f);
-        ticks++;
+
+        displayUI();
     }
 
     private void displayUI()
     {
-        ui.displayDay(1 + ticks / (Gamevariables.TICKS_PER_HOUR * Gamevariables.HOURS_PER_DAY));
+        ui.displayDay(1 + passed_time_minutes / (Gamevariables.MINUTES_PER_HOUR * Gamevariables.HOURS_PER_DAY));
         ui.displayTime(calculateDisplayTime());
     }
 
     private string calculateDisplayTime()
     {
-        int minutesPerHour = 60;
-
-        int display_hours = time / Gamevariables.TICKS_PER_HOUR;
-        float display_minutes = minutesPerHour * ((time % Gamevariables.TICKS_PER_HOUR) / (float)Gamevariables.TICKS_PER_HOUR);
+        int display_hours = clock_minutes / Gamevariables.MINUTES_PER_HOUR;
+        float display_minutes = clock_minutes % Gamevariables.MINUTES_PER_HOUR;
         string hourPrefix = "";
         string minutesPrefix = "";
 
@@ -51,25 +51,25 @@ public class DayNightCycle : MonoBehaviour
 
     private float calculateLightIntensity()
     {
-        time = ticks % (Gamevariables.TICKS_PER_HOUR * Gamevariables.HOURS_PER_DAY);
+        clock_minutes = passed_time_minutes % (Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR);
 
-        int DARK_morningTicks = 6 * Gamevariables.TICKS_PER_HOUR;
-        int UPRISE_morningTicks = 4 * Gamevariables.TICKS_PER_HOUR;
-        int BRIGHT_dayTicks = 10 * Gamevariables.TICKS_PER_HOUR;
-        int DOWNFALL_eveningTicks = 2 * Gamevariables.TICKS_PER_HOUR; 
+        int DARK_morningMinutes = 6 * Gamevariables.MINUTES_PER_HOUR;
+        int UPRISE_morningMinutes = 4 * Gamevariables.MINUTES_PER_HOUR;
+        int BRIGHT_dayMinutes = 10 * Gamevariables.MINUTES_PER_HOUR;
+        int DOWNFALL_eveningMinutes = 2 * Gamevariables.MINUTES_PER_HOUR; 
 
 
-        if (time <= DARK_morningTicks)
+        if (clock_minutes <= DARK_morningMinutes)
             return 0;
 
-        if (time <= DARK_morningTicks + UPRISE_morningTicks)
-            return getPercentage(time - DARK_morningTicks, UPRISE_morningTicks);
+        if (clock_minutes <= DARK_morningMinutes + UPRISE_morningMinutes)
+            return getPercentage(clock_minutes - DARK_morningMinutes, UPRISE_morningMinutes);
 
-        if (time <= DARK_morningTicks + UPRISE_morningTicks + BRIGHT_dayTicks)
+        if (clock_minutes <= DARK_morningMinutes + UPRISE_morningMinutes + BRIGHT_dayMinutes)
             return 1f;
 
-        if (time <= DARK_morningTicks + UPRISE_morningTicks + BRIGHT_dayTicks + DOWNFALL_eveningTicks)
-            return 1f - getPercentage(time - DARK_morningTicks - UPRISE_morningTicks - BRIGHT_dayTicks, DOWNFALL_eveningTicks);
+        if (clock_minutes <= DARK_morningMinutes + UPRISE_morningMinutes + BRIGHT_dayMinutes + DOWNFALL_eveningMinutes)
+            return 1f - getPercentage(clock_minutes - DARK_morningMinutes - UPRISE_morningMinutes - BRIGHT_dayMinutes, DOWNFALL_eveningMinutes);
 
         return 0;
 

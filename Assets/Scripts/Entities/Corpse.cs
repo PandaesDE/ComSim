@@ -12,11 +12,11 @@ public class Corpse : MonoBehaviour
 
     private int weight = 0;
 
-    [SerializeField] private int decayTicks;
+    [SerializeField] private int decayMinutes;
 
     private void Awake()
     {
-        decayTicks = decayDays * Gamevariables.TICKS_PER_HOUR * Gamevariables.HOURS_PER_DAY;
+        decayMinutes = decayDays * Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR;
     }
 
     void Start()
@@ -26,11 +26,11 @@ public class Corpse : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (decayTicks <= 0)
+        if (decayMinutes <= 0)
         {
             decayed();
         }
-        decayTicks--;
+        decayMinutes -= Gamevariables.MINUTES_PER_TICK;
     }
 
     public void decayed()
