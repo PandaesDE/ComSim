@@ -9,7 +9,6 @@ public class Corpse : MonoBehaviour
      */
 
     private int decayDays = 5;
-
     private int weight = 0;
 
     [SerializeField] private int decayMinutes;
@@ -19,25 +18,41 @@ public class Corpse : MonoBehaviour
         decayMinutes = decayDays * Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR;
     }
 
-    void Start()
-    {
-        
-    }
-
     private void FixedUpdate()
     {
-        if (decayMinutes <= 0)
+        if (decayMinutes <= 0 || weight <= 0)
         {
-            decayed();
+            destroyed();
         }
         decayMinutes -= Gamevariables.MINUTES_PER_TICK;
     }
 
-    public void decayed()
+    public int getsConsumed(int amount)
+    {
+        weight -= amount;
+
+        if (weight <= 0) {
+            StartCoroutine(destroyedBeforeNextFixedUpdate());
+            return amount + weight;
+        }
+
+        return amount;
+    }
+
+    private void destroyed()
     {
         Destroy(gameObject);
     }
 
+    private IEnumerator destroyedBeforeNextFixedUpdate()
+    {
+        /*1/(Gamevariables.TICKRATE+1) -> so that it waits just before the next fixedUpdate*/
+        yield return new WaitForSeconds(1/(Gamevariables.TICKRATE+1));
+        Destroy(gameObject);
+    }
+
+
+    //getter & setter
     public void setWeight(int w)
     {
         this.weight = w;

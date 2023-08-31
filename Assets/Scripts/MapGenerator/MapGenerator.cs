@@ -55,15 +55,6 @@ public class MapGenerator : MonoBehaviour
         RenderMap();
     }   
 
-    void Update()
-    {
-
-    }
-
-    private void FixedUpdate()
-    {
-        //RenderMap();
-    }
 
     #region Tilemap approach
     //https://blog.unity.com/engine-platform/procedural-patterns-you-can-use-with-tilemaps-part-1

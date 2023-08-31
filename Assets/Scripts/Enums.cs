@@ -4,6 +4,13 @@ public enum gender
     FEMALE
 }
 
+public enum foodType
+{
+    OMNIVORE,
+    CARNIVORE,
+    HERBIVORE
+}
+
 public static class tags
 {
     public static readonly string ANIMAL = "Animal";

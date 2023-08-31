@@ -4,24 +4,20 @@ using UnityEngine;
 
 public class Animal : Creature
 {
-    List<System.Type> foodTypes = new()
-    {
-        typeof(Human)
-    };
+    [SerializeField] List<System.Type> foodTypes;
 
     protected override void Awake()
     {
+        health = 150;
         weight = 130;
+        foodTypes = Util.getFoodList(foodType.CARNIVORE, typeof(Animal));
 
         base.Awake();
     }
 
     protected void FixedUpdate()
     {
-        if (Util.isDestinationReached(transform.position, target))
-        {
-            target = Util.getRandomCoordinateInPlayground();
-        }
+        getDestinationIfReached();
         MoveTowards(target);
 
         //needs

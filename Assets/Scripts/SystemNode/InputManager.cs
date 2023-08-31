@@ -64,10 +64,14 @@ public class InputManager : MonoBehaviour
         ui.displayTicksPerSeconds(1 / val);
     }
 
-    public void changeTicksToTime(float val)
+    /* val is between 0 and 9*/
+    public void changeTicksToTime(float index)
     {
-        val *= 5;
-        Gamevariables.MINUTES_PER_TICK = (int)val;
-        ui.displayTicksToTime((int)val);
+        int[] values = { 1 , 5, 10, 15, 30, 45, 60, 90, 120, 240};
+        if (index < 0) index = 0;
+        if (index > values.Length-1) index = values.Length-1;
+
+        Gamevariables.MINUTES_PER_TICK = values[(int)index];
+        ui.displayTicksToTime(values[(int)index]);
     }
 }

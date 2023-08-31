@@ -25,6 +25,41 @@ public class Senses : MonoBehaviour
         myType = getType(transform.parent.gameObject);
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        /* If self, or Another Vision Collidor -> do nothing*/
+        if (other.gameObject == gameObject || other.gameObject.layer == LayerMask.NameToLayer("Vision")) return;
+
+
+        /* Potential Partner */
+        if (myType == getType(other.gameObject))
+        {
+            creature.AddPotentialMate(other.gameObject);
+            return;
+        }
+
+        /* Potential Food */
+        if (isEdibleFoodSource(other.gameObject))
+        {
+            creature.AddFoodSource(other.gameObject);
+            return;
+        }
+
+        /* Water Source */
+        //TODO
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        /* If self, or Another Vision Collidor -> do nothing*/
+        if (other.gameObject == gameObject || other.gameObject.layer == LayerMask.NameToLayer("Vision")) return;
+
+        if (true)
+        {
+
+        }
+    }
+
     public void setFoodTypes(List<System.Type> foodTypes)
     {
         edibleFoodSources = foodTypes;
@@ -42,31 +77,7 @@ public class Senses : MonoBehaviour
         return null;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        /* If self, or Another Vision Collidor -> do nothing*/
-        if (other.gameObject == gameObject || other.gameObject.layer == LayerMask.NameToLayer("Vision")) return;
 
-        if (myType == getType(other.gameObject))
-        {
-            creature.AddPotentialMate(other.gameObject);
-            return;
-        }
-
-        if (isEdibleFoodSource(other.gameObject))
-        {
-            creature.AddFoodSource(other.gameObject);
-            return;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.gameObject != gameObject && other.gameObject.layer != LayerMask.NameToLayer("Vision"))
-        {
-            //Debug.Log("Trigger-Exit:" + other.name);
-        }
-    }
 
     private bool isEdibleFoodSource(GameObject g)
     {

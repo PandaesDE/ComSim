@@ -7,6 +7,9 @@ public abstract class Creature : MonoBehaviour
 {
     [SerializeField] protected Vector2 target;
 
+    //Attributes defined by Child of this class
+    protected int health;
+    protected int weight;
 
     //Physics
     protected Rigidbody2D rb2D;
@@ -16,19 +19,18 @@ public abstract class Creature : MonoBehaviour
     protected TileBaseManager tbm;
 
     //Brain
-    protected Dictionary<int, Vector2Int> spottedFood;
-    protected Dictionary<int, Vector2Int> spottedWater;
-    protected Dictionary<int, Vector2Int> spottedMate;
+    [SerializeField] protected Dictionary<int, Vector2Int> spottedFood;
+    [SerializeField] protected Dictionary<int, Vector2Int> spottedWater;
+    [SerializeField] protected Dictionary<int, Vector2Int> spottedMate;
 
     //Movement
     protected direction direct;
+    protected int speed = 4; //moves per Tick
 
     //Needs
-    private int health = 100;
     [SerializeField] private float hunger = 100f;
     [SerializeField] private float thirst = 100f;
 
-    protected int weight;
 
     protected enum direction
     {
@@ -61,7 +63,8 @@ public abstract class Creature : MonoBehaviour
 
     public void RemoveFoodSource(int ID)
     {
-        spottedFood.Remove(ID);
+        if (spottedFood.ContainsKey(ID))
+            spottedFood.Remove(ID);
     }
 
     public void AddWaterSource(GameObject water)
@@ -72,7 +75,8 @@ public abstract class Creature : MonoBehaviour
 
     public void RemoveWaterSource(int ID)
     {
-        spottedWater.Remove(ID);
+        if (spottedWater.ContainsKey(ID))
+            spottedWater.Remove(ID);
     }
 
     public void AddPotentialMate(GameObject mate)
@@ -83,8 +87,11 @@ public abstract class Creature : MonoBehaviour
 
     public void RemovePotentialMate(int ID)
     {
-        spottedMate.Remove(ID);
+        if (spottedMate.ContainsKey(ID))
+            spottedMate.Remove(ID);
     }
+
+
 
     protected abstract void initFoodTypes();
 
@@ -94,8 +101,6 @@ public abstract class Creature : MonoBehaviour
     {
         target = coord;
     }
-
-
 
     protected TileBase GetTile(Vector3 coord)
     {
@@ -110,29 +115,32 @@ public abstract class Creature : MonoBehaviour
     #region Movement
     /*  Movement is relative to the fixed update
         - which means that increasing the tickrate, will result in faster movement, but not faster hunger, thirst and day night cycle
-        - it is yet not decided whether or not this will be fixed
      */
     protected void MoveTowards(Vector3 destination)
     {
-        Vector3 vect = destination - transform.position;
-        if (Mathf.Abs(vect.x) > Mathf.Abs(vect.y))
+        //TODO speed doesnt work yet?
+        for (int i = 0; i < speed; i++)
         {
-            if (vect.x > 0)
+            Vector3 vect = destination - transform.position;
+            if (Mathf.Abs(vect.x) > Mathf.Abs(vect.y))
             {
-                MoveTo(direction.EAST);
-            } else
-            {
-                MoveTo(direction.WEST);
+                if (vect.x > 0)
+                {
+                    MoveTo(direction.EAST);
+                } else
+                {
+                    MoveTo(direction.WEST);
+                }
             }
-        }
-        else
-        {
-            if (vect.y > 0)
+            else
             {
-                MoveTo(direction.NORTH);
-            } else
-            {
-                MoveTo(direction.SOUTH);
+                if (vect.y > 0)
+                {
+                    MoveTo(direction.NORTH);
+                } else
+                {
+                    MoveTo(direction.SOUTH);
+                }
             }
         }
     }
@@ -167,6 +175,14 @@ public abstract class Creature : MonoBehaviour
             rb2D.MovePosition(rb2D.position + velocity);
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.left);
             return;
+        }
+    }
+
+    protected void getDestinationIfReached()
+    {
+        if (Util.isDestinationReached(transform.position, target))
+        {
+            target = Util.getRandomCoordinateInPlayground();
         }
     }
     #endregion

@@ -9,9 +9,7 @@ public class DayNightCycle : MonoBehaviour
     [SerializeField] private int passed_time_minutes = 0;
     private int clock_minutes = 0;
 
-
     private UI ui;
-
 
 
 
