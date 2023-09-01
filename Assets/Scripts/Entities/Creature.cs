@@ -24,8 +24,9 @@ public abstract class Creature : MonoBehaviour
     [SerializeField] protected Dictionary<int, Vector2Int> spottedMate;
 
     //Movement
-    protected direction direct;
-    protected int speed = 4; //moves per Tick
+    [SerializeField] protected Vector2Int nextSteps = Vector2Int.zero;
+    [SerializeField] protected direction facing;
+    [SerializeField] protected int speed = 4; //moves per Tick
 
     //Needs
     [SerializeField] private float hunger = 100f;
@@ -52,6 +53,11 @@ public abstract class Creature : MonoBehaviour
         spottedMate = new Dictionary<int, Vector2Int>();
 
         initFoodTypes();
+    }
+
+    protected virtual void FixedUpdate()
+    {
+
     }
 
     #region Brain
@@ -118,39 +124,68 @@ public abstract class Creature : MonoBehaviour
      */
     protected void MoveTowards(Vector3 destination)
     {
+        if (nextSteps == Vector2.zero)
+            CalculateNextSteps(destination);
+
         //TODO speed doesnt work yet?
-        for (int i = 0; i < speed; i++)
+        /*for (int i = 0; i < speed; i++)
         {
-            Vector3 vect = destination - transform.position;
-            if (Mathf.Abs(vect.x) > Mathf.Abs(vect.y))
+        }*/
+
+            if (Mathf.Abs(nextSteps.x) > Mathf.Abs(nextSteps.y))
             {
-                if (vect.x > 0)
+                if (nextSteps.x > 0)
                 {
-                    MoveTo(direction.EAST);
+                    StepTo(direction.EAST);
                 } else
                 {
-                    MoveTo(direction.WEST);
+                    StepTo(direction.WEST);
                 }
             }
             else
             {
-                if (vect.y > 0)
+                if (nextSteps.y > 0)
                 {
-                    MoveTo(direction.NORTH);
+                    StepTo(direction.NORTH);
                 } else
                 {
-                    MoveTo(direction.SOUTH);
+                    StepTo(direction.SOUTH);
                 }
             }
+    }
+
+    protected void CalculateNextSteps(Vector3 destination)
+    {
+        Vector2 vect = Util.convertVector3ToVector2(destination - transform.position);
+
+        if (vect.x == 0 || vect.y == 0)
+        {
+            nextSteps = new Vector2Int((int)vect.x, (int)vect.y);
+            return;
+        }
+
+        if (Mathf.Abs(vect.x) >= Mathf.Abs(vect.y))
+        {
+            int x = Util.roundFloatUpPositiveDownNegative(vect.x / Mathf.Abs(vect.y));
+            int y = 1;
+            if (vect.y < 0) y = -1;
+            nextSteps = new Vector2Int(x, y);
+        } else
+        {
+            int y = Util.roundFloatUpPositiveDownNegative(vect.y / Mathf.Abs(vect.x));
+            int x = 1;
+            if (vect.x < 0) x = -1;
+            nextSteps = new Vector2Int(x, y);
         }
     }
 
-    protected void MoveTo(direction dir)
+    protected void StepTo(direction dir)
     {
         Vector2 velocity;
         if (dir == direction.NORTH)
         {
             velocity = Vector2.up;
+            nextSteps -= Vector2Int.up;
             rb2D.MovePosition(rb2D.position + velocity);
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
             return;
@@ -158,6 +193,7 @@ public abstract class Creature : MonoBehaviour
         if (dir == direction.EAST)
         {
             velocity = Vector2.right;
+            nextSteps -= Vector2Int.right;
             rb2D.MovePosition(rb2D.position + velocity);
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.right);
             return;
@@ -165,6 +201,7 @@ public abstract class Creature : MonoBehaviour
         if (dir == direction.SOUTH)
         {
             velocity = Vector2.down;
+            nextSteps -= Vector2Int.down;
             rb2D.MovePosition(rb2D.position + velocity);
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.down);
             return;
@@ -172,6 +209,7 @@ public abstract class Creature : MonoBehaviour
         if (dir == direction.WEST)
         {
             velocity = Vector2.left;
+            nextSteps -= Vector2Int.left;
             rb2D.MovePosition(rb2D.position + velocity);
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.left);
             return;
@@ -183,6 +221,7 @@ public abstract class Creature : MonoBehaviour
         if (Util.isDestinationReached(transform.position, target))
         {
             target = Util.getRandomCoordinateInPlayground();
+            nextSteps = Vector2Int.zero;
         }
     }
     #endregion

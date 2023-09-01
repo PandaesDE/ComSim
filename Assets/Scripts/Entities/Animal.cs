@@ -15,7 +15,7 @@ public class Animal : Creature
         base.Awake();
     }
 
-    protected void FixedUpdate()
+    protected override void FixedUpdate()
     {
         getDestinationIfReached();
         MoveTowards(target);
@@ -23,6 +23,8 @@ public class Animal : Creature
         //needs
         needSubtractor();
         drink();
+
+        base.FixedUpdate();
     }
 
     protected override void initFoodTypes()

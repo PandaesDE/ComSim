@@ -27,7 +27,7 @@ public class Human : Creature
         base.Awake();
     }
 
-    protected void FixedUpdate()
+    protected override void FixedUpdate()
     {
         getDestinationIfReached();
         MoveTowards(target);
@@ -35,6 +35,8 @@ public class Human : Creature
         //needs
         needSubtractor();
         drink();
+
+        base.FixedUpdate();
     }
 
     protected override void initFoodTypes()

@@ -32,6 +32,11 @@ public static class Util
         return new Vector2Int((int)v.x, (int)v.y);
     }
 
+    public static Vector2 convertVector3ToVector2(Vector3 v)
+    {
+        return new Vector2(v.x, v.y);
+    }
+
     public static List<System.Type> getFoodList(foodType ft, System.Type self)
     {
         List<System.Type> herbivore = new()
@@ -64,6 +69,18 @@ public static class Util
 
         Debug.LogError("Something went wrong in Util.geetFoodList");
         return null;
-    
+    }
+
+    public static int roundFloatUpPositiveDownNegative(float val)
+    {
+        if (val < 0)
+        {
+            val -= .5f;
+            return (int)val;
+        } else
+        {
+            val += .5f;
+            return (int)val;
+        }
     }
 }
