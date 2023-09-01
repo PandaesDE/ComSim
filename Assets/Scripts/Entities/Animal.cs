@@ -10,6 +10,7 @@ public class Animal : Creature
     {
         health = 150;
         weight = 130;
+        speed = .2f;
         foodTypes = Util.getFoodList(foodType.CARNIVORE, typeof(Animal));
 
         base.Awake();
@@ -17,8 +18,7 @@ public class Animal : Creature
 
     protected override void FixedUpdate()
     {
-        getDestinationIfReached();
-        MoveTowards(target);
+        MoveToTarget();
 
         //needs
         needSubtractor();

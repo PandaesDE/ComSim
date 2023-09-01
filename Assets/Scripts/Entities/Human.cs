@@ -5,8 +5,6 @@ using UnityEngine;
 public class Human : Creature
 {
 
-    //private float speed = 5f;
-
     //[SerializeField] private int age = 0;
 
     /*
@@ -21,6 +19,7 @@ public class Human : Creature
     {
         health = 100;
         weight = 80;
+        speed = .2f;
         foodTypes = Util.getFoodList(foodType.CARNIVORE, typeof(Human));
 
 
@@ -29,8 +28,7 @@ public class Human : Creature
 
     protected override void FixedUpdate()
     {
-        getDestinationIfReached();
-        MoveTowards(target);
+        MoveToTarget();
 
         //needs
         needSubtractor();

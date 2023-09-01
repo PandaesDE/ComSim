@@ -5,11 +5,10 @@ using UnityEngine.Tilemaps;
 
 public abstract class Creature : MonoBehaviour
 {
-    [SerializeField] protected Vector2 target;
-
     //Attributes defined by Child of this class
-    protected int health;
-    protected int weight;
+    protected int health = 100;
+    protected int weight = 80;
+    protected float speed = .2f;       //moves per Minute
 
     //Physics
     protected Rigidbody2D rb2D;
@@ -24,9 +23,10 @@ public abstract class Creature : MonoBehaviour
     [SerializeField] protected Dictionary<int, Vector2Int> spottedMate;
 
     //Movement
+    [SerializeField] protected Vector2 target;
     [SerializeField] protected Vector2Int nextSteps = Vector2Int.zero;
     [SerializeField] protected direction facing;
-    [SerializeField] protected int speed = 4; //moves per Tick
+    [SerializeField] private float leftOverSpeed = 0;   //in between moves
 
     //Needs
     [SerializeField] private float hunger = 100f;
@@ -122,36 +122,41 @@ public abstract class Creature : MonoBehaviour
     /*  Movement is relative to the fixed update
         - which means that increasing the tickrate, will result in faster movement, but not faster hunger, thirst and day night cycle
      */
-    protected void MoveTowards(Vector3 destination)
+    protected void MoveToTarget()
     {
-        if (nextSteps == Vector2.zero)
-            CalculateNextSteps(destination);
+        float theoreticalSpeed = speed * Gamevariables.MINUTES_PER_TICK + leftOverSpeed;
+        int moves = (int)theoreticalSpeed;
+        leftOverSpeed = theoreticalSpeed - moves;
 
-        //TODO speed doesnt work yet?
-        /*for (int i = 0; i < speed; i++)
+        for (int i = 0; i < moves; i++)
         {
-        }*/
+            if (Util.isDestinationReached(transform.position, target))
+                setNewDestination();
+
+            if (nextSteps == Vector2.zero)
+                CalculateNextSteps(target);
 
             if (Mathf.Abs(nextSteps.x) > Mathf.Abs(nextSteps.y))
-            {
-                if (nextSteps.x > 0)
                 {
-                    StepTo(direction.EAST);
-                } else
-                {
-                    StepTo(direction.WEST);
+                    if (nextSteps.x > 0)
+                    {
+                        StepTo(direction.EAST);
+                    } else
+                    {
+                        StepTo(direction.WEST);
+                    }
                 }
-            }
-            else
-            {
-                if (nextSteps.y > 0)
+                else
                 {
-                    StepTo(direction.NORTH);
-                } else
-                {
-                    StepTo(direction.SOUTH);
+                    if (nextSteps.y > 0)
+                    {
+                        StepTo(direction.NORTH);
+                    } else
+                    {
+                        StepTo(direction.SOUTH);
+                    }
                 }
-            }
+        }
     }
 
     protected void CalculateNextSteps(Vector3 destination)
@@ -181,48 +186,40 @@ public abstract class Creature : MonoBehaviour
 
     protected void StepTo(direction dir)
     {
-        Vector2 velocity;
         if (dir == direction.NORTH)
         {
-            velocity = Vector2.up;
             nextSteps -= Vector2Int.up;
-            rb2D.MovePosition(rb2D.position + velocity);
+            transform.position += Vector3.up;
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
             return;
         }
         if (dir == direction.EAST)
         {
-            velocity = Vector2.right;
             nextSteps -= Vector2Int.right;
-            rb2D.MovePosition(rb2D.position + velocity);
+            transform.position += Vector3.right;
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.right);
             return;
         }
         if (dir == direction.SOUTH)
         {
-            velocity = Vector2.down;
             nextSteps -= Vector2Int.down;
-            rb2D.MovePosition(rb2D.position + velocity);
+            transform.position += Vector3.down;
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.down);
             return;
         }
         if (dir == direction.WEST)
         {
-            velocity = Vector2.left;
             nextSteps -= Vector2Int.left;
-            rb2D.MovePosition(rb2D.position + velocity);
+            transform.position += Vector3.left;
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.left);
             return;
         }
     }
 
-    protected void getDestinationIfReached()
+    protected void setNewDestination()
     {
-        if (Util.isDestinationReached(transform.position, target))
-        {
-            target = Util.getRandomCoordinateInPlayground();
-            nextSteps = Vector2Int.zero;
-        }
+        target = Util.getRandomCoordinateInPlayground();
+        nextSteps = Vector2Int.zero;
     }
     #endregion
 
