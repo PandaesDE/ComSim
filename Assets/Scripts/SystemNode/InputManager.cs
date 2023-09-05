@@ -1,8 +1,5 @@
-using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class InputManager : MonoBehaviour
 {
@@ -22,14 +19,16 @@ public class InputManager : MonoBehaviour
         #region Menu Game Inputs which are accessible during pause
         //Left Click
         if (Input.GetMouseButtonDown(0)) {
-            Vector2 ray = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D[] hits = Physics2D.RaycastAll(ray, Vector2.zero);
-            Array.Sort(hits, (x, y) => x.distance.CompareTo(y.distance));
-
             
+            int allLayers = ~0;
+            int visonLayers = LayerMask.NameToLayer("Vision");
+            int layerMask = allLayers & ~(1 << visonLayers); //Chat-GPT
+
+            Vector2 ray = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D[] hits = Physics2D.RaycastAll(ray, Vector2.zero, Mathf.Infinity, layerMask);
+
             for (int i = 0; i < hits.Length; i++)
             {
-                Debug.Log(hits[i].transform.name);
                 if (hits[i].transform.GetComponent<Creature>() != null)
                 {
                     infoMenu.setTarget(hits[i].transform.GetComponent<Creature>());
