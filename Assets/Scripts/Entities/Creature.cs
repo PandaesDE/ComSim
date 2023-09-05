@@ -6,9 +6,10 @@ using UnityEngine.Tilemaps;
 public abstract class Creature : MonoBehaviour
 {
     //Attributes defined by Child of this class
-    protected int health = 100;
-    protected int weight = 80;
-    protected float speed = .2f;       //moves per Minute
+    public int MAX_HEALTH = 100;
+    public int health = 100;
+    public int weight = 80;
+    public float speed = .2f;       //moves per Minute
 
     //Physics
     protected Rigidbody2D rb2D;
@@ -29,8 +30,10 @@ public abstract class Creature : MonoBehaviour
     [SerializeField] private float leftOverSpeed = 0;   //in between moves
 
     //Needs
-    [SerializeField] private float hunger = 100f;
-    [SerializeField] private float thirst = 100f;
+    public static readonly float MAX_HUNGER = 100f;
+    public static readonly float MAX_THIRST = 100f;
+    [SerializeField] public float hunger = 100f;
+    [SerializeField] public float thirst = 100f;
 
 
     protected enum direction
@@ -115,7 +118,11 @@ public abstract class Creature : MonoBehaviour
 
     protected TileBase GetTile(Vector3Int coord)
     {
-        return tilemap.GetTile(coord);
+        if (tilemap.GetTile(coord) != null)
+            return tilemap.GetTile(coord);
+
+        Debug.LogError("Something went Wrong Creature.GetTile()");
+        return null;
     }
 
     #region Movement
@@ -124,9 +131,9 @@ public abstract class Creature : MonoBehaviour
      */
     protected void MoveToTarget()
     {
-        float theoreticalSpeed = speed * Gamevariables.MINUTES_PER_TICK + leftOverSpeed;
-        int moves = (int)theoreticalSpeed;
-        leftOverSpeed = theoreticalSpeed - moves;
+        float theoreticalMoves = speed * Gamevariables.MINUTES_PER_TICK + leftOverSpeed;
+        int moves = (int)theoreticalMoves;
+        leftOverSpeed = theoreticalMoves - moves;
 
         for (int i = 0; i < moves; i++)
         {
@@ -277,4 +284,22 @@ public abstract class Creature : MonoBehaviour
         GetComponent<Creature>().enabled = false;
         transform.GetChild(0).GetComponent<Senses>().enabled = false;
     }
+
+    #region Getter- & Setter
+    protected void setHealth(int h)
+    {
+        this.MAX_HEALTH = h;
+        this.health = h;
+    }
+    protected void setWeight(int w)
+    {
+        this.weight = w;
+    } 
+
+    protected void setSpeed(float s)
+    {
+        this.speed = s;
+    }
+
+    #endregion
 }

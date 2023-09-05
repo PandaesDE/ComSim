@@ -8,9 +8,9 @@ public class Animal : Creature
 
     protected override void Awake()
     {
-        health = 150;
-        weight = 130;
-        speed = .2f;
+        setHealth(150);
+        setWeight(130);
+        setSpeed(.2f);
         foodTypes = Util.getFoodList(foodType.CARNIVORE, typeof(Animal));
 
         base.Awake();

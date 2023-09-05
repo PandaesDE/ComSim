@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -5,18 +6,38 @@ using UnityEngine.UI;
 
 public class InputManager : MonoBehaviour
 {
-    UI ui;
+    [SerializeField] private UI ui;
+    [SerializeField] private GameObject infoMenuObject;
+    private InfoMenu infoMenu;
+
 
     private void Awake()
     {
-        ui = GetComponent<UI>();
+        infoMenu = infoMenuObject.GetComponent<InfoMenu>();
     }
-
 
     // Update is called once per frame
     void Update()
     {
         #region Menu Game Inputs which are accessible during pause
+        //Left Click
+        if (Input.GetMouseButtonDown(0)) {
+            Vector2 ray = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D[] hits = Physics2D.RaycastAll(ray, Vector2.zero);
+            Array.Sort(hits, (x, y) => x.distance.CompareTo(y.distance));
+
+            
+            for (int i = 0; i < hits.Length; i++)
+            {
+                Debug.Log(hits[i].transform.name);
+                if (hits[i].transform.GetComponent<Creature>() != null)
+                {
+                    infoMenu.setTarget(hits[i].transform.GetComponent<Creature>());
+                    break;
+                }
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.P))
         {
             pauseGame();

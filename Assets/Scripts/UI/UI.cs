@@ -13,8 +13,8 @@ public class UI : MonoBehaviour
     [SerializeField] private TMP_Text display_TicksToTime;
     [SerializeField] private TMP_Text display_TicksPerSecond;
 
-    [SerializeField] private Button btn_PAUSE;
-    [SerializeField] private Button btn_HOME;
+    [SerializeField] private Button btn_Pause;
+    [SerializeField] private Button btn_Home;
 
     [SerializeField] private Slider sdr_TicksPerSecond;
     [SerializeField] private Slider sdr_TicksToTime;
@@ -22,8 +22,8 @@ public class UI : MonoBehaviour
     private void Awake()
     {
         im = GetComponent<InputManager>();
-        btn_PAUSE.onClick.AddListener(im.pauseGame);
-        btn_HOME.onClick.AddListener(im.toMainMenu);
+        btn_Pause.onClick.AddListener(im.pauseGame);
+        btn_Home.onClick.AddListener(im.toMainMenu);
         initializeTicksPerSecondSlider();
         initializeTicksToTimeSlider();
 
@@ -58,7 +58,7 @@ public class UI : MonoBehaviour
 
     public void displayPauseButtonText(string txt)
     {
-        btn_PAUSE.transform.GetChild(0).GetComponent<TMP_Text>().text = txt;
+        btn_Pause.transform.GetChild(0).GetComponent<TMP_Text>().text = txt;
     }
 
 

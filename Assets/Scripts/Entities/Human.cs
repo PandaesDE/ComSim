@@ -17,9 +17,9 @@ public class Human : Creature
 
     protected override void Awake()
     {
-        health = 100;
-        weight = 80;
-        speed = .2f;
+        setHealth(100);
+        setWeight(80);
+        setSpeed(.2f);
         foodTypes = Util.getFoodList(foodType.CARNIVORE, typeof(Human));
 
 
