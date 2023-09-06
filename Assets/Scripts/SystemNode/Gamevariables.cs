@@ -17,7 +17,4 @@ public class Gamevariables
 
     public static int MINUTES_PER_TICK = 1;
 
-
-    //Prefabs
-
 }

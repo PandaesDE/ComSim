@@ -17,9 +17,7 @@ public class Human : Creature
 
     protected override void Awake()
     {
-        setHealth(100);
-        setWeight(80);
-        setSpeed(.2f);
+        initAttributes(100, 80, .2f);
         foodTypes = Util.getFoodList(foodType.CARNIVORE, typeof(Human));
 
 
@@ -28,13 +26,13 @@ public class Human : Creature
 
     protected override void FixedUpdate()
     {
-        MoveToTarget();
-
-        //needs
-        needSubtractor();
-        drink();
-
         base.FixedUpdate();
+        if (awake)
+        {
+            MoveToTarget();
+
+            drink();
+        }
     }
 
     protected override void initFoodTypes()

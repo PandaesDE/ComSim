@@ -5,11 +5,22 @@ using UnityEngine.Tilemaps;
 
 public abstract class Creature : MonoBehaviour
 {
-    //Attributes defined by Child of this class
-    public int MAX_HEALTH = 100;
-    public int health = 100;
-    public int weight = 80;
-    public float speed = .2f;       //moves per Minute
+    //Constants
+    public static readonly int MAX_ENERGY = 100;
+    public static readonly float MAX_HUNGER = 100f;
+    public static readonly float MAX_THIRST = 100f;
+
+    //Attributes
+    public int MAX_HEALTH;
+
+    public float energy = 100;
+    public int health;
+    public int weight;
+    public float speed;       //moves per Minute
+
+
+    //States
+    protected bool awake = true;
 
     //Physics
     protected Rigidbody2D rb2D;
@@ -30,8 +41,6 @@ public abstract class Creature : MonoBehaviour
     [SerializeField] private float leftOverSpeed = 0;   //in between moves
 
     //Needs
-    public static readonly float MAX_HUNGER = 100f;
-    public static readonly float MAX_THIRST = 100f;
     [SerializeField] public float hunger = 100f;
     [SerializeField] public float thirst = 100f;
 
@@ -43,6 +52,8 @@ public abstract class Creature : MonoBehaviour
         SOUTH,
         WEST
     }
+
+
 
     protected virtual void Awake()
     {
@@ -60,7 +71,18 @@ public abstract class Creature : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
+        needAdder();
+        needSubtractor();
+    }
 
+    /*  This Method needs to be called by every descenant of this Class!
+     */
+    protected void initAttributes(int health, int weight, float speed)
+    {
+        this.MAX_HEALTH = health;
+        this.health = health;
+        this.weight = weight;
+        this.speed = speed;
     }
 
     #region Brain
@@ -231,11 +253,33 @@ public abstract class Creature : MonoBehaviour
     #endregion
 
     #region needSatisfier
-    protected void drink()
+    protected void needAdder()
     {
+        if (!awake)
+        {
+            rest();
+        }
+    }
+
+    /*
+     * addPerHour Default = 100% Energy after 8h
+     */
+    protected void rest(float addPerHour = 12.5f)
+    {
+        float add = addPerHour * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
+        energy = Mathf.Clamp(energy + add, 0, MAX_ENERGY);
+        if (energy >= MAX_ENERGY)
+        {
+            awake = true;
+        }
+    }
+    
+    protected void drink(float addPerMinute = 20f)
+    {
+        float add = addPerMinute * (float)Gamevariables.MINUTES_PER_HOUR * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
         if (tbm.isWater(GetTile(transform.position)))
         {
-            thirst = Mathf.Clamp(thirst + 1, 0, 100);
+            thirst = Mathf.Clamp(thirst + add, 0, MAX_THIRST);
         }
     }
     #endregion
@@ -244,6 +288,10 @@ public abstract class Creature : MonoBehaviour
     {
         hungerSubtractor();
         thirstSubtractor();
+        if (awake)
+        {
+            energySubtractor();
+        }
     }
 
 
@@ -257,12 +305,21 @@ public abstract class Creature : MonoBehaviour
     }
 
     /*
-     * subPerMinute Default = 3 days without water
+     * subPerHour Default = 3 days without water
      */
     protected void thirstSubtractor(float subPerHour = 1.38f)
     {
         thirst -= subPerHour * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
         if (thirst <= 0) death();
+    }
+
+    /*
+     * subPerHour Default = 1 day without sleep
+     */
+    protected void energySubtractor(float subPerHour = 4.17f)
+    {
+        energy -= subPerHour * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
+        if (energy <= 0) awake = false;
     }
     #endregion
 
@@ -285,21 +342,4 @@ public abstract class Creature : MonoBehaviour
         transform.GetChild(0).GetComponent<Senses>().enabled = false;
     }
 
-    #region Getter- & Setter
-    protected void setHealth(int h)
-    {
-        this.MAX_HEALTH = h;
-        this.health = h;
-    }
-    protected void setWeight(int w)
-    {
-        this.weight = w;
-    } 
-
-    protected void setSpeed(float s)
-    {
-        this.speed = s;
-    }
-
-    #endregion
 }

@@ -8,9 +8,7 @@ public class Animal : Creature
 
     protected override void Awake()
     {
-        setHealth(150);
-        setWeight(130);
-        setSpeed(.2f);
+        initAttributes(150, 130, .2f);
         foodTypes = Util.getFoodList(foodType.CARNIVORE, typeof(Animal));
 
         base.Awake();
@@ -18,13 +16,13 @@ public class Animal : Creature
 
     protected override void FixedUpdate()
     {
-        MoveToTarget();
-
-        //needs
-        needSubtractor();
-        drink();
-
         base.FixedUpdate();
+        if (awake)
+        {
+            MoveToTarget();
+
+            drink();
+        }
     }
 
     protected override void initFoodTypes()

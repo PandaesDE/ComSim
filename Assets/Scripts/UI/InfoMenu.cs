@@ -16,6 +16,7 @@ public class InfoMenu : MonoBehaviour
     [SerializeField] private Slider sdr_Health;
     [SerializeField] private Slider sdr_Hunger;
     [SerializeField] private Slider sdr_Thirst;
+    [SerializeField] private Slider sdr_Energy;
 
     [SerializeField] private Button btn_close;
 
@@ -50,6 +51,7 @@ public class InfoMenu : MonoBehaviour
         updateHealthBar();
         updateHungerBar();
         updateThirstBar();
+        updateEnergyBar();
     }
 
     private void updateImage()
@@ -69,6 +71,11 @@ public class InfoMenu : MonoBehaviour
     private void updateThirstBar()
     {
         sdr_Thirst.value = target.thirst / Creature.MAX_THIRST;
+    }
+
+    private void updateEnergyBar()
+    {
+        sdr_Energy.value = target.energy / Creature.MAX_ENERGY;
     }
 
     private void setActive(bool state) 

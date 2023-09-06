@@ -51,10 +51,11 @@ public class DayNightCycle : MonoBehaviour
     {
         clock_minutes = passed_time_minutes % (Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR);
 
-        int DARK_morningMinutes = 6 * Gamevariables.MINUTES_PER_HOUR;
-        int UPRISE_morningMinutes = 4 * Gamevariables.MINUTES_PER_HOUR;
-        int BRIGHT_dayMinutes = 10 * Gamevariables.MINUTES_PER_HOUR;
-        int DOWNFALL_eveningMinutes = 2 * Gamevariables.MINUTES_PER_HOUR; 
+        
+        int DARK_morningMinutes =       6  * Gamevariables.MINUTES_PER_HOUR;
+        int UPRISE_morningMinutes =     2  * Gamevariables.MINUTES_PER_HOUR;
+        int BRIGHT_dayMinutes =         12 * Gamevariables.MINUTES_PER_HOUR;
+        int DOWNFALL_eveningMinutes =   2  * Gamevariables.MINUTES_PER_HOUR; 
 
 
         if (clock_minutes <= DARK_morningMinutes)
