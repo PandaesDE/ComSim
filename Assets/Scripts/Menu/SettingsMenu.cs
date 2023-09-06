@@ -9,6 +9,7 @@ public class SettingsMenu : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] private Button btn_Home;
+
     [SerializeField] private TMP_InputField ipt_Seed;
     [SerializeField] private TMP_InputField ipt_Humans;
     [SerializeField] private TMP_InputField ipt_Animals;

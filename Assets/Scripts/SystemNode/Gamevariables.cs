@@ -3,7 +3,7 @@ using UnityEngine;
 public class Gamevariables
 {
     //init Settings
-    public static readonly Vector2 playgroundSize = new Vector2(100f, 100f);
+    public static readonly Vector2Int playgroundSize = new Vector2Int(362, 200);
     public static readonly float TICKRATE = .5f;
 
     public static string SEED = "";

@@ -10,6 +10,9 @@ public class InfoMenu : MonoBehaviour
 
     [SerializeField] private TMP_Text display_Name;
 
+    [SerializeField] private GameObject image_Object;
+    private Image image;
+
     [SerializeField] private Slider sdr_Health;
     [SerializeField] private Slider sdr_Hunger;
     [SerializeField] private Slider sdr_Thirst;
@@ -18,6 +21,7 @@ public class InfoMenu : MonoBehaviour
 
     private void Awake()
     {
+        image = image_Object.GetComponent<Image>();
         btn_close.onClick.AddListener(delegate { setActive(false); });
     }
 
@@ -42,24 +46,29 @@ public class InfoMenu : MonoBehaviour
         }
 
         display_Name.text = target.name;
-        updateHealthBar(target.health);
-        updateHungerBar(target.hunger);
-        updateThirstBar(target.thirst);
+        updateImage();
+        updateHealthBar();
+        updateHungerBar();
+        updateThirstBar();
     }
 
-    private void updateHealthBar(int h)
+    private void updateImage()
     {
-        sdr_Health.value = (float)h / (float)target.MAX_HEALTH;
+        image.sprite = target.GetComponent<SpriteRenderer>().sprite;
+    }
+    private void updateHealthBar()
+    {
+        sdr_Health.value = (float)target.health / (float)target.MAX_HEALTH;
     }
 
-    private void updateHungerBar(float h)
+    private void updateHungerBar()
     {
-        sdr_Hunger.value = h / Creature.MAX_HUNGER;
+        sdr_Hunger.value = target.hunger / Creature.MAX_HUNGER;
     }
 
-    private void updateThirstBar(float t)
+    private void updateThirstBar()
     {
-        sdr_Thirst.value = t / Creature.MAX_THIRST;
+        sdr_Thirst.value = target.thirst / Creature.MAX_THIRST;
     }
 
     private void setActive(bool state) 
