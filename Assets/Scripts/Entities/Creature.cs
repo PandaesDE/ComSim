@@ -14,7 +14,7 @@ public abstract class Creature : MonoBehaviour
     public int MAX_HEALTH;
 
     public float energy = 100;
-    public int health;
+    public float health;
     public int weight;
     public float speed;       //moves per Minute
 
@@ -80,7 +80,7 @@ public abstract class Creature : MonoBehaviour
     protected void initAttributes(int health, int weight, float speed)
     {
         this.MAX_HEALTH = health;
-        this.health = health;
+        this.health = health/2; //DEBUG
         this.weight = weight;
         this.speed = speed;
     }
@@ -255,10 +255,17 @@ public abstract class Creature : MonoBehaviour
     #region needSatisfier
     protected void needAdder()
     {
+        regenerate();
         if (!awake)
         {
             rest();
         }
+    }
+
+    protected void regenerate(float addPercentPerHour = .01f)
+    {
+        float add = addPercentPerHour * health * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
+        health = Mathf.Clamp(health + add, 0, MAX_HEALTH);
     }
 
     /*

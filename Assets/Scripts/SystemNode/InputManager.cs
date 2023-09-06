@@ -49,8 +49,7 @@ public class InputManager : MonoBehaviour
             int zoom_MAX = 100;
             int zoom_MIN = 10;
 
-            zoom = Mathf.Clamp(zoom, zoom_MIN, zoom_MAX);
-            Camera.main.orthographicSize = zoom;
+            Camera.main.orthographicSize = Mathf.Clamp(zoom, zoom_MIN, zoom_MAX);
             //IDEA: zoom to where mouse is
             //Camera.main.transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, -10); //wonky
         }
