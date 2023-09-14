@@ -80,7 +80,7 @@ public abstract class Creature : MonoBehaviour
     protected void initAttributes(int health, int weight, float speed)
     {
         this.MAX_HEALTH = health;
-        this.health = health/2; //DEBUG
+        this.health = health;
         this.weight = weight;
         this.speed = speed;
     }
@@ -159,6 +159,11 @@ public abstract class Creature : MonoBehaviour
 
         for (int i = 0; i < moves; i++)
         {
+            //chance to not make a move based on health
+            if (Random.Range(0f, 1f) > health / MAX_HEALTH)
+                continue;
+
+            //calculate new destination if reached in between ticks
             if (Util.isDestinationReached(transform.position, target))
                 setNewDestination();
 
@@ -252,7 +257,7 @@ public abstract class Creature : MonoBehaviour
     }
     #endregion
 
-    #region needSatisfier
+    #region Needs
     protected void needAdder()
     {
         regenerate();
@@ -261,36 +266,6 @@ public abstract class Creature : MonoBehaviour
             rest();
         }
     }
-
-    protected void regenerate(float addPercentPerHour = .01f)
-    {
-        float add = addPercentPerHour * health * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
-        health = Mathf.Clamp(health + add, 0, MAX_HEALTH);
-    }
-
-    /*
-     * addPerHour Default = 100% Energy after 8h
-     */
-    protected void rest(float addPerHour = 12.5f)
-    {
-        float add = addPerHour * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
-        energy = Mathf.Clamp(energy + add, 0, MAX_ENERGY);
-        if (energy >= MAX_ENERGY)
-        {
-            awake = true;
-        }
-    }
-    
-    protected void drink(float addPerMinute = 20f)
-    {
-        float add = addPerMinute * (float)Gamevariables.MINUTES_PER_HOUR * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
-        if (tbm.isWater(GetTile(transform.position)))
-        {
-            thirst = Mathf.Clamp(thirst + add, 0, MAX_THIRST);
-        }
-    }
-    #endregion
-    #region needSubtractor
     protected void needSubtractor()
     {
         hungerSubtractor();
@@ -301,7 +276,22 @@ public abstract class Creature : MonoBehaviour
         }
     }
 
-
+    #region Health
+    protected void takeDamage()
+    {
+        health -= 20;
+        if (health <= 0)
+        {
+            death();
+        }
+    }
+    protected void regenerate(float addPercentPerHour = .01f)
+    {
+        float add = addPercentPerHour * health * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
+        health = Mathf.Clamp(health + add, 0, MAX_HEALTH);
+    }
+    #endregion
+    #region Hunger
     /*
      * subPerHour Default = 7 days without food
      */
@@ -309,6 +299,16 @@ public abstract class Creature : MonoBehaviour
     {
         hunger -= subPerHour * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
         if (hunger <= 0) death();
+    }
+    #endregion
+    #region Thirst
+    protected void drink(float addPerMinute = 20f)
+    {
+        float add = addPerMinute * (float)Gamevariables.MINUTES_PER_HOUR * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
+        if (tbm.isWater(GetTile(transform.position)))
+        {
+            thirst = Mathf.Clamp(thirst + add, 0, MAX_THIRST);
+        }
     }
 
     /*
@@ -319,25 +319,43 @@ public abstract class Creature : MonoBehaviour
         thirst -= subPerHour * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
         if (thirst <= 0) death();
     }
+    #endregion
+    #region Energy
+    /*
+     * addPerHour Default = 100% Energy after 8h (without lightfactor)
+     * lightScaler -> Scales how much the Light affects the rest
+     */
+    protected void rest(float addPerHour = 12.5f, float lightScaler = 1f)
+    {
+        addPerHour /= (1f + lightScaler);
+        float addPerTick = addPerHour * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
+        float lightfactor = lightScaler * addPerTick * (1f - Gamevariables.LIGHT_INTENSITY);
+
+        energy = Mathf.Clamp(energy + addPerTick + lightfactor, 0, MAX_ENERGY);
+        if (energy >= MAX_ENERGY)
+        {
+            awake = true;
+        }
+    }
 
     /*
-     * subPerHour Default = 1 day without sleep
+     * subPerHour Default = 1 day without sleep (without lightfactor)
+     * lightScaler -> Scales how much the Light affects the exhaution
      */
-    protected void energySubtractor(float subPerHour = 4.17f)
+    protected void energySubtractor(float subPerHour = 4.17f, float lightScaler = .25f)
     {
-        energy -= subPerHour * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
+        subPerHour /= (1f + lightScaler);
+        float subPerTick = subPerHour * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
+        float lightfactor = lightScaler * subPerTick * Gamevariables.LIGHT_INTENSITY;
+
+        energy = Mathf.Clamp(energy - subPerTick - lightfactor, 0, MAX_ENERGY);
         if (energy <= 0) awake = false;
     }
     #endregion
 
-    protected void takeDamage()
-    {
-        health -= 20;
-        if (health <= 0)
-        {
-            death();
-        }
-    }
+    #endregion
+
+
 
     protected void death()
     {

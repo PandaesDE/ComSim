@@ -17,4 +17,8 @@ public class Gamevariables
 
     public static int MINUTES_PER_TICK = 1;
 
+    //Light
+    /* between 0 - 1*/
+    public static float LIGHT_INTENSITY = 1f;
+
 }

@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class DayNightCycle : MonoBehaviour
 {
+    private static readonly float MAX_LIGHT_INTENSITY = 1f;
+    private static readonly float MIN_LIGHT_INTENSITY = .1f;
     [SerializeField] private new Light2D light;
     [SerializeField] private int passed_time_minutes = 0;
     private int clock_minutes = 0;
@@ -22,7 +24,8 @@ public class DayNightCycle : MonoBehaviour
     private void FixedUpdate()
     {
         passed_time_minutes += Gamevariables.MINUTES_PER_TICK;
-        light.intensity = Mathf.Clamp(calculateLightIntensity(), .1f, 1f);
+        Gamevariables.LIGHT_INTENSITY = Mathf.Clamp(calculateLightIntensity(), MIN_LIGHT_INTENSITY, MAX_LIGHT_INTENSITY);
+        light.intensity = Gamevariables.LIGHT_INTENSITY;
 
         displayUI();
     }
