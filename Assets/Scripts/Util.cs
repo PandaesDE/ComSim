@@ -12,6 +12,20 @@ public static class Util
         return gender.FEMALE;
     }
 
+    public static Vector2 getRandomCoordinateInPlayground()
+    {
+        int halfW = Gamevariables.playgroundSize.x / 2;
+        int halfH = Gamevariables.playgroundSize.y / 2;
+        return new Vector2(Random.Range(-halfW, halfW), Random.Range(-halfH, halfH));
+    }
+
+    public static animalType getRandomAnimalType()
+    {
+        System.Array vals = System.Enum.GetValues(typeof(animalType));
+        int i = UnityEngine.Random.Range(0, vals.Length);
+        return (animalType)vals.GetValue(i);
+    }
+
     public static bool isDestinationReached(Vector2 position, Vector2 destination, int errorVal = 1)
     {
         return
@@ -19,12 +33,6 @@ public static class Util
             position.x < destination.x + errorVal &&
             position.y > destination.y - errorVal &&
             position.y < destination.y + errorVal;
-    }
-    public static Vector2 getRandomCoordinateInPlayground()
-    {
-        int halfW = Gamevariables.playgroundSize.x/2;
-        int halfH = Gamevariables.playgroundSize.y/2;
-        return new Vector2(Random.Range(-halfW, halfW), Random.Range(-halfH, halfH));
     }
 
     public static Vector2Int convertVector3ToVector2Int(Vector3 v)
@@ -47,7 +55,7 @@ public static class Util
         List<System.Type> carnivore = new()
         {
             typeof(Human),
-            typeof(Animal)
+            typeof(Boar)
         };
 
         List<System.Type> omnivore = new();

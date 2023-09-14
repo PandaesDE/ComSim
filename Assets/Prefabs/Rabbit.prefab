@@ -9,13 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8802855880057005263}
-  - component: {fileID: 8087947731247183123}
+  - component: {fileID: 5200913792112763049}
   - component: {fileID: -4168788857041515830}
   - component: {fileID: 8483804280055891860}
   - component: {fileID: -968116199679311896}
   - component: {fileID: 6296782813691646905}
   m_Layer: 6
-  m_Name: Animal
+  m_Name: Rabbit
   m_TagString: Animal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37,7 +37,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8087947731247183123
+--- !u!114 &5200913792112763049
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -46,13 +46,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 346594161483134204}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2969f40af8b033245a4e241a1a88f00e, type: 3}
+  m_Script: {fileID: 11500000, guid: 7a6b77f7335f0a64d873550cff4886fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MAX_HEALTH: 100
-  health: 100
-  weight: 80
-  speed: 0.2
+  MAX_HEALTH: 0
+  energy: 100
+  health: 0
+  weight: 0
+  speed: 0
   target: {x: 0, y: 0}
   nextSteps: {x: 0, y: 0}
   facing: 0
@@ -113,7 +114,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8b9f583c5f571e948b57ab6865ff0b43, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

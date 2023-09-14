@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Animal : Creature
+public class Boar : Creature
 {
     [SerializeField] List<System.Type> foodTypes;
 
     protected override void Awake()
     {
         initAttributes(150, 130, .2f);
-        foodTypes = Util.getFoodList(foodType.CARNIVORE, typeof(Animal));
+        foodTypes = Util.getFoodList(foodType.CARNIVORE, typeof(Lion));
 
         base.Awake();
     }

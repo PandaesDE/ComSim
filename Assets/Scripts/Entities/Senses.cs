@@ -71,8 +71,8 @@ public class Senses : MonoBehaviour
             return typeof(Human);
             
 
-        if (g.GetComponent<Animal>() != null)
-            return typeof(Animal);
+        if (g.GetComponent<Boar>() != null)
+            return typeof(Boar);
 
         return null;
     }

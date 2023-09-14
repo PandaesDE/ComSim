@@ -11,6 +11,13 @@ public enum foodType
     HERBIVORE
 }
 
+public enum animalType
+{
+    LION,
+    BOAR,
+    RABBIT
+}
+
 public static class tags
 {
     public static readonly string ANIMAL = "Animal";

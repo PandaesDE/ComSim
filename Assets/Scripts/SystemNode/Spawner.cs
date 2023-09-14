@@ -6,7 +6,9 @@ public class Spawner : MonoBehaviour
 {
     [SerializeField] public GameObject PREFAB_Human_Male;
     [SerializeField] public GameObject PREFAB_Human_Female;
-    [SerializeField] public GameObject PREFAB_Animal;
+    [SerializeField] public GameObject PREFAB_Boar;
+    [SerializeField] public GameObject PREFAB_Rabbit;
+    [SerializeField] public GameObject PREFAB_Lion;
 
     private void Awake()
     {
@@ -24,7 +26,7 @@ public class Spawner : MonoBehaviour
     {
         int a = 20;
         Human hum = spawnHuman(new Vector2(a, 0));
-        Animal ani = spawnAnimal(new Vector2(-a, 0));
+        Boar ani = spawnAnimal(animalType.BOAR,new Vector2(-a, 0));
         hum.setTarget(new Vector2(-a, 0));
         ani.setTarget(new Vector2(a, 0));
     }
@@ -36,20 +38,27 @@ public class Spawner : MonoBehaviour
     {
         for (int i = 0; i < amount; i++)
         {
-            spawnAnimal(Util.getRandomCoordinateInPlayground());
+            spawnAnimal(Util.getRandomAnimalType(), Util.getRandomCoordinateInPlayground());
         }
     }
 
-    public Animal spawnAnimal(Vector2 c)
+    public Boar spawnAnimal(animalType a, Vector2 c)
     {
-        return spawnAnimal((int)c.x, (int)c.y);
+        return spawnAnimal(a, (int)c.x, (int)c.y);
     }
 
-    public Animal spawnAnimal(int posX, int posY)
+    public Boar spawnAnimal(animalType a, int posX, int posY)
     {
-        GameObject spawn = null;
-        spawn = Instantiate(PREFAB_Animal, new Vector2((float)posX+.5f, (float)posY+.5f), Quaternion.identity);
-        return spawn.GetComponent<Animal>();
+        GameObject spawn = Instantiate(getCorrespondingPrefab(a), new Vector2((float)posX+.5f, (float)posY+.5f), Quaternion.identity);
+        return spawn.GetComponent<Boar>();
+    }
+
+    private GameObject getCorrespondingPrefab(animalType a)
+    {
+        if (a.Equals(animalType.BOAR)) return PREFAB_Boar;
+        if (a.Equals(animalType.LION)) return PREFAB_Lion;
+        if (a.Equals(animalType.RABBIT)) return PREFAB_Rabbit;
+        return null;
     }
     #endregion
 
