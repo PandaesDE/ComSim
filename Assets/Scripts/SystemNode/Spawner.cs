@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] public GameObject PREFAB_Human_Male;
-    [SerializeField] public GameObject PREFAB_Human_Female;
+    [SerializeField] public GameObject PREFAB_Human;
     [SerializeField] public GameObject PREFAB_Boar;
     [SerializeField] public GameObject PREFAB_Rabbit;
     [SerializeField] public GameObject PREFAB_Lion;
@@ -39,6 +38,30 @@ public class Spawner : MonoBehaviour
         for (int i = 0; i < amount; i++)
         {
             spawnAnimal(Util.getRandomAnimalType(), Util.getRandomCoordinateInPlayground());
+        }
+    }
+
+    public void spawnBoars(int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            spawnAnimal(animalType.BOAR, Util.getRandomCoordinateInPlayground());
+        }
+    }
+
+    public void spawnRabbits(int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            spawnAnimal(animalType.RABBIT, Util.getRandomCoordinateInPlayground());
+        }
+    }
+
+    public void spawnLions(int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            spawnAnimal(animalType.LION, Util.getRandomCoordinateInPlayground());
         }
     }
 
@@ -79,17 +102,8 @@ public class Spawner : MonoBehaviour
 
     public Human spawnHuman(int posX, int posY, gender g)
     {
-        GameObject spawn = null;
-        if (g == gender.MALE)
-        {
-            spawn = Instantiate(PREFAB_Human_Male, new Vector2((float)posX+.5f, (float)posY + .5f), Quaternion.identity);
-        } else 
-        {
-            spawn = Instantiate(PREFAB_Human_Female, new Vector2((float)posX + .5f, (float)posY + .5f), Quaternion.identity);
-        }
+        GameObject spawn = Instantiate(PREFAB_Human, new Vector2((float)posX + .5f, (float)posY + .5f), Quaternion.identity);
         return spawn.GetComponent<Human>();
-
-
     }
     #endregion
 

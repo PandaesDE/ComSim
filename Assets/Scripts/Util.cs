@@ -55,7 +55,9 @@ public static class Util
         List<System.Type> carnivore = new()
         {
             typeof(Human),
-            typeof(Boar)
+            typeof(Boar),
+            typeof(Lion),
+            typeof(Rabbit)
         };
 
         List<System.Type> omnivore = new();

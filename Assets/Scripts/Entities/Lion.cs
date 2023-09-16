@@ -8,7 +8,11 @@ public class Lion : Creature
 
     protected override void Awake()
     {
-        initAttributes(150, 130, .2f);
+        gender gender = Util.getRandomGender();
+        int health = 150;
+        int weight = 130;
+        float speed = .2f;
+        initAttributes(gender, health, weight, speed);
         foodTypes = Util.getFoodList(foodType.CARNIVORE, typeof(Lion));
 
         base.Awake();

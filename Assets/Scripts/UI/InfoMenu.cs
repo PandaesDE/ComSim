@@ -20,6 +20,11 @@ public class InfoMenu : MonoBehaviour
 
     [SerializeField] private Button btn_close;
 
+    /*
+     * Ideas:
+     * - Follow Button (with cam)
+     */
+
     private void Awake()
     {
         image = image_Object.GetComponent<Image>();

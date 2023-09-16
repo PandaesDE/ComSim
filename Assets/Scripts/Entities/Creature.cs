@@ -17,6 +17,7 @@ public abstract class Creature : MonoBehaviour
     public float health;
     public int weight;
     public float speed;       //moves per Minute
+    [SerializeField] public gender gender;
 
 
     //States
@@ -77,12 +78,14 @@ public abstract class Creature : MonoBehaviour
 
     /*  This Method needs to be called by every descenant of this Class!
      */
-    protected void initAttributes(int health, int weight, float speed)
+    protected void initAttributes(gender gender, int health, int weight, float speed)
     {
+        this.gender = gender;
         this.MAX_HEALTH = health;
         this.health = health;
         this.weight = weight;
         this.speed = speed;
+
     }
 
     #region Brain
