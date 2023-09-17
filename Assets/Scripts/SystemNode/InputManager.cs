@@ -6,11 +6,13 @@ public class InputManager : MonoBehaviour
     [SerializeField] private UI ui;
     [SerializeField] private GameObject infoMenuObject;
     private InfoMenu infoMenu;
+    private CameraManager cameraManager;
 
 
     private void Awake()
     {
         infoMenu = infoMenuObject.GetComponent<InfoMenu>();
+        cameraManager = GetComponent<CameraManager>();
     }
 
     // Update is called once per frame
@@ -37,6 +39,20 @@ public class InputManager : MonoBehaviour
             }
         }
 
+        //Middle Click Hold
+        if (Input.GetMouseButton(2))
+        {
+            //https://discussions.unity.com/t/how-to-detect-mouse-movement-as-an-input/22062/4
+            if (Input.GetAxis("Mouse X") != 0)
+            {
+                cameraManager.moveBy(new Vector2(Input.GetAxis("Mouse X"), 0));
+            }
+            if (Input.GetAxis("Mouse Y") != 0)
+            {
+                cameraManager.moveBy(new Vector2(0, Input.GetAxis("Mouse Y")));
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.P))
         {
             pauseGame();
@@ -44,14 +60,7 @@ public class InputManager : MonoBehaviour
         //on scroll
         if (Input.mouseScrollDelta.y != 0)
         {
-            //zoom
-            float zoom = Camera.main.orthographicSize - Input.mouseScrollDelta.y;
-            int zoom_MAX = 100;
-            int zoom_MIN = 10;
-
-            Camera.main.orthographicSize = Mathf.Clamp(zoom, zoom_MIN, zoom_MAX);
-            //IDEA: zoom to where mouse is
-            //Camera.main.transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, -10); //wonky
+            cameraManager.zoom();
         }
         #endregion
         #region In Game Inputs which are unavailable during pause

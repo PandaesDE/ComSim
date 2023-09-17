@@ -1024,7 +1024,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.32
-  far clip plane: 1000
+  far clip plane: 100
   field of view: 57.2
   orthographic: 1
   orthographic size: 100
@@ -1627,6 +1627,7 @@ GameObject:
   - component: {fileID: 747089661}
   - component: {fileID: 747089663}
   - component: {fileID: 747089664}
+  - component: {fileID: 747089665}
   m_Layer: 0
   m_Name: SystemNode
   m_TagString: Untagged
@@ -1725,6 +1726,18 @@ MonoBehaviour:
   btn_Home: {fileID: 925463632}
   sdr_TicksPerSecond: {fileID: 1595497643}
   sdr_TicksToTime: {fileID: 592486142}
+--- !u!114 &747089665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747089654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5993194d18081f5449eae54fccc08ea9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &755566124
 GameObject:
   m_ObjectHideFlags: 0
