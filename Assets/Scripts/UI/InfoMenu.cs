@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class InfoMenu : MonoBehaviour
 {
     private Creature target;
+    private CameraManager cameraManager;
 
     [SerializeField] private TMP_Text display_Name;
 
@@ -20,6 +21,9 @@ public class InfoMenu : MonoBehaviour
 
     [SerializeField] private Button btn_close;
 
+    [SerializeField] private Toggle tgl_Follow;
+
+
     /*
      * Ideas:
      * - Follow Button (with cam)
@@ -27,8 +31,11 @@ public class InfoMenu : MonoBehaviour
 
     private void Awake()
     {
+        cameraManager = GameObject.Find("SystemNode").GetComponent<CameraManager>();
+
         image = image_Object.GetComponent<Image>();
         btn_close.onClick.AddListener(delegate { setActive(false); });
+        tgl_Follow.onValueChanged.AddListener(delegate { followTarget(tgl_Follow.isOn); });
     }
 
     private void FixedUpdate()
@@ -39,14 +46,26 @@ public class InfoMenu : MonoBehaviour
     public void setTarget(Creature t)
     {
         this.target = t;
+        followTarget(tgl_Follow.isOn);
         setActive(true);
         updateInfo();
+    }
+
+    private void followTarget(bool follow)
+    {
+        if (target == null)
+        {
+            cameraManager.followTarget(follow, null);
+            return;
+        }
+        cameraManager.followTarget(follow, target.gameObject);
     }
 
     private void updateInfo()
     {
         if (target == null)
         {
+            resetInputs();
             setActive(false);
             return;
         }
@@ -57,6 +76,10 @@ public class InfoMenu : MonoBehaviour
         updateHungerBar();
         updateThirstBar();
         updateEnergyBar();
+    }
+    private void resetInputs()
+    {
+        tgl_Follow.isOn = false;
     }
 
     private void updateImage()

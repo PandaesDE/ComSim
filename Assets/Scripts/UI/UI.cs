@@ -19,6 +19,7 @@ public class UI : MonoBehaviour
     [SerializeField] private Slider sdr_TicksPerSecond;
     [SerializeField] private Slider sdr_TicksToTime;
 
+
     private void Awake()
     {
         im = GetComponent<InputManager>();
