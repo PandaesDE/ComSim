@@ -21,6 +21,8 @@ public class MapGenerator : MonoBehaviour
 
     private float[,] map;
 
+
+
     // The origin of the sampled area in the plane.
     [SerializeField] private float xOrg;
     [SerializeField] private float yOrg;
@@ -47,18 +49,19 @@ public class MapGenerator : MonoBehaviour
 
         tbm = GetComponent<TileBaseManager>();
         map = new float[CELLS_HORIZONTAL, CELLS_VERTICAL];
+
     }
 
     void Start()
     {
         convertSeed();
-        RenderMap();
-    }   
+        RenderTileMap();
+    }
 
 
     #region Tilemap approach
     //https://blog.unity.com/engine-platform/procedural-patterns-you-can-use-with-tilemaps-part-1
-    private void RenderMap()
+    private void RenderTileMap()
     {
         //Clear the map (ensures we dont overlap)
         tilemap.ClearAllTiles();
@@ -109,8 +112,4 @@ public class MapGenerator : MonoBehaviour
 
         return Mathf.Clamp(total / maxValue, 0, 1);
     }
-
-
-
-   
 }
