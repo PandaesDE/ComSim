@@ -12,26 +12,22 @@ using UnityEngine.Tilemaps;
 public class MapGenerator : MonoBehaviour
 {
     // Width and height of the texture in pixels.
-    [SerializeField] private int CELLS_HORIZONTAL;
-    [SerializeField] private int CELLS_VERTICAL;
+    private int CELLS_HORIZONTAL;
+    private int CELLS_VERTICAL;
 
     //Tilemap
-    [SerializeField] public Tilemap tilemap;
-    [SerializeField] public TileBaseManager tbm;
-
-    private float[,] map;
-
+    public Tilemap tilemap;
+    public TileBaseManager tbm;
 
 
     // The origin of the sampled area in the plane.
-    [SerializeField] private float xOrg;
-    [SerializeField] private float yOrg;
-    [SerializeField] private float zoom;
+    private float xOrg;
+    private float yOrg;
+    private float zoom;
 
-    [SerializeField] private int octaves;
-    [SerializeField] private float persistence;
-    [SerializeField] private float frequency;
-    [SerializeField] private float amplitude;
+    private PerlinSettingsObject pso_ground;
+    private PerlinSettingsObject pso_bush;
+
 
     // The number of cycles of the basic noise pattern that are repeated
     // over the width and height of the texture.
@@ -41,14 +37,13 @@ public class MapGenerator : MonoBehaviour
     {
         CELLS_HORIZONTAL = Gamevariables.playgroundSize.x;
         CELLS_VERTICAL = Gamevariables.playgroundSize.y;
-        zoom = 100; 
-        persistence = -.5f;
-        frequency = .6f;
-        octaves = 8;
-        amplitude = 1;
+        zoom = 100;
+
+        pso_ground = new PerlinSettingsObject(-.5f, .6f, 8, 1);
+        pso_bush = new PerlinSettingsObject(.5f, 3f, 3, 1);
+
 
         tbm = GetComponent<TileBaseManager>();
-        map = new float[CELLS_HORIZONTAL, CELLS_VERTICAL];
 
     }
 
@@ -73,11 +68,11 @@ public class MapGenerator : MonoBehaviour
             {
                 float xCoord = xOrg + (float)x / zoom;
                 float yCoord = yOrg + (float)y / zoom;
-                float sample = OctavePerlin(xCoord, yCoord);
 
-                tilemap.SetTile(new Vector3Int(x - CELLS_HORIZONTAL/2, y - CELLS_VERTICAL / 2, 0), tbm.getTileBase(sample));
-                
-                map[x, y] = sample;
+                tbm.sample_ground = OctavePerlin(xCoord, yCoord, pso_ground);
+                tbm.sample_bush= OctavePerlin(xCoord, yCoord, pso_bush);
+
+                tilemap.SetTile(new Vector3Int(x - CELLS_HORIZONTAL/2, y - CELLS_VERTICAL / 2, 0), tbm.getTileBase());
             }
         }
     }
@@ -93,20 +88,20 @@ public class MapGenerator : MonoBehaviour
 
 
     //https://adrianb.io/2014/08/09/perlinnoise.html
-    float OctavePerlin(float x, float y)
+    float OctavePerlin(float x, float y, PerlinSettingsObject pso)
     {
         float total = 0;
         float maxValue = 0;  // Used for normalizing result to 0.0 - 1.0
-        float tempAmp = amplitude;
-        float tempFreq = frequency;
+        float tempAmp = pso.amplitude;
+        float tempFreq = pso.frequency;
 
-        for (int i = 0; i < octaves; i++)
+        for (int i = 0; i < pso.octaves; i++)
         {
             total += Mathf.PerlinNoise(x * tempFreq, y * tempFreq) * tempAmp;
 
             maxValue += tempAmp;
 
-            tempAmp *= persistence;
+            tempAmp *= pso.persistence;
             tempFreq *= 2f;
         }
 

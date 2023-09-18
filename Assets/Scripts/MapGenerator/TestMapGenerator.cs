@@ -17,6 +17,8 @@ public class TestMapGenerator : MonoBehaviour
     [SerializeField] private float frequency;
     [SerializeField] private float amplitude;
 
+    [SerializeField] private float blackToWhiteThreshold = .5f;
+
 
     //Texture stuff
     private Texture2D noiseTex;
@@ -26,11 +28,11 @@ public class TestMapGenerator : MonoBehaviour
 
     private void Awake()
     {
-        CELLS_HORIZONTAL = 100;
-        CELLS_VERTICAL = 100;
-        persistence = -.5f;
-        frequency = .6f;
-        octaves = 8;
+        CELLS_HORIZONTAL = 500;
+        CELLS_VERTICAL = 500;
+        persistence = .5f;
+        frequency = 3f;
+        octaves = 3;
         amplitude = 1;
 
         noiseTex = new Texture2D(CELLS_HORIZONTAL, CELLS_VERTICAL);
@@ -105,6 +107,14 @@ public class TestMapGenerator : MonoBehaviour
 
     private Color getNormalColor(float sample)
     {
+        if (sample < blackToWhiteThreshold)
+        {
+            return Color.white;
+        } else
+        {
+            return Color.gray;
+        }
+
         if (sample < .1f)
         {
             return mapColors[mapLayers.DARK_WATER];
