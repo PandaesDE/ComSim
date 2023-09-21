@@ -1,8 +1,12 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MapGenerationMenu : MonoBehaviour
 {
+    [SerializeField] private Button btn_Back;
+
     [SerializeField] private TMP_Dropdown drd_PerlinNoiseSettings;
 
     [SerializeField] private TMP_InputField inp_Persistence;
@@ -22,6 +26,8 @@ public class MapGenerationMenu : MonoBehaviour
         inp_Amplitude.characterValidation = TMP_InputField.CharacterValidation.Decimal;
 
         editorMG = GameObject.Find("Playground").GetComponent<EditorMapGenerator>();
+
+        btn_Back.onClick.AddListener(delegate { SceneManager.LoadScene("SettingsMenu"); });
 
         drd_PerlinNoiseSettings.onValueChanged.AddListener(delegate {
             changeActivePerlinSettings(drd_PerlinNoiseSettings.options[drd_PerlinNoiseSettings.value].text);

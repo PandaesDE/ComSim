@@ -8,7 +8,9 @@ public class Gamevariables
 
     public static string SEED = "";
     public static int HUMAN_AMOUNT_START = 0;
-    public static int ANIMAL_AMOUNT_START = 0;
+    public static int LION_AMOUNT_START = 0;
+    public static int BOAR_AMOUNT_START = 0;
+    public static int RABBIT_AMOUNT_START = 0;
     public static bool GAME_PAUSED = false;
 
     //Time

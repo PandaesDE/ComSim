@@ -10,7 +10,9 @@ public class ConfigManager : MonoBehaviour
     {
         public string Seed = "";
         public int Human_Amount_Start = 0;
-        public int Animal_Amount_Start = 0;
+        public int Lion_Amount_Start = 0;
+        public int Boar_Amount_Start = 0;
+        public int Rabbit_Amount_Start = 0;
     }
 
     //Chat-GPT
@@ -23,7 +25,9 @@ public class ConfigManager : MonoBehaviour
     {
         Gamevariables.SEED = settings.Seed;
         Gamevariables.HUMAN_AMOUNT_START = settings.Human_Amount_Start;
-        Gamevariables.ANIMAL_AMOUNT_START = settings.Animal_Amount_Start;
+        Gamevariables.LION_AMOUNT_START = settings.Lion_Amount_Start;
+        Gamevariables.BOAR_AMOUNT_START = settings.Boar_Amount_Start;
+        Gamevariables.RABBIT_AMOUNT_START = settings.Rabbit_Amount_Start;
     }
 
     public static void SaveSettings(SettingsData settings)

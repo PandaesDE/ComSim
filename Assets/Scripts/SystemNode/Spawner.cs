@@ -16,11 +16,14 @@ public class Spawner : MonoBehaviour
     private void Start()
     {
         spawnHumans(Gamevariables.HUMAN_AMOUNT_START);
-        spawnAnimals(Gamevariables.ANIMAL_AMOUNT_START);
+        spawnLions(Gamevariables.LION_AMOUNT_START);
+        spawnBoars(Gamevariables.BOAR_AMOUNT_START);
+        spawnRabbits(Gamevariables.RABBIT_AMOUNT_START);
     }
 
     #region DEBUG Functions
 
+    /*This function is to test and verify the Entity Senses*/
     private void sensesCheckSetup()
     {
         int a = 20;
