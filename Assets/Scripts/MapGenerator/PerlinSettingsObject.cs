@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PerlinSettingsObject
 {
+    public int octaves;
     public float persistence;
     public float frequency;
-    public int octaves;
     public float amplitude;
 
     public PerlinSettingsObject(float persistence, float frequency, int octaves, float amplitude)
@@ -16,5 +16,4 @@ public class PerlinSettingsObject
         this.octaves = octaves;
         this.amplitude = amplitude;
     }
-    
 }

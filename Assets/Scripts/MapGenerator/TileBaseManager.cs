@@ -12,35 +12,54 @@ public class TileBaseManager : MonoBehaviour
     [SerializeField] private TileBase tb_stone;
     [SerializeField] private TileBase tb_snow;
 
+    public enum tileType
+    {
+        WATER,
+        SAND,
+        GRASS,
+        BUSH,
+        STONE,
+        SNOW
+    }
+
     public float sample_ground;
     public float sample_bush;
 
-    public TileBase getTileBase()
+    public tileType getTileType()
     {
         if (sample_ground < .2f)
         {
-            return tb_water;
+            return tileType.WATER;
         }
         if (sample_ground < .23f)
         {
-            return tb_sand;
+            return tileType.SAND;
         }
         if (sample_ground < .6f)
         {
             if (sample_ground >= .4f && sample_bush < .5f)
             {
-                return tb_bush;
+                return tileType.BUSH;
             }
-            return tb_grass;
+            return tileType.GRASS;
         }
         if (sample_ground < .8f)
         {
-            return tb_stone;
+            return tileType.STONE;
         }
-        if (sample_ground <= 1f)
-        {
-            return tb_snow;
-        }
+
+        return tileType.SNOW;
+    }
+
+    public TileBase getTileBase()
+    {
+        tileType t = getTileType();
+        if (t == tileType.WATER) return tb_water;
+        if (t == tileType.SAND) return tb_sand;
+        if (t == tileType.BUSH) return tb_bush;
+        if (t == tileType.GRASS) return tb_grass;
+        if (t == tileType.STONE) return tb_stone;
+        if (t == tileType.SNOW) return tb_snow;
         return null;
     }
 

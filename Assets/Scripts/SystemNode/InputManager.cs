@@ -11,7 +11,9 @@ public class InputManager : MonoBehaviour
 
     private void Awake()
     {
-        infoMenu = infoMenuObject.GetComponent<InfoMenu>();
+        Scene curScene = SceneManager.GetActiveScene();
+        if (curScene.name == "Simulation")
+            infoMenu = infoMenuObject.GetComponent<InfoMenu>();
         cameraManager = GetComponent<CameraManager>();
     }
 
