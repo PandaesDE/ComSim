@@ -25,8 +25,6 @@ public class MapGenerator : MonoBehaviour
     private float yOrg;
     private float zoom;
 
-    private PerlinSettingsObject pso_ground;
-    private PerlinSettingsObject pso_bush;
 
 
     // The number of cycles of the basic noise pattern that are repeated
@@ -39,8 +37,7 @@ public class MapGenerator : MonoBehaviour
         CELLS_VERTICAL = Gamevariables.playgroundSize.y;
         zoom = 100;
 
-        pso_ground = new PerlinSettingsObject(-.5f, .6f, 8, 1);
-        pso_bush = new PerlinSettingsObject(.5f, 3f, 3, 1);
+        
 
 
         tbm = GetComponent<TileBaseManager>();
@@ -69,8 +66,8 @@ public class MapGenerator : MonoBehaviour
                 float xCoord = xOrg + (float)x / zoom;
                 float yCoord = yOrg + (float)y / zoom;
 
-                tbm.sample_ground = OctavePerlin(xCoord, yCoord, pso_ground);
-                tbm.sample_bush= OctavePerlin(xCoord, yCoord, pso_bush);
+                tbm.sample_ground = OctavePerlin(xCoord, yCoord, Gamevariables.PSO_GROUND);
+                tbm.sample_bush = OctavePerlin(xCoord, yCoord, Gamevariables.PSO_BUSH);
 
                 tilemap.SetTile(new Vector3Int(x - CELLS_HORIZONTAL/2, y - CELLS_VERTICAL / 2, 0), tbm.getTileBase());
             }

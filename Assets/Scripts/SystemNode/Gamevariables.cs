@@ -6,12 +6,16 @@ public class Gamevariables
     public static readonly Vector2Int playgroundSize = new Vector2Int(362, 200);
     public static readonly float TICKRATE = .5f;
 
-    public static string SEED = "";
     public static int HUMAN_AMOUNT_START = 0;
     public static int LION_AMOUNT_START = 0;
     public static int BOAR_AMOUNT_START = 0;
     public static int RABBIT_AMOUNT_START = 0;
     public static bool GAME_PAUSED = false;
+
+    //WORLD
+    public static string SEED = "";
+    public static PerlinSettingsObject PSO_GROUND = new PerlinSettingsObject(-.5f, .6f, 8, 1);
+    public static PerlinSettingsObject PSO_BUSH = new PerlinSettingsObject(.5f, 3f, 3, 1);
 
     //Time
     public static readonly int HOURS_PER_DAY = 24;

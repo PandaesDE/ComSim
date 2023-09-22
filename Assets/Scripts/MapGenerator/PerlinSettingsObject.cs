@@ -1,7 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
+using System.Runtime.Serialization;
 
+
+//https://www.youtube.com/watch?v=jbwjbbc5PjI
+[System.Serializable]
 public class PerlinSettingsObject
 {
     public int octaves;

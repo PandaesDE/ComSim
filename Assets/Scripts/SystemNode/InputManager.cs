@@ -3,15 +3,19 @@ using UnityEngine.SceneManagement;
 
 public class InputManager : MonoBehaviour
 {
+    private Scene curScene;
+
     [SerializeField] private UI ui;
     [SerializeField] private GameObject infoMenuObject;
     private InfoMenu infoMenu;
     private CameraManager cameraManager;
 
 
+
     private void Awake()
     {
-        Scene curScene = SceneManager.GetActiveScene();
+        curScene = SceneManager.GetActiveScene();
+
         if (curScene.name == "Simulation")
             infoMenu = infoMenuObject.GetComponent<InfoMenu>();
         cameraManager = GetComponent<CameraManager>();
@@ -20,10 +24,49 @@ public class InputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        #region Menu Game Inputs which are accessible during pause
+        handleGeneralInputs();
+
+        if (curScene.name == "Simulation")
+        {
+            handleSimulationInputs();
+            return;
+        }
+        if (curScene.name == "EditorMapGeneration")
+        {
+            handleMapEditorInputs();
+            return;
+        }
+    }
+
+    private void handleGeneralInputs()
+    {
+        //Middle Click Hold
+        if (Input.GetMouseButton(2))
+        {
+            //https://discussions.unity.com/t/how-to-detect-mouse-movement-as-an-input/22062/4
+            if (Input.GetAxis("Mouse X") != 0)
+            {
+                cameraManager.moveBy(new Vector2(Input.GetAxis("Mouse X"), 0));
+            }
+            if (Input.GetAxis("Mouse Y") != 0)
+            {
+                cameraManager.moveBy(new Vector2(0, Input.GetAxis("Mouse Y")));
+            }
+        }
+
+        //on scroll
+        if (Input.mouseScrollDelta.y != 0)
+        {
+            cameraManager.zoom();
+        }
+    }
+
+    private void handleSimulationInputs()
+    {
         //Left Click
-        if (Input.GetMouseButtonDown(0)) {
-            
+        if (Input.GetMouseButtonDown(0))
+        {
+
             int allLayers = ~0;
             int visonLayers = LayerMask.NameToLayer("Vision");
             int layerMask = allLayers & ~(1 << visonLayers); //Chat-GPT
@@ -41,34 +84,15 @@ public class InputManager : MonoBehaviour
             }
         }
 
-        //Middle Click Hold
-        if (Input.GetMouseButton(2))
-        {
-            //https://discussions.unity.com/t/how-to-detect-mouse-movement-as-an-input/22062/4
-            if (Input.GetAxis("Mouse X") != 0)
-            {
-                cameraManager.moveBy(new Vector2(Input.GetAxis("Mouse X"), 0));
-            }
-            if (Input.GetAxis("Mouse Y") != 0)
-            {
-                cameraManager.moveBy(new Vector2(0, Input.GetAxis("Mouse Y")));
-            }
-        }
-
         if (Input.GetKeyDown(KeyCode.P))
         {
             pauseGame();
         }
-        //on scroll
-        if (Input.mouseScrollDelta.y != 0)
-        {
-            cameraManager.zoom();
-        }
-        #endregion
-        #region In Game Inputs which are unavailable during pause
-        if (Gamevariables.GAME_PAUSED) return;
-        
-        #endregion
+    }
+
+    private void handleMapEditorInputs()
+    {
+
     }
 
     public void toMainMenu()

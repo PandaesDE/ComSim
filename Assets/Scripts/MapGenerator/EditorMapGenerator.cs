@@ -43,8 +43,9 @@ public class EditorMapGenerator : MonoBehaviour
         CELLS_VERTICAL = Gamevariables.playgroundSize.y;
         zoom = 100;
 
-        pso_ground = new PerlinSettingsObject(-.5f, .6f, 8, 1);
-        pso_bush = new PerlinSettingsObject(.5f, 3f, 3, 1);
+        ConfigManager.SettingsData settings = ConfigManager.ReadSettings();
+        pso_ground = settings.Pso_Ground;
+        pso_bush = settings.Pso_Bush;
 
         noiseTex = new Texture2D(CELLS_HORIZONTAL, CELLS_VERTICAL);
         pix = new Color[noiseTex.width * noiseTex.height];

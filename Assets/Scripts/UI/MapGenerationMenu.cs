@@ -27,7 +27,7 @@ public class MapGenerationMenu : MonoBehaviour
 
         editorMG = GameObject.Find("Playground").GetComponent<EditorMapGenerator>();
 
-        btn_Back.onClick.AddListener(delegate { SceneManager.LoadScene("SettingsMenu"); });
+        btn_Back.onClick.AddListener(delegate { toSettingsMenu(); });
 
         drd_PerlinNoiseSettings.onValueChanged.AddListener(delegate {
             changeActivePerlinSettings(drd_PerlinNoiseSettings.options[drd_PerlinNoiseSettings.value].text);
@@ -53,6 +53,19 @@ public class MapGenerationMenu : MonoBehaviour
         setValues();
     }
 
+    private void toSettingsMenu()
+    {
+
+        ConfigManager.SettingsData settings = ConfigManager.ReadSettings();
+        //preventNullOrEmptyInputs();
+
+        settings.Pso_Ground = editorMG.pso_ground;
+        settings.Pso_Bush = editorMG.pso_bush;
+
+        ConfigManager.SaveSettings(settings);
+        SceneManager.LoadScene("SettingsMenu");
+    }
+
     private void setValues()
     {
         inp_Persistence.text = "" + active_pso.persistence;
@@ -63,27 +76,36 @@ public class MapGenerationMenu : MonoBehaviour
 
     private void changePersistence()
     {
-        if (inp_Persistence.text.Length <= 0) return;
+        if (!isValidEntry(inp_Persistence.text)) return;
         active_pso.persistence = float.Parse(inp_Persistence.text);
     }
 
     private void changeFrequency()
     {
 
-        if (inp_Frequency.text.Length <= 0) return;
+        if (!isValidEntry(inp_Frequency.text)) return;
         active_pso.frequency = float.Parse(inp_Frequency.text);
     }
 
     private void changeOctaves()
     {
-        if (inp_Octaves.text.Length <= 0) return;
+        if (!isValidEntry(inp_Octaves.text)) return;
         active_pso.octaves = int.Parse(inp_Octaves.text);
     }
 
     private void changeAmplitude()
     {
-        if (inp_Amplitude.text.Length <= 0) return;
+        if (!isValidEntry(inp_Amplitude.text)) return;
         active_pso.amplitude = float.Parse(inp_Amplitude.text);
+    }
+
+    private bool isValidEntry(string txt)
+    {
+        if (txt.Length <= 0) return false;
+        if (txt.Equals("-")) return false;
+        if (txt.Equals(".")) return false;
+        if (txt.Equals("-.")) return false;
+        return true;
     }
 
     private void changeActivePerlinSettings(string txt)
@@ -100,7 +122,7 @@ public class MapGenerationMenu : MonoBehaviour
         }
         if (txt.Equals("Bush"))
         {
-            if (editorMG.pso_bush== null)
+            if (editorMG.pso_bush == null)
             {
                 Debug.LogError("Editor Map Generator has not yet initialized its Perlin-Noise Settings Object");
             }

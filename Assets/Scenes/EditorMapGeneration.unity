@@ -4753,7 +4753,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 30dc370b164eefc43b95744fc796dad0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -4836,6 +4836,16 @@ MonoBehaviour:
   xOrg: 0
   yOrg: 0
   zoom: 0
+  pso_ground:
+    octaves: 0
+    persistence: 0
+    frequency: 0
+    amplitude: 0
+  pso_bush:
+    octaves: 0
+    persistence: 0
+    frequency: 0
+    amplitude: 0
   blackToWhiteThreshold: 0.5
 --- !u!212 &2090126545
 SpriteRenderer:
