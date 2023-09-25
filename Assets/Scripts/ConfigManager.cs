@@ -26,12 +26,12 @@ public class ConfigManager
     public class SettingsData
     {
         public string Seed = "";
+        public PerlinSettingsObject Pso_Ground;
+        public PerlinSettingsObject Pso_Bush;
         public int Human_Amount_Start = 0;
         public int Lion_Amount_Start = 0;
         public int Boar_Amount_Start = 0;
         public int Rabbit_Amount_Start = 0;
-        public PerlinSettingsObject Pso_Ground;
-        public PerlinSettingsObject Pso_Bush;
     }
 
     //Chat-GPT
@@ -64,12 +64,23 @@ public class ConfigManager
         string filePath = Path.Combine(Application.persistentDataPath, "Settings.json");
         if (!File.Exists(filePath))
         {
-            Debug.LogWarning("Config file not found!");
-            return new SettingsData(); // Return default settings
+            return getDefaultConfig(); // Return default settings
         }
 
         string json = File.ReadAllText(filePath);
         return JsonUtility.FromJson<SettingsData>(json);
+    }
 
+    private static SettingsData getDefaultConfig()
+    {
+        SettingsData settings = new();
+        settings.Seed = Gamevariables.SEED;
+        settings.Human_Amount_Start = Gamevariables.HUMAN_AMOUNT_START;
+        settings.Lion_Amount_Start = Gamevariables.LION_AMOUNT_START;
+        settings.Boar_Amount_Start = Gamevariables.BOAR_AMOUNT_START;
+        settings.Rabbit_Amount_Start = Gamevariables.RABBIT_AMOUNT_START;
+        settings.Pso_Ground = Gamevariables.PSO_GROUND;
+        settings.Pso_Bush = Gamevariables.PSO_BUSH;
+        return settings;
     }
 }

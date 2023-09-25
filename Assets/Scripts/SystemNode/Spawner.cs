@@ -9,10 +9,6 @@ public class Spawner : MonoBehaviour
     [SerializeField] public GameObject PREFAB_Rabbit;
     [SerializeField] public GameObject PREFAB_Lion;
 
-    private void Awake()
-    {
-    }
-
     private void Start()
     {
         spawnHumans(Gamevariables.HUMAN_AMOUNT_START);

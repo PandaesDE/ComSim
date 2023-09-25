@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,7 @@ public static class Util
 
     public static gender getRandomGender()
     {
-        int r = Random.Range(0, 2);
+        int r = UnityEngine.Random.Range(0, 2);
         if (r < 1) return gender.MALE;
         return gender.FEMALE;
     }
@@ -16,7 +17,7 @@ public static class Util
     {
         int halfW = Gamevariables.playgroundSize.x / 2;
         int halfH = Gamevariables.playgroundSize.y / 2;
-        return new Vector2(Random.Range(-halfW, halfW), Random.Range(-halfH, halfH));
+        return new Vector2(UnityEngine.Random.Range(-halfW, halfW), UnityEngine.Random.Range(-halfH, halfH));
     }
 
     public static animalType getRandomAnimalType()
@@ -49,7 +50,7 @@ public static class Util
     {
         List<System.Type> herbivore = new()
         {
-            
+
         };
 
         List<System.Type> carnivore = new()
@@ -93,4 +94,102 @@ public static class Util
             return (int)val;
         }
     }
+
+    public static class UIHelper
+    {
+        public static string preventNullOrEmptyInputString(string txt)
+        {
+            if (string.IsNullOrEmpty(txt)) return "";
+            return txt;
+        }
+
+        public static string preventNullOrEmptyInputNumber(string txt)
+        {
+            if (string.IsNullOrEmpty(txt)) return "0";
+            return txt;
+        }
+
+        public static bool isValidNumvericEntry(string txt)
+        {
+            if (txt.Length <= 0) return false;
+            if (txt.Equals("-")) return false;
+            if (txt.Equals(".")) return false;
+            if (txt.Equals("-.")) return false;
+            return true;
+        }
+    }
+
+    public static class MapGenerationHelper {
+
+        //https://adrianb.io/2014/08/09/perlinnoise.html
+        public static float OctavePerlin(int xOffset, int yOffset, PerlinSettingsObject pso)
+        {
+            float x = pso.xOrg + (float)xOffset / pso.zoom;
+            float y = pso.xOrg + (float)yOffset / pso.zoom;
+
+            float total = 0;
+            float maxValue = 0;  // Used for normalizing result to 0.0 - 1.0
+            float tempAmp = pso.amplitude;
+            float tempFreq = pso.frequency;
+
+            for (int i = 0; i < pso.octaves; i++)
+            {
+                total += Mathf.PerlinNoise(x * tempFreq, y * tempFreq) * tempAmp;
+
+                maxValue += tempAmp;
+
+                tempAmp *= pso.persistence;
+                tempFreq *= 2f;
+            }
+
+            return Mathf.Clamp(total / maxValue, 0, 1);
+        }
+    }
+
+    public static class SeedHelper {
+        private static int range = 10000;
+
+        //https://stackoverflow.com/questions/8806186/convert-the-int-from-c-sharp-gethashcode-back-to-string
+
+
+        public static int convertSeedToCoordinate(string seed)
+        {
+            //ChatGpt
+            byte[] utf8Bytes = System.Text.Encoding.UTF8.GetBytes(seed);
+            //ensures that the byte array is at least 4 bytes long -> needed for BitConverter
+            byte[] paddedBytes = new byte[4];
+            Array.Copy(utf8Bytes, paddedBytes, Mathf.Min(utf8Bytes.Length, 4));
+            Debug.Log(seed);
+            return Mathf.Abs(BitConverter.ToInt32(paddedBytes) % range);
+        }
+
+        public static string convertCoordinateToSeed(int a)
+        {
+            return System.Text.Encoding.UTF8.GetString(BitConverter.GetBytes(a));
+        }
+
+        public static string getSeedX()
+        {
+            return getSeedX(Gamevariables.SEED);
+        }
+
+        public static string getSeedX(string seed)
+        {
+            if (seed.Length <= 0) return "";
+            return seed.Substring(0, seed.Length / 2);
+        }
+
+        public static string getSeedY()
+        {
+            return getSeedY(Gamevariables.SEED);
+        }
+
+        public static string getSeedY(string seed)
+        {
+            if (seed.Length <= 0) return "";
+            return seed[(seed.Length / 2)..];
+        }
+    }
+
+    
 }

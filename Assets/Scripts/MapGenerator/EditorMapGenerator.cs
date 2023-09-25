@@ -23,12 +23,11 @@ public class EditorMapGenerator : MonoBehaviour
     // The origin of the sampled area in the plane.
     [SerializeField] private float xOrg;
     [SerializeField] private float yOrg;
-    [SerializeField] private float zoom;
 
     public PerlinSettingsObject pso_ground;
     public PerlinSettingsObject pso_bush;
 
-    [SerializeField] private float blackToWhiteThreshold = .5f;
+    //[SerializeField] private float blackToWhiteThreshold = .5f;
 
 
     //Texture stuff
@@ -41,7 +40,6 @@ public class EditorMapGenerator : MonoBehaviour
     {
         CELLS_HORIZONTAL = Gamevariables.playgroundSize.x;
         CELLS_VERTICAL = Gamevariables.playgroundSize.y;
-        zoom = 100;
 
         ConfigManager.SettingsData settings = ConfigManager.ReadSettings();
         pso_ground = settings.Pso_Ground;
@@ -62,24 +60,16 @@ public class EditorMapGenerator : MonoBehaviour
 
     private void CalcNoise()
     {
-        // For each pixel in the texture...
-        float y = 0.0F;
-
-        while (y < noiseTex.height)
+        for (int x = 0; x < CELLS_HORIZONTAL; x++)
         {
-            float x = 0.0F;
-            while (x < noiseTex.width)
+            //Loop through the height of the map
+            for (int y = 0; y < CELLS_VERTICAL; y++)
             {
-                float xCoord = xOrg + x / zoom;
-                float yCoord = yOrg + y / zoom;
-
-                tbm.sample_bush = OctavePerlin(xCoord, yCoord, pso_bush);
-                tbm.sample_ground = OctavePerlin(xCoord, yCoord, pso_ground);
+                tbm.sample_bush = Util.MapGenerationHelper.OctavePerlin(x, y, pso_bush);
+                tbm.sample_ground = Util.MapGenerationHelper.OctavePerlin(x, y, pso_ground);
 
                 pix[(int)y * noiseTex.width + (int)x] = getColor();
-                x++;
             }
-            y++;
         }
 
         // Copy the pixel data to the texture and load it into the GPU.
@@ -87,26 +77,7 @@ public class EditorMapGenerator : MonoBehaviour
         noiseTex.Apply();
     }
 
-    //https://adrianb.io/2014/08/09/perlinnoise.html
-    float OctavePerlin(float x, float y, PerlinSettingsObject pso)
-    {
-        float total = 0;
-        float maxValue = 0;  // Used for normalizing result to 0.0 - 1.0
-        float tempAmp = pso.amplitude;
-        float tempFreq = pso.frequency;
 
-        for (int i = 0; i < pso.octaves; i++)
-        {
-            total += Mathf.PerlinNoise(x * tempFreq, y * tempFreq) * tempAmp;
-
-            maxValue += tempAmp;
-
-            tempAmp *= pso.persistence;
-            tempFreq *= 2f;
-        }
-
-        return Mathf.Clamp(total / maxValue, 0, 1);
-    }
 
     private Color getColor()
     {

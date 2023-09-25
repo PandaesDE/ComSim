@@ -13,9 +13,14 @@ public class MapGenerationMenu : MonoBehaviour
     [SerializeField] private TMP_InputField inp_Frequency;
     [SerializeField] private TMP_InputField inp_Octaves;
     [SerializeField] private TMP_InputField inp_Amplitude;
+    [SerializeField] private TMP_InputField inp_X_Offset;
+    [SerializeField] private TMP_InputField inp_Y_Offset;
 
     private EditorMapGenerator editorMG;
     private PerlinSettingsObject active_pso;
+
+    private int xOrg;
+    private int yOrg;
 
     private void Awake()
     {
@@ -45,6 +50,16 @@ public class MapGenerationMenu : MonoBehaviour
         inp_Amplitude.onValueChanged.AddListener(delegate {
             changeAmplitude();
         });
+
+        inp_X_Offset.onValueChanged.AddListener(delegate
+        {
+            changeXOffset();
+        });
+
+        inp_Y_Offset.onValueChanged.AddListener(delegate
+        {
+            changeYOffset();
+        });
     }
 
     private void Start()
@@ -72,40 +87,45 @@ public class MapGenerationMenu : MonoBehaviour
         inp_Frequency.text = "" + active_pso.frequency;
         inp_Octaves.text = "" + active_pso.octaves;
         inp_Amplitude.text = "" + active_pso.amplitude;
+        inp_X_Offset.text = "" + active_pso.xOrg;
+        inp_Y_Offset.text = "" + active_pso.yOrg;
     }
 
     private void changePersistence()
     {
-        if (!isValidEntry(inp_Persistence.text)) return;
+        if (!Util.UIHelper.isValidNumvericEntry(inp_Persistence.text)) return;
         active_pso.persistence = float.Parse(inp_Persistence.text);
     }
 
     private void changeFrequency()
     {
 
-        if (!isValidEntry(inp_Frequency.text)) return;
+        if (!Util.UIHelper.isValidNumvericEntry(inp_Frequency.text)) return;
         active_pso.frequency = float.Parse(inp_Frequency.text);
     }
 
     private void changeOctaves()
     {
-        if (!isValidEntry(inp_Octaves.text)) return;
+        if (!Util.UIHelper.isValidNumvericEntry(inp_Octaves.text)) return;
         active_pso.octaves = int.Parse(inp_Octaves.text);
     }
 
     private void changeAmplitude()
     {
-        if (!isValidEntry(inp_Amplitude.text)) return;
+        if (!Util.UIHelper.isValidNumvericEntry(inp_Amplitude.text)) return;
         active_pso.amplitude = float.Parse(inp_Amplitude.text);
     }
 
-    private bool isValidEntry(string txt)
+    private void changeXOffset()
     {
-        if (txt.Length <= 0) return false;
-        if (txt.Equals("-")) return false;
-        if (txt.Equals(".")) return false;
-        if (txt.Equals("-.")) return false;
-        return true;
+        if (!Util.UIHelper.isValidNumvericEntry(inp_X_Offset.text)) return;
+        active_pso.xOrg = float.Parse(inp_X_Offset.text);
+    }
+
+    private void changeYOffset()
+    {
+        if (!Util.UIHelper.isValidNumvericEntry(inp_Y_Offset.text)) return;
+        active_pso.yOrg = float.Parse(inp_Y_Offset.text);
     }
 
     private void changeActivePerlinSettings(string txt)

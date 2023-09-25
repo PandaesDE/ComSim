@@ -19,14 +19,6 @@ public class MapGenerator : MonoBehaviour
     public Tilemap tilemap;
     public TileBaseManager tbm;
 
-
-    // The origin of the sampled area in the plane.
-    private float xOrg;
-    private float yOrg;
-    private float zoom;
-
-
-
     // The number of cycles of the basic noise pattern that are repeated
     // over the width and height of the texture.
 
@@ -35,10 +27,6 @@ public class MapGenerator : MonoBehaviour
     {
         CELLS_HORIZONTAL = Gamevariables.playgroundSize.x;
         CELLS_VERTICAL = Gamevariables.playgroundSize.y;
-        zoom = 100;
-
-        
-
 
         tbm = GetComponent<TileBaseManager>();
 
@@ -46,7 +34,6 @@ public class MapGenerator : MonoBehaviour
 
     void Start()
     {
-        convertSeed();
         RenderTileMap();
     }
 
@@ -63,45 +50,12 @@ public class MapGenerator : MonoBehaviour
             //Loop through the height of the map
             for (int y = 0; y < CELLS_VERTICAL; y++)
             {
-                float xCoord = xOrg + (float)x / zoom;
-                float yCoord = yOrg + (float)y / zoom;
-
-                tbm.sample_ground = OctavePerlin(xCoord, yCoord, Gamevariables.PSO_GROUND);
-                tbm.sample_bush = OctavePerlin(xCoord, yCoord, Gamevariables.PSO_BUSH);
+                tbm.sample_ground = Util.MapGenerationHelper.OctavePerlin(x, y, Gamevariables.PSO_GROUND);
+                tbm.sample_bush = Util.MapGenerationHelper.OctavePerlin(x, y, Gamevariables.PSO_BUSH);
 
                 tilemap.SetTile(new Vector3Int(x - CELLS_HORIZONTAL/2, y - CELLS_VERTICAL / 2, 0), tbm.getTileBase());
             }
         }
     }
     #endregion
-
-    //CHATGPT
-    public void convertSeed()
-    {
-        int range = 10000;
-        xOrg = Mathf.Abs(Gamevariables.SEED.GetHashCode() % range);
-        yOrg = Mathf.Abs(Gamevariables.SEED.GetHashCode() % range);
-    }
-
-
-    //https://adrianb.io/2014/08/09/perlinnoise.html
-    float OctavePerlin(float x, float y, PerlinSettingsObject pso)
-    {
-        float total = 0;
-        float maxValue = 0;  // Used for normalizing result to 0.0 - 1.0
-        float tempAmp = pso.amplitude;
-        float tempFreq = pso.frequency;
-
-        for (int i = 0; i < pso.octaves; i++)
-        {
-            total += Mathf.PerlinNoise(x * tempFreq, y * tempFreq) * tempAmp;
-
-            maxValue += tempAmp;
-
-            tempAmp *= pso.persistence;
-            tempFreq *= 2f;
-        }
-
-        return Mathf.Clamp(total / maxValue, 0, 1);
-    }
 }
