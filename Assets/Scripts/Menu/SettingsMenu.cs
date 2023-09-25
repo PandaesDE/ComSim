@@ -13,18 +13,10 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] private TMP_InputField ipt_X_Offset;
     [SerializeField] private TMP_InputField ipt_Y_Offset;
 
-    //bool flags so that onValueChanged only happens with user input
-    private bool seedInput_By_User = true;
-    private bool xInput_By_User = true;
-    private bool yInput_By_User = true;
-
     [SerializeField] private TMP_InputField ipt_Humans;
     [SerializeField] private TMP_InputField ipt_Lions;
     [SerializeField] private TMP_InputField ipt_Boars;
     [SerializeField] private TMP_InputField ipt_Rabbits;
-
-    private string seedX = "";
-    private string seedY  = "";
 
     // Start is called before the first frame update
     private void Awake()
@@ -36,67 +28,26 @@ public class SettingsMenu : MonoBehaviour
         btn_Editor.onClick.AddListener(delegate { toEditor(); });
 
         ipt_Seed.onValueChanged.AddListener(delegate { seedChanged(); });
-        ipt_X_Offset.onValueChanged.AddListener(delegate { xOffsetChanged(); });
-        ipt_Y_Offset.onValueChanged.AddListener(delegate { yOffsetChanged(); });
+        ipt_X_Offset.onValueChanged.AddListener(delegate { coordinatesChanged(); });
+        ipt_Y_Offset.onValueChanged.AddListener(delegate { coordinatesChanged(); });
 
         displaySerializedSettings();
     }
 
     private void seedChanged()
     {
-        if (seedInput_By_User)
-        {
-            xInput_By_User = false;
-            yInput_By_User = false;
-        } else
-        {
-            seedInput_By_User = true;
-            return;
-        }
+        if (!ipt_Seed.isFocused) return;
 
-        seedX = Util.SeedHelper.getSeedX(ipt_Seed.text);
-        seedY = Util.SeedHelper.getSeedY(ipt_Seed.text);
-
-        ipt_X_Offset.text = "" + Util.SeedHelper.convertSeedToCoordinate(seedX);
-        ipt_Y_Offset.text = "" + Util.SeedHelper.convertSeedToCoordinate(seedY);
+        Vector2 coords = Util.SeedHelper.convertSeedToCoordinates(ipt_Seed.text);
+        ipt_X_Offset.text = "" + coords.x;
+        ipt_Y_Offset.text = "" + coords.y;
     }
-    private void xOffsetChanged()
-    {
-        if (xInput_By_User)
-        {
-            seedInput_By_User = false;
-        } else
-        {
-            xInput_By_User = true;
-            return;
-        }
-
-        seedX = Util.SeedHelper.convertCoordinateToSeed(
-            int.Parse(Util.UIHelper.preventNullOrEmptyInputNumber(ipt_X_Offset.text)));
-        coordinatesChanged();
-    }
-
-    private void yOffsetChanged()
-    {
-        if (yInput_By_User)
-        {
-            seedInput_By_User = false;
-        }
-        else
-        {
-            yInput_By_User = true;
-            return;
-        }
-
-        seedY = Util.SeedHelper.convertCoordinateToSeed(
-            int.Parse(Util.UIHelper.preventNullOrEmptyInputNumber(ipt_Y_Offset.text)));
-        coordinatesChanged();
-    }
-
 
     private void coordinatesChanged()
     {
-        ipt_Seed.text = seedX + seedY;
+        if (!ipt_X_Offset.isFocused && !ipt_Y_Offset.isFocused) return;
+
+        ipt_Seed.text = "";
     }
 
     private void displaySerializedSettings()
@@ -107,6 +58,8 @@ public class SettingsMenu : MonoBehaviour
         ipt_Lions.text = "" + settings.Lion_Amount_Start;
         ipt_Boars.text = "" + settings.Boar_Amount_Start;
         ipt_Rabbits.text = "" + settings.Rabbit_Amount_Start;
+        ipt_X_Offset.text = "" + settings.Pso_Ground.xOrg;
+        ipt_Y_Offset.text = "" + settings.Pso_Ground.yOrg;
     }
 
     private void toEditor()
@@ -124,11 +77,13 @@ public class SettingsMenu : MonoBehaviour
     private void saveSettings()
     {
         ConfigManager.SettingsData settings = ConfigManager.ReadSettings();
-        settings.Seed = Util.UIHelper.preventNullOrEmptyInputString(ipt_Seed.text);
-        settings.Human_Amount_Start = int.Parse(Util.UIHelper.preventNullOrEmptyInputNumber(ipt_Humans.text));
-        settings.Lion_Amount_Start = int.Parse(Util.UIHelper.preventNullOrEmptyInputNumber(ipt_Lions.text));
-        settings.Boar_Amount_Start = int.Parse(Util.UIHelper.preventNullOrEmptyInputNumber(ipt_Boars.text));
-        settings.Rabbit_Amount_Start = int.Parse(Util.UIHelper.preventNullOrEmptyInputNumber(ipt_Rabbits.text));
+        settings.Seed =                 Util.UIHelper.preventNullOrEmptyInputString(ipt_Seed.text);
+        settings.Human_Amount_Start =   int.Parse(Util.UIHelper.preventNullOrEmptyInputNumber(ipt_Humans.text));
+        settings.Lion_Amount_Start =    int.Parse(Util.UIHelper.preventNullOrEmptyInputNumber(ipt_Lions.text));
+        settings.Boar_Amount_Start =    int.Parse(Util.UIHelper.preventNullOrEmptyInputNumber(ipt_Boars.text));
+        settings.Rabbit_Amount_Start =  int.Parse(Util.UIHelper.preventNullOrEmptyInputNumber(ipt_Rabbits.text));
+        settings.Pso_Ground.xOrg =      float.Parse(Util.UIHelper.preventNullOrEmptyInputNumber(ipt_X_Offset.text));
+        settings.Pso_Ground.yOrg =      float.Parse(Util.UIHelper.preventNullOrEmptyInputNumber(ipt_Y_Offset.text));
         ConfigManager.SaveSettings(settings);
     }
 

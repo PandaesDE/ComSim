@@ -125,7 +125,7 @@ public static class Util
         public static float OctavePerlin(int xOffset, int yOffset, PerlinSettingsObject pso)
         {
             float x = pso.xOrg + (float)xOffset / pso.zoom;
-            float y = pso.xOrg + (float)yOffset / pso.zoom;
+            float y = pso.yOrg + (float)yOffset / pso.zoom;
 
             float total = 0;
             float maxValue = 0;  // Used for normalizing result to 0.0 - 1.0
@@ -149,45 +149,10 @@ public static class Util
     public static class SeedHelper {
         private static int range = 10000;
 
-        //https://stackoverflow.com/questions/8806186/convert-the-int-from-c-sharp-gethashcode-back-to-string
-
-
-        public static int convertSeedToCoordinate(string seed)
+        public static Vector2 convertSeedToCoordinates(string seed)
         {
-            //ChatGpt
-            byte[] utf8Bytes = System.Text.Encoding.UTF8.GetBytes(seed);
-            //ensures that the byte array is at least 4 bytes long -> needed for BitConverter
-            byte[] paddedBytes = new byte[4];
-            Array.Copy(utf8Bytes, paddedBytes, Mathf.Min(utf8Bytes.Length, 4));
-            Debug.Log(seed);
-            return Mathf.Abs(BitConverter.ToInt32(paddedBytes) % range);
-        }
-
-        public static string convertCoordinateToSeed(int a)
-        {
-            return System.Text.Encoding.UTF8.GetString(BitConverter.GetBytes(a));
-        }
-
-        public static string getSeedX()
-        {
-            return getSeedX(Gamevariables.SEED);
-        }
-
-        public static string getSeedX(string seed)
-        {
-            if (seed.Length <= 0) return "";
-            return seed.Substring(0, seed.Length / 2);
-        }
-
-        public static string getSeedY()
-        {
-            return getSeedY(Gamevariables.SEED);
-        }
-
-        public static string getSeedY(string seed)
-        {
-            if (seed.Length <= 0) return "";
-            return seed[(seed.Length / 2)..];
+            return new Vector2(  seed.GetHashCode() % range,
+                                 seed.GetHashCode() % range);
         }
     }
 
