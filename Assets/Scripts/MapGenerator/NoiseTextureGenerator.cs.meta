@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 889c1bb2e5c456449a38bab72f6b8339
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - water: {fileID: 6647578400627049961, guid: 4cef34eefb5f3884caf177ff8b78bc5a, type: 3}
+  - sand: {fileID: 6647578400627049961, guid: fb5a890c26aadb545b4ce631451bc832, type: 3}
+  - grass: {fileID: 6647578400627049961, guid: b86fb0610c6ac374a8e4f64841eba7a2, type: 3}
+  - bush: {fileID: 6647578400627049961, guid: d6c11e23a7219294b8fc6993182e7885, type: 3}
+  - stone: {fileID: 6647578400627049961, guid: f406c25381544dc498c3134f18e966e2, type: 3}
+  - snow: {fileID: 6647578400627049961, guid: 18ae08d1b0ccd86499524b824aa2e8e3, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

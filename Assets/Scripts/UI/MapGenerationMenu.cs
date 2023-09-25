@@ -16,7 +16,7 @@ public class MapGenerationMenu : MonoBehaviour
     [SerializeField] private TMP_InputField inp_X_Offset;
     [SerializeField] private TMP_InputField inp_Y_Offset;
 
-    private EditorMapGenerator editorMG;
+    private NoiseTextureGenerator ntg;
     private PerlinSettingsObject active_pso;
 
     private void Awake()
@@ -27,7 +27,7 @@ public class MapGenerationMenu : MonoBehaviour
         inp_Octaves.characterValidation = TMP_InputField.CharacterValidation.Integer;
         inp_Amplitude.characterValidation = TMP_InputField.CharacterValidation.Decimal;
 
-        editorMG = GameObject.Find("Playground").GetComponent<EditorMapGenerator>();
+        ntg = GameObject.Find("Playground").GetComponent<NoiseTextureGenerator>();
 
         btn_Back.onClick.AddListener(delegate { toSettingsMenu(); });
 
@@ -71,8 +71,8 @@ public class MapGenerationMenu : MonoBehaviour
         ConfigManager.SettingsData settings = ConfigManager.ReadSettings();
         //preventNullOrEmptyInputs();
 
-        settings.Pso_Ground = editorMG.pso_ground;
-        settings.Pso_Bush = editorMG.pso_bush;
+        settings.Pso_Ground = ntg.pso_ground;
+        settings.Pso_Bush = ntg.pso_bush;
 
         ConfigManager.SaveSettings(settings);
         SceneManager.LoadScene("SettingsMenu");
@@ -129,21 +129,21 @@ public class MapGenerationMenu : MonoBehaviour
     {
         if (txt.Equals("Ground"))
         {
-            if (editorMG.pso_ground == null)
+            if (ntg.pso_ground == null)
             {
                 Debug.LogError("Editor Map Generator has not yet initialized its Perlin-Noise Settings Object");
             }
-            active_pso = editorMG.pso_ground;
+            active_pso = ntg.pso_ground;
             setValues();
             return;
         }
         if (txt.Equals("Bush"))
         {
-            if (editorMG.pso_bush == null)
+            if (ntg.pso_bush == null)
             {
                 Debug.LogError("Editor Map Generator has not yet initialized its Perlin-Noise Settings Object");
             }
-            active_pso = editorMG.pso_bush;
+            active_pso = ntg.pso_bush;
             setValues();
             return;
         }

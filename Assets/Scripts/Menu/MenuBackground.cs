@@ -1,11 +1,8 @@
-/*
- * 
- * Comment: This script is only for the EditorMapGeneration Scene
- */
-
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class EditorMapGenerator : MonoBehaviour
+public class MenuBackground : MonoBehaviour
 {
     // Width and height of the texture in pixels.
     [SerializeField] private int CELLS_HORIZONTAL;
@@ -19,8 +16,8 @@ public class EditorMapGenerator : MonoBehaviour
 
     private void Awake()
     {
-        CELLS_HORIZONTAL = Screen.width;
-        CELLS_VERTICAL = Screen.height;
+        CELLS_HORIZONTAL = Gamevariables.playgroundSize.x;
+        CELLS_VERTICAL = Gamevariables.playgroundSize.y;
 
         noiseTex = new Texture2D(CELLS_HORIZONTAL, CELLS_VERTICAL);
 
@@ -33,8 +30,5 @@ public class EditorMapGenerator : MonoBehaviour
     private void Update()
     {
         ntg.CalcNoise(noiseTex, CELLS_HORIZONTAL, CELLS_VERTICAL);
-        ntg.moveBy(new Vector2(1, 1));
     }
-
-
 }

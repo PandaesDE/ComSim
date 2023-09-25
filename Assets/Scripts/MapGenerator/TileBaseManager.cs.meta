@@ -3,7 +3,13 @@ guid: 891dc0a0c4378b5439da1e627994a6d5
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - tb_water: {fileID: 11400000, guid: 85605d0a35d2004469e8638b9b26ac88, type: 2}
+  - tb_sand: {fileID: 11400000, guid: 7c40233a9ed6cee44b64dc4a8fbacd28, type: 2}
+  - tb_grass: {fileID: 11400000, guid: d7ec156b01c43314889ab87e1b871a24, type: 2}
+  - tb_bush: {fileID: 11400000, guid: 9dde405f07f7bd348833cc255d9fe913, type: 2}
+  - tb_stone: {fileID: 11400000, guid: efc4eff3651153a4a845bafcffa5177b, type: 2}
+  - tb_snow: {fileID: 11400000, guid: 8943ab5d31be7f04285aac945e88b454, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

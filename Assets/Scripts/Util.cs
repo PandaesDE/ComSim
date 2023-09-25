@@ -122,10 +122,10 @@ public static class Util
     public static class MapGenerationHelper {
 
         //https://adrianb.io/2014/08/09/perlinnoise.html
-        public static float OctavePerlin(int xOffset, int yOffset, PerlinSettingsObject pso)
+        public static float OctavePerlin(float xOffset, float yOffset, PerlinSettingsObject pso)
         {
-            float x = pso.xOrg + (float)xOffset / pso.zoom;
-            float y = pso.yOrg + (float)yOffset / pso.zoom;
+            float x = pso.xOrg + xOffset / pso.zoom;
+            float y = pso.yOrg + yOffset / pso.zoom;
 
             float total = 0;
             float maxValue = 0;  // Used for normalizing result to 0.0 - 1.0
