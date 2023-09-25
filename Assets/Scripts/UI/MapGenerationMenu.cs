@@ -19,9 +19,6 @@ public class MapGenerationMenu : MonoBehaviour
     private EditorMapGenerator editorMG;
     private PerlinSettingsObject active_pso;
 
-    private int xOrg;
-    private int yOrg;
-
     private void Awake()
     {
         //https://discussions.unity.com/t/making-a-input-field-only-accepting-numbers/117245

@@ -23,7 +23,8 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] private TMP_InputField ipt_Boars;
     [SerializeField] private TMP_InputField ipt_Rabbits;
 
-    private string seed;
+    private string seedX = "";
+    private string seedY  = "";
 
     // Start is called before the first frame update
     private void Awake()
@@ -128,7 +129,6 @@ public class SettingsMenu : MonoBehaviour
         settings.Lion_Amount_Start = int.Parse(Util.UIHelper.preventNullOrEmptyInputNumber(ipt_Lions.text));
         settings.Boar_Amount_Start = int.Parse(Util.UIHelper.preventNullOrEmptyInputNumber(ipt_Boars.text));
         settings.Rabbit_Amount_Start = int.Parse(Util.UIHelper.preventNullOrEmptyInputNumber(ipt_Rabbits.text));
-        settings.Pso_Bush = 
         ConfigManager.SaveSettings(settings);
     }
 
