@@ -33,7 +33,6 @@ public class EditorMapGenerator : MonoBehaviour
     private void Update()
     {
         ntg.CalcNoise(noiseTex, CELLS_HORIZONTAL, CELLS_VERTICAL);
-        ntg.moveBy(new Vector2(1, 1));
     }
 
 

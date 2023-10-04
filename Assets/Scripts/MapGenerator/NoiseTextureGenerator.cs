@@ -11,13 +11,8 @@ public class NoiseTextureGenerator : MonoBehaviour
     [SerializeField] private GameObject stone;
     [SerializeField] private GameObject snow;
 
-
-
     public PerlinSettingsObject pso_ground;
     public PerlinSettingsObject pso_bush;
-
-    //animation Offset, used to move around the map in the background
-    private Vector2 offset = new Vector2(0, 0);
 
     //[SerializeField] private float blackToWhiteThreshold = .5f;
 
@@ -43,8 +38,8 @@ public class NoiseTextureGenerator : MonoBehaviour
             //Loop through the height of the map
             for (int y = 0; y < height; y++)
             {
-                float xOffset = (float)x + offset.x;
-                float yOffset = (float)y + offset.y;
+                float xOffset = (float)x;
+                float yOffset = (float)y;
                 tbm.sample_bush = Util.MapGenerationHelper.OctavePerlin(xOffset, yOffset, pso_bush);
                 tbm.sample_ground = Util.MapGenerationHelper.OctavePerlin(xOffset, yOffset, pso_ground);
 
@@ -55,11 +50,6 @@ public class NoiseTextureGenerator : MonoBehaviour
         // Copy the pixel data to the texture and load it into the GPU.
         noiseTex.SetPixels(pix);
         noiseTex.Apply();
-    }
-
-    public void moveBy(Vector2 offset)
-    {
-        this.offset += offset;
     }
 
     private Color getColor()
