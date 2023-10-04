@@ -8,8 +8,8 @@ using UnityEngine;
 public class EditorMapGenerator : MonoBehaviour
 {
     // Width and height of the texture in pixels.
-    [SerializeField] private int CELLS_HORIZONTAL;
-    [SerializeField] private int CELLS_VERTICAL;
+    private int CELLS_HORIZONTAL;
+    private int CELLS_VERTICAL;
 
     private Texture2D noiseTex;
 
@@ -30,7 +30,12 @@ public class EditorMapGenerator : MonoBehaviour
         rend.sprite = Sprite.Create(noiseTex, new Rect(0, 0, CELLS_HORIZONTAL, CELLS_VERTICAL), new Vector2(0.5f, 0.5f));
     }
 
-    private void Update()
+    private void Start()
+    {
+        renderTexture();
+    }
+
+    public void renderTexture()
     {
         ntg.CalcNoise(noiseTex, CELLS_HORIZONTAL, CELLS_VERTICAL);
     }

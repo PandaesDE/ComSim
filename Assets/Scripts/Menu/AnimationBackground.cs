@@ -46,6 +46,5 @@ public class AnimationBackground : MonoBehaviour
         if (!cameraManager.canMoveVerticalBy(speed.y))
             speed.y = -speed.y;
         cameraManager.moveBy(speed * Time.deltaTime);
-        Debug.Log(Time.deltaTime);
     }
 }
