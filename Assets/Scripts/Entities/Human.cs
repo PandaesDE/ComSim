@@ -25,7 +25,7 @@ public class Human : Creature
 
     protected override void Awake()
     {
-        gender gender = Util.getRandomGender();
+        gender gender = Util.Random.Gender();
         int health = 80;
         int weight = 80;
         float speed = .2f;

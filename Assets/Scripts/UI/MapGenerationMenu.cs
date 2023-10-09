@@ -92,7 +92,7 @@ public class MapGenerationMenu : MonoBehaviour
 
     private void changePersistence()
     {
-        if (!Util.UIHelper.isValidNumvericEntry(inp_Persistence.text)) return;
+        if (!Util.UI.isValidNumvericEntry(inp_Persistence.text)) return;
         active_pso.persistence = float.Parse(inp_Persistence.text);
         emg.renderTexture();
     }
@@ -100,35 +100,35 @@ public class MapGenerationMenu : MonoBehaviour
     private void changeFrequency()
     {
 
-        if (!Util.UIHelper.isValidNumvericEntry(inp_Frequency.text)) return;
+        if (!Util.UI.isValidNumvericEntry(inp_Frequency.text)) return;
         active_pso.frequency = float.Parse(inp_Frequency.text);
         emg.renderTexture();
     }
 
     private void changeOctaves()
     {
-        if (!Util.UIHelper.isValidNumvericEntry(inp_Octaves.text)) return;
+        if (!Util.UI.isValidNumvericEntry(inp_Octaves.text)) return;
         active_pso.octaves = int.Parse(inp_Octaves.text);
         emg.renderTexture();
     }
 
     private void changeAmplitude()
     {
-        if (!Util.UIHelper.isValidNumvericEntry(inp_Amplitude.text)) return;
+        if (!Util.UI.isValidNumvericEntry(inp_Amplitude.text)) return;
         active_pso.amplitude = float.Parse(inp_Amplitude.text);
         emg.renderTexture();
     }
 
     private void changeXOffset()
     {
-        if (!Util.UIHelper.isValidNumvericEntry(inp_X_Offset.text)) return;
+        if (!Util.UI.isValidNumvericEntry(inp_X_Offset.text)) return;
         active_pso.xOrg = float.Parse(inp_X_Offset.text);
         emg.renderTexture();
     }
 
     private void changeYOffset()
     {
-        if (!Util.UIHelper.isValidNumvericEntry(inp_Y_Offset.text)) return;
+        if (!Util.UI.isValidNumvericEntry(inp_Y_Offset.text)) return;
         active_pso.yOrg = float.Parse(inp_Y_Offset.text);
         emg.renderTexture();
     }

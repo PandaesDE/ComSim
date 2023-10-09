@@ -8,7 +8,7 @@ public class Lion : Creature
 
     protected override void Awake()
     {
-        gender gender = Util.getRandomGender();
+        gender gender = Util.Random.Gender();
         int health = 100;
         int weight = 80;
         float speed = .2f;

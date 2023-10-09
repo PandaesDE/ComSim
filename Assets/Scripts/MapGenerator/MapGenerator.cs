@@ -49,8 +49,8 @@ public class MapGenerator : MonoBehaviour
             //Loop through the height of the map
             for (int y = 0; y < CELLS_VERTICAL; y++)
             {
-                tbm.sample_ground = Util.MapGenerationHelper.OctavePerlin(x, y, Gamevariables.PSO_GROUND);
-                tbm.sample_bush = Util.MapGenerationHelper.OctavePerlin(x, y, Gamevariables.PSO_BUSH);
+                tbm.sample_ground = Util.MapGeneration.OctavePerlin(x, y, Gamevariables.PSO_GROUND);
+                tbm.sample_bush = Util.MapGeneration.OctavePerlin(x, y, Gamevariables.PSO_BUSH);
 
                 tbm.SetTile(new Vector2Int(x - CELLS_HORIZONTAL/2, y - CELLS_VERTICAL / 2));
             }

@@ -8,7 +8,7 @@ public class Boar : Creature
 
     protected override void Awake()
     {
-        gender gender = Util.getRandomGender();
+        gender gender = Util.Random.Gender();
         int health = 150;
         int weight = 130;
         float speed = .2f;

@@ -59,7 +59,7 @@ public abstract class Creature : MonoBehaviour
     protected virtual void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
-        target = Util.getRandomCoordinateInPlayground();
+        target = Util.Random.CoordinateInPlayground();
         tbm = GameObject.Find("Playground").GetComponent<TileBaseManager>();
 
         senses = new Senses(this);
@@ -134,7 +134,7 @@ public abstract class Creature : MonoBehaviour
     protected abstract bool isEdibleFoodSource(GameObject g);
     protected void AddFoodSource(GameObject food)
     {
-        Vector2Int foodCoords = Util.convertVector3ToVector2Int(food.transform.position);
+        Vector2Int foodCoords = Util.Conversion.Vector3ToVector2Int(food.transform.position);
         spottedFood[food.GetInstanceID()] = foodCoords;
     }
 
@@ -146,7 +146,7 @@ public abstract class Creature : MonoBehaviour
 
     protected void AddWaterSource(GameObject water)
     {
-        Vector2Int waterCoords = Util.convertVector3ToVector2Int(water.transform.position);
+        Vector2Int waterCoords = Util.Conversion.Vector3ToVector2Int(water.transform.position);
         spottedWater.Add(water.GetInstanceID(), waterCoords);
     }
 
@@ -164,7 +164,7 @@ public abstract class Creature : MonoBehaviour
     protected abstract bool isValidPartner(GameObject g);
     protected void AddPotentialMate(GameObject mate)
     {
-        Vector2Int mateCoords = Util.convertVector3ToVector2Int(mate.transform.position);
+        Vector2Int mateCoords = Util.Conversion.Vector3ToVector2Int(mate.transform.position);
         spottedMate[mate.GetInstanceID()] = mateCoords;
     }
 
@@ -234,7 +234,7 @@ public abstract class Creature : MonoBehaviour
 
     protected void CalculateNextSteps(Vector3 destination)
     {
-        Vector2 vect = Util.convertVector3ToVector2(destination - transform.position);
+        Vector2 vect = Util.Conversion.Vector3ToVector2(destination - transform.position);
 
         if (vect.x == 0 || vect.y == 0)
         {
@@ -291,7 +291,7 @@ public abstract class Creature : MonoBehaviour
 
     protected void setNewDestination()
     {
-        target = Util.getRandomCoordinateInPlayground();
+        target = Util.Random.CoordinateInPlayground();
         nextSteps = Vector2Int.zero;
     }
     #endregion

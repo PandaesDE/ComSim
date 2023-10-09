@@ -36,7 +36,7 @@ public class Spawner : MonoBehaviour
     {
         for (int i = 0; i < amount; i++)
         {
-            spawnAnimal(Util.getRandomAnimalType(), Util.getRandomCoordinateInPlayground());
+            spawnAnimal(Util.Random.AnimalType(), Util.Random.CoordinateInPlayground());
         }
     }
 
@@ -44,7 +44,7 @@ public class Spawner : MonoBehaviour
     {
         for (int i = 0; i < amount; i++)
         {
-            spawnAnimal(animalType.BOAR, Util.getRandomCoordinateInPlayground());
+            spawnAnimal(animalType.BOAR, Util.Random.CoordinateInPlayground());
         }
     }
 
@@ -52,7 +52,7 @@ public class Spawner : MonoBehaviour
     {
         for (int i = 0; i < amount; i++)
         {
-            spawnAnimal(animalType.RABBIT, Util.getRandomCoordinateInPlayground());
+            spawnAnimal(animalType.RABBIT, Util.Random.CoordinateInPlayground());
         }
     }
 
@@ -60,7 +60,7 @@ public class Spawner : MonoBehaviour
     {
         for (int i = 0; i < amount; i++)
         {
-            spawnAnimal(animalType.LION, Util.getRandomCoordinateInPlayground());
+            spawnAnimal(animalType.LION, Util.Random.CoordinateInPlayground());
         }
     }
 
@@ -96,7 +96,7 @@ public class Spawner : MonoBehaviour
     }
     public Human spawnHuman(Vector2 c)
     {
-        return spawnHuman((int)c.x, (int)c.y, Util.getRandomGender());
+        return spawnHuman((int)c.x, (int)c.y, Util.Random.Gender());
     }
 
     public Human spawnHuman(int posX, int posY, gender g)

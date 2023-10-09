@@ -33,8 +33,8 @@ public class NoiseTextureGenerator : MonoBehaviour
             {
                 float xOffset = (float)x;
                 float yOffset = (float)y;
-                tbm.sample_bush = Util.MapGenerationHelper.OctavePerlin(xOffset, yOffset, pso_bush);
-                tbm.sample_ground = Util.MapGenerationHelper.OctavePerlin(xOffset, yOffset, pso_ground);
+                tbm.sample_bush = Util.MapGeneration.OctavePerlin(xOffset, yOffset, pso_bush);
+                tbm.sample_ground = Util.MapGeneration.OctavePerlin(xOffset, yOffset, pso_ground);
 
                 pix[(int)y * width + (int)x] = tbm.getColor();
             }

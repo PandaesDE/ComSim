@@ -5,28 +5,6 @@ using UnityEngine;
 
 public static class Util
 {
-
-    public static gender getRandomGender()
-    {
-        int r = UnityEngine.Random.Range(0, 2);
-        if (r < 1) return gender.MALE;
-        return gender.FEMALE;
-    }
-
-    public static Vector2 getRandomCoordinateInPlayground()
-    {
-        int halfW = Gamevariables.playgroundSize.x / 2;
-        int halfH = Gamevariables.playgroundSize.y / 2;
-        return new Vector2(UnityEngine.Random.Range(-halfW, halfW), UnityEngine.Random.Range(-halfH, halfH));
-    }
-
-    public static animalType getRandomAnimalType()
-    {
-        System.Array vals = System.Enum.GetValues(typeof(animalType));
-        int i = UnityEngine.Random.Range(0, vals.Length);
-        return (animalType)vals.GetValue(i);
-    }
-
     public static bool isDestinationReached(Vector2 position, Vector2 destination, int errorVal = 1)
     {
         return
@@ -34,16 +12,6 @@ public static class Util
             position.x < destination.x + errorVal &&
             position.y > destination.y - errorVal &&
             position.y < destination.y + errorVal;
-    }
-
-    public static Vector2Int convertVector3ToVector2Int(Vector3 v)
-    {
-        return new Vector2Int((int)v.x, (int)v.y);
-    }
-
-    public static Vector2 convertVector3ToVector2(Vector3 v)
-    {
-        return new Vector2(v.x, v.y);
     }
 
     public static List<System.Type> getFoodList(foodType ft, System.Type self)
@@ -95,7 +63,51 @@ public static class Util
         }
     }
 
-    public static class UIHelper
+    public static class Random
+    {
+        public static gender Gender()
+        {
+            int r = UnityEngine.Random.Range(0, 2);
+            if (r < 1) return gender.MALE;
+            return gender.FEMALE;
+        }
+
+        public static Vector2 CoordinateInPlayground()
+        {
+            int halfW = Gamevariables.playgroundSize.x / 2;
+            int halfH = Gamevariables.playgroundSize.y / 2;
+            return new Vector2(UnityEngine.Random.Range(-halfW, halfW), UnityEngine.Random.Range(-halfH, halfH));
+        }
+
+        public static animalType AnimalType()
+        {
+            System.Array vals = System.Enum.GetValues(typeof(animalType));
+            int i = UnityEngine.Random.Range(0, vals.Length);
+            return (animalType)vals.GetValue(i);
+        }
+    }
+
+    public static class Conversion
+    {
+        public static Vector2Int Vector3ToVector2Int(Vector3 v)
+        {
+            return new Vector2Int((int)v.x, (int)v.y);
+        }
+
+        public static Vector2 Vector3ToVector2(Vector3 v)
+        {
+            return new Vector2(v.x, v.y);
+        }
+
+        public static Vector2 SeedToCoordinates(string seed)
+        {
+            int range = 10000;
+            return new Vector2(seed.GetHashCode() % range,
+                                 seed.GetHashCode() % range);
+        }
+    }
+
+    public static class UI
     {
         public static string preventNullOrEmptyInputString(string txt)
         {
@@ -119,7 +131,7 @@ public static class Util
         }
     }
 
-    public static class MapGenerationHelper {
+    public static class MapGeneration {
 
         //https://adrianb.io/2014/08/09/perlinnoise.html
         public static float OctavePerlin(float xOffset, float yOffset, PerlinSettingsObject pso)
@@ -145,16 +157,4 @@ public static class Util
             return Mathf.Clamp(total / maxValue, 0, 1);
         }
     }
-
-    public static class SeedHelper {
-        private static int range = 10000;
-
-        public static Vector2 convertSeedToCoordinates(string seed)
-        {
-            return new Vector2(  seed.GetHashCode() % range,
-                                 seed.GetHashCode() % range);
-        }
-    }
-
-    
 }

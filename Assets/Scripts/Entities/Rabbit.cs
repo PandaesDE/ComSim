@@ -8,7 +8,7 @@ public class Rabbit : Creature
 
     protected override void Awake()
     {
-        gender gender = Util.getRandomGender();
+        gender gender = Util.Random.Gender();
         int health = 45;
         int weight = 30;
         float speed = .2f;

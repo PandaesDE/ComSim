@@ -38,7 +38,7 @@ public class SettingsMenu : MonoBehaviour
     {
         if (!ipt_Seed.isFocused) return;
 
-        Vector2 coords = Util.SeedHelper.convertSeedToCoordinates(ipt_Seed.text);
+        Vector2 coords = Util.Conversion.SeedToCoordinates(ipt_Seed.text);
         ipt_X_Offset.text = "" + coords.x;
         ipt_Y_Offset.text = "" + coords.y;
     }
@@ -77,13 +77,13 @@ public class SettingsMenu : MonoBehaviour
     private void saveSettings()
     {
         ConfigManager.SettingsData settings = ConfigManager.ReadSettings();
-        settings.Seed =                 Util.UIHelper.preventNullOrEmptyInputString(ipt_Seed.text);
-        settings.Human_Amount_Start =   int.Parse(Util.UIHelper.preventNullOrEmptyInputNumber(ipt_Humans.text));
-        settings.Lion_Amount_Start =    int.Parse(Util.UIHelper.preventNullOrEmptyInputNumber(ipt_Lions.text));
-        settings.Boar_Amount_Start =    int.Parse(Util.UIHelper.preventNullOrEmptyInputNumber(ipt_Boars.text));
-        settings.Rabbit_Amount_Start =  int.Parse(Util.UIHelper.preventNullOrEmptyInputNumber(ipt_Rabbits.text));
-        settings.Pso_Ground.xOrg =      float.Parse(Util.UIHelper.preventNullOrEmptyInputNumber(ipt_X_Offset.text));
-        settings.Pso_Ground.yOrg =      float.Parse(Util.UIHelper.preventNullOrEmptyInputNumber(ipt_Y_Offset.text));
+        settings.Seed =                 Util.UI.preventNullOrEmptyInputString(ipt_Seed.text);
+        settings.Human_Amount_Start =   int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Humans.text));
+        settings.Lion_Amount_Start =    int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Lions.text));
+        settings.Boar_Amount_Start =    int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Boars.text));
+        settings.Rabbit_Amount_Start =  int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Rabbits.text));
+        settings.Pso_Ground.xOrg =      float.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_X_Offset.text));
+        settings.Pso_Ground.yOrg =      float.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Y_Offset.text));
         ConfigManager.SaveSettings(settings);
     }
 
