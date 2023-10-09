@@ -9,11 +9,11 @@ public class Lion : Creature
     protected override void Awake()
     {
         gender gender = Util.getRandomGender();
-        int health = 150;
-        int weight = 130;
+        int health = 100;
+        int weight = 80;
         float speed = .2f;
         initAttributes(gender, health, weight, speed);
-        foodTypes = Util.getFoodList(foodType.CARNIVORE, typeof(Lion));
+        foodTypes = Util.getFoodList(foodType.CARNIVORE, GetType());
 
         base.Awake();
     }
@@ -29,10 +29,29 @@ public class Lion : Creature
         }
     }
 
-    protected override void initFoodTypes()
+    /*Gets called by Parent*/
+    protected override bool isValidPartner(GameObject g)
     {
-        Senses s = transform.GetChild(0).GetComponent<Senses>();
-        s.setFoodTypes(foodTypes);
+        Human partner = g.GetComponent<Human>();
+
+        if (partner == null) return false;
+        return isGenericMate(partner);
     }
 
+    protected override bool isEdibleFoodSource(GameObject g)
+    {
+        if (foodTypes == null)
+        {
+            Debug.LogError("Creature did not initialize FoodSources");
+        }
+
+        foreach (System.Type efs in foodTypes)
+        {
+            if (g.GetType() == efs)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

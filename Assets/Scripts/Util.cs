@@ -50,7 +50,7 @@ public static class Util
     {
         List<System.Type> herbivore = new()
         {
-
+            typeof(Bush)
         };
 
         List<System.Type> carnivore = new()
@@ -61,6 +61,10 @@ public static class Util
             typeof(Rabbit)
         };
 
+        //exclude self from foodlist
+        if (carnivore.Contains(self))
+            carnivore.Remove(self);
+
         List<System.Type> omnivore = new();
         omnivore.AddRange(herbivore);
         omnivore.AddRange(carnivore);
@@ -68,17 +72,13 @@ public static class Util
         if (ft == foodType.HERBIVORE)
             return herbivore;
 
-        //exclude self from foodlist
-        if (carnivore.Contains(self))
-            carnivore.Remove(self);
-
         if (ft == foodType.CARNIVORE)
             return carnivore;
 
         if (ft == foodType.OMNIVORE)
             return omnivore;
 
-        Debug.LogError("Something went wrong in Util.geetFoodList");
+        Debug.LogError("Something went wrong in Util.getFoodList");
         return null;
     }
 

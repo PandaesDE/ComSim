@@ -4,13 +4,6 @@ using UnityEngine;
 
 public class NoiseTextureGenerator : MonoBehaviour
 {
-    [SerializeField] private GameObject water;
-    [SerializeField] private GameObject sand;
-    [SerializeField] private GameObject grass;
-    [SerializeField] private GameObject bush;
-    [SerializeField] private GameObject stone;
-    [SerializeField] private GameObject snow;
-
     public PerlinSettingsObject pso_ground;
     public PerlinSettingsObject pso_bush;
 
@@ -43,25 +36,13 @@ public class NoiseTextureGenerator : MonoBehaviour
                 tbm.sample_bush = Util.MapGenerationHelper.OctavePerlin(xOffset, yOffset, pso_bush);
                 tbm.sample_ground = Util.MapGenerationHelper.OctavePerlin(xOffset, yOffset, pso_ground);
 
-                pix[(int)y * width + (int)x] = getColor();
+                pix[(int)y * width + (int)x] = tbm.getColor();
             }
         }
 
         // Copy the pixel data to the texture and load it into the GPU.
         noiseTex.SetPixels(pix);
         noiseTex.Apply();
-    }
-
-    private Color getColor()
-    {
-        TileBaseManager.tileType t = tbm.getTileType();
-        if (t == TileBaseManager.tileType.WATER) return water.GetComponent<SpriteRenderer>().color;
-        if (t == TileBaseManager.tileType.SAND) return sand.GetComponent<SpriteRenderer>().color;
-        if (t == TileBaseManager.tileType.BUSH) return bush.GetComponent<SpriteRenderer>().color;
-        if (t == TileBaseManager.tileType.GRASS) return grass.GetComponent<SpriteRenderer>().color;
-        if (t == TileBaseManager.tileType.STONE) return stone.GetComponent<SpriteRenderer>().color;
-        if (t == TileBaseManager.tileType.SNOW) return snow.GetComponent<SpriteRenderer>().color;
-        return Color.magenta;
     }
 
 }

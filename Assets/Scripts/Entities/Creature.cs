@@ -21,32 +21,32 @@ public abstract class Creature : MonoBehaviour
 
 
     //States
-    protected bool awake = true;
+    public bool awake = true;
 
     //Physics
     protected Rigidbody2D rb2D;
 
     //Map
-    private Tilemap tilemap;
     protected TileBaseManager tbm;
 
     //Brain
-    [SerializeField] protected Dictionary<int, Vector2Int> spottedFood;
-    [SerializeField] protected Dictionary<int, Vector2Int> spottedWater;
-    [SerializeField] protected Dictionary<int, Vector2Int> spottedMate;
+    protected Senses senses;
+    [SerializeField] protected Dictionary<int, Vector2> spottedFood;
+    [SerializeField] protected Dictionary<int, Vector2> spottedWater;
+    [SerializeField] protected Dictionary<int, Vector2> spottedMate;
 
     //Movement
     [SerializeField] protected Vector2 target;
     [SerializeField] protected Vector2Int nextSteps = Vector2Int.zero;
-    [SerializeField] protected direction facing;
-    [SerializeField] private float leftOverSpeed = 0;   //in between moves
+    [SerializeField] public Direction facing;
+    [SerializeField] private float leftOverSteps = 0;   //in between moves
 
     //Needs
     [SerializeField] public float hunger = 100f;
     [SerializeField] public float thirst = 100f;
 
 
-    protected enum direction
+    public enum Direction
     {
         NORTH,
         EAST,
@@ -60,14 +60,12 @@ public abstract class Creature : MonoBehaviour
     {
         rb2D = GetComponent<Rigidbody2D>();
         target = Util.getRandomCoordinateInPlayground();
-        tilemap = GameObject.Find("Playground/Grid/Tilemap").GetComponent<Tilemap>();
         tbm = GameObject.Find("Playground").GetComponent<TileBaseManager>();
 
-        spottedFood = new Dictionary<int, Vector2Int>();
-        spottedWater = new Dictionary<int, Vector2Int>();
-        spottedMate = new Dictionary<int, Vector2Int>();
-
-        initFoodTypes();
+        senses = new Senses(this);
+        spottedFood = new Dictionary<int, Vector2>();
+        spottedWater = new Dictionary<int, Vector2>();
+        spottedMate = new Dictionary<int, Vector2>();
     }
 
     protected virtual void FixedUpdate()
@@ -89,45 +87,93 @@ public abstract class Creature : MonoBehaviour
     }
 
     #region Brain
-    public void AddFoodSource(GameObject food)
+    protected void evaluateVision()
+    {
+        if (!awake) return;
+        Vector2[] visionCoordinates = senses.getVisionCoordinates();
+        for (int i = 0; i < visionCoordinates.Length; i++)
+        {
+            Vector2 coord = visionCoordinates[i];
+            Collider2D[] overlaps = Physics2D.OverlapCircleAll(coord, .49f);
+            for (int overlapIndex = 0; overlapIndex < overlaps.Length; overlapIndex++)
+            {
+                GameObject g = overlaps[overlapIndex].gameObject;
+                Debug.Log(g);
+                /* If self, or Another Vision Collidor -> do nothing*/
+                if (g == gameObject) return;
+
+
+                /* Potential Partner */
+                if (isValidPartner(g))
+                {
+                    AddPotentialMate(g);
+                    continue;
+                }
+
+                /* Potential Food */
+                if (isEdibleFoodSource(g))
+                {
+                    AddFoodSource(g);
+                    continue;
+                }
+
+                /* Potential Map Water*/
+                if (spottedWater.ContainsValue(coord)) continue;
+                if (tbm.isWater(g))
+                {
+                    AddWaterSource(g);
+                    continue;
+                }
+
+                //Debug.LogError("spotted unknown gameobject: " + g);
+            }
+            
+        }
+    }
+
+    protected abstract bool isEdibleFoodSource(GameObject g);
+    protected void AddFoodSource(GameObject food)
     {
         Vector2Int foodCoords = Util.convertVector3ToVector2Int(food.transform.position);
         spottedFood[food.GetInstanceID()] = foodCoords;
     }
 
-    public void RemoveFoodSource(int ID)
+    protected void RemoveFoodSource(int ID)
     {
         if (spottedFood.ContainsKey(ID))
             spottedFood.Remove(ID);
     }
 
-    public void AddWaterSource(GameObject water)
+    protected void AddWaterSource(GameObject water)
     {
         Vector2Int waterCoords = Util.convertVector3ToVector2Int(water.transform.position);
-        spottedWater[water.GetInstanceID()] = waterCoords;
+        spottedWater.Add(water.GetInstanceID(), waterCoords);
     }
 
-    public void RemoveWaterSource(int ID)
+    protected void RemoveWaterSource(int ID)
     {
         if (spottedWater.ContainsKey(ID))
             spottedWater.Remove(ID);
     }
 
-    public void AddPotentialMate(GameObject mate)
+    protected bool isGenericMate(Creature partner)
+    {
+        return gender != partner.gender;
+    }
+
+    protected abstract bool isValidPartner(GameObject g);
+    protected void AddPotentialMate(GameObject mate)
     {
         Vector2Int mateCoords = Util.convertVector3ToVector2Int(mate.transform.position);
         spottedMate[mate.GetInstanceID()] = mateCoords;
     }
 
-    public void RemovePotentialMate(int ID)
+    protected void RemovePotentialMate(int ID)
     {
         if (spottedMate.ContainsKey(ID))
             spottedMate.Remove(ID);
     }
 
-
-
-    protected abstract void initFoodTypes();
 
     #endregion
 
@@ -136,29 +182,15 @@ public abstract class Creature : MonoBehaviour
         target = coord;
     }
 
-    protected TileBase GetTile(Vector3 coord)
-    {
-        return GetTile(new Vector3Int((int)coord.x, (int)coord.y, (int)coord.z));
-    }
-
-    protected TileBase GetTile(Vector3Int coord)
-    {
-        if (tilemap.GetTile(coord) != null)
-            return tilemap.GetTile(coord);
-
-        Debug.LogError("Something went Wrong Creature.GetTile()");
-        return null;
-    }
-
     #region Movement
     /*  Movement is relative to the fixed update
         - which means that increasing the tickrate, will result in faster movement, but not faster hunger, thirst and day night cycle
      */
     protected void MoveToTarget()
     {
-        float theoreticalMoves = speed * Gamevariables.MINUTES_PER_TICK + leftOverSpeed;
+        float theoreticalMoves = speed * Gamevariables.MINUTES_PER_TICK + leftOverSteps;
         int moves = (int)theoreticalMoves;
-        leftOverSpeed = theoreticalMoves - moves;
+        leftOverSteps = theoreticalMoves - moves;
 
         for (int i = 0; i < moves; i++)
         {
@@ -174,25 +206,29 @@ public abstract class Creature : MonoBehaviour
                 CalculateNextSteps(target);
 
             if (Mathf.Abs(nextSteps.x) > Mathf.Abs(nextSteps.y))
+            {
+                if (nextSteps.x > 0)
                 {
-                    if (nextSteps.x > 0)
-                    {
-                        StepTo(direction.EAST);
-                    } else
-                    {
-                        StepTo(direction.WEST);
-                    }
-                }
-                else
+                    facing = Direction.EAST;
+                    MakeStep();
+                } else
                 {
-                    if (nextSteps.y > 0)
-                    {
-                        StepTo(direction.NORTH);
-                    } else
-                    {
-                        StepTo(direction.SOUTH);
-                    }
+                    facing = Direction.WEST;
+                    MakeStep();
                 }
+            }
+            else
+            {
+                if (nextSteps.y > 0)
+                {
+                    facing = Direction.NORTH;
+                    MakeStep();
+                } else
+                {
+                    facing = Direction.SOUTH;
+                    MakeStep();
+                }
+            }
         }
     }
 
@@ -221,30 +257,30 @@ public abstract class Creature : MonoBehaviour
         }
     }
 
-    protected void StepTo(direction dir)
+    protected void MakeStep()
     {
-        if (dir == direction.NORTH)
+        if (facing == Direction.NORTH)
         {
             nextSteps -= Vector2Int.up;
             transform.position += Vector3.up;
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
             return;
         }
-        if (dir == direction.EAST)
+        if (facing == Direction.EAST)
         {
             nextSteps -= Vector2Int.right;
             transform.position += Vector3.right;
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.right);
             return;
         }
-        if (dir == direction.SOUTH)
+        if (facing == Direction.SOUTH)
         {
             nextSteps -= Vector2Int.down;
             transform.position += Vector3.down;
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.down);
             return;
         }
-        if (dir == direction.WEST)
+        if (facing == Direction.WEST)
         {
             nextSteps -= Vector2Int.left;
             transform.position += Vector3.left;
@@ -308,7 +344,7 @@ public abstract class Creature : MonoBehaviour
     protected void drink(float addPerMinute = 20f)
     {
         float add = addPerMinute * (float)Gamevariables.MINUTES_PER_HOUR * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
-        if (tbm.isWater(GetTile(transform.position)))
+        //if (tbm.isWater(GetTile(transform.position)))
         {
             thirst = Mathf.Clamp(thirst + add, 0, MAX_THIRST);
         }
@@ -367,7 +403,16 @@ public abstract class Creature : MonoBehaviour
         c.setWeight(weight);
 
         GetComponent<Creature>().enabled = false;
-        transform.GetChild(0).GetComponent<Senses>().enabled = false;
     }
+
+    ////DEBUG - REMOVE
+    //private void OnDrawGizmos()
+    //{
+    //    Vector2[] va = senses.getVisionCoordinates();
+    //    foreach(Vector2 v in va)
+    //    {
+    //        Gizmos.DrawSphere(v, .5f);
+    //    }
+    //}
 
 }

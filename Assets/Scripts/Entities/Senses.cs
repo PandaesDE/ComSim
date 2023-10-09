@@ -12,88 +12,73 @@ using UnityEngine;
  *  https://www.youtube.com/watch?v=xp37Hz1t1Q8
  */
 
-public class Senses : MonoBehaviour
+public class Senses
 {
     private Creature creature;
-    private System.Type myType;
-    private List<System.Type> edibleFoodSources;
 
+    private static readonly int VISION_DISTANCE = 15;
+    private static readonly int VISION_WIDTH = 7;
 
-    private void Awake()
+    public Senses(Creature creature)
     {
-        creature = GetComponentInParent<Creature>();
-        myType = getType(transform.parent.gameObject);
-    }
+        this.creature = creature;
+    }    
 
-    private void OnTriggerEnter2D(Collider2D other)
+    public Vector2[] getVisionCoordinates()
     {
-        /* If self, or Another Vision Collidor -> do nothing*/
-        if (other.gameObject == gameObject || other.gameObject.layer == LayerMask.NameToLayer("Vision")) return;
+        Vector2[] vc = new Vector2[VISION_DISTANCE * VISION_WIDTH];
+        
 
-
-        /* Potential Partner */
-        if (myType == getType(other.gameObject))
+        switch (creature.facing)
         {
-            creature.AddPotentialMate(other.gameObject);
-            return;
+            case Creature.Direction.NORTH:
+                for (int i = 0; i < VISION_DISTANCE; i++)
+                {
+                    for (int j = 0; j < VISION_WIDTH; j++)
+                    {
+                        vc[j + VISION_WIDTH * i] = new Vector2(
+                            creature.transform.position.x + j - (VISION_WIDTH/2),
+                            creature.transform.position.y + i
+                        );
+                    }
+                }
+                return vc;
+            case Creature.Direction.EAST:
+                for (int i = 0; i < VISION_DISTANCE; i++)
+                {
+                    for (int j = 0; j < VISION_WIDTH; j++)
+                    {
+                        vc[j + VISION_WIDTH * i] = new Vector2(
+                            creature.transform.position.x + i,
+                            creature.transform.position.y + j - (VISION_WIDTH / 2)
+                        );
+                    }
+                }
+                return vc;
+            case Creature.Direction.SOUTH:
+                for (int i = 0; i < VISION_DISTANCE; i++)
+                {
+                    for (int j = 0; j < VISION_WIDTH; j++)
+                    {
+                        vc[j + VISION_WIDTH * i] = new Vector2(
+                            creature.transform.position.x + j - (VISION_WIDTH / 2),
+                            creature.transform.position.y - i
+                        );
+                    }
+                }
+                return vc;
+            default: //WEST
+                for (int i = 0; i < VISION_DISTANCE; i++)
+                {
+                    for (int j = 0; j < VISION_WIDTH; j++)
+                    {
+                        vc[j + VISION_WIDTH * i] = new Vector2(
+                            creature.transform.position.x - i,
+                            creature.transform.position.y + j - (VISION_WIDTH / 2)
+                        );
+                    }
+                }
+                return vc;
         }
-
-        /* Potential Food */
-        if (isEdibleFoodSource(other.gameObject))
-        {
-            creature.AddFoodSource(other.gameObject);
-            return;
-        }
-
-        /* Water Source */
-        //TODO
     }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        /* If self, or Another Vision Collidor -> do nothing*/
-        if (other.gameObject == gameObject || other.gameObject.layer == LayerMask.NameToLayer("Vision")) return;
-
-        if (true)
-        {
-
-        }
-    }
-
-    public void setFoodTypes(List<System.Type> foodTypes)
-    {
-        edibleFoodSources = foodTypes;
-    }
-
-    private System.Type getType(GameObject g)
-    {
-        if (g.GetComponent<Human>() != null)
-            return typeof(Human);
-            
-
-        if (g.GetComponent<Boar>() != null)
-            return typeof(Boar);
-
-        return null;
-    }
-
-
-
-    private bool isEdibleFoodSource(GameObject g)
-    {
-        System.Type gType = getType(g);
-        if (edibleFoodSources == null)
-        {
-            Debug.Log("TEST");
-        }
-        foreach (System.Type efs in edibleFoodSources)
-        {
-            if (gType == efs)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
 }

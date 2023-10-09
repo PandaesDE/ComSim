@@ -3765,7 +3765,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e225e53924c96284da1c7248d784a308, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilemap: {fileID: 1939928361}
   tbm: {fileID: 0}
 --- !u!212 &1078496219
 SpriteRenderer:
@@ -3831,6 +3830,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 891dc0a0c4378b5439da1e627994a6d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tilemap: {fileID: 1939928361}
   tb_water: {fileID: 11400000, guid: 85605d0a35d2004469e8638b9b26ac88, type: 2}
   tb_sand: {fileID: 11400000, guid: 7c40233a9ed6cee44b64dc4a8fbacd28, type: 2}
   tb_grass: {fileID: 11400000, guid: d7ec156b01c43314889ab87e1b871a24, type: 2}

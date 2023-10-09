@@ -16,7 +16,6 @@ public class MapGenerator : MonoBehaviour
     private int CELLS_VERTICAL;
 
     //Tilemap
-    public Tilemap tilemap;
     public TileBaseManager tbm;
 
     // The number of cycles of the basic noise pattern that are repeated
@@ -43,7 +42,7 @@ public class MapGenerator : MonoBehaviour
     private void RenderTileMap()
     {
         //Clear the map (ensures we dont overlap)
-        tilemap.ClearAllTiles();
+        tbm.ClearAllTiles();
         //Loop through the width of the map
         for (int x = 0; x < CELLS_HORIZONTAL; x++)
         {
@@ -53,7 +52,7 @@ public class MapGenerator : MonoBehaviour
                 tbm.sample_ground = Util.MapGenerationHelper.OctavePerlin(x, y, Gamevariables.PSO_GROUND);
                 tbm.sample_bush = Util.MapGenerationHelper.OctavePerlin(x, y, Gamevariables.PSO_BUSH);
 
-                tilemap.SetTile(new Vector3Int(x - CELLS_HORIZONTAL/2, y - CELLS_VERTICAL / 2, 0), tbm.getTileBase());
+                tbm.SetTile(new Vector2Int(x - CELLS_HORIZONTAL/2, y - CELLS_VERTICAL / 2));
             }
         }
     }

@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class Human : Creature
 {
-    [SerializeField] private Sprite spr_Male;
-    [SerializeField] private Sprite spr_Female;
-
     //[SerializeField] private int age = 0;
 
     /*
@@ -20,20 +17,36 @@ public class Human : Creature
             - ONE HUMAN PREFAB
             - ON INSTANTIATION SETS SPRITE
      */
+
+    [SerializeField] private Sprite spr_Male;
+    [SerializeField] private Sprite spr_Female;
+
     [SerializeField] List<System.Type> foodTypes;
 
     protected override void Awake()
     {
         gender gender = Util.getRandomGender();
-        int health = 150;
-        int weight = 130;
+        int health = 80;
+        int weight = 80;
         float speed = .2f;
 
         initAttributes(gender, health, weight, speed);
         initSprite();
-        foodTypes = Util.getFoodList(foodType.CARNIVORE, typeof(Human));
+        foodTypes = Util.getFoodList(foodType.OMNIVORE, GetType());
 
         base.Awake();
+
+        void initSprite()
+        {
+            if (gender == gender.MALE)
+            {
+                GetComponent<SpriteRenderer>().sprite = spr_Male;
+            }
+            else
+            {
+                GetComponent<SpriteRenderer>().sprite = spr_Female;
+            }
+        }
     }
 
     protected override void FixedUpdate()
@@ -42,29 +55,34 @@ public class Human : Creature
         if (awake)
         {
             MoveToTarget();
-
+            evaluateVision();
             drink();
         }
     }
 
     /*Gets called by Parent*/
-    protected override void initFoodTypes()
+    protected override bool isValidPartner(GameObject g)
     {
-        Senses s = transform.GetChild(0).GetComponent<Senses>();
-        s.setFoodTypes(foodTypes);
+        Human partner = g.GetComponent<Human>();
+        
+        if (partner == null) return false;
+        return isGenericMate(partner);
     }
 
-    private void initSprite()
+    protected override bool isEdibleFoodSource(GameObject g)
     {
-        if (gender == gender.MALE)
+        if (foodTypes == null)
         {
-            GetComponent<SpriteRenderer>().sprite = spr_Male;
-        } else
-        {
-            GetComponent<SpriteRenderer>().sprite = spr_Female;
+            Debug.LogError("Creature did not initialize FoodSources");
         }
+
+        foreach (System.Type efs in foodTypes)
+        {
+            if (g.GetType() == efs)
+            {
+                return true;
+            }
+        }
+        return false;
     }
-
-
-
 }
