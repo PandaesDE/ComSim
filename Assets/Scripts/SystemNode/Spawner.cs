@@ -14,6 +14,7 @@
  *      
  */
 
+using System.Collections;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
@@ -25,6 +26,17 @@ public class Spawner : MonoBehaviour
 
     private void Start()
     {
+        StartCoroutine(spawnEntitiesAfterTime(.1f));
+    }
+
+    /*  There is no particular reason to spawn all Entities after a given Time, the only reason why it's implemented that way,
+     *  is the fact that without it the "evaluateVision" function within Creature.cs captures all Tilemap gameobjects with a 2DCollider.
+     *  The reason for that is probably that all colliders are at position 0,0 from the start before the map got initialized.
+     *  A wait for map initialized method did not work out as planed and so waiting to spawn all Entities seemed to be the most reliable and realistic way to go around this issue.
+     */
+    IEnumerator spawnEntitiesAfterTime(float time)
+    {
+        yield return new WaitForSeconds(time);
         spawnHumans(Gamevariables.HUMAN_AMOUNT_START);
         spawnLions(Gamevariables.LION_AMOUNT_START);
         spawnBoars(Gamevariables.BOAR_AMOUNT_START);
