@@ -30,6 +30,14 @@ public class Bush : MonoBehaviour, IConsumable
         }
     }
 
+    public bool hasFood
+    {
+        get
+        {
+            return berries > 0;
+        }
+    }
+
     [SerializeField] private int berry_grow_minutes = 0;
     private int berries;
 

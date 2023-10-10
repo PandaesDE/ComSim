@@ -68,16 +68,7 @@ public class Human : Creature
         {
             MoveToTarget();
             evaluateVision();
-
-            /*if (hunger <= 20)
-            {
-                IConsumable food = getNearestFoodSource();
-                target = food.gameObject.transform.position;
-                if (Util.isDestinationReached(transform.position, target))
-                {
-                    food.Consume();
-                }
-            }*/
+            makeStatusBasedMove();
         }
     }
 

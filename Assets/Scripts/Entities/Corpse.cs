@@ -38,6 +38,14 @@ public class Corpse : MonoBehaviour, IConsumable
         }
     }
 
+    public bool hasFood
+    {
+        get
+        {
+            return true;
+        }
+    }
+
     private void Awake()
     {
         decayMinutes = decayDays * Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR;

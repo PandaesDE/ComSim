@@ -45,8 +45,13 @@ public abstract class Creature : MonoBehaviour
     protected TileBaseManager tbm;
 
     //Brain
+    protected Status mission = Status.WANDERING;
     protected Senses senses;
+    private readonly int MINUTES_UNTIL_STATUS_DETERMINING = 60;
+    private int minutes_left_until_status_determining = 0;
+
     [SerializeField] protected Dictionary<int, IConsumable> spottedFood;
+    [SerializeField] protected IConsumable activeFood;
     [SerializeField] protected Dictionary<int, Vector2> spottedWater;
     [SerializeField] protected Dictionary<int, Vector2> spottedMate;
 
@@ -69,6 +74,17 @@ public abstract class Creature : MonoBehaviour
         WEST
     }
 
+    protected enum Status
+    {
+        FLEEING,
+        STARVING,
+        HUNGRY,
+        DEHYDRATED,
+        THIRSTY,
+        HUNTING,
+        LOOKING_FOR_PARTNER,
+        WANDERING
+    }
 
 
     protected virtual void Awake()
@@ -144,6 +160,85 @@ public abstract class Creature : MonoBehaviour
         }
     }
 
+    protected void determineStatus()
+    {
+        int normal_cap = 80;
+        int important_cap = 20;
+
+        //has a Mission, Check for important Missions
+        if (hunger <= important_cap)
+        {
+            mission = Status.STARVING;
+            activeFood = getNearestFoodSource();
+            target = activeFood.gameObject.transform.position;
+            return;
+        }
+        if (thirst <= important_cap)
+        {
+            mission = Status.DEHYDRATED;
+            return;
+        }
+        if (hunger <= normal_cap)
+        {
+            mission = Status.HUNGRY;
+            activeFood = getNearestFoodSource();
+            target = activeFood.gameObject.transform.position;
+            return;
+        }
+        if (thirst <= normal_cap)
+        {
+            mission = Status.THIRSTY;
+            return;
+        }
+
+        mission = Status.WANDERING;
+    }
+
+    protected void makeStatusBasedMove()
+    {
+        //automatic check over time for more important task
+        if (minutes_left_until_status_determining <= 0)
+        {
+            determineStatus();
+            minutes_left_until_status_determining = MINUTES_UNTIL_STATUS_DETERMINING;
+        }
+        //always search for a more important task than default
+        else if (mission == Status.WANDERING)
+        {
+            determineStatus();
+        }
+        else
+        {
+            minutes_left_until_status_determining -= Gamevariables.MINUTES_PER_TICK;
+        }
+
+        if (mission == Status.HUNGRY || mission == Status.STARVING)
+        {
+            if (Util.isDestinationReached(transform.position, target))
+            {
+                if (activeFood == null)
+                {
+                    determineStatus();
+                    return;
+                }
+
+                if (!activeFood.hasFood)
+                {
+                    determineStatus();
+                    return;
+                }
+
+                if (hunger >= MAX_HUNGER)
+                {
+                    determineStatus();
+                    return;
+                }
+
+                eat(activeFood.Consume());
+            }
+        } 
+    }
+
     #region Hunger
     protected abstract bool isEdibleFoodSource(GameObject g);
     protected bool isDietaryFitting(GameObject g)
@@ -174,6 +269,8 @@ public abstract class Creature : MonoBehaviour
         if (spottedFood.Count <= 0) return null;
         foreach (KeyValuePair<int, IConsumable> keyValue in spottedFood)
         {
+            if (!keyValue.Value.hasFood) continue;
+
             float distance = Vector3.Distance(keyValue.Value.gameObject.transform.position, transform.position);
             if (distance < minDistance)
             {
@@ -383,6 +480,11 @@ public abstract class Creature : MonoBehaviour
     }
     #endregion
     #region Hunger
+    protected void eat(float value)
+    {
+        hunger = Mathf.Clamp(hunger + value, 0, MAX_HUNGER);
+    }
+    
     /*
      * subPerHour Default = 7 days without food
      */
