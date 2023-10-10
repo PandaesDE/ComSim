@@ -14,11 +14,12 @@
  *      
  */
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public interface IConsumable
 {
+    //public bool alive { get; }
+    public bool isMeat { get; }
+    public GameObject gameObject { get; }
     public int Consume();
 }

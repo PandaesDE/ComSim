@@ -31,6 +31,7 @@ public abstract class Creature : MonoBehaviour
     public float health;
     public int weight;
     public float speed;       //moves per Minute
+    protected foodType dietary;
     [SerializeField] public gender gender;
 
 
@@ -45,7 +46,7 @@ public abstract class Creature : MonoBehaviour
 
     //Brain
     protected Senses senses;
-    [SerializeField] protected Dictionary<int, Vector2> spottedFood;
+    [SerializeField] protected Dictionary<int, IConsumable> spottedFood;
     [SerializeField] protected Dictionary<int, Vector2> spottedWater;
     [SerializeField] protected Dictionary<int, Vector2> spottedMate;
 
@@ -77,7 +78,7 @@ public abstract class Creature : MonoBehaviour
         tbm = GameObject.Find("Playground").GetComponent<TileBaseManager>();
 
         senses = new Senses(this);
-        spottedFood = new Dictionary<int, Vector2>();
+        spottedFood = new Dictionary<int, IConsumable>();
         spottedWater = new Dictionary<int, Vector2>();
         spottedMate = new Dictionary<int, Vector2>();
     }
@@ -90,9 +91,10 @@ public abstract class Creature : MonoBehaviour
 
     /*  This Method needs to be called by every descenant of this Class!
      */
-    protected void initAttributes(gender gender, int health, int weight, float speed)
+    protected void initAttributes(gender gender, foodType dietary, int health, int weight, float speed)
     {
         this.gender = gender;
+        this.dietary = dietary;
         this.MAX_HEALTH = health;
         this.health = health;
         this.weight = weight;
@@ -112,7 +114,7 @@ public abstract class Creature : MonoBehaviour
             for (int overlapIndex = 0; overlapIndex < overlaps.Length; overlapIndex++)
             {
                 GameObject g = overlaps[overlapIndex].gameObject;
-                Debug.Log(g);
+
                 /* If self, or Another Vision Collidor -> do nothing*/
                 if (g == gameObject) return;
 
@@ -138,18 +140,53 @@ public abstract class Creature : MonoBehaviour
                     AddWaterSource(g);
                     continue;
                 }
-
-                //Debug.LogError("spotted unknown gameobject: " + g);
             }
-            
         }
     }
 
+    #region Hunger
     protected abstract bool isEdibleFoodSource(GameObject g);
-    protected void AddFoodSource(GameObject food)
+    protected bool isDietaryFitting(GameObject g)
     {
-        Vector2Int foodCoords = Util.Conversion.Vector3ToVector2Int(food.transform.position);
-        spottedFood[food.GetInstanceID()] = foodCoords;
+        IConsumable food = g.GetComponent<IConsumable>();
+        if (food == null) return false;
+
+        if (dietary == foodType.CARNIVORE)
+        {
+            return food.isMeat;
+        }
+        if (dietary == foodType.HERBIVORE)
+        {
+            return !food.isMeat;
+        }
+        return true;
+    }
+    protected void AddFoodSource(GameObject g)
+    {
+        IConsumable food = g.GetComponent<IConsumable>();
+        spottedFood[food.gameObject.GetInstanceID()] = food;
+    }
+
+    protected IConsumable getNearestFoodSource()
+    {
+        IConsumable closest = null;
+        float minDistance = 100000f;
+        if (spottedFood.Count <= 0) return null;
+        foreach (KeyValuePair<int, IConsumable> keyValue in spottedFood)
+        {
+            float distance = Vector3.Distance(keyValue.Value.gameObject.transform.position, transform.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                closest = keyValue.Value;
+            }
+        }
+        return closest;
+    }
+
+    protected void RemoveFoodSource(IConsumable food)
+    {
+        RemoveFoodSource(food.gameObject.GetInstanceID());
     }
 
     protected void RemoveFoodSource(int ID)
@@ -157,7 +194,9 @@ public abstract class Creature : MonoBehaviour
         if (spottedFood.ContainsKey(ID))
             spottedFood.Remove(ID);
     }
+    #endregion
 
+    #region Thirst
     protected void AddWaterSource(GameObject water)
     {
         Vector2Int waterCoords = Util.Conversion.Vector3ToVector2Int(water.transform.position);
@@ -169,7 +208,9 @@ public abstract class Creature : MonoBehaviour
         if (spottedWater.ContainsKey(ID))
             spottedWater.Remove(ID);
     }
+    #endregion
 
+    #region Social
     protected bool isGenericMate(Creature partner)
     {
         return gender != partner.gender;
@@ -187,7 +228,7 @@ public abstract class Creature : MonoBehaviour
         if (spottedMate.ContainsKey(ID))
             spottedMate.Remove(ID);
     }
-
+    #endregion
 
     #endregion
 
@@ -197,9 +238,6 @@ public abstract class Creature : MonoBehaviour
     }
 
     #region Movement
-    /*  Movement is relative to the fixed update
-        - which means that increasing the tickrate, will result in faster movement, but not faster hunger, thirst and day night cycle
-     */
     protected void MoveToTarget()
     {
         float theoreticalMoves = speed * Gamevariables.MINUTES_PER_TICK + leftOverSteps;

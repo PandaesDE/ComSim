@@ -14,7 +14,6 @@
  *      
  */
 
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Human : Creature
@@ -36,18 +35,16 @@ public class Human : Creature
     [SerializeField] private Sprite spr_Male;
     [SerializeField] private Sprite spr_Female;
 
-    [SerializeField] List<System.Type> foodTypes;
-
     protected override void Awake()
     {
         gender gender = Util.Random.Gender();
+        foodType dietary = foodType.OMNIVORE;
         int health = 80;
         int weight = 80;
         float speed = .2f;
 
-        initAttributes(gender, health, weight, speed);
+        initAttributes(gender, dietary, health, weight, speed);
         initSprite();
-        foodTypes = Util.getFoodList(foodType.OMNIVORE, GetType());
 
         base.Awake();
 
@@ -71,7 +68,16 @@ public class Human : Creature
         {
             MoveToTarget();
             evaluateVision();
-            drink();
+
+            /*if (hunger <= 20)
+            {
+                IConsumable food = getNearestFoodSource();
+                target = food.gameObject.transform.position;
+                if (Util.isDestinationReached(transform.position, target))
+                {
+                    food.Consume();
+                }
+            }*/
         }
     }
 
@@ -86,18 +92,7 @@ public class Human : Creature
 
     protected override bool isEdibleFoodSource(GameObject g)
     {
-        if (foodTypes == null)
-        {
-            Debug.LogError("Creature did not initialize FoodSources");
-        }
-
-        foreach (System.Type efs in foodTypes)
-        {
-            if (g.GetType() == efs)
-            {
-                return true;
-            }
-        }
-        return false;
+        if (g.GetComponent<Human>() != null) return false;
+        return isDietaryFitting(g);
     }
 }

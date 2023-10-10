@@ -14,21 +14,18 @@
  *      
  */
 
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Lion : Creature
 {
-    [SerializeField] List<System.Type> foodTypes;
-
     protected override void Awake()
     {
         gender gender = Util.Random.Gender();
+        foodType dietary = foodType.CARNIVORE;
         int health = 100;
         int weight = 80;
         float speed = .2f;
-        initAttributes(gender, health, weight, speed);
-        foodTypes = Util.getFoodList(foodType.CARNIVORE, GetType());
+        initAttributes(gender, dietary, health, weight, speed);
 
         base.Awake();
     }
@@ -47,7 +44,7 @@ public class Lion : Creature
     /*Gets called by Parent*/
     protected override bool isValidPartner(GameObject g)
     {
-        Human partner = g.GetComponent<Human>();
+        Lion partner = g.GetComponent<Lion>();
 
         if (partner == null) return false;
         return isGenericMate(partner);
@@ -55,18 +52,7 @@ public class Lion : Creature
 
     protected override bool isEdibleFoodSource(GameObject g)
     {
-        if (foodTypes == null)
-        {
-            Debug.LogError("Creature did not initialize FoodSources");
-        }
-
-        foreach (System.Type efs in foodTypes)
-        {
-            if (g.GetType() == efs)
-            {
-                return true;
-            }
-        }
-        return false;
+        if (g.GetComponent<Lion>() != null) return false;
+        return isDietaryFitting(g);
     }
 }

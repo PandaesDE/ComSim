@@ -28,42 +28,6 @@ public static class Util
             position.y < destination.y + errorVal;
     }
 
-    public static List<System.Type> getFoodList(foodType ft, System.Type self)
-    {
-        List<System.Type> herbivore = new()
-        {
-            typeof(Bush)
-        };
-
-        List<System.Type> carnivore = new()
-        {
-            typeof(Human),
-            typeof(Boar),
-            typeof(Lion),
-            typeof(Rabbit)
-        };
-
-        //exclude self from foodlist
-        if (carnivore.Contains(self))
-            carnivore.Remove(self);
-
-        List<System.Type> omnivore = new();
-        omnivore.AddRange(herbivore);
-        omnivore.AddRange(carnivore);
-
-        if (ft == foodType.HERBIVORE)
-            return herbivore;
-
-        if (ft == foodType.CARNIVORE)
-            return carnivore;
-
-        if (ft == foodType.OMNIVORE)
-            return omnivore;
-
-        Debug.LogError("Something went wrong in Util.getFoodList");
-        return null;
-    }
-
     public static int roundFloatUpPositiveDownNegative(float val)
     {
         if (val < 0)

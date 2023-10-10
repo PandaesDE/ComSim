@@ -14,7 +14,6 @@
  *      
  */
 
-using System.Collections;
 using UnityEngine;
 
 public class Corpse : MonoBehaviour, IConsumable
@@ -22,6 +21,7 @@ public class Corpse : MonoBehaviour, IConsumable
     /*  This script is disabled by default and will be enabled once a Creature passed
      * 
      */
+
     private static readonly int decayDays = 5;
 
     private int WEIGHT_START;
@@ -29,6 +29,14 @@ public class Corpse : MonoBehaviour, IConsumable
     private bool consumed = false;
 
     [SerializeField] private int decayMinutes;
+
+    public bool isMeat
+    {
+        get
+        {
+            return true;
+        }
+    }
 
     private void Awake()
     {
