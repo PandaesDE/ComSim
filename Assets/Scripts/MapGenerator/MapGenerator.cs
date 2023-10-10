@@ -1,9 +1,22 @@
+/*  Head
+ *      Author:             Schneider Erik
+ *      1st Supervisor:     Prof.Dr Ralph Lano
+ *      2nd Supervisor:     Prof.Dr Matthias Hopf
+ *      Project-Title:      ComSim
+ *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
+ *      University:         Technische Hochschule Nürnberg
+ *  
+ *  Class Purposes:
+ *  
+ *  Class Infos:
+ *      
+ *  Class References:
+ *      
+ */
+
 // base: https://docs.unity3d.com/ScriptReference/Mathf.PerlinNoise.html
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 // Create a texture and fill it with Perlin noise.
 // Try varying the xOrg, yOrg and scale values in the inspector

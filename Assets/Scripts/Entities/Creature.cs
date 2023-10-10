@@ -1,7 +1,21 @@
-using System.Collections;
+/*  Head
+ *      Author:             Schneider Erik
+ *      1st Supervisor:     Prof.Dr Ralph Lano
+ *      2nd Supervisor:     Prof.Dr Matthias Hopf
+ *      Project-Title:      ComSim
+ *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
+ *      University:         Technische Hochschule Nürnberg
+ *  
+ *  Class Purposes:
+ *  
+ *  Class Infos:
+ *      
+ *  Class References:
+ *      
+ */
+
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public abstract class Creature : MonoBehaviour
 {
@@ -195,7 +209,7 @@ public abstract class Creature : MonoBehaviour
         for (int i = 0; i < moves; i++)
         {
             //chance to not make a move based on health
-            if (Random.Range(0f, 1f) > health / MAX_HEALTH)
+            if (Util.Random.Float(0f, 1f) > health / MAX_HEALTH)
                 continue;
 
             //calculate new destination if reached in between ticks
