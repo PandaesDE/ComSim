@@ -72,6 +72,27 @@ public static class Util
             return gender.FEMALE;
         }
 
+        public static float Float(float max)
+        {
+            return Float(0, max);
+        }
+
+        public static float Float(float min, float max)
+        {
+            return UnityEngine.Random.Range(min, max);
+        }
+
+        public static int Int(int max)
+        {
+            return Int(0, max);
+        }
+
+        public static int Int(int min, int max)
+        {
+            return UnityEngine.Random.Range(min, max + 1);
+        }
+
+
         public static Vector2 CoordinateInPlayground()
         {
             int halfW = Gamevariables.playgroundSize.x / 2;

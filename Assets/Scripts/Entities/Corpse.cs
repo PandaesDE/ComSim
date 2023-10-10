@@ -1,15 +1,32 @@
+/*  Head
+ *      Author:             Schneider Erik
+ *      1st Supervisor:     Prof.Dr Ralph Lano
+ *      2nd Supervisor:     Prof.Dr Matthias Hopf
+ *      Project-Title:      ComSim
+ *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
+ *      University:         Technische Hochschule Nürnberg
+ *  
+ *  Class Purposes:
+ *  
+ *  Class Infos:
+ *      
+ *  Class References:
+ *      
+ */
+
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Corpse : MonoBehaviour
+public class Corpse : MonoBehaviour, IConsumable
 {
     /*  This script is disabled by default and will be enabled once a Creature passed
      * 
      */
+    private static readonly int decayDays = 5;
 
-    private int decayDays = 5;
+    private int WEIGHT_START;
     private int weight = 0;
+    private bool consumed = false;
 
     [SerializeField] private int decayMinutes;
 
@@ -20,41 +37,35 @@ public class Corpse : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (decayMinutes <= 0 || weight <= 0)
+        if (decayMinutes <= 0 || weight <= 0 || consumed)
         {
-            destroyed();
+            Destroy(gameObject);
         }
         decayMinutes -= Gamevariables.MINUTES_PER_TICK;
     }
 
-    public int getsConsumed(int amount)
+    public int Consume()
     {
-        weight -= amount;
+        if (consumed) return 0;
 
-        if (weight <= 0) {
-            StartCoroutine(destroyedBeforeNextFixedUpdate());
-            return amount + weight;
+        int amount = WEIGHT_START / 10;
+
+        if (weight - amount <= 0) {
+            consumed = true;
+            return weight;
         }
+
+        weight -= amount;
 
         return amount;
     }
-
-    private void destroyed()
-    {
-        Destroy(gameObject);
-    }
-
-    private IEnumerator destroyedBeforeNextFixedUpdate()
-    {
-        /*1/(Gamevariables.TICKRATE+1) -> so that it waits just before the next fixedUpdate*/
-        yield return new WaitForSeconds(1/(Gamevariables.TICKRATE+1));
-        Destroy(gameObject);
-    }
-
 
     //getter & setter
     public void setWeight(int w)
     {
         this.weight = w;
+        this.WEIGHT_START = w;
     }
+
+
 }
