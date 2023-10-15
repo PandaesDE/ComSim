@@ -62,11 +62,11 @@ public class InputManager : MonoBehaviour
             //https://discussions.unity.com/t/how-to-detect-mouse-movement-as-an-input/22062/4
             if (Input.GetAxis("Mouse X") != 0)
             {
-                cameraManager.moveBy(new Vector2(Input.GetAxis("Mouse X"), 0));
+                cameraManager.moveHorizontalBy(Input.GetAxis("Mouse X"));
             }
             if (Input.GetAxis("Mouse Y") != 0)
             {
-                cameraManager.moveBy(new Vector2(0, Input.GetAxis("Mouse Y")));
+                cameraManager.moveVerticalBy(Input.GetAxis("Mouse Y"));
             }
         }
 

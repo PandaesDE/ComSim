@@ -349,7 +349,7 @@ public abstract class Creature : MonoBehaviour
     protected Vector2 getNearestWaterSource()
     {
         Vector2 closest = Gamevariables.ERROR_VECTOR2;
-        float minDistance = 100000f;
+        float minDistance = Mathf.Infinity;
         foreach (KeyValuePair<int, Vector2> keyValue in spottedWater)
         {
             float distance = Vector3.Distance(keyValue.Value, transform.position);

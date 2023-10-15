@@ -44,11 +44,22 @@ public class CameraManager : MonoBehaviour
         if (target != null)
         {
             Vector2 vect = new Vector2(target.transform.position.x, target.transform.position.y) - new Vector2(camera.transform.position.x, camera.transform.position.y);
-            moveBy(vect);
+            moveVerticalBy(vect.y);
+            moveHorizontalBy(vect.x);
         }
     }
 
+    public void moveHorizontalBy(float x)
+    {
+        if (!isOutOfHorizontalBound(x))
+            camera.transform.position += new Vector3(x, 0, 0);
+    }
 
+    public void moveVerticalBy(float y)
+    {
+        if (!isOutOfVerticalBound(y))
+            camera.transform.position += new Vector3(0, y, 0);
+    }
 
     public void moveBy(Vector2 vect)
     {
