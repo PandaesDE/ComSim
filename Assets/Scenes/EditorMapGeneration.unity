@@ -6179,9 +6179,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2090126543}
   - component: {fileID: 2090126544}
-  - component: {fileID: 2090126546}
   - component: {fileID: 2090126548}
   - component: {fileID: 2090126545}
+  - component: {fileID: 2090126549}
   m_Layer: 0
   m_Name: Playground
   m_TagString: Untagged
@@ -6216,8 +6216,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bb833590b057b447a210aed1327c9fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CELLS_HORIZONTAL: 0
-  CELLS_VERTICAL: 0
 --- !u!212 &2090126545
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6270,26 +6268,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2090126546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2090126542}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 891dc0a0c4378b5439da1e627994a6d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tb_water: {fileID: 11400000, guid: 85605d0a35d2004469e8638b9b26ac88, type: 2}
-  tb_sand: {fileID: 11400000, guid: 7c40233a9ed6cee44b64dc4a8fbacd28, type: 2}
-  tb_grass: {fileID: 11400000, guid: d7ec156b01c43314889ab87e1b871a24, type: 2}
-  tb_bush: {fileID: 11400000, guid: 9dde405f07f7bd348833cc255d9fe913, type: 2}
-  tb_stone: {fileID: 11400000, guid: efc4eff3651153a4a845bafcffa5177b, type: 2}
-  tb_snow: {fileID: 11400000, guid: 8943ab5d31be7f04285aac945e88b454, type: 2}
-  sample_ground: 0
-  sample_bush: 0
 --- !u!114 &2090126548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6302,12 +6280,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 889c1bb2e5c456449a38bab72f6b8339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  water: {fileID: 6647578400627049961, guid: 4cef34eefb5f3884caf177ff8b78bc5a, type: 3}
-  sand: {fileID: 6647578400627049961, guid: fb5a890c26aadb545b4ce631451bc832, type: 3}
-  grass: {fileID: 6647578400627049961, guid: b86fb0610c6ac374a8e4f64841eba7a2, type: 3}
-  bush: {fileID: 6647578400627049961, guid: d6c11e23a7219294b8fc6993182e7885, type: 3}
-  stone: {fileID: 6647578400627049961, guid: f406c25381544dc498c3134f18e966e2, type: 3}
-  snow: {fileID: 6647578400627049961, guid: 18ae08d1b0ccd86499524b824aa2e8e3, type: 3}
   pso_ground:
     octaves: 0
     persistence: 0
@@ -6324,6 +6296,33 @@ MonoBehaviour:
     xOrg: 0
     yOrg: 0
     zoom: 0
+--- !u!114 &2090126549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2090126542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 891dc0a0c4378b5439da1e627994a6d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilemap: {fileID: 0}
+  go_water: {fileID: 6647578400627049961, guid: 4cef34eefb5f3884caf177ff8b78bc5a, type: 3}
+  go_sand: {fileID: 6647578400627049961, guid: fb5a890c26aadb545b4ce631451bc832, type: 3}
+  go_grass: {fileID: 6647578400627049961, guid: b86fb0610c6ac374a8e4f64841eba7a2, type: 3}
+  go_bush: {fileID: 6647578400627049961, guid: d6c11e23a7219294b8fc6993182e7885, type: 3}
+  go_stone: {fileID: 6647578400627049961, guid: f406c25381544dc498c3134f18e966e2, type: 3}
+  go_snow: {fileID: 6647578400627049961, guid: 18ae08d1b0ccd86499524b824aa2e8e3, type: 3}
+  tb_water: {fileID: 11400000, guid: 85605d0a35d2004469e8638b9b26ac88, type: 2}
+  tb_sand: {fileID: 11400000, guid: 7c40233a9ed6cee44b64dc4a8fbacd28, type: 2}
+  tb_grass: {fileID: 11400000, guid: d7ec156b01c43314889ab87e1b871a24, type: 2}
+  tb_bush: {fileID: 11400000, guid: 9dde405f07f7bd348833cc255d9fe913, type: 2}
+  tb_stone: {fileID: 11400000, guid: efc4eff3651153a4a845bafcffa5177b, type: 2}
+  tb_snow: {fileID: 11400000, guid: 8943ab5d31be7f04285aac945e88b454, type: 2}
+  sample_ground: 0
+  sample_bush: 0
 --- !u!1 &2138228212
 GameObject:
   m_ObjectHideFlags: 0
