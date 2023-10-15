@@ -551,9 +551,11 @@ public abstract class Creature : MonoBehaviour
     /*
      * subPerHour Default = 7 days without food
      */
-    protected void hungerSubtractor(float subPerHour = .6f)
+    protected void hungerSubtractor(float subPerMinute = .00992f)
     {
-        hunger -= subPerHour * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
+        float restingFactor = 1f;
+        if (!awake) restingFactor = .85f; //[4] https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2929498/#:~:text=It%20is%20believed%20that%20during,prolonged%20state%20of%20physical%20inactivity.
+        hunger -= subPerMinute * (float)Gamevariables.MINUTES_PER_TICK * restingFactor;
         if (hunger <= 0) death();
     }
     #endregion
@@ -570,9 +572,11 @@ public abstract class Creature : MonoBehaviour
     /*
      * subPerHour Default = 3 days without water
      */
-    protected void thirstSubtractor(float subPerHour = 1.38f)
+    protected void thirstSubtractor(float subPerMinute = .0231f)
     {
-        thirst -= subPerHour * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
+        float restingFactor = 1f;
+        if (!awake) restingFactor = .85f; //[4] https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2929498/#:~:text=It%20is%20believed%20that%20during,prolonged%20state%20of%20physical%20inactivity.
+        thirst -= subPerMinute * (float)Gamevariables.MINUTES_PER_TICK * restingFactor;
         if (thirst <= 0) death();
     }
     #endregion
@@ -581,14 +585,16 @@ public abstract class Creature : MonoBehaviour
      * addPerHour Default = 100% Energy after 8h (without lightfactor)
      * lightScaler -> Scales how much the Light affects the rest
      */
-    protected void rest(float addPerHour = 12.5f, float lightScaler = 1f)
+    protected void rest(float addPerMinute = .208f, float lightScaler = 1f)
     {
-        addPerHour /= (1f + lightScaler);
-        float addPerTick = addPerHour * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
+        addPerMinute /= (1f + lightScaler);
+        float addPerTick = addPerMinute * (float)Gamevariables.MINUTES_PER_TICK;
         float lightfactor = lightScaler * addPerTick * (1f - Gamevariables.LIGHT_INTENSITY);
 
         energy = Mathf.Clamp(energy + addPerTick + lightfactor, 0, MAX_ENERGY);
-        if (energy >= MAX_ENERGY)
+        if (energy >= MAX_ENERGY    ||  //Full
+            energy >= hunger        ||  //Hungry
+            energy >= thirst)           //Thirsty
         {
             awake = true;
         }
@@ -598,13 +604,13 @@ public abstract class Creature : MonoBehaviour
      * subPerHour Default = 1 day without sleep (without lightfactor)
      * lightScaler -> Scales how much the Light affects the exhaution
      */
-    protected void energySubtractor(float subPerHour = 4.17f, float lightScaler = .25f)
+    protected void energySubtractor(float subPerMinute = .0694f, float lightScaler = .25f)
     {
-        subPerHour /= (1f + lightScaler);
-        float subPerTick = subPerHour * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
-        float lightfactor = lightScaler * subPerTick * Gamevariables.LIGHT_INTENSITY;
+        subPerMinute /= (1f + lightScaler);
+        float addPerTick = subPerMinute * (float)Gamevariables.MINUTES_PER_TICK;
+        float lightfactor = lightScaler * addPerTick * Gamevariables.LIGHT_INTENSITY;
 
-        energy = Mathf.Clamp(energy - subPerTick - lightfactor, 0, MAX_ENERGY);
+        energy = Mathf.Clamp(energy - addPerTick - lightfactor, 0, MAX_ENERGY);
         if (energy <= 0) awake = false;
     }
     #endregion

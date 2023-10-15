@@ -39,7 +39,7 @@ public class Bush : MonoBehaviour, IConsumable
     }
 
     [SerializeField] private int berry_grow_minutes = 0;
-    private int berries;
+    [SerializeField] private int berries;
 
 
     private void Awake()
