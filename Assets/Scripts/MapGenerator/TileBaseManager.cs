@@ -21,6 +21,7 @@ public class TileBaseManager : MonoBehaviour
 { 
     public Tilemap tilemap;
 
+    [SerializeField] private GameObject go_water_deep;
     [SerializeField] private GameObject go_water;
     [SerializeField] private GameObject go_sand;
     [SerializeField] private GameObject go_grass;
@@ -28,6 +29,7 @@ public class TileBaseManager : MonoBehaviour
     [SerializeField] private GameObject go_stone;
     [SerializeField] private GameObject go_snow;
 
+    [SerializeField] private TileBase tb_water_deep;
     [SerializeField] private TileBase tb_water;
     [SerializeField] private TileBase tb_sand;
     [SerializeField] private TileBase tb_grass;
@@ -37,6 +39,7 @@ public class TileBaseManager : MonoBehaviour
 
     public enum tileType
     {
+        WATER_DEEP,
         WATER,
         SAND,
         GRASS,
@@ -50,6 +53,8 @@ public class TileBaseManager : MonoBehaviour
 
     public tileType getTileType()
     {
+        if (sample_ground < .19f)
+            return tileType.WATER_DEEP;
         if (sample_ground < .2f)
             return tileType.WATER;
         if (sample_ground < .23f)
@@ -68,6 +73,7 @@ public class TileBaseManager : MonoBehaviour
     public Color getColor()
     {
         TileBaseManager.tileType t = getTileType();
+        if (t == TileBaseManager.tileType.WATER_DEEP) return go_water_deep.GetComponent<SpriteRenderer>().color;
         if (t == TileBaseManager.tileType.WATER) return go_water.GetComponent<SpriteRenderer>().color;
         if (t == TileBaseManager.tileType.SAND) return go_sand.GetComponent<SpriteRenderer>().color;
         if (t == TileBaseManager.tileType.BUSH) return go_bush.GetComponent<SpriteRenderer>().color;
@@ -80,6 +86,7 @@ public class TileBaseManager : MonoBehaviour
     public TileBase getTileBase()
     {
         tileType t = getTileType();
+        if (t == tileType.WATER_DEEP) return tb_water_deep;
         if (t == tileType.WATER) return tb_water;
         if (t == tileType.SAND) return tb_sand;
         if (t == tileType.BUSH) return tb_bush;
@@ -113,12 +120,13 @@ public class TileBaseManager : MonoBehaviour
 
     public bool isWater(TileBase tb)
     {
+        //probably doesn't work
         return tb_water.Equals(tb);
     }
 
     public bool isWater(GameObject g)
     {
-        return go_water.Equals(g);
+        return g.tag == "Water";
     }
 
     public bool isWater(Vector2 coord)

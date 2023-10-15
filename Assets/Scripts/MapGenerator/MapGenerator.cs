@@ -41,11 +41,6 @@ public class MapGenerator : MonoBehaviour
         CELLS_VERTICAL = Gamevariables.playgroundSize.y;
 
         tbm = GetComponent<TileBaseManager>();
-
-    }
-
-    void Start()
-    {
         RenderTileMap();
     }
 

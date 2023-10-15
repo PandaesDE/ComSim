@@ -5,12 +5,14 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - tilemap: {instanceID: 0}
+  - go_water_deep: {fileID: 6647578400627049961, guid: 99a468f980c0e224291e7b46c80f67b4, type: 3}
   - go_water: {fileID: 6647578400627049961, guid: 4cef34eefb5f3884caf177ff8b78bc5a, type: 3}
   - go_sand: {fileID: 6647578400627049961, guid: fb5a890c26aadb545b4ce631451bc832, type: 3}
   - go_grass: {fileID: 6647578400627049961, guid: b86fb0610c6ac374a8e4f64841eba7a2, type: 3}
   - go_bush: {fileID: 6647578400627049961, guid: d6c11e23a7219294b8fc6993182e7885, type: 3}
   - go_stone: {fileID: 6647578400627049961, guid: f406c25381544dc498c3134f18e966e2, type: 3}
   - go_snow: {fileID: 6647578400627049961, guid: 18ae08d1b0ccd86499524b824aa2e8e3, type: 3}
+  - tb_water_deep: {fileID: 11400000, guid: 7e5a8af28a8660540ba8859ed1933425, type: 2}
   - tb_water: {fileID: 11400000, guid: 85605d0a35d2004469e8638b9b26ac88, type: 2}
   - tb_sand: {fileID: 11400000, guid: 7c40233a9ed6cee44b64dc4a8fbacd28, type: 2}
   - tb_grass: {fileID: 11400000, guid: d7ec156b01c43314889ab87e1b871a24, type: 2}

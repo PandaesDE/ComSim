@@ -27,6 +27,7 @@ public class Init : MonoBehaviour
 
     private void initGameSettings()
     {
+        Time.timeScale = 1;
         Time.fixedDeltaTime = Gamevariables.TICKRATE;
     }
 }

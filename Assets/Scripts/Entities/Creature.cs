@@ -14,6 +14,7 @@
  *      
  */
 
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -45,7 +46,7 @@ public abstract class Creature : MonoBehaviour
     protected TileBaseManager tbm;
 
     //Brain
-    protected Status mission = Status.WANDERING;
+    [SerializeField] protected Status mission = Status.WANDERING;
     protected Senses senses;
     private readonly int MINUTES_UNTIL_STATUS_DETERMINING = 60;
     private int minutes_left_until_status_determining = 0;
@@ -53,6 +54,7 @@ public abstract class Creature : MonoBehaviour
     [SerializeField] protected Dictionary<int, IConsumable> spottedFood;
     [SerializeField] protected IConsumable activeFood;
     [SerializeField] protected Dictionary<int, Vector2> spottedWater;
+    [SerializeField] protected bool foundValidWaterSpot = false;
     [SerializeField] protected Dictionary<int, Vector2> spottedMate;
 
     //Movement
@@ -90,7 +92,6 @@ public abstract class Creature : MonoBehaviour
     protected virtual void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
-        target = Util.Random.CoordinateInPlayground();
         tbm = GameObject.Find("Playground").GetComponent<TileBaseManager>();
 
         senses = new Senses(this);
@@ -98,6 +99,7 @@ public abstract class Creature : MonoBehaviour
         spottedWater = new Dictionary<int, Vector2>();
         spottedMate = new Dictionary<int, Vector2>();
     }
+
 
     protected virtual void FixedUpdate()
     {
@@ -125,15 +127,13 @@ public abstract class Creature : MonoBehaviour
         Vector2[] visionCoordinates = senses.getVisionCoordinates();
         for (int i = 0; i < visionCoordinates.Length; i++)
         {
-            Vector2 coord = visionCoordinates[i];
-            Collider2D[] overlaps = Physics2D.OverlapCircleAll(coord, .49f);
+            Collider2D[] overlaps = Physics2D.OverlapPointAll(visionCoordinates[i]);
             for (int overlapIndex = 0; overlapIndex < overlaps.Length; overlapIndex++)
             {
                 GameObject g = overlaps[overlapIndex].gameObject;
 
                 /* If self, or Another Vision Collidor -> do nothing*/
-                if (g == gameObject) return;
-
+                if (g == this.gameObject) return;
 
                 /* Potential Partner */
                 if (isValidPartner(g))
@@ -150,7 +150,7 @@ public abstract class Creature : MonoBehaviour
                 }
 
                 /* Potential Map Water*/
-                if (spottedWater.ContainsValue(coord)) continue;
+                if (spottedWater.ContainsKey(g.GetInstanceID())) continue;
                 if (tbm.isWater(g))
                 {
                     AddWaterSource(g);
@@ -169,25 +169,25 @@ public abstract class Creature : MonoBehaviour
         if (hunger <= important_cap)
         {
             mission = Status.STARVING;
-            activeFood = getNearestFoodSource();
-            target = activeFood.gameObject.transform.position;
+            setActiveFoodSource();
             return;
         }
         if (thirst <= important_cap)
         {
             mission = Status.DEHYDRATED;
+            setWaterTarget();
             return;
         }
         if (hunger <= normal_cap)
         {
             mission = Status.HUNGRY;
-            activeFood = getNearestFoodSource();
-            target = activeFood.gameObject.transform.position;
+            setActiveFoodSource();
             return;
         }
         if (thirst <= normal_cap)
         {
             mission = Status.THIRSTY;
+            setWaterTarget();
             return;
         }
 
@@ -236,7 +236,27 @@ public abstract class Creature : MonoBehaviour
 
                 eat(activeFood.Consume());
             }
-        } 
+        }
+
+        if (mission == Status.THIRSTY || mission == Status.DEHYDRATED)
+        {
+            if (Util.isDestinationReached(transform.position, target))
+            {
+                if (thirst >= MAX_THIRST)
+                {
+                    determineStatus();
+                    return;
+                }
+
+                if (!foundValidWaterSpot)
+                {
+                    determineStatus();
+                    return;
+                }
+
+                drink();
+            }
+        }
     }
 
     #region Hunger
@@ -260,6 +280,15 @@ public abstract class Creature : MonoBehaviour
     {
         IConsumable food = g.GetComponent<IConsumable>();
         spottedFood[food.gameObject.GetInstanceID()] = food;
+    }
+
+    protected void setActiveFoodSource()
+    {
+        activeFood = getNearestFoodSource();
+        if (activeFood != null)
+            setTarget(activeFood.gameObject.transform.position);
+        else
+            setRandomTarget();
     }
 
     protected IConsumable getNearestFoodSource()
@@ -300,6 +329,39 @@ public abstract class Creature : MonoBehaviour
         spottedWater.Add(water.GetInstanceID(), waterCoords);
     }
 
+    protected bool hasWaterSource()
+    {
+        return spottedWater.Count > 0;
+    }
+
+    protected void setWaterTarget()
+    {
+        if (hasWaterSource())
+        {
+            setTarget(getNearestWaterSource());
+            foundValidWaterSpot = true;
+            return;
+        }
+        foundValidWaterSpot = false;
+        setRandomTarget();
+    }
+    
+    protected Vector2 getNearestWaterSource()
+    {
+        Vector2 closest = Gamevariables.ERROR_VECTOR2;
+        float minDistance = 100000f;
+        foreach (KeyValuePair<int, Vector2> keyValue in spottedWater)
+        {
+            float distance = Vector3.Distance(keyValue.Value, transform.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                closest = keyValue.Value;
+            }
+        }
+        return closest;
+    }
+
     protected void RemoveWaterSource(int ID)
     {
         if (spottedWater.ContainsKey(ID))
@@ -329,11 +391,6 @@ public abstract class Creature : MonoBehaviour
 
     #endregion
 
-    public void setTarget(Vector2 coord)
-    {
-        target = coord;
-    }
-
     #region Movement
     protected void MoveToTarget()
     {
@@ -349,7 +406,7 @@ public abstract class Creature : MonoBehaviour
 
             //calculate new destination if reached in between ticks
             if (Util.isDestinationReached(transform.position, target))
-                setNewDestination();
+                setRandomTarget();
 
             if (nextSteps == Vector2.zero)
                 CalculateNextSteps(target);
@@ -438,9 +495,15 @@ public abstract class Creature : MonoBehaviour
         }
     }
 
-    protected void setNewDestination()
+    protected void setRandomTarget()
     {
         target = Util.Random.CoordinateInPlayground();
+        nextSteps = Vector2Int.zero;
+    }
+
+    public void setTarget(Vector2 destination)
+    {
+        target = destination;
         nextSteps = Vector2Int.zero;
     }
     #endregion
@@ -497,7 +560,7 @@ public abstract class Creature : MonoBehaviour
     #region Thirst
     protected void drink(float addPerMinute = 20f)
     {
-        float add = addPerMinute * (float)Gamevariables.MINUTES_PER_HOUR * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
+        float add = addPerMinute * (float)Gamevariables.MINUTES_PER_TICK;
         //if (tbm.isWater(GetTile(transform.position)))
         {
             thirst = Mathf.Clamp(thirst + add, 0, MAX_THIRST);

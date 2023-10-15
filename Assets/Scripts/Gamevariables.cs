@@ -19,7 +19,7 @@ using UnityEngine;
 public class Gamevariables
 {
     //init Settings
-    public static readonly Vector2Int playgroundSize = new Vector2Int(362, 200);
+    public static readonly Vector2Int playgroundSize = new Vector2Int(360, 200);
     public static readonly float TICKRATE = .5f;
 
     public static int HUMAN_AMOUNT_START = 0;
@@ -27,6 +27,8 @@ public class Gamevariables
     public static int BOAR_AMOUNT_START = 0;
     public static int RABBIT_AMOUNT_START = 0;
     public static bool GAME_PAUSED = false;
+
+    //STATUS
 
     //WORLD
     public static string SEED = "";
@@ -43,4 +45,7 @@ public class Gamevariables
     /* between 0 - 1*/
     public static float LIGHT_INTENSITY = 1f;
 
+
+    //Error - Values
+    public static Vector2 ERROR_VECTOR2 = Vector2.positiveInfinity;
 }
