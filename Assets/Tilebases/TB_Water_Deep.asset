@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: TB_Water_Deep
   m_EditorClassIdentifier: 
   m_DefaultSprite: {fileID: 0}
-  m_DefaultGameObject: {fileID: 6647578400627049961, guid: 4cef34eefb5f3884caf177ff8b78bc5a, type: 3}
+  m_DefaultGameObject: {fileID: 6647578400627049961, guid: 99a468f980c0e224291e7b46c80f67b4, type: 3}
   m_DefaultColliderType: 1
   m_TilingRules: []
