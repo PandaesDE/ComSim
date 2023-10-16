@@ -22,5 +22,5 @@ public interface IConsumable
     public bool isMeat { get; }
     public bool hasFood { get; }
     public GameObject gameObject { get; }
-    public int Consume();
+    public float Consume();
 }

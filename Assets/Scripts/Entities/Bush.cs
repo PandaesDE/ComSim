@@ -18,7 +18,7 @@ using UnityEngine;
 
 public class Bush : MonoBehaviour, IConsumable
 {
-    private static readonly int NUTRITION_PER_BERRY = 2;
+    private static readonly float NUTRITION_PER_BERRY = .5f;
     private static readonly int MAX_BERRIES = 80;
     private static readonly int BERRY_GROW_TIME_MINUTES = 288; //5 Berries per Day
 
@@ -76,7 +76,7 @@ public class Bush : MonoBehaviour, IConsumable
     }
 
 
-    public int Consume()
+    public float Consume()
     {
         if (berries <= 0) return 0;
 
@@ -88,6 +88,6 @@ public class Bush : MonoBehaviour, IConsumable
 
         berries -= berries_eaten;
         adjustColor();
-        return berries_eaten * NUTRITION_PER_BERRY;
+        return (float)berries_eaten * NUTRITION_PER_BERRY;
     }
 }

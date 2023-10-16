@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8802855880057005263}
   - component: {fileID: 1757900931339914469}
-  - component: {fileID: -4168788857041515830}
   - component: {fileID: 8483804280055891860}
   - component: {fileID: -968116199679311896}
   - component: {fileID: 6296782813691646905}
@@ -55,25 +54,15 @@ MonoBehaviour:
   speed: 0
   gender: 0
   awake: 1
+  mission: 7
+  foundValidWaterSpot: 0
   target: {x: 0, y: 0}
   nextSteps: {x: 0, y: 0}
   facing: 0
   leftOverSteps: 0
   hunger: 100
   thirst: 100
---- !u!114 &-4168788857041515830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 346594161483134204}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8757832f68dd957439787996f88e38aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  decayMinutes: 0
+  PREFAB_CORPSE: {fileID: 346594161483134204, guid: 7bf9a7511f71b224892288980941cfbe, type: 3}
 --- !u!212 &8483804280055891860
 SpriteRenderer:
   m_ObjectHideFlags: 0

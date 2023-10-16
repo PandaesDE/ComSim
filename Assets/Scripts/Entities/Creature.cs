@@ -14,7 +14,6 @@
  *      
  */
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -38,6 +37,7 @@ public abstract class Creature : MonoBehaviour
 
     //States
     public bool awake = true;
+    [SerializeField] protected Status mission = Status.WANDERING;
 
     //Physics
     protected Rigidbody2D rb2D;
@@ -46,13 +46,15 @@ public abstract class Creature : MonoBehaviour
     protected TileBaseManager tbm;
 
     //Brain
-    [SerializeField] protected Status mission = Status.WANDERING;
     protected Senses senses;
     private readonly int MINUTES_UNTIL_STATUS_DETERMINING = 60;
     private int minutes_left_until_status_determining = 0;
 
     [SerializeField] protected Dictionary<int, IConsumable> spottedFood;
     [SerializeField] protected IConsumable activeFood;
+    [SerializeField] protected Dictionary<int, Creature> spottedCreature;
+    [SerializeField] protected Creature activeHunt;
+    [SerializeField] protected Creature activeFlee;
     [SerializeField] protected Dictionary<int, Vector2> spottedWater;
     [SerializeField] protected bool foundValidWaterSpot = false;
     [SerializeField] protected Dictionary<int, Vector2> spottedMate;
@@ -66,6 +68,9 @@ public abstract class Creature : MonoBehaviour
     //Needs
     [SerializeField] public float hunger = 100f;
     [SerializeField] public float thirst = 100f;
+
+    //Corpse
+    [SerializeField] private GameObject PREFAB_CORPSE;
 
 
     public enum Direction
@@ -96,6 +101,7 @@ public abstract class Creature : MonoBehaviour
 
         senses = new Senses(this);
         spottedFood = new Dictionary<int, IConsumable>();
+
         spottedWater = new Dictionary<int, Vector2>();
         spottedMate = new Dictionary<int, Vector2>();
     }
@@ -135,21 +141,20 @@ public abstract class Creature : MonoBehaviour
                 /* If self, or Another Vision Collidor -> do nothing*/
                 if (g == this.gameObject) return;
 
-                /* Potential Partner */
-                if (isValidPartner(g))
+                /* Creature Evaluation */
+                if (isCreature(g))
                 {
-                    AddPotentialMate(g);
-                    continue;
+                    //evaluateCreature(g.GetComponent<Creature>());
                 }
 
-                /* Potential Food */
+                /* Food Source */
                 if (isEdibleFoodSource(g))
                 {
                     AddFoodSource(g);
                     continue;
                 }
 
-                /* Potential Map Water*/
+                /* Water Source*/
                 if (spottedWater.ContainsKey(g.GetInstanceID())) continue;
                 if (tbm.isWater(g))
                 {
@@ -256,6 +261,36 @@ public abstract class Creature : MonoBehaviour
 
                 drink();
             }
+        }
+    }
+
+    private bool isCreature(GameObject g)
+    {
+        return g.GetComponent<Creature>() != null;
+    }
+
+    private void evaluateCreature(GameObject g)
+    {
+        if (dietary == foodType.HERBIVORE)
+        {
+            if (isValidPartner(g))
+            {
+                AddPotentialMate(g);
+            } else
+            {
+
+            }
+        }
+        if (dietary == foodType.CARNIVORE)
+        {
+            if (isValidPartner(g))
+            {
+                AddPotentialMate(g);
+            } else
+            {
+                //Add to hunting list
+            }
+            
         }
     }
 
@@ -527,21 +562,6 @@ public abstract class Creature : MonoBehaviour
         }
     }
 
-    #region Health
-    protected void takeDamage()
-    {
-        health -= 20;
-        if (health <= 0)
-        {
-            death();
-        }
-    }
-    protected void regenerate(float addPercentPerHour = .01f)
-    {
-        float add = addPercentPerHour * health * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
-        health = Mathf.Clamp(health + add, 0, MAX_HEALTH);
-    }
-    #endregion
     #region Hunger
     protected void eat(float value)
     {
@@ -617,16 +637,31 @@ public abstract class Creature : MonoBehaviour
 
     #endregion
 
+    #region Health
 
+    public void attack(int damage = 20)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            death();
+        }
+    }
+    protected void regenerate(float addPercentPerHour = .01f)
+    {
+        float add = addPercentPerHour * health * (float)Gamevariables.MINUTES_PER_TICK / (float)Gamevariables.MINUTES_PER_HOUR;
+        health = Mathf.Clamp(health + add, 0, MAX_HEALTH);
+    }
 
     protected void death()
     {
-        Corpse c = GetComponent<Corpse>();
-        c.enabled = true;
+        GameObject instance = Instantiate(PREFAB_CORPSE, transform.position, transform.rotation);
+        Corpse c = instance.GetComponent<Corpse>();
         c.setWeight(weight);
-
-        GetComponent<Creature>().enabled = false;
+        Destroy(gameObject);
     }
+
+    #endregion
 
     ////DEBUG - REMOVE
     //private void OnDrawGizmos()

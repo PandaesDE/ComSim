@@ -3,7 +3,10 @@ guid: 5d3333c180157884392089d7aa624383
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - PREFAB_CORPSE: {fileID: 346594161483134204, guid: 7bf9a7511f71b224892288980941cfbe, type: 3}
+  - spr_Male: {fileID: 21300000, guid: 8bf7fc8fe9f4df94394eca03ada8f856, type: 3}
+  - spr_Female: {fileID: 21300000, guid: d11448647f01edf42a59fdc7ded38d0e, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
