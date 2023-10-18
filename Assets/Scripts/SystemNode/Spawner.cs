@@ -46,14 +46,14 @@ public class Spawner : MonoBehaviour
     #region DEBUG Functions
 
     /*This function is to test and verify the Entity Senses*/
-    private void sensesCheckSetup()
-    {
-        int a = 20;
-        Human hum = spawnHuman(new Vector2(a, 0));
-        Boar ani = spawnAnimal(animalType.BOAR,new Vector2(-a, 0));
-        hum.setTarget(new Vector2(-a, 0));
-        ani.setTarget(new Vector2(a, 0));
-    }
+    //private void sensesCheckSetup()
+    //{
+    //    int a = 20;
+    //    Human hum = spawnHuman(new Vector2(a, 0));
+    //    Boar ani = spawnAnimal(animalType.BOAR,new Vector2(-a, 0));
+    //    hum.movement.setTarget(new Vector2(-a, 0));
+    //    ani.movement.setTarget(new Vector2(a, 0));
+    //}
 
     #endregion
 

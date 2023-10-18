@@ -45,7 +45,7 @@ public class Senses
 
         switch (creature.facing)
         {
-            case Creature.Direction.NORTH:
+            case Movement.Direction.NORTH:
                 for (int i = 0; i < VISION_DISTANCE; i++)
                 {
                     for (int j = 0; j < VISION_WIDTH; j++)
@@ -57,7 +57,7 @@ public class Senses
                     }
                 }
                 return vc;
-            case Creature.Direction.EAST:
+            case Movement.Direction.EAST:
                 for (int i = 0; i < VISION_DISTANCE; i++)
                 {
                     for (int j = 0; j < VISION_WIDTH; j++)
@@ -69,7 +69,7 @@ public class Senses
                     }
                 }
                 return vc;
-            case Creature.Direction.SOUTH:
+            case Movement.Direction.SOUTH:
                 for (int i = 0; i < VISION_DISTANCE; i++)
                 {
                     for (int j = 0; j < VISION_WIDTH; j++)

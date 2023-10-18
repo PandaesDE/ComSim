@@ -37,6 +37,8 @@ public class Human : Creature
 
     protected override void Awake()
     {
+        base.Awake();
+
         gender gender = Util.Random.Gender();
         Omnivore dietary = new();
         int health = 80;
@@ -46,7 +48,6 @@ public class Human : Creature
         initAttributes(gender, dietary,health, weight, speed);
         initSprite();
 
-        base.Awake();
 
         void initSprite()
         {
@@ -66,7 +67,7 @@ public class Human : Creature
         base.FixedUpdate();
         if (awake)
         {
-            MoveToTarget();
+            movement.MoveToTarget();
             evaluateVision();
             makeStatusBasedMove();
         }

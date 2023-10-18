@@ -14,7 +14,6 @@
  *      
  */
 
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Creature : MonoBehaviour
@@ -30,7 +29,6 @@ public abstract class Creature : MonoBehaviour
     public float energy = 100;
     public float health;
     public int weight;
-    public float speed;       //moves per Minute
     [SerializeField] public gender gender;
 
 
@@ -52,10 +50,14 @@ public abstract class Creature : MonoBehaviour
     protected Brain brain;
 
     //Movement
-    [SerializeField] protected Vector2 target;
-    [SerializeField] protected Vector2Int nextSteps = Vector2Int.zero;
-    [SerializeField] public Direction facing;
-    [SerializeField] private float leftOverSteps = 0;   //in between moves
+    protected Movement movement;
+    public Movement.Direction facing
+    { 
+        get
+        {
+            return movement.facing;
+        }
+    }
 
     //Needs
     [SerializeField] public float hunger = 100f;
@@ -63,15 +65,6 @@ public abstract class Creature : MonoBehaviour
 
     //Corpse
     [SerializeField] private GameObject PREFAB_CORPSE;
-
-
-    public enum Direction
-    {
-        NORTH,
-        EAST,
-        SOUTH,
-        WEST
-    }
 
     protected enum Status
     {
@@ -93,6 +86,7 @@ public abstract class Creature : MonoBehaviour
 
         senses = new(this);
         brain = new(this);
+        movement = new(this);
     }
 
 
@@ -111,7 +105,7 @@ public abstract class Creature : MonoBehaviour
         this.MAX_HEALTH = health;
         this.health = health;
         this.weight = weight;
-        this.speed = speed;
+        movement.speed = speed;
 
     }
 
@@ -165,9 +159,9 @@ public abstract class Creature : MonoBehaviour
             mission = Status.STARVING;
             brain.setActiveFoodSource();
             if (brain.activeFood != null)
-                setTarget(brain.activeFood.gameObject.transform.position);
+                movement.setTarget(brain.activeFood.gameObject.transform.position);
             else
-                setRandomTarget();
+                movement.setRandomTarget();
             return;
         }
         if (thirst <= important_cap)
@@ -181,9 +175,9 @@ public abstract class Creature : MonoBehaviour
             mission = Status.HUNGRY;
             brain.setActiveFoodSource();
             if (brain.activeFood != null)
-                setTarget(brain.activeFood.gameObject.transform.position);
+                movement.setTarget(brain.activeFood.gameObject.transform.position);
             else
-                setRandomTarget();
+                movement.setRandomTarget();
             return;
         }
         if (thirst <= normal_cap)
@@ -216,7 +210,7 @@ public abstract class Creature : MonoBehaviour
 
         if (mission == Status.HUNGRY || mission == Status.STARVING)
         {
-            if (Util.isDestinationReached(transform.position, target))
+            if (Util.isDestinationReached(transform.position, movement.target))
             {
                 if (brain.activeFood == null)
                 {
@@ -242,7 +236,7 @@ public abstract class Creature : MonoBehaviour
 
         if (mission == Status.THIRSTY || mission == Status.DEHYDRATED)
         {
-            if (Util.isDestinationReached(transform.position, target))
+            if (Util.isDestinationReached(transform.position, movement.target))
             {
                 if (thirst >= MAX_THIRST)
                 {
@@ -281,10 +275,10 @@ public abstract class Creature : MonoBehaviour
     {
         if (brain.hasWaterSource())
         {
-            setTarget(brain.getNearestWaterSource());
+            movement.setTarget(brain.getNearestWaterSource());
             return;
         }
-        setRandomTarget();
+        movement.setRandomTarget();
     }
     #endregion
     #region Social
@@ -305,123 +299,6 @@ public abstract class Creature : MonoBehaviour
 
 
 
-    #endregion
-
-    #region Movement
-    protected void MoveToTarget()
-    {
-        float theoreticalMoves = speed * Gamevariables.MINUTES_PER_TICK + leftOverSteps;
-        int moves = (int)theoreticalMoves;
-        leftOverSteps = theoreticalMoves - moves;
-
-        for (int i = 0; i < moves; i++)
-        {
-            //chance to not make a move based on health
-            if (Util.Random.Float(0f, 1f) > health / MAX_HEALTH)
-                continue;
-
-            //calculate new destination if reached in between ticks
-            if (Util.isDestinationReached(transform.position, target))
-                setRandomTarget();
-
-            if (nextSteps == Vector2.zero)
-                CalculateNextSteps(target);
-
-            if (Mathf.Abs(nextSteps.x) > Mathf.Abs(nextSteps.y))
-            {
-                if (nextSteps.x > 0)
-                {
-                    facing = Direction.EAST;
-                    MakeStep();
-                } else
-                {
-                    facing = Direction.WEST;
-                    MakeStep();
-                }
-            }
-            else
-            {
-                if (nextSteps.y > 0)
-                {
-                    facing = Direction.NORTH;
-                    MakeStep();
-                } else
-                {
-                    facing = Direction.SOUTH;
-                    MakeStep();
-                }
-            }
-        }
-    }
-
-    protected void CalculateNextSteps(Vector3 destination)
-    {
-        Vector2 vect = Util.Conversion.Vector3ToVector2(destination - transform.position);
-
-        if (vect.x == 0 || vect.y == 0)
-        {
-            nextSteps = new Vector2Int((int)vect.x, (int)vect.y);
-            return;
-        }
-
-        if (Mathf.Abs(vect.x) >= Mathf.Abs(vect.y))
-        {
-            int x = Util.roundFloatUpPositiveDownNegative(vect.x / Mathf.Abs(vect.y));
-            int y = 1;
-            if (vect.y < 0) y = -1;
-            nextSteps = new Vector2Int(x, y);
-        } else
-        {
-            int y = Util.roundFloatUpPositiveDownNegative(vect.y / Mathf.Abs(vect.x));
-            int x = 1;
-            if (vect.x < 0) x = -1;
-            nextSteps = new Vector2Int(x, y);
-        }
-    }
-
-    protected void MakeStep()
-    {
-        if (facing == Direction.NORTH)
-        {
-            nextSteps -= Vector2Int.up;
-            transform.position += Vector3.up;
-            transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
-            return;
-        }
-        if (facing == Direction.EAST)
-        {
-            nextSteps -= Vector2Int.right;
-            transform.position += Vector3.right;
-            transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.right);
-            return;
-        }
-        if (facing == Direction.SOUTH)
-        {
-            nextSteps -= Vector2Int.down;
-            transform.position += Vector3.down;
-            transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.down);
-            return;
-        }
-        if (facing == Direction.WEST)
-        {
-            nextSteps -= Vector2Int.left;
-            transform.position += Vector3.left;
-            transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.left);
-            return;
-        }
-    }
-
-    public void setRandomTarget()
-    {
-        target = Util.Random.CoordinateInPlayground();
-        nextSteps = Vector2Int.zero;
-    }
-
-    public void setTarget(Vector2 destination)
-    {
-        target = destination;
-        nextSteps = Vector2Int.zero;
-    }
     #endregion
 
     #region Needs

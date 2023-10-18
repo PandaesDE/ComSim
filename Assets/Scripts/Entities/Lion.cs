@@ -20,14 +20,14 @@ public class Lion : Creature
 {
     protected override void Awake()
     {
+        base.Awake();
+
         gender gender = Util.Random.Gender();
         Carnivore dietary = new();
         int health = 100;
         int weight = 80;
         float speed = .2f;
         initAttributes(gender, dietary, health, weight, speed);
-
-        base.Awake();
     }
 
     protected override void FixedUpdate()
@@ -35,7 +35,7 @@ public class Lion : Creature
         base.FixedUpdate();
         if (awake)
         {
-            MoveToTarget();
+            movement.MoveToTarget();
 
             drink();
         }
