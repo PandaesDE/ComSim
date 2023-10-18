@@ -21,7 +21,7 @@ public class Lion : Creature
     protected override void Awake()
     {
         gender gender = Util.Random.Gender();
-        foodType dietary = foodType.CARNIVORE;
+        Carnivore dietary = new();
         int health = 100;
         int weight = 80;
         float speed = .2f;
@@ -42,17 +42,10 @@ public class Lion : Creature
     }
 
     /*Gets called by Parent*/
-    protected override bool isValidPartner(GameObject g)
+    protected override bool isSameSpecies(GameObject g)
     {
         Lion partner = g.GetComponent<Lion>();
-
         if (partner == null) return false;
-        return isGenericMate(partner);
-    }
-
-    protected override bool isEdibleFoodSource(GameObject g)
-    {
-        if (g.GetComponent<Lion>() != null) return false;
-        return isDietaryFitting(g);
+        return true;
     }
 }

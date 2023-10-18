@@ -21,7 +21,7 @@ public class Boar : Creature
     protected override void Awake()
     {
         gender gender = Util.Random.Gender();
-        foodType dietary = foodType.OMNIVORE;
+        Omnivore dietary = new();
         int health = 150;
         int weight = 130;
         float speed = .2f;
@@ -42,17 +42,10 @@ public class Boar : Creature
     }
 
     /*Gets called by Parent*/
-    protected override bool isValidPartner(GameObject g)
+    protected override bool isSameSpecies(GameObject g)
     {
         Boar partner = g.GetComponent<Boar>();
-
         if (partner == null) return false;
-        return isGenericMate(partner);
-    }
-
-    protected override bool isEdibleFoodSource(GameObject g)
-    {
-        if (g.GetComponent<Boar>() != null) return false;
-        return isDietaryFitting(g);
+        return true;
     }
 }

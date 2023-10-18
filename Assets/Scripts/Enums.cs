@@ -20,13 +20,6 @@ public enum gender
     FEMALE
 }
 
-public enum foodType
-{
-    OMNIVORE,
-    CARNIVORE,
-    HERBIVORE
-}
-
 public enum animalType
 {
     LION,

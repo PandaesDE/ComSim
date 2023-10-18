@@ -9,7 +9,7 @@
  *  Class Purposes:
  *  
  *  Class Infos:
- *      
+ *      - This class can not be instanciated alone, it only defines the generic funcionality of a Creature
  *  Class References:
  *      
  */
@@ -31,7 +31,6 @@ public abstract class Creature : MonoBehaviour
     public float health;
     public int weight;
     public float speed;       //moves per Minute
-    protected foodType dietary;
     [SerializeField] public gender gender;
 
 
@@ -47,6 +46,7 @@ public abstract class Creature : MonoBehaviour
 
     //Brain
     protected Senses senses;
+    protected IDietary dietary;
     private readonly int MINUTES_UNTIL_STATUS_DETERMINING = 60;
     private int minutes_left_until_status_determining = 0;
 
@@ -115,7 +115,7 @@ public abstract class Creature : MonoBehaviour
 
     /*  This Method needs to be called by every descenant of this Class!
      */
-    protected void initAttributes(gender gender, foodType dietary, int health, int weight, float speed)
+    protected void initAttributes(gender gender, IDietary dietary, int health, int weight, float speed)
     {
         this.gender = gender;
         this.dietary = dietary;
@@ -141,18 +141,20 @@ public abstract class Creature : MonoBehaviour
                 /* If self, or Another Vision Collidor -> do nothing*/
                 if (g == this.gameObject) return;
 
-                /* Creature Evaluation */
-                if (isCreature(g))
-                {
-                    //evaluateCreature(g.GetComponent<Creature>());
-                }
-
-                /* Food Source */
+                /* Food Source (IConsumable)*/
                 if (isEdibleFoodSource(g))
                 {
                     AddFoodSource(g);
                     continue;
                 }
+
+                /* Creature Evaluation */
+                if (isCreature(g))
+                {
+                    evaluateCreature(g);
+                }
+
+
 
                 /* Water Source*/
                 if (spottedWater.ContainsKey(g.GetInstanceID())) continue;
@@ -271,45 +273,24 @@ public abstract class Creature : MonoBehaviour
 
     private void evaluateCreature(GameObject g)
     {
-        if (dietary == foodType.HERBIVORE)
+        if (isSameSpecies(g))
         {
             if (isValidPartner(g))
             {
                 AddPotentialMate(g);
-            } else
-            {
-
             }
-        }
-        if (dietary == foodType.CARNIVORE)
+        } else
         {
-            if (isValidPartner(g))
-            {
-                AddPotentialMate(g);
-            } else
-            {
-                //Add to hunting list
-            }
-            
+            dietary.evaluateCreature(g);
         }
     }
 
     #region Hunger
-    protected abstract bool isEdibleFoodSource(GameObject g);
-    protected bool isDietaryFitting(GameObject g)
+    protected bool isEdibleFoodSource(GameObject g)
     {
         IConsumable food = g.GetComponent<IConsumable>();
         if (food == null) return false;
-
-        if (dietary == foodType.CARNIVORE)
-        {
-            return food.isMeat;
-        }
-        if (dietary == foodType.HERBIVORE)
-        {
-            return !food.isMeat;
-        }
-        return true;
+        return dietary.isEdibleFoodSource(food);
     }
     protected void AddFoodSource(GameObject g)
     {
@@ -405,12 +386,15 @@ public abstract class Creature : MonoBehaviour
     #endregion
 
     #region Social
-    protected bool isGenericMate(Creature partner)
+    protected bool isValidPartner(GameObject g)
     {
+        Creature partner = g.GetComponent<Creature>();
+        if (partner == null) return false;
+        if (!isSameSpecies(g)) return false;
         return gender != partner.gender;
     }
 
-    protected abstract bool isValidPartner(GameObject g);
+    protected abstract bool isSameSpecies(GameObject g);
     protected void AddPotentialMate(GameObject mate)
     {
         Vector2Int mateCoords = Util.Conversion.Vector3ToVector2Int(mate.transform.position);

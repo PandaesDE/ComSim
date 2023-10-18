@@ -21,7 +21,7 @@ public class Rabbit : Creature
     protected override void Awake()
     {
         gender gender = Util.Random.Gender();
-        foodType dietary = foodType.HERBIVORE;
+        Herbivore dietary = new();
         int health = 45;
         int weight = 30;
         float speed = .2f;
@@ -42,17 +42,10 @@ public class Rabbit : Creature
     }
 
     /*Gets called by Parent*/
-    protected override bool isValidPartner(GameObject g)
+    protected override bool isSameSpecies(GameObject g)
     {
         Rabbit partner = g.GetComponent<Rabbit>();
-
         if (partner == null) return false;
-        return isGenericMate(partner);
-    }
-
-    protected override bool isEdibleFoodSource(GameObject g)
-    {
-        if (g.GetComponent<Rabbit>() != null) return false;
-        return isDietaryFitting(g);
+        return true;
     }
 }

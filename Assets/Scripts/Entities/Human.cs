@@ -38,12 +38,12 @@ public class Human : Creature
     protected override void Awake()
     {
         gender gender = Util.Random.Gender();
-        foodType dietary = foodType.OMNIVORE;
+        Omnivore dietary = new();
         int health = 80;
         int weight = 80;
         float speed = .2f;
 
-        initAttributes(gender, dietary, health, weight, speed);
+        initAttributes(gender, dietary,health, weight, speed);
         initSprite();
 
         base.Awake();
@@ -73,17 +73,10 @@ public class Human : Creature
     }
 
     /*Gets called by Parent*/
-    protected override bool isValidPartner(GameObject g)
+    protected override bool isSameSpecies(GameObject g)
     {
         Human partner = g.GetComponent<Human>();
-        
         if (partner == null) return false;
-        return isGenericMate(partner);
-    }
-
-    protected override bool isEdibleFoodSource(GameObject g)
-    {
-        if (g.GetComponent<Human>() != null) return false;
-        return isDietaryFitting(g);
+        return true;
     }
 }
