@@ -36,6 +36,8 @@ public abstract class Creature : MonoBehaviour
 
     //States
     public bool awake = true;
+    private readonly int MINUTES_UNTIL_STATUS_DETERMINING = 60;
+    private int minutes_left_until_status_determining = 0;
     [SerializeField] protected Status mission = Status.WANDERING;
 
     //Physics
@@ -47,17 +49,7 @@ public abstract class Creature : MonoBehaviour
     //Brain
     protected Senses senses;
     protected IDietary dietary;
-    private readonly int MINUTES_UNTIL_STATUS_DETERMINING = 60;
-    private int minutes_left_until_status_determining = 0;
-
-    [SerializeField] protected Dictionary<int, IConsumable> spottedFood;
-    [SerializeField] protected IConsumable activeFood;
-    [SerializeField] protected Dictionary<int, Creature> spottedCreature;
-    [SerializeField] protected Creature activeHunt;
-    [SerializeField] protected Creature activeFlee;
-    [SerializeField] protected Dictionary<int, Vector2> spottedWater;
-    [SerializeField] protected bool foundValidWaterSpot = false;
-    [SerializeField] protected Dictionary<int, Vector2> spottedMate;
+    protected Brain brain;
 
     //Movement
     [SerializeField] protected Vector2 target;
@@ -99,11 +91,8 @@ public abstract class Creature : MonoBehaviour
         rb2D = GetComponent<Rigidbody2D>();
         tbm = GameObject.Find("Playground").GetComponent<TileBaseManager>();
 
-        senses = new Senses(this);
-        spottedFood = new Dictionary<int, IConsumable>();
-
-        spottedWater = new Dictionary<int, Vector2>();
-        spottedMate = new Dictionary<int, Vector2>();
+        senses = new(this);
+        brain = new(this);
     }
 
 
@@ -144,7 +133,7 @@ public abstract class Creature : MonoBehaviour
                 /* Food Source (IConsumable)*/
                 if (isEdibleFoodSource(g))
                 {
-                    AddFoodSource(g);
+                    brain.AddFoodSource(g);
                     continue;
                 }
 
@@ -152,15 +141,13 @@ public abstract class Creature : MonoBehaviour
                 if (isCreature(g))
                 {
                     evaluateCreature(g);
+                    continue;
                 }
 
-
-
                 /* Water Source*/
-                if (spottedWater.ContainsKey(g.GetInstanceID())) continue;
                 if (tbm.isWater(g))
                 {
-                    AddWaterSource(g);
+                    brain.addWaterSource(g);
                     continue;
                 }
             }
@@ -170,13 +157,17 @@ public abstract class Creature : MonoBehaviour
     protected void determineStatus()
     {
         int normal_cap = 80;
-        int important_cap = 20;
+        int important_cap = 35;
 
         //has a Mission, Check for important Missions
         if (hunger <= important_cap)
         {
             mission = Status.STARVING;
-            setActiveFoodSource();
+            brain.setActiveFoodSource();
+            if (brain.activeFood != null)
+                setTarget(brain.activeFood.gameObject.transform.position);
+            else
+                setRandomTarget();
             return;
         }
         if (thirst <= important_cap)
@@ -188,7 +179,11 @@ public abstract class Creature : MonoBehaviour
         if (hunger <= normal_cap)
         {
             mission = Status.HUNGRY;
-            setActiveFoodSource();
+            brain.setActiveFoodSource();
+            if (brain.activeFood != null)
+                setTarget(brain.activeFood.gameObject.transform.position);
+            else
+                setRandomTarget();
             return;
         }
         if (thirst <= normal_cap)
@@ -223,13 +218,13 @@ public abstract class Creature : MonoBehaviour
         {
             if (Util.isDestinationReached(transform.position, target))
             {
-                if (activeFood == null)
+                if (brain.activeFood == null)
                 {
                     determineStatus();
                     return;
                 }
 
-                if (!activeFood.hasFood)
+                if (!brain.activeFood.hasFood)
                 {
                     determineStatus();
                     return;
@@ -241,7 +236,7 @@ public abstract class Creature : MonoBehaviour
                     return;
                 }
 
-                eat(activeFood.Consume());
+                eat(brain.activeFood.Consume());
             }
         }
 
@@ -254,21 +249,10 @@ public abstract class Creature : MonoBehaviour
                     determineStatus();
                     return;
                 }
-
-                if (!foundValidWaterSpot)
-                {
-                    determineStatus();
-                    return;
-                }
-
+                //make sure destination reached active water source and not random source
                 drink();
             }
         }
-    }
-
-    private bool isCreature(GameObject g)
-    {
-        return g.GetComponent<Creature>() != null;
     }
 
     private void evaluateCreature(GameObject g)
@@ -277,115 +261,39 @@ public abstract class Creature : MonoBehaviour
         {
             if (isValidPartner(g))
             {
-                AddPotentialMate(g);
+                brain.AddPotentialMate(g);
             }
         } else
         {
             dietary.evaluateCreature(g);
         }
     }
-
     #region Hunger
-    protected bool isEdibleFoodSource(GameObject g)
+    public bool isEdibleFoodSource(GameObject g)
     {
         IConsumable food = g.GetComponent<IConsumable>();
         if (food == null) return false;
         return dietary.isEdibleFoodSource(food);
     }
-    protected void AddFoodSource(GameObject g)
-    {
-        IConsumable food = g.GetComponent<IConsumable>();
-        spottedFood[food.gameObject.GetInstanceID()] = food;
-    }
-
-    protected void setActiveFoodSource()
-    {
-        activeFood = getNearestFoodSource();
-        if (activeFood != null)
-            setTarget(activeFood.gameObject.transform.position);
-        else
-            setRandomTarget();
-    }
-
-    protected IConsumable getNearestFoodSource()
-    {
-        IConsumable closest = null;
-        float minDistance = 100000f;
-        if (spottedFood.Count <= 0) return null;
-        foreach (KeyValuePair<int, IConsumable> keyValue in spottedFood)
-        {
-            if (!keyValue.Value.hasFood) continue;
-
-            float distance = Vector3.Distance(keyValue.Value.gameObject.transform.position, transform.position);
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                closest = keyValue.Value;
-            }
-        }
-        return closest;
-    }
-
-    protected void RemoveFoodSource(IConsumable food)
-    {
-        RemoveFoodSource(food.gameObject.GetInstanceID());
-    }
-
-    protected void RemoveFoodSource(int ID)
-    {
-        if (spottedFood.ContainsKey(ID))
-            spottedFood.Remove(ID);
-    }
     #endregion
-
     #region Thirst
-    protected void AddWaterSource(GameObject water)
+    public void setWaterTarget()
     {
-        Vector2Int waterCoords = Util.Conversion.Vector3ToVector2Int(water.transform.position);
-        spottedWater.Add(water.GetInstanceID(), waterCoords);
-    }
-
-    protected bool hasWaterSource()
-    {
-        return spottedWater.Count > 0;
-    }
-
-    protected void setWaterTarget()
-    {
-        if (hasWaterSource())
+        if (brain.hasWaterSource())
         {
-            setTarget(getNearestWaterSource());
-            foundValidWaterSpot = true;
+            setTarget(brain.getNearestWaterSource());
             return;
         }
-        foundValidWaterSpot = false;
         setRandomTarget();
     }
-    
-    protected Vector2 getNearestWaterSource()
-    {
-        Vector2 closest = Gamevariables.ERROR_VECTOR2;
-        float minDistance = Mathf.Infinity;
-        foreach (KeyValuePair<int, Vector2> keyValue in spottedWater)
-        {
-            float distance = Vector3.Distance(keyValue.Value, transform.position);
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                closest = keyValue.Value;
-            }
-        }
-        return closest;
-    }
-
-    protected void RemoveWaterSource(int ID)
-    {
-        if (spottedWater.ContainsKey(ID))
-            spottedWater.Remove(ID);
-    }
     #endregion
-
     #region Social
+    protected bool isCreature(GameObject g)
+    {
+        return g.GetComponent<Creature>() != null;
+    }
+    protected abstract bool isSameSpecies(GameObject g);
+
     protected bool isValidPartner(GameObject g)
     {
         Creature partner = g.GetComponent<Creature>();
@@ -393,20 +301,9 @@ public abstract class Creature : MonoBehaviour
         if (!isSameSpecies(g)) return false;
         return gender != partner.gender;
     }
-
-    protected abstract bool isSameSpecies(GameObject g);
-    protected void AddPotentialMate(GameObject mate)
-    {
-        Vector2Int mateCoords = Util.Conversion.Vector3ToVector2Int(mate.transform.position);
-        spottedMate[mate.GetInstanceID()] = mateCoords;
-    }
-
-    protected void RemovePotentialMate(int ID)
-    {
-        if (spottedMate.ContainsKey(ID))
-            spottedMate.Remove(ID);
-    }
     #endregion
+
+
 
     #endregion
 
@@ -514,7 +411,7 @@ public abstract class Creature : MonoBehaviour
         }
     }
 
-    protected void setRandomTarget()
+    public void setRandomTarget()
     {
         target = Util.Random.CoordinateInPlayground();
         nextSteps = Vector2Int.zero;
