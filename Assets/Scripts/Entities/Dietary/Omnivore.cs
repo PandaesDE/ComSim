@@ -1,16 +1,46 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Omnivore : IDietary
 {
-    public void evaluateCreature(GameObject g)
+    private static readonly float dangerZone = 5;
+
+    private Creature creature;
+
+    public Omnivore(Creature creature)
     {
-        //Add to hunting list
+        this.creature = creature;
     }
 
     public bool isEdibleFoodSource(IConsumable food)
     {
         return true;
+    }
+
+    public bool isInDangerZone(Creature approacher)
+    {
+        return Util.inRange(creature.gameObject.transform.position, approacher.gameObject.transform.position, dangerZone);
+    }
+
+    public Creature.Status onAttacked()
+    {
+        if (creature.health / creature.MAX_HEALTH <= .5f)
+        {
+            return Creature.Status.FLEEING;
+        }
+
+        return Creature.Status.HUNTING;
+    }
+
+    public Creature.Status onApproached()
+    {
+        if (creature.health / creature.MAX_HEALTH <= .8f)
+        {
+            return Creature.Status.FLEEING;
+        }
+        if (creature.hunger < 60)
+        {
+            return Creature.Status.HUNTING;
+        }
+        return Creature.Status.WANDERING;
     }
 }

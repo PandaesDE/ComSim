@@ -48,7 +48,7 @@ public class Movement
                 continue;
 
             //calculate new destination if reached in between ticks
-            if (Util.isDestinationReached(creature.transform.position, target))
+            if (Util.inRange(creature.transform.position, target))
                 setRandomTarget();
 
             if (nextSteps == Vector2.zero)
@@ -145,6 +145,11 @@ public class Movement
     {
         target = Util.Random.CoordinateInPlayground();
         nextSteps = Vector2Int.zero;
+    }
+
+    public void setTarget(GameObject g)
+    {
+        setTarget(g.transform.position);
     }
 
     public void setTarget(Vector2 destination)

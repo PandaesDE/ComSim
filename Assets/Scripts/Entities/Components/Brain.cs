@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,29 +5,53 @@ public class Brain
 {
     private Creature creature;
 
-    public Dictionary<int, IConsumable> spottedFood;
     public IConsumable activeFood;
-    public Dictionary<int, Creature> spottedCreature;
     public Creature activeHunt;
     public Creature activeFlee;
-    public Dictionary<int, Vector2> spottedWater;
-    public Dictionary<int, Vector2> spottedMate;
+
+    private Dictionary<int, IConsumable> spottedFood;
+    private Dictionary<int, IConsumable> inactiveFood;
+    private Dictionary<int, Creature> spottedCreature;
+    private Dictionary<int, Creature> spottedMate;
+    private Dictionary<int, Vector2> spottedWater;
 
 
     public Brain(Creature creature)
     {
         spottedFood = new Dictionary<int, IConsumable>();
+        inactiveFood = new Dictionary<int, IConsumable>();
+        spottedCreature = new Dictionary<int, Creature>();
+        spottedMate = new Dictionary<int, Creature>();
         spottedWater = new Dictionary<int, Vector2>();
-        spottedMate = new Dictionary<int, Vector2>();
         this.creature = creature;
     }
 
+    #region Survival
+    public void AddSpottedCreature(Creature c)
+    {
+        int ID = c.gameObject.GetInstanceID();
+        if (spottedCreature.ContainsKey(ID)) return;
+        spottedCreature[ID] = c;
+    }
+
+    public void RemoveSpottedCreature(int ID)
+    {
+        if (spottedCreature.ContainsKey(ID))
+            spottedCreature.Remove(ID);
+    }
+    #endregion
     #region Hunger
     public void AddFoodSource(GameObject g)
     {
-        if (spottedFood.ContainsKey(g.GetInstanceID())) return;
         IConsumable food = g.GetComponent<IConsumable>();
-        spottedFood[g.GetInstanceID()] = food;
+        if (food != null) AddFoodSource(food);
+    }
+
+    public void AddFoodSource(IConsumable food)
+    {
+        int ID = food.gameObject.GetInstanceID();
+        if (spottedFood.ContainsKey(ID)) return;
+        spottedFood[ID] = food;
     }
 
     public void setActiveFoodSource()
@@ -65,8 +88,32 @@ public class Brain
         if (spottedFood.ContainsKey(ID))
             spottedFood.Remove(ID);
     }
-    #endregion
 
+    #region inactiveFood
+    public void ActivateAll()
+    {
+        foreach (KeyValuePair<int, IConsumable> food in inactiveFood)
+        {
+            int ID = food.Key;
+            inactiveFood.Remove(ID);
+            AddFoodSource(food.Value);
+        }
+    }
+
+    public void SetInactiveFoodSource(IConsumable food)
+    {
+        int ID = food.gameObject.GetInstanceID();
+
+        /*Remove from FoodSourceList*/
+        if (!spottedFood.ContainsKey(ID)) return;
+        RemoveFoodSource(ID);
+
+        /*Add to inactiveFood*/
+        if (inactiveFood.ContainsKey(ID)) return;
+        inactiveFood[ID] = food;
+    }
+    #endregion
+    #endregion
     #region Thirst
     public void addWaterSource(GameObject water)
     {
@@ -103,11 +150,12 @@ public class Brain
     }
     #endregion
     #region Social
-    public void AddPotentialMate(GameObject mate)
+    public void AddPotentialMate(Creature mate)
     {
-        if (spottedMate.ContainsKey(mate.GetInstanceID())) return;
-        Vector2Int mateCoords = Util.Conversion.Vector3ToVector2Int(mate.transform.position);
-        spottedMate[mate.GetInstanceID()] = mateCoords;
+        if (spottedMate.ContainsKey(mate.gameObject.GetInstanceID())) return;
+        if (mate == null) return;
+
+        spottedMate[mate.gameObject.GetInstanceID()] = mate;
     }
 
     public void RemovePotentialMate(int ID)

@@ -5,5 +5,8 @@ using UnityEngine;
 public interface IDietary
 {
     public bool isEdibleFoodSource(IConsumable food);
-    public void evaluateCreature(GameObject g);
+    public Creature.Status onAttacked();
+    public bool isInDangerZone(Creature creature);
+    public Creature.Status onApproached();
+
 }

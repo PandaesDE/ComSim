@@ -23,7 +23,7 @@ public class Lion : Creature
         base.Awake();
 
         gender gender = Util.Random.Gender();
-        Carnivore dietary = new();
+        Carnivore dietary = new(this);
         int health = 100;
         int weight = 80;
         float speed = .2f;
@@ -33,7 +33,7 @@ public class Lion : Creature
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        if (awake)
+        if (mission != Status.SLEEPING)
         {
             movement.MoveToTarget();
 
@@ -42,9 +42,9 @@ public class Lion : Creature
     }
 
     /*Gets called by Parent*/
-    protected override bool isSameSpecies(GameObject g)
+    protected override bool isSameSpecies(Creature c)
     {
-        Lion partner = g.GetComponent<Lion>();
+        Lion partner = c.gameObject.GetComponent<Lion>();
         if (partner == null) return false;
         return true;
     }

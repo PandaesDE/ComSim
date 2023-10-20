@@ -40,7 +40,7 @@ public class Human : Creature
         base.Awake();
 
         gender gender = Util.Random.Gender();
-        Omnivore dietary = new();
+        Omnivore dietary = new(this);
         int health = 80;
         int weight = 80;
         float speed = .2f;
@@ -65,7 +65,7 @@ public class Human : Creature
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        if (awake)
+        if (mission != Status.SLEEPING)
         {
             movement.MoveToTarget();
             evaluateVision();
@@ -74,9 +74,9 @@ public class Human : Creature
     }
 
     /*Gets called by Parent*/
-    protected override bool isSameSpecies(GameObject g)
+    protected override bool isSameSpecies(Creature c)
     {
-        Human partner = g.GetComponent<Human>();
+        Human partner = c.gameObject.GetComponent<Human>();
         if (partner == null) return false;
         return true;
     }

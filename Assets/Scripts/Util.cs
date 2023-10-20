@@ -18,13 +18,13 @@ using UnityEngine;
 
 public static class Util
 {
-    public static bool isDestinationReached(Vector2 position, Vector2 destination, int errorVal = 1)
+    public static bool inRange(Vector2 position, Vector2 destination, float range = 1)
     {
         return
-            position.x > destination.x - errorVal &&
-            position.x < destination.x + errorVal &&
-            position.y > destination.y - errorVal &&
-            position.y < destination.y + errorVal;
+            position.x > destination.x - range &&
+            position.x < destination.x + range &&
+            position.y > destination.y - range &&
+            position.y < destination.y + range;
     }
 
     public static int roundFloatUpPositiveDownNegative(float val)

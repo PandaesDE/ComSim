@@ -24,6 +24,7 @@ public class InfoMenu : MonoBehaviour
     private CameraManager cameraManager;
 
     [SerializeField] private TMP_Text display_Name;
+    [SerializeField] private TMP_Text display_Status;
 
     [SerializeField] private GameObject image_Object;
     private Image image;
@@ -54,7 +55,7 @@ public class InfoMenu : MonoBehaviour
 
     private void FixedUpdate()
     {
-        updateInfo();
+        updateChangingInfo();
     }
 
     public void setTarget(Creature t)
@@ -62,7 +63,7 @@ public class InfoMenu : MonoBehaviour
         this.target = t;
         followTarget(tgl_Follow.isOn);
         setActive(true);
-        updateInfo();
+        updateAllInfo();
     }
 
     private void followTarget(bool follow)
@@ -75,7 +76,13 @@ public class InfoMenu : MonoBehaviour
         cameraManager.followTarget(follow, target.gameObject);
     }
 
-    private void updateInfo()
+    private void updateAllInfo()
+    {
+        updateImage();
+        updateChangingInfo();
+    }
+
+    private void updateChangingInfo()
     {
         if (target == null)
         {
@@ -85,11 +92,11 @@ public class InfoMenu : MonoBehaviour
         }
 
         display_Name.text = target.name;
-        updateImage();
         updateHealthBar();
         updateHungerBar();
         updateThirstBar();
         updateEnergyBar();
+        updateStatus();
     }
     private void resetInputs()
     {
@@ -120,9 +127,13 @@ public class InfoMenu : MonoBehaviour
         sdr_Energy.value = target.energy / Creature.MAX_ENERGY;
     }
 
+    private void updateStatus()
+    {
+        display_Status.text = (target.mission + "").ToLower();
+    }
+
     private void setActive(bool state) 
     {
         gameObject.SetActive(state);
-
     }
 }
