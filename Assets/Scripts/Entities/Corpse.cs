@@ -26,8 +26,17 @@ public class Corpse : MonoBehaviour, IConsumable
 
     private int WEIGHT_START;
     private int weight = 0;
+    private bool _isConsumed = false;
 
     [SerializeField] private int decayMinutes;
+
+    public bool isConsumed
+    {
+        get
+        {
+            return _isConsumed;
+        }
+    }
 
     public bool isMeat
     {
@@ -54,6 +63,7 @@ public class Corpse : MonoBehaviour, IConsumable
     {
         if (decayMinutes <= 0 || weight <= 0)
         {
+            _isConsumed = true;
             Destroy(gameObject);
         }
         decayMinutes -= Gamevariables.MINUTES_PER_TICK;

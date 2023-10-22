@@ -37,6 +37,8 @@ public class Movement
 
     public void MoveToTarget()
     {
+        if (Util.inRange(creature.transform.position, target))
+            return;
         float theoreticalMoves = speed * Gamevariables.MINUTES_PER_TICK + leftOverSteps;
         int moves = (int)theoreticalMoves;
         leftOverSteps = theoreticalMoves - moves;
@@ -46,10 +48,6 @@ public class Movement
             //chance to not make a move based on health
             if (Util.Random.Float(0f, 1f) > creature.health / creature.MAX_HEALTH)
                 continue;
-
-            //calculate new destination if reached in between ticks
-            if (Util.inRange(creature.transform.position, target))
-                setRandomTarget();
 
             if (nextSteps == Vector2.zero)
                 CalculateNextSteps(target);
@@ -147,6 +145,11 @@ public class Movement
         nextSteps = Vector2Int.zero;
     }
 
+    public void setRandomTargetIfReached()
+    {
+        if (targetReached()) setRandomTarget();
+    }
+
     public void setTarget(GameObject g)
     {
         setTarget(g.transform.position);
@@ -154,7 +157,16 @@ public class Movement
 
     public void setTarget(Vector2 destination)
     {
+        float x = Mathf.Clamp(destination.x, -Gamevariables.playgroundSize.x / 2, Gamevariables.playgroundSize.x / 2);
+        float y = Mathf.Clamp(destination.y, -Gamevariables.playgroundSize.y / 2, Gamevariables.playgroundSize.y / 2);
+
+        destination = new Vector2(x, y);
         target = destination;
         nextSteps = Vector2Int.zero;
+    }
+
+    public bool targetReached()
+    {
+        return Util.inRange(creature.transform.position, target);
     }
 }

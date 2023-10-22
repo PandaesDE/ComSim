@@ -196,15 +196,26 @@ public abstract class Creature : MonoBehaviour
             determineStatus();
             minutes_left_until_status_determining = MINUTES_UNTIL_STATUS_DETERMINING;
         }
-        //always search for a more important task than default
-        else if (mission == Status.WANDERING)
-        {
-            determineStatus();
-        }
         else
         {
             minutes_left_until_status_determining -= Gamevariables.MINUTES_PER_TICK;
         }
+
+        if (mission == Status.FLEEING)
+        {
+            movement.setTarget(-brain.activeFlee.transform.position);
+        }
+
+        if (mission == Status.HUNTING)
+        {
+
+        }
+
+        if (mission == Status.LOOKING_FOR_PARTNER)
+        {
+
+        }
+
 
         if (mission == Status.HUNGRY || mission == Status.STARVING)
         {
@@ -230,6 +241,7 @@ public abstract class Creature : MonoBehaviour
                 }
 
                 eat(brain.activeFood.Consume());
+                return;
             }
         }
 
@@ -245,6 +257,12 @@ public abstract class Creature : MonoBehaviour
                 //make sure destination reached active water source and not random source
                 drink();
             }
+        }
+
+        if (mission == Status.WANDERING)
+        {
+            movement.setRandomTargetIfReached();
+            determineStatus();
         }
     }
 
@@ -274,7 +292,7 @@ public abstract class Creature : MonoBehaviour
         if (brain.activeFood != null)
             movement.setTarget(brain.activeFood.gameObject);
         else
-            movement.setRandomTarget();
+            movement.setRandomTargetIfReached();
     }
 
     protected bool isEdibleFoodSource(GameObject g)
@@ -292,7 +310,7 @@ public abstract class Creature : MonoBehaviour
             movement.setTarget(brain.getNearestWaterSource());
             return;
         }
-        movement.setRandomTarget();
+        movement.setRandomTargetIfReached();
     }
     #endregion
     #region Social
@@ -387,6 +405,8 @@ public abstract class Creature : MonoBehaviour
             energy >= hunger        ||  //Hungry
             energy >= thirst)           //Thirsty
         {
+            //REGULAR WAKE UP
+            brain.ActivateAllInactiveFoodSources();
             mission = Status.WANDERING;
         }
     }

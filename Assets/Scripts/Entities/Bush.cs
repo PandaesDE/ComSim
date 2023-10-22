@@ -22,6 +22,13 @@ public class Bush : MonoBehaviour, IConsumable
     private static readonly int MAX_BERRIES = 80;
     private static readonly int BERRY_GROW_TIME_MINUTES = 288; //5 Berries per Day
 
+    public bool isConsumed
+    {
+        get
+        {
+            return false;
+        }
+    }
     public bool isMeat
     {
         get

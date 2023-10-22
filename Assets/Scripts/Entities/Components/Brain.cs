@@ -51,6 +51,7 @@ public class Brain
     {
         int ID = food.gameObject.GetInstanceID();
         if (spottedFood.ContainsKey(ID)) return;
+        if (inactiveFood.ContainsKey(ID)) return;
         spottedFood[ID] = food;
     }
 
@@ -61,12 +62,30 @@ public class Brain
 
     public IConsumable getNearestFoodSource()
     {
+        if (spottedFood.Count <= 0) return null;
+
         IConsumable closest = null;
         float minDistance = 100000f;
-        if (spottedFood.Count <= 0) return null;
+        List<int> missingIDs = new();
+        List<int> inactiveIDs = new();
+
         foreach (KeyValuePair<int, IConsumable> keyValue in spottedFood)
         {
-            if (!keyValue.Value.hasFood) continue;
+
+            //Food resource missing (consumed)
+            if (keyValue.Value == null || keyValue.Value.isConsumed)
+            {
+                missingIDs.Add(keyValue.Key);
+                continue;
+            }
+
+            //no Food Resource left for now
+            if (!keyValue.Value.hasFood)
+            {
+                inactiveIDs.Add(keyValue.Key);
+                continue;
+            }
+
 
             float distance = Vector3.Distance(keyValue.Value.gameObject.transform.position, creature.transform.position);
             if (distance < minDistance)
@@ -75,7 +94,17 @@ public class Brain
                 closest = keyValue.Value;
             }
         }
+        RemoveFoodSources(missingIDs);
+        SetInactiveFoodSources(inactiveIDs);
         return closest;
+    }
+
+    public void RemoveFoodSources(List<int> IDs)
+    {
+        for (int i = 0; i < IDs.Count; i++)
+        {
+            RemoveFoodSource(IDs[i]);
+        }
     }
 
     public void RemoveFoodSource(IConsumable food)
@@ -90,13 +119,35 @@ public class Brain
     }
 
     #region inactiveFood
-    public void ActivateAll()
+    public void ActivateAllInactiveFoodSources()
     {
+        List<int> nowActiveIDs = new();
         foreach (KeyValuePair<int, IConsumable> food in inactiveFood)
         {
             int ID = food.Key;
-            inactiveFood.Remove(ID);
+            nowActiveIDs.Add(ID);
             AddFoodSource(food.Value);
+        }
+
+        for (int i = 0; i < nowActiveIDs.Count; i++)
+        {
+            ReactivateFoodSource(nowActiveIDs[i]);
+        }
+    }
+
+    public void ReactivateFoodSource(int ID)
+    {
+        if (!inactiveFood.ContainsKey(ID)) return;
+        IConsumable food = inactiveFood[ID];
+        inactiveFood.Remove(ID);
+        AddFoodSource(food);
+    }
+
+    public void SetInactiveFoodSources(List<int> IDs)
+    {
+        for (int i = 0; i < IDs.Count; i++)
+        {
+            SetInactiveFoodSource(IDs[i]);
         }
     }
 
@@ -104,8 +155,14 @@ public class Brain
     {
         int ID = food.gameObject.GetInstanceID();
 
+        SetInactiveFoodSource(ID);
+    }
+
+    public void SetInactiveFoodSource(int ID)
+    {
         /*Remove from FoodSourceList*/
         if (!spottedFood.ContainsKey(ID)) return;
+        IConsumable food = spottedFood[ID];
         RemoveFoodSource(ID);
 
         /*Add to inactiveFood*/
@@ -113,6 +170,7 @@ public class Brain
         inactiveFood[ID] = food;
     }
     #endregion
+
     #endregion
     #region Thirst
     public void addWaterSource(GameObject water)
