@@ -29,7 +29,7 @@ public class NoiseTextureGenerator : MonoBehaviour
 
     private void Awake()
     {
-        ConfigManager.SettingsData settings = ConfigManager.ReadSettings();
+        GameSettingsObject settings = ConfigManager.ReadSettings();
         pso_ground = settings.Pso_Ground;
         pso_bush = settings.Pso_Bush;
 

@@ -37,4 +37,15 @@ public class PerlinSettingsObject
         this.yOrg = yOrg;
         this.zoom = zoom;
     }
+
+    public bool Equals(PerlinSettingsObject pso)
+    {
+        return  this.persistence == pso.persistence &&
+                this.frequency == pso.frequency &&
+                this.octaves == pso.octaves &&
+                this.amplitude == pso.amplitude &&
+                this.xOrg == pso.xOrg &&
+                this.yOrg == pso.yOrg &&
+                this.zoom == pso.zoom;
+    }
 }

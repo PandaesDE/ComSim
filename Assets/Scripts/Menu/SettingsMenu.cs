@@ -68,7 +68,7 @@ public class SettingsMenu : MonoBehaviour
 
     private void displaySerializedSettings()
     {
-        ConfigManager.SettingsData settings = ConfigManager.ReadSettings();
+        GameSettingsObject settings = ConfigManager.ReadSettings();
         ipt_Seed.text = settings.Seed;
         ipt_Humans.text = "" + settings.Human_Amount_Start ;
         ipt_Lions.text = "" + settings.Lion_Amount_Start;
@@ -92,7 +92,7 @@ public class SettingsMenu : MonoBehaviour
 
     private void saveSettings()
     {
-        ConfigManager.SettingsData settings = ConfigManager.ReadSettings();
+        GameSettingsObject settings = ConfigManager.ReadSettings();
         settings.Seed =                 Util.UI.preventNullOrEmptyInputString(ipt_Seed.text);
         settings.Human_Amount_Start =   int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Humans.text));
         settings.Lion_Amount_Start =    int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Lions.text));

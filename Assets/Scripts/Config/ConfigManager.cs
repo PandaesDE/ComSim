@@ -22,17 +22,7 @@ using UnityEngine;
 
 public class ConfigManager
 {
-    [System.Serializable]
-    public class SettingsData
-    {
-        public string Seed = "";
-        public PerlinSettingsObject Pso_Ground;
-        public PerlinSettingsObject Pso_Bush;
-        public int Human_Amount_Start = 0;
-        public int Lion_Amount_Start = 0;
-        public int Boar_Amount_Start = 0;
-        public int Rabbit_Amount_Start = 0;
-    }
+    private static bool isRead = false;
 
     //Chat-GPT
     public static void LoadSettings()
@@ -40,7 +30,7 @@ public class ConfigManager
         LoadSettings(ReadSettings());
     }
 
-    public static void LoadSettings(SettingsData settings)
+    public static void LoadSettings(GameSettingsObject settings)
     {
         Gamevariables.SEED = settings.Seed;
         Gamevariables.HUMAN_AMOUNT_START = settings.Human_Amount_Start;
@@ -51,29 +41,47 @@ public class ConfigManager
         Gamevariables.PSO_BUSH = settings.Pso_Bush;
     }
 
-    public static void SaveSettings(SettingsData settings)
+    public static void SaveSettings(GameSettingsObject settings)
     {
+        if (areSettingsUnchanged(settings))
+        {
+            return;
+        }
+
+        isRead = false;
         string json = JsonUtility.ToJson(settings, true);
 
         //persistentDataPath Windows: "...\AppData\LocalLow\DefaultCompany\ComSim"
         System.IO.File.WriteAllText(Path.Combine(Application.persistentDataPath, "Settings.json"), json);
     }
 
-    public static SettingsData ReadSettings()
+    public static GameSettingsObject ReadSettings()
     {
+        if (isRead)
+        {
+            //no need for reading from disc multiple times
+            return getStaticConfig();
+        }
+
         string filePath = Path.Combine(Application.persistentDataPath, "Settings.json");
         if (!File.Exists(filePath))
         {
-            return getDefaultConfig(); // Return default settings
+            //default config
+            return getStaticConfig();
         }
 
         string json = File.ReadAllText(filePath);
-        return JsonUtility.FromJson<SettingsData>(json);
+        isRead = true;
+        return JsonUtility.FromJson<GameSettingsObject>(json);
     }
 
-    private static SettingsData getDefaultConfig()
+    /* getStaticConfig reads the serializable values from Gamevariables.
+     * if this method gets called before ReadSettings() is called once, this will return the default config
+     * if this method gets called after ReadSettings() was called, this will return the settings read.
+     */
+    private static GameSettingsObject getStaticConfig()
     {
-        SettingsData settings = new();
+        GameSettingsObject settings = new();
         settings.Seed = Gamevariables.SEED;
         settings.Human_Amount_Start = Gamevariables.HUMAN_AMOUNT_START;
         settings.Lion_Amount_Start = Gamevariables.LION_AMOUNT_START;
@@ -82,5 +90,10 @@ public class ConfigManager
         settings.Pso_Ground = Gamevariables.PSO_GROUND;
         settings.Pso_Bush = Gamevariables.PSO_BUSH;
         return settings;
+    }
+
+    private static bool areSettingsUnchanged(GameSettingsObject settings)
+    {
+        return settings.Equals(getStaticConfig());
     }
 }

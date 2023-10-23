@@ -86,8 +86,7 @@ public class MapGenerationMenu : MonoBehaviour
     private void toSettingsMenu()
     {
 
-        ConfigManager.SettingsData settings = ConfigManager.ReadSettings();
-        //preventNullOrEmptyInputs();
+        GameSettingsObject settings = ConfigManager.ReadSettings();
 
         settings.Pso_Ground = ntg.pso_ground;
         settings.Pso_Bush = ntg.pso_bush;
