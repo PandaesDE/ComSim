@@ -34,6 +34,53 @@ public class Brain
         spottedCreature[ID] = c;
     }
 
+    public bool hasSpottedCreature()
+    {
+        return spottedCreature.Count > 0;
+    }
+
+    public void setActiveHunt()
+    {
+        activeHunt = getNearestCreature();
+    }
+
+    public Creature getNearestCreature()
+    {
+        if (!hasSpottedCreature()) return null;
+
+        Creature closest = null;
+        float minDistance = 100000f;
+        List<int> missingIDs = new();
+
+        foreach (KeyValuePair<int, Creature> keyValue in spottedCreature)
+        {
+
+            //Food resource missing (consumed)
+            if (keyValue.Value == null)
+            {
+                missingIDs.Add(keyValue.Key);
+                continue;
+            }
+
+            float distance = Vector3.Distance(keyValue.Value.gameObject.transform.position, creature.transform.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                closest = keyValue.Value;
+            }
+        }
+        RemoveSpottedCreatures(missingIDs);
+        return closest;
+    }
+
+    public void RemoveSpottedCreatures(List<int> IDs)
+    {
+        for (int i = 0; i < IDs.Count; i++)
+        {
+            RemoveSpottedCreature(IDs[i]);
+        }
+    }
+
     public void RemoveSpottedCreature(int ID)
     {
         if (spottedCreature.ContainsKey(ID))
@@ -41,6 +88,19 @@ public class Brain
     }
     #endregion
     #region Hunger
+    public bool HasFoodSource()
+    {
+        if (spottedFood.Count <= 0)
+        {
+            if (inactiveFood.Count <= 0)
+            {
+                return false;
+            }
+            ActivateAllInactiveFoodSources();
+            return true;
+        }
+        return true;
+    }
     public void AddFoodSource(GameObject g)
     {
         IConsumable food = g.GetComponent<IConsumable>();

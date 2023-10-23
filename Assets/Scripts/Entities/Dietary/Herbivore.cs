@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class Herbivore : IDietary
 {
     private static readonly float dangerZone = 7;
@@ -29,5 +27,10 @@ public class Herbivore : IDietary
     public Creature.Status onApproached()
     {
         return Creature.Status.FLEEING;
+    }
+
+    Creature.Status IDietary.onNoFood()
+    {
+        return creature.mission;
     }
 }

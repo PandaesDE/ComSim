@@ -36,8 +36,8 @@ public class Boar : Creature
         if (mission != Status.SLEEPING)
         {
             movement.MoveToTarget();
-
-            drink();
+            evaluateVision();
+            makeStatusBasedMove();
         }
     }
 

@@ -43,4 +43,9 @@ public class Carnivore : IDietary
         }
         return Creature.Status.WANDERING;
     }
+
+    Creature.Status IDietary.onNoFood()
+    {
+        return Creature.Status.HUNTING;
+    }
 }

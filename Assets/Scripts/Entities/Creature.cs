@@ -203,12 +203,29 @@ public abstract class Creature : MonoBehaviour
 
         if (mission == Status.FLEEING)
         {
-            movement.setTarget(-brain.activeFlee.transform.position);
+            //movement.setTarget(-brain.activeFlee.transform.position);
         }
 
         if (mission == Status.HUNTING)
         {
+            if (brain.activeHunt == null)
+            {
+                setActiveHunt();
+                return;
+            }
+            if (Util.inRange(transform.position, brain.activeHunt.transform.position))
+            {
+                if (brain.activeHunt == null)
+                {
+                    //?
+                }
+                if (hunger >= MAX_HUNGER)
+                {
+                    //?
+                }
 
+                brain.activeHunt.attack(20);
+            }
         }
 
         if (mission == Status.LOOKING_FOR_PARTNER)
@@ -285,10 +302,37 @@ public abstract class Creature : MonoBehaviour
             brain.AddSpottedCreature(creature);
         }
     }
+    #region Survival
+    protected void setActiveHunt()
+    {
+        if (brain.hasSpottedCreature())
+        {
+            brain.setActiveHunt();
+        } 
+
+        if (brain.activeHunt != null)
+        {
+            movement.setTarget(brain.activeHunt.gameObject);
+        } else
+        {
+            movement.setRandomTargetIfReached();
+        }
+    }
+    #endregion
+
     #region Hunger
     protected void setActiveFoodSource()
     {
-        brain.setActiveFoodSource();
+        if (brain.HasFoodSource())
+        {
+            brain.setActiveFoodSource();
+        } else
+        {
+            mission = dietary.onNoFood();
+            if (mission == Status.HUNTING)
+                setActiveHunt();
+            return;
+        }
         if (brain.activeFood != null)
             movement.setTarget(brain.activeFood.gameObject);
         else

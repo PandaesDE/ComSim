@@ -36,8 +36,8 @@ public class Rabbit : Creature
         if (mission != Status.SLEEPING)
         {
             movement.MoveToTarget();
-
-            drink();
+            evaluateVision();
+            makeStatusBasedMove();
         }
     }
 
