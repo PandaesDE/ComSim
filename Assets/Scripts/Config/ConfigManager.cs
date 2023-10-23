@@ -22,7 +22,7 @@ using UnityEngine;
 
 public class ConfigManager
 {
-    private static bool isRead = false;
+    //private static bool isRead = false;
 
     //Chat-GPT
     public static void LoadSettings()
@@ -43,12 +43,12 @@ public class ConfigManager
 
     public static void SaveSettings(GameSettingsObject settings)
     {
-        if (areSettingsUnchanged(settings))
-        {
-            return;
-        }
-
-        isRead = false;
+        //if (areSettingsUnchanged(settings))
+        //{
+        //    return;
+        //}
+        //
+        //isRead = false;
         string json = JsonUtility.ToJson(settings, true);
 
         //persistentDataPath Windows: "...\AppData\LocalLow\DefaultCompany\ComSim"
@@ -57,11 +57,11 @@ public class ConfigManager
 
     public static GameSettingsObject ReadSettings()
     {
-        if (isRead)
-        {
-            //no need for reading from disc multiple times
-            return getStaticConfig();
-        }
+        //if (isRead)
+        //{
+        //    //no need for reading from disc multiple times
+        //    return getStaticConfig();
+        //}
 
         string filePath = Path.Combine(Application.persistentDataPath, "Settings.json");
         if (!File.Exists(filePath))
@@ -71,7 +71,7 @@ public class ConfigManager
         }
 
         string json = File.ReadAllText(filePath);
-        isRead = true;
+        //isRead = true;
         return JsonUtility.FromJson<GameSettingsObject>(json);
     }
 
