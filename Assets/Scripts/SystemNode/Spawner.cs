@@ -122,10 +122,10 @@ public class Spawner : MonoBehaviour
     }
     public Human spawnHuman(Vector2 c)
     {
-        return spawnHuman((int)c.x, (int)c.y, Util.Random.Gender());
+        return spawnHuman((int)c.x, (int)c.y);
     }
 
-    public Human spawnHuman(int posX, int posY, gender g)
+    public Human spawnHuman(int posX, int posY)
     {
         GameObject spawn = Instantiate(PREFAB_Human, new Vector2((float)posX + .5f, (float)posY + .5f), Quaternion.identity);
         return spawn.GetComponent<Human>();

@@ -22,7 +22,7 @@ public class Rabbit : Creature
     {
         base.Awake();
 
-        gender gender = Util.Random.Gender();
+        IGender gender = Util.Random.Gender();
         Herbivore dietary = new(this);
         int health = 45;
         int weight = 30;

@@ -29,7 +29,7 @@ public abstract class Creature : MonoBehaviour
     public float energy { get; protected set; } = 100;
     public float health { get; protected set; }
     public int weight { get; protected set; }
-    [SerializeField] public gender gender;
+    [SerializeField] public IGender gender;
 
 
     //States
@@ -59,11 +59,11 @@ public abstract class Creature : MonoBehaviour
     }
 
     //Needs
-    [SerializeField] public float hunger = 100f;
-    [SerializeField] public float thirst = 100f;
+    public float hunger = 100f;
+    public float thirst = 100f;
 
     //Corpse
-    [SerializeField] private GameObject PREFAB_CORPSE;
+    private GameObject PREFAB_CORPSE;
 
     public enum Status
     {
@@ -98,7 +98,7 @@ public abstract class Creature : MonoBehaviour
 
     /*  This Method needs to be called by every descenant of this Class!
      */
-    protected void initAttributes(gender gender, IDietary dietary, int health, int weight, float speed)
+    protected void initAttributes(IGender gender, IDietary dietary, int health, int weight, float speed)
     {
         this.gender = gender;
         this.dietary = dietary;

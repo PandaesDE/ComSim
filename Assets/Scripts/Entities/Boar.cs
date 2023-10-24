@@ -22,7 +22,7 @@ public class Boar : Creature
     {
         base.Awake();
 
-        gender gender = Util.Random.Gender();
+        IGender gender = Util.Random.Gender();
         Omnivore dietary = new(this);
         int health = 150;
         int weight = 130;

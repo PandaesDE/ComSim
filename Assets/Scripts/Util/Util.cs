@@ -42,11 +42,11 @@ public static class Util
 
     public static class Random
     {
-        public static gender Gender()
+        public static IGender Gender()
         {
             int r = UnityEngine.Random.Range(0, 2);
-            if (r < 1) return gender.MALE;
-            return gender.FEMALE;
+            if (r < 1) return new Male();
+            return new Female();
         }
 
         public static float Float(float max)

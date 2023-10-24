@@ -14,12 +14,6 @@
  *      
  */
 
-public enum gender
-{
-    MALE,
-    FEMALE
-}
-
 public enum animalType
 {
     LION,

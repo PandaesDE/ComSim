@@ -39,7 +39,7 @@ public class Human : Creature
     {
         base.Awake();
 
-        gender gender = Util.Random.Gender();
+        IGender gender = Util.Random.Gender();
         Omnivore dietary = new(this);
         int health = 80;
         int weight = 80;
@@ -51,7 +51,7 @@ public class Human : Creature
 
         void initSprite()
         {
-            if (gender == gender.MALE)
+            if (gender.isMale)
             {
                 GetComponent<SpriteRenderer>().sprite = spr_Male;
             }

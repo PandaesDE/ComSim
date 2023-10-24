@@ -22,7 +22,7 @@ public class Lion : Creature
     {
         base.Awake();
 
-        gender gender = Util.Random.Gender();
+        IGender gender = Util.Random.Gender();
         Carnivore dietary = new(this);
         int health = 100;
         int weight = 80;
