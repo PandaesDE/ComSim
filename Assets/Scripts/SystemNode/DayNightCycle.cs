@@ -25,14 +25,14 @@ public class DayNightCycle : MonoBehaviour
     [SerializeField] private int passed_time_minutes = 0;
     private int clock_minutes = 0;
 
-    private UI ui;
+    private UI_Simulation_Navigation ui;
 
 
 
     // Start is called before the first frame update
     private void Awake()
     {
-        ui = GetComponent<UI>();
+        ui = GetComponent<UI_Simulation_Navigation>();
     }
 
     private void FixedUpdate()

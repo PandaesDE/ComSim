@@ -19,7 +19,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MapGenerationMenu : MonoBehaviour
+public class UI_MapGeneration : MonoBehaviour
 {
     [SerializeField] private Button btn_Back;
 

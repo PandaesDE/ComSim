@@ -19,7 +19,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class SettingsMenu : MonoBehaviour
+public class Menu_Settings : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] private Button btn_Home;

@@ -18,7 +18,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI : MonoBehaviour
+public class UI_Simulation_Navigation : MonoBehaviour
 {
     InputManager im;
 

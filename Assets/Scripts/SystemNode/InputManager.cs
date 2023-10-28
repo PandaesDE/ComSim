@@ -21,9 +21,9 @@ public class InputManager : MonoBehaviour
 {
     private Scene curScene;
 
-    [SerializeField] private UI ui;
+    [SerializeField] private UI_Simulation_Navigation ui;
     [SerializeField] private GameObject infoMenuObject;
-    private InfoMenu infoMenu;
+    private UI_Simulation_Popup_Information infoMenu;
     private CameraManager cameraManager;
 
 
@@ -33,7 +33,7 @@ public class InputManager : MonoBehaviour
         curScene = SceneManager.GetActiveScene();
 
         if (curScene.name == "Simulation")
-            infoMenu = infoMenuObject.GetComponent<InfoMenu>();
+            infoMenu = infoMenuObject.GetComponent<UI_Simulation_Popup_Information>();
         cameraManager = GetComponent<CameraManager>();
     }
 

@@ -18,7 +18,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InfoMenu : MonoBehaviour
+public class UI_Simulation_Popup_Information : MonoBehaviour
 {
     private Creature target;
     private CameraManager cameraManager;
