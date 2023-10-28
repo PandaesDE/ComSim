@@ -20,18 +20,31 @@ using UnityEngine.UI;
 
 public class UI_Simulation_Navigation : MonoBehaviour
 {
+
     InputManager im;
+
+    //Functionality
+    [SerializeField] private Button btn_Pause;
+    [SerializeField] private Button btn_Home;
+
+    //Context Menu
+    [SerializeField] private Button btn_to_HomeCm;
+
+    [SerializeField] private UI_Simulation_ContextMenu head;
+    [SerializeField] private Button btn_to_VisualizeCM;
+    [SerializeField] private GameObject go_head_content;
+
+    [SerializeField] private UI_Simulation_ContextMenu visualize;
+    [SerializeField] private GameObject go_visualize_content;
+
+    //Time
+    [SerializeField] private Slider sdr_TicksPerSecond;
+    [SerializeField] private Slider sdr_TicksToTime;
 
     [SerializeField] private TMP_Text display_Day;
     [SerializeField] private TMP_Text display_Time;
     [SerializeField] private TMP_Text display_TicksToTime;
     [SerializeField] private TMP_Text display_TicksPerSecond;
-
-    [SerializeField] private Button btn_Pause;
-    [SerializeField] private Button btn_Home;
-
-    [SerializeField] private Slider sdr_TicksPerSecond;
-    [SerializeField] private Slider sdr_TicksToTime;
 
 
     private void Awake()
@@ -41,6 +54,7 @@ public class UI_Simulation_Navigation : MonoBehaviour
         btn_Home.onClick.AddListener(im.toMainMenu);
         initializeTicksPerSecondSlider();
         initializeTicksToTimeSlider();
+        initializeContextMenu();
 
         void initializeTicksPerSecondSlider()
         {
@@ -55,6 +69,15 @@ public class UI_Simulation_Navigation : MonoBehaviour
             sdr_TicksToTime.onValueChanged.AddListener(im.changeTicksToTime);
             displayTicksToTime(Gamevariables.MINUTES_PER_TICK);
             sdr_TicksToTime.value = Gamevariables.MINUTES_PER_TICK;
+        }
+
+        void initializeContextMenu()
+        {
+            head = new UI_Simulation_ContextMenu(go_head_content);
+            visualize = new UI_Simulation_ContextMenu(go_visualize_content);
+
+            head.setNext(btn_to_VisualizeCM, visualize);
+            visualize.setPrevious(btn_to_HomeCm, head);
         }
     }
 
