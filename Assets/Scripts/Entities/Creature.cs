@@ -45,7 +45,7 @@ public abstract class Creature : MonoBehaviour
 
     //Brain
     protected Senses senses;
-    protected IDietary dietary;
+    public IDietary dietary { get; protected set; }
     protected Brain brain;
 
     //Movement
@@ -63,19 +63,22 @@ public abstract class Creature : MonoBehaviour
     public float thirst = 100f;
 
     //Corpse
-    private GameObject PREFAB_CORPSE;
+    [SerializeField] private GameObject PREFAB_CORPSE;
+
+    //Visualization
+    private Trail trail;
 
     public enum Status
     {
-        FLEEING,
-        STARVING,
-        HUNGRY,
-        DEHYDRATED,
-        THIRSTY,
-        HUNTING,
-        LOOKING_FOR_PARTNER,
         WANDERING,
-        SLEEPING
+        SLEEPING,
+        HUNTING,
+        FLEEING,
+        THIRSTY,
+        DEHYDRATED,
+        HUNGRY,
+        STARVING,
+        LOOKING_FOR_PARTNER
     }
 
 
@@ -89,11 +92,21 @@ public abstract class Creature : MonoBehaviour
         movement = new(this);
     }
 
+    protected void Start()
+    {
+        /*needs to be initialized after Awake*/
+        trail = new(this);
+    }
+
 
     protected virtual void FixedUpdate()
     {
+        //Game Logic
         needAdder();
         needSubtractor();
+
+        //Visualization
+        trail.FixedUpdate();
     }
 
     /*  This Method needs to be called by every descenant of this Class!

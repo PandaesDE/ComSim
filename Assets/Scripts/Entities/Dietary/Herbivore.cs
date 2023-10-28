@@ -1,12 +1,19 @@
 public class Herbivore : IDietary
 {
     private static readonly float dangerZone = 7;
-
     private Creature creature;
 
     public Herbivore(Creature creature)
     {
         this.creature = creature;
+    }
+
+    public IDietary.Specification specification
+    {
+        get
+        {
+            return IDietary.Specification.HERBIVORE;
+        }
     }
 
     public bool isEdibleFoodSource(IConsumable food)

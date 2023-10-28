@@ -3,12 +3,21 @@ using UnityEngine;
 public class Carnivore : IDietary
 {
     private static readonly float dangerZone = 7;
-
     private Creature creature;
+
+
 
     public Carnivore(Creature creature)
     {
         this.creature = creature;
+    }
+
+    public IDietary.Specification specification
+    {
+        get
+        {
+            return IDietary.Specification.CARNIVORE;
+        }
     }
 
     public bool isEdibleFoodSource(IConsumable food)

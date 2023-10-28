@@ -28,7 +28,9 @@ public class Gamevariables
     public static int RABBIT_AMOUNT_START = 0;
     public static bool GAME_PAUSED = false;
 
-    //STATUS
+    //VISUALIZATION
+    public static bool SHOW_TRAIL = true;
+    public static int TRAIL_LENGTH = 150;
 
     //WORLD
     public static string SEED = "";

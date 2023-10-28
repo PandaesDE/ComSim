@@ -14,8 +14,6 @@
  *      
  */
 
-using UnityEngine;
-
 public class Boar : Creature
 {
     protected override void Awake()

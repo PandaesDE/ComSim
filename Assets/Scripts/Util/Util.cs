@@ -76,13 +76,6 @@ public static class Util
             int halfH = Gamevariables.playgroundSize.y / 2;
             return new Vector2(UnityEngine.Random.Range(-halfW, halfW), UnityEngine.Random.Range(-halfH, halfH));
         }
-
-        public static animalType AnimalType()
-        {
-            System.Array vals = System.Enum.GetValues(typeof(animalType));
-            int i = UnityEngine.Random.Range(0, vals.Length);
-            return (animalType)vals.GetValue(i);
-        }
     }
 
     public static class Conversion

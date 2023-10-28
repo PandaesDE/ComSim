@@ -3,12 +3,19 @@ using UnityEngine;
 public class Omnivore : IDietary
 {
     private static readonly float dangerZone = 5;
-
     private Creature creature;
 
     public Omnivore(Creature creature)
     {
         this.creature = creature;
+    }
+
+    public IDietary.Specification specification
+    {
+        get
+        {
+            return IDietary.Specification.OMNIVORE;
+        }
     }
 
     public bool isEdibleFoodSource(IConsumable food)
