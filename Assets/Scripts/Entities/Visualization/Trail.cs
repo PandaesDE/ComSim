@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Trail
 {
+    public enum ColorScheme
+    {
+        DEFAULT,
+        DIETARY
+    }
+
     private class Vertex
     {
         public Vector3 position;
@@ -18,9 +24,6 @@ public class Trail
     private Creature creature;
     private LineRenderer lr;
     private LinkedList<Vertex> verticies = new();
-
-    private bool dietaryColor = true;
-    private bool statusColor = false;
 
     public Trail (Creature creature)
     {
@@ -42,6 +45,9 @@ public class Trail
             Vector3 position = new Vector3(x, y, z);
             AddVertex(new Vertex(position, getStatusColor()));
             renderLine();
+        } else if (verticies.Count > 0)
+        {
+             verticies.Clear();
         }
     }
 
@@ -61,20 +67,24 @@ public class Trail
     {
         if (verticies.Count >= Gamevariables.TRAIL_LENGTH)
         {
-            verticies.RemoveLast();
+            int difference = verticies.Count - Gamevariables.TRAIL_LENGTH;
+            for (int i = 0; i < difference; i++)
+            {
+                verticies.RemoveLast();
+            }
         }
         verticies.AddFirst(v);
     }
 
     #region Color
-    private void setColor()
+    public void setColor()
     {
-        if (dietaryColor)
+        if (Gamevariables.TRAIL_COLOR == ColorScheme.DIETARY)
         {
             setDietaryColor();
             return;
         }
-        //if (statusColor)
+        //if (Gamevariables.TRAIL_COLOR == ColorScheme...)
         //{
         //    setStatusColor();
         //}

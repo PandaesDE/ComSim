@@ -22,53 +22,20 @@ public class DayNightCycle : MonoBehaviour
     private static readonly float MAX_LIGHT_INTENSITY = 1f;
     private static readonly float MIN_LIGHT_INTENSITY = .1f;
     [SerializeField] private new Light2D light;
-    [SerializeField] private int passed_time_minutes = 0;
+    /*passed minutes relative to current Day*/
     private int clock_minutes = 0;
-
-    private UI_Simulation_Navigation ui;
-
-
-
-    // Start is called before the first frame update
-    private void Awake()
-    {
-        ui = GetComponent<UI_Simulation_Navigation>();
-    }
 
     private void FixedUpdate()
     {
-        passed_time_minutes += Gamevariables.MINUTES_PER_TICK;
+        Gamevariables.MINUTES_PASSED += Gamevariables.MINUTES_PER_TICK;
+        clock_minutes = Gamevariables.MINUTES_PASSED % (Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR);
+
         Gamevariables.LIGHT_INTENSITY = Mathf.Clamp(calculateLightIntensity(), MIN_LIGHT_INTENSITY, MAX_LIGHT_INTENSITY);
         light.intensity = Gamevariables.LIGHT_INTENSITY;
-
-        displayUI();
-    }
-
-    private void displayUI()
-    {
-        ui.displayDay(1 + passed_time_minutes / (Gamevariables.MINUTES_PER_HOUR * Gamevariables.HOURS_PER_DAY));
-        ui.displayTime(calculateDisplayTime());
-    }
-
-    private string calculateDisplayTime()
-    {
-        int display_hours = clock_minutes / Gamevariables.MINUTES_PER_HOUR;
-        float display_minutes = clock_minutes % Gamevariables.MINUTES_PER_HOUR;
-        string hourPrefix = "";
-        string minutesPrefix = "";
-
-
-        if (display_hours < 10) hourPrefix = "0";
-        if (display_minutes < 10) minutesPrefix = "0";
-
-        return hourPrefix + display_hours + ":" + minutesPrefix + display_minutes;
     }
 
     private float calculateLightIntensity()
     {
-        clock_minutes = passed_time_minutes % (Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR);
-
-        
         int DARK_morningMinutes =       6  * Gamevariables.MINUTES_PER_HOUR;
         int UPRISE_morningMinutes =     2  * Gamevariables.MINUTES_PER_HOUR;
         int BRIGHT_dayMinutes =         12 * Gamevariables.MINUTES_PER_HOUR;

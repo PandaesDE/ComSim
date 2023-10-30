@@ -66,7 +66,7 @@ public abstract class Creature : MonoBehaviour
     [SerializeField] private GameObject PREFAB_CORPSE;
 
     //Visualization
-    private Trail trail;
+    public Trail trail { get; private set; }
 
     public enum Status
     {
@@ -507,7 +507,7 @@ public abstract class Creature : MonoBehaviour
         GameObject instance = Instantiate(PREFAB_CORPSE, transform.position, transform.rotation);
         Corpse c = instance.GetComponent<Corpse>();
         c.setWeight(weight);
-        Destroy(gameObject);
+        ObjectManager.deleteCreature(this);
     }
 
     #endregion

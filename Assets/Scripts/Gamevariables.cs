@@ -30,7 +30,8 @@ public class Gamevariables
 
     //VISUALIZATION
     public static bool SHOW_TRAIL = true;
-    public static int TRAIL_LENGTH = 150;
+    public static int TRAIL_LENGTH = 15;
+    public static Trail.ColorScheme TRAIL_COLOR = Trail.ColorScheme.DEFAULT;
 
     //WORLD
     public static string SEED = "";
@@ -42,6 +43,7 @@ public class Gamevariables
     public static readonly int MINUTES_PER_HOUR = 60;
 
     public static int MINUTES_PER_TICK = 1;
+    public static int MINUTES_PASSED = 0;
 
     //Light
     /* between 0 - 1*/

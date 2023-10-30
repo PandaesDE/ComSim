@@ -30,12 +30,19 @@ public class UI_Simulation_Navigation : MonoBehaviour
     //Context Menu
     [SerializeField] private Button btn_to_HomeCm;
 
+        //Head
     [SerializeField] private UI_Simulation_ContextMenu head;
     [SerializeField] private Button btn_to_VisualizeCM;
     [SerializeField] private GameObject go_head_content;
 
+        //Visualization
     [SerializeField] private UI_Simulation_ContextMenu visualize;
     [SerializeField] private GameObject go_visualize_content;
+
+    [SerializeField] private Toggle tgl_Trails;
+    [SerializeField] private Slider sdr_Trail_Length;
+    [SerializeField] private TMP_Text display_Trail_Length;
+    [SerializeField] private TMP_Dropdown drd_Trail_Color;
 
     //Time
     [SerializeField] private Slider sdr_TicksPerSecond;
@@ -50,38 +57,100 @@ public class UI_Simulation_Navigation : MonoBehaviour
     private void Awake()
     {
         im = GetComponent<InputManager>();
-        btn_Pause.onClick.AddListener(im.pauseGame);
-        btn_Home.onClick.AddListener(im.toMainMenu);
+
+        btn_Pause.onClick.AddListener(delegate
+        {
+            im.pauseGame();
+            if (Gamevariables.GAME_PAUSED)
+            {
+                displayPauseButtonText("R");
+            }
+            else
+            {
+                displayPauseButtonText("P");
+            }
+        });
+        btn_Home.onClick.AddListener(delegate {
+            im.toMainMenu();
+        });
         initializeTicksPerSecondSlider();
         initializeTicksToTimeSlider();
-        initializeContextMenu();
+        initializeContextMenus();
 
         void initializeTicksPerSecondSlider()
         {
-            sdr_TicksPerSecond.onValueChanged.AddListener(im.changeTicksPerSecond);
-            float tps = 1 / Time.fixedDeltaTime;
-            displayTicksPerSeconds(tps);
-            sdr_TicksPerSecond.value = tps;
+            sdr_TicksPerSecond.onValueChanged.AddListener( delegate {
+                float tps = sdr_TicksPerSecond.value;
+                im.changeTicksPerSecond(tps);
+                display_TicksPerSecond.text = $"{(1 / tps)} Ticks/Second";
+            });
+            sdr_TicksPerSecond.value = 1 / Time.fixedDeltaTime;
         }
 
         void initializeTicksToTimeSlider()
         {
-            sdr_TicksToTime.onValueChanged.AddListener(im.changeTicksToTime);
-            displayTicksToTime(Gamevariables.MINUTES_PER_TICK);
+            sdr_TicksToTime.onValueChanged.AddListener( delegate {
+                float ttt = sdr_TicksToTime.value;
+                im.changeTicksToTime(ttt);
+                displayTicksToTime(Gamevariables.MINUTES_PER_TICK);
+            });
             sdr_TicksToTime.value = Gamevariables.MINUTES_PER_TICK;
         }
 
-        void initializeContextMenu()
+        void initializeContextMenus()
         {
-            head = new UI_Simulation_ContextMenu(go_head_content);
-            visualize = new UI_Simulation_ContextMenu(go_visualize_content);
+            initializeContextMenuNavigation();
+            initializeVisualizationContextMenu();
 
-            head.setNext(btn_to_VisualizeCM, visualize);
-            visualize.setPrevious(btn_to_HomeCm, head);
+            void initializeContextMenuNavigation()
+            {
+                head = new UI_Simulation_ContextMenu(go_head_content);
+                visualize = new UI_Simulation_ContextMenu(go_visualize_content);
+
+                head.setNext(btn_to_VisualizeCM, visualize);
+                visualize.setPrevious(btn_to_HomeCm, head);
+            }
+
+            void initializeVisualizationContextMenu()
+            {
+                tgl_Trails.onValueChanged.AddListener(delegate
+                {
+                    Gamevariables.SHOW_TRAIL = tgl_Trails.isOn;
+                });
+                tgl_Trails.isOn = Gamevariables.SHOW_TRAIL;
+
+                sdr_Trail_Length.onValueChanged.AddListener(delegate
+                {
+                    Gamevariables.TRAIL_LENGTH = (int)sdr_Trail_Length.value;
+                    display_Trail_Length.text = $"Length = {Gamevariables.TRAIL_LENGTH}";
+                });
+                sdr_Trail_Length.value = Gamevariables.TRAIL_LENGTH;
+
+                drd_Trail_Color.onValueChanged.AddListener(delegate
+                {
+                    string val = drd_Trail_Color.options[drd_Trail_Color.value].text;
+
+                    if (val.Equals("Dietary"))
+                    {
+                        Gamevariables.TRAIL_COLOR = Trail.ColorScheme.DIETARY;
+                    } else
+                    {
+                        Gamevariables.TRAIL_COLOR = Trail.ColorScheme.DEFAULT;
+                    }
+
+                    ObjectManager.changeTrailColor();
+                });
+            }
         }
     }
 
-    public void displayTicksToTime(int min)
+    private void FixedUpdate()
+    {
+        displayDay(1 + Gamevariables.MINUTES_PASSED / (Gamevariables.MINUTES_PER_HOUR * Gamevariables.HOURS_PER_DAY));
+        displayTime(formatTime());
+    }
+
+    private void displayTicksToTime(int min)
     {
         string time = min + " Minutes";
         if (min == 1) time = min + " Minute";
@@ -89,26 +158,37 @@ public class UI_Simulation_Navigation : MonoBehaviour
         display_TicksToTime.text = time + " = 1 Tick";
     }
 
-    public void displayTicksPerSeconds(float tps)
-    {
-        display_TicksPerSecond.text = tps + " Ticks/Second";
-    }
-
-    public void displayPauseButtonText(string txt)
+    private void displayPauseButtonText(string txt)
     {
         btn_Pause.transform.GetChild(0).GetComponent<TMP_Text>().text = txt;
     }
 
 
     #region Day & Night Cycle
-    public void displayDay(int day)
+    private void displayDay(int day)
     {
         display_Day.text = "Day: " + day;
     }
 
-    public void displayTime(string formattedTime)
+    private void displayTime(string formattedTime)
     {
         display_Time.text = formattedTime;
+    }
+
+    private string formatTime()
+    {
+        int minutes_passed_today = Gamevariables.MINUTES_PASSED % (Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR);
+
+        int display_hours = minutes_passed_today / Gamevariables.MINUTES_PER_HOUR;
+        float display_minutes = minutes_passed_today % Gamevariables.MINUTES_PER_HOUR;
+        string hourPrefix = "";
+        string minutesPrefix = "";
+
+
+        if (display_hours < 10) hourPrefix = "0";
+        if (display_minutes < 10) minutesPrefix = "0";
+
+        return hourPrefix + display_hours + ":" + minutesPrefix + display_minutes;
     }
     #endregion
 }

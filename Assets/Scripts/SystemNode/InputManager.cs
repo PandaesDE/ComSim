@@ -9,7 +9,10 @@
  *  Class Purposes:
  *  
  *  Class Infos:
- *      
+ *      - this class handles all the User Inputs within the, including:
+ *          - Mouse
+ *          - Keyboard
+ *          - UI Inputs
  *  Class References:
  *      
  */
@@ -21,7 +24,6 @@ public class InputManager : MonoBehaviour
 {
     private Scene curScene;
 
-    [SerializeField] private UI_Simulation_Navigation ui;
     [SerializeField] private GameObject infoMenuObject;
     private UI_Simulation_Popup_Information infoMenu;
     private CameraManager cameraManager;
@@ -122,29 +124,24 @@ public class InputManager : MonoBehaviour
         if (Gamevariables.GAME_PAUSED)
         {
             Time.timeScale = 0;
-            ui.displayPauseButtonText("R");
         }
         else
         {
             Time.timeScale = 1;
-            ui.displayPauseButtonText("P");
         }
     }
 
     public void changeTicksPerSecond(float val)
     {
         Time.fixedDeltaTime = val;
-        ui.displayTicksPerSeconds(1 / val);
     }
 
-    /* val is between 0 and 9*/
+    /* val is between inclusive 0 and 9*/
     public void changeTicksToTime(float index)
     {
         int[] values = { 1 , 5, 10, 15, 30, 45, 60, 90, 120, 240};
-        if (index < 0) index = 0;
-        if (index > values.Length-1) index = values.Length-1;
+        index = Mathf.Clamp(index, 0, values.Length - 1);
 
         Gamevariables.MINUTES_PER_TICK = values[(int)index];
-        ui.displayTicksToTime(values[(int)index]);
     }
 }

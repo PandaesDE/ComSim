@@ -37,10 +37,10 @@ public class Spawner : MonoBehaviour
     IEnumerator spawnEntitiesAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
-        spawnEntities(PREFAB_Human ,Gamevariables.HUMAN_AMOUNT_START);
-        spawnEntities(PREFAB_Lion ,Gamevariables.LION_AMOUNT_START);
-        spawnEntities(PREFAB_Boar ,Gamevariables.BOAR_AMOUNT_START);
-        spawnEntities(PREFAB_Rabbit ,Gamevariables.RABBIT_AMOUNT_START);
+        spawnCreatures(PREFAB_Human ,Gamevariables.HUMAN_AMOUNT_START);
+        spawnCreatures(PREFAB_Lion ,Gamevariables.LION_AMOUNT_START);
+        spawnCreatures(PREFAB_Boar ,Gamevariables.BOAR_AMOUNT_START);
+        spawnCreatures(PREFAB_Rabbit ,Gamevariables.RABBIT_AMOUNT_START);
     }
 
     #region DEBUG Functions
@@ -58,22 +58,24 @@ public class Spawner : MonoBehaviour
     #endregion
 
     #region Animal
-    public void spawnEntities(GameObject prefab, int amount)
+    public void spawnCreatures(GameObject prefab, int amount)
     {
         for (int i = 0; i < amount; i++)
         {
-            GameObject entity = spawnEntity(prefab, Util.Random.CoordinateInPlayground());
+            GameObject entity = spawnCreature(prefab, Util.Random.CoordinateInPlayground());
         }
     }
 
-    public GameObject spawnEntity(GameObject prefab, Vector2 c)
+    public GameObject spawnCreature(GameObject prefab, Vector2 c)
     {
-        return spawnEntity(prefab, (int)c.x, (int)c.y);
+        return spawnCreature(prefab, (int)c.x, (int)c.y);
     }
 
-    public GameObject spawnEntity(GameObject prefab, int posX, int posY)
+    public GameObject spawnCreature(GameObject prefab, int posX, int posY)
     {
-        return Instantiate(prefab, new Vector2((float)posX+.5f, (float)posY+.5f), Quaternion.identity);
+        GameObject instance = Instantiate(prefab, new Vector2((float)posX + .5f, (float)posY + .5f), Quaternion.identity);
+        ObjectManager.addCreature(instance.GetComponent<Creature>());
+        return instance;
     }
     #endregion
 }
