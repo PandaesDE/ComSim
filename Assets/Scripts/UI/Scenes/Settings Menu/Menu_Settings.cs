@@ -70,7 +70,7 @@ public class Menu_Settings : MonoBehaviour
     {
         GameSettingsObject settings = ConfigManager.ReadSettings();
         ipt_Seed.text = settings.Seed;
-        ipt_Humans.text = "" + settings.Human_Amount_Start ;
+        ipt_Humans.text = "" + settings.Human_Amount_Start;
         ipt_Lions.text = "" + settings.Lion_Amount_Start;
         ipt_Boars.text = "" + settings.Boar_Amount_Start;
         ipt_Rabbits.text = "" + settings.Rabbit_Amount_Start;

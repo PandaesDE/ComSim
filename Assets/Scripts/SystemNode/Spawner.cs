@@ -37,10 +37,10 @@ public class Spawner : MonoBehaviour
     IEnumerator spawnEntitiesAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
-        spawnCreatures(PREFAB_Human ,Gamevariables.HUMAN_AMOUNT_START);
-        spawnCreatures(PREFAB_Lion ,Gamevariables.LION_AMOUNT_START);
-        spawnCreatures(PREFAB_Boar ,Gamevariables.BOAR_AMOUNT_START);
-        spawnCreatures(PREFAB_Rabbit ,Gamevariables.RABBIT_AMOUNT_START);
+        spawnHumans(Gamevariables.HUMAN_AMOUNT_START);
+        spawnLions(Gamevariables.LION_AMOUNT_START);
+        spawnBoars(Gamevariables.BOAR_AMOUNT_START);
+        spawnRabbits(Gamevariables.RABBIT_AMOUNT_START);
     }
 
     #region DEBUG Functions
@@ -57,8 +57,24 @@ public class Spawner : MonoBehaviour
 
     #endregion
 
-    #region Animal
-    public void spawnCreatures(GameObject prefab, int amount)
+    public void spawnHumans(int amount)
+    {
+        spawnCreatures(PREFAB_Human, amount);
+    }
+    public void spawnLions(int amount)
+    {
+        spawnCreatures(PREFAB_Lion, amount);
+    }
+    public void spawnBoars(int amount)
+    {
+        spawnCreatures(PREFAB_Boar, amount);
+    }
+    public void spawnRabbits(int amount)
+    {
+        spawnCreatures(PREFAB_Rabbit, amount);
+    }
+
+    private void spawnCreatures(GameObject prefab, int amount)
     {
         for (int i = 0; i < amount; i++)
         {
@@ -66,16 +82,15 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    public GameObject spawnCreature(GameObject prefab, Vector2 c)
+    private GameObject spawnCreature(GameObject prefab, Vector2 c)
     {
         return spawnCreature(prefab, (int)c.x, (int)c.y);
     }
 
-    public GameObject spawnCreature(GameObject prefab, int posX, int posY)
+    private GameObject spawnCreature(GameObject prefab, int posX, int posY)
     {
         GameObject instance = Instantiate(prefab, new Vector2((float)posX + .5f, (float)posY + .5f), Quaternion.identity);
         ObjectManager.addCreature(instance.GetComponent<Creature>());
         return instance;
     }
-    #endregion
 }

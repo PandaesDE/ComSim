@@ -2,31 +2,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_Simulation_ContextMenu
+public class ContextMenu
 {
     private GameObject content;
 
     private Button btn_previous;
 
-    private UI_Simulation_ContextMenu previous;
-    private UI_Simulation_ContextMenu next;
+    private ContextMenu previous;
 
-    public UI_Simulation_ContextMenu(GameObject content)
+    public ContextMenu(GameObject content)
     {
         this.content = content;
     }
 
-    public void setNext(Button btn_to_next, UI_Simulation_ContextMenu next)
+    public void setNext(Button btn_to_next, ContextMenu next)
     {
-        this.next = next;
         btn_to_next.onClick.AddListener(delegate
         {
-            this.next.Show();
+            next.Show();
             Hide();
         });
     }
 
-    public void setPrevious(Button btn_previous, UI_Simulation_ContextMenu previous)
+    public void setPrevious(Button btn_previous, ContextMenu previous)
     {
         this.previous = previous;
         this.btn_previous = btn_previous;

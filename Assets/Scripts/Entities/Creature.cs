@@ -507,6 +507,8 @@ public abstract class Creature : MonoBehaviour
         GameObject instance = Instantiate(PREFAB_CORPSE, transform.position, transform.rotation);
         Corpse c = instance.GetComponent<Corpse>();
         c.setWeight(weight);
+
+        ObjectManager.addCorpse(c);
         ObjectManager.deleteCreature(this);
     }
 

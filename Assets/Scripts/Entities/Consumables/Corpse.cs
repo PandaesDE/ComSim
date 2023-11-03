@@ -64,7 +64,7 @@ public class Corpse : MonoBehaviour, IConsumable
         if (decayMinutes <= 0 || weight <= 0)
         {
             _isConsumed = true;
-            Destroy(gameObject);
+            ObjectManager.deleteCorpse(this);
         }
         decayMinutes -= Gamevariables.MINUTES_PER_TICK;
     }

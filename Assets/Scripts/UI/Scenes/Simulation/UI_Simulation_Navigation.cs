@@ -22,6 +22,7 @@ public class UI_Simulation_Navigation : MonoBehaviour
 {
 
     InputManager im;
+    Spawner spawner;
 
     //Functionality
     [SerializeField] private Button btn_Pause;
@@ -31,18 +32,39 @@ public class UI_Simulation_Navigation : MonoBehaviour
     [SerializeField] private Button btn_to_HomeCm;
 
         //Head
-    [SerializeField] private UI_Simulation_ContextMenu head;
+    [SerializeField] private ContextMenu head;
     [SerializeField] private Button btn_to_VisualizeCM;
+    [SerializeField] private Button btn_to_EntitiesCM;
+    [SerializeField] private Button btn_to_StatisticsCM;
     [SerializeField] private GameObject go_head_content;
 
         //Visualization
-    [SerializeField] private UI_Simulation_ContextMenu visualize;
+    [SerializeField] private ContextMenu visualize;
     [SerializeField] private GameObject go_visualize_content;
 
     [SerializeField] private Toggle tgl_Trails;
     [SerializeField] private Slider sdr_Trail_Length;
     [SerializeField] private TMP_Text display_Trail_Length;
     [SerializeField] private TMP_Dropdown drd_Trail_Color;
+        //Entities
+    [SerializeField] private ContextMenu entities;
+    [SerializeField] private GameObject go_entities_content;
+
+    [SerializeField] private TMP_InputField ipt_Human_Adder;
+    [SerializeField] private TMP_InputField ipt_Lion_Adder;
+    [SerializeField] private TMP_InputField ipt_Boar_Adder;
+    [SerializeField] private TMP_InputField ipt_Rabbit_Adder;
+
+    [SerializeField] private Button btn_All_Adder;
+    [SerializeField] private Button btn_All_Remover;
+    [SerializeField] private Button btn_Human_Adder;
+    [SerializeField] private Button btn_Lion_Adder;
+    [SerializeField] private Button btn_Boar_Adder;
+    [SerializeField] private Button btn_Rabbit_Adder;
+
+    //Statistics
+    [SerializeField] private ContextMenu statistics;
+    [SerializeField] private GameObject go_statistics_content;
 
     //Time
     [SerializeField] private Slider sdr_TicksPerSecond;
@@ -57,6 +79,7 @@ public class UI_Simulation_Navigation : MonoBehaviour
     private void Awake()
     {
         im = GetComponent<InputManager>();
+        spawner = GetComponent<Spawner>();
 
         btn_Pause.onClick.AddListener(delegate
         {
@@ -101,14 +124,22 @@ public class UI_Simulation_Navigation : MonoBehaviour
         {
             initializeContextMenuNavigation();
             initializeVisualizationContextMenu();
+            initializeEntitiesContextMenu();
 
             void initializeContextMenuNavigation()
             {
-                head = new UI_Simulation_ContextMenu(go_head_content);
-                visualize = new UI_Simulation_ContextMenu(go_visualize_content);
+                head = new ContextMenu(go_head_content);
+                visualize = new ContextMenu(go_visualize_content);
+                entities = new ContextMenu(go_entities_content);
+                statistics = new ContextMenu(go_statistics_content);
 
                 head.setNext(btn_to_VisualizeCM, visualize);
+                head.setNext(btn_to_EntitiesCM, entities);
+                head.setNext(btn_to_StatisticsCM, statistics);
+
                 visualize.setPrevious(btn_to_HomeCm, head);
+                entities.setPrevious(btn_to_HomeCm, head);
+                statistics.setPrevious(btn_to_HomeCm, head);
             }
 
             void initializeVisualizationContextMenu()
@@ -140,6 +171,66 @@ public class UI_Simulation_Navigation : MonoBehaviour
 
                     ObjectManager.changeTrailColor();
                 });
+            }
+
+            void initializeEntitiesContextMenu()
+            {
+                btn_All_Remover.onClick.AddListener(delegate
+                {
+                    ObjectManager.deleteAllCreatures();
+                });
+
+                btn_All_Adder.onClick.AddListener(delegate
+                {
+                    spawnHumans();
+                    spawnLions();
+                    spawnBoars();
+                    spawnRabbits();
+                });
+
+                btn_Human_Adder.onClick.AddListener(delegate
+                {
+                    spawnHumans();
+                });
+
+                btn_Lion_Adder.onClick.AddListener(delegate
+                {
+                    spawnLions();
+                });
+
+                btn_Boar_Adder.onClick.AddListener(delegate
+                {
+                    spawnBoars();
+                });
+
+                btn_Rabbit_Adder.onClick.AddListener(delegate
+                {
+                    spawnRabbits();
+                });
+
+                void spawnHumans()
+                {
+                    int amount = int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Human_Adder.text));
+                    spawner.spawnHumans(amount);
+                }
+
+                void spawnLions()
+                {
+                    int amount = int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Lion_Adder.text));
+                    spawner.spawnLions(amount);
+                }
+
+                void spawnBoars()
+                {
+                    int amount = int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Boar_Adder.text));
+                    spawner.spawnBoars(amount);
+                }
+
+                void spawnRabbits()
+                {
+                    int amount = int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Rabbit_Adder.text));
+                    spawner.spawnRabbits(amount);
+                }
             }
         }
     }
