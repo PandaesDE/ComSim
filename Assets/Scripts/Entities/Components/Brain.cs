@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Brain
+public class Brain : Component
 {
     private Creature creature;
 
-    public IConsumable activeFood;
-    public Creature activeHunt;
-    public Creature activeFlee;
+    public IConsumable activeFood { get; private set; }
+    public Creature activeHunt { get; private set; }
+    public Creature activeFlee { get; private set; }
 
     private Dictionary<int, IConsumable> spottedFood;
     private Dictionary<int, IConsumable> inactiveFood;

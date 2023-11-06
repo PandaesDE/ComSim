@@ -20,18 +20,17 @@ public class Boar : Creature
     {
         base.Awake();
 
-        IGender gender = Util.Random.Gender();
         Omnivore dietary = new(this);
         int health = 150;
         int weight = 130;
         float speed = .2f;
-        initAttributes(gender, dietary, health, weight, speed);
+        initAttributes(dietary, health, weight, speed);
     }
 
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        if (mission != Status.SLEEPING)
+        if (statusManager.status != StatusManager.Status.SLEEPING)
         {
             movement.MoveToTarget();
             evaluateVision();
@@ -45,5 +44,10 @@ public class Boar : Creature
         Boar partner = c.gameObject.GetComponent<Boar>();
         if (partner == null) return false;
         return true;
+    }
+
+    protected override void giveBirth()
+    {
+        Spawner.spawnBoars(1);
     }
 }

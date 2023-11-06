@@ -22,7 +22,6 @@ public class UI_Simulation_Navigation : MonoBehaviour
 {
 
     InputManager im;
-    Spawner spawner;
 
     //Functionality
     [SerializeField] private Button btn_Pause;
@@ -79,7 +78,6 @@ public class UI_Simulation_Navigation : MonoBehaviour
     private void Awake()
     {
         im = GetComponent<InputManager>();
-        spawner = GetComponent<Spawner>();
 
         btn_Pause.onClick.AddListener(delegate
         {
@@ -211,25 +209,25 @@ public class UI_Simulation_Navigation : MonoBehaviour
                 void spawnHumans()
                 {
                     int amount = int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Human_Adder.text));
-                    spawner.spawnHumans(amount);
+                    Spawner.spawnHumans(amount);
                 }
 
                 void spawnLions()
                 {
                     int amount = int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Lion_Adder.text));
-                    spawner.spawnLions(amount);
+                    Spawner.spawnLions(amount);
                 }
 
                 void spawnBoars()
                 {
                     int amount = int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Boar_Adder.text));
-                    spawner.spawnBoars(amount);
+                    Spawner.spawnBoars(amount);
                 }
 
                 void spawnRabbits()
                 {
                     int amount = int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Rabbit_Adder.text));
-                    spawner.spawnRabbits(amount);
+                    Spawner.spawnRabbits(amount);
                 }
             }
         }
@@ -245,7 +243,7 @@ public class UI_Simulation_Navigation : MonoBehaviour
     {
         string time = min + " Minutes";
         if (min == 1) time = min + " Minute";
-        if (min >= 60) time = min / 60 + " Hour";
+        if (min >= Gamevariables.MINUTES_PER_HOUR) time = min / Gamevariables.MINUTES_PER_HOUR + " Hour";
         display_TicksToTime.text = time + " = 1 Tick";
     }
 

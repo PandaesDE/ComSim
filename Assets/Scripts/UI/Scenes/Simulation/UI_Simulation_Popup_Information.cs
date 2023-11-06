@@ -129,7 +129,7 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
 
     private void updateStatus()
     {
-        display_Status.text = (target.mission + "").ToLower();
+        display_Status.text = (target.statusManager.status + "").ToLower();
     }
 
     private void setActive(bool state) 

@@ -15,4 +15,19 @@ public class Male : IGender
             return true;
         }
     }
+
+    public Male()
+    {
+
+    }
+
+    public void FixedUpdate()
+    {
+
+    }
+
+    public void mating()
+    {
+
+    }
 }

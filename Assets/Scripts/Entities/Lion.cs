@@ -22,18 +22,17 @@ public class Lion : Creature
     {
         base.Awake();
 
-        IGender gender = Util.Random.Gender();
         Carnivore dietary = new(this);
         int health = 100;
         int weight = 80;
         float speed = .2f;
-        initAttributes(gender, dietary, health, weight, speed);
+        initAttributes(dietary, health, weight, speed);
     }
 
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        if (mission != Status.SLEEPING)
+        if (statusManager.status != StatusManager.Status.SLEEPING)
         {
             movement.MoveToTarget();
             evaluateVision();
@@ -47,5 +46,10 @@ public class Lion : Creature
         Lion partner = c.gameObject.GetComponent<Lion>();
         if (partner == null) return false;
         return true;
+    }
+
+    protected override void giveBirth()
+    {
+        Spawner.spawnLions(1);
     }
 }

@@ -19,10 +19,20 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] public GameObject PREFAB_Human;
-    [SerializeField] public GameObject PREFAB_Boar;
-    [SerializeField] public GameObject PREFAB_Rabbit;
-    [SerializeField] public GameObject PREFAB_Lion;
+    public GameObject PREFAB_Human;
+    public GameObject PREFAB_Boar;
+    public GameObject PREFAB_Rabbit;
+    public GameObject PREFAB_Lion;
+
+    private static Spawner _instance;
+
+    private void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = FindObjectOfType<Spawner>();
+        }
+    }
 
     private void Start()
     {
@@ -57,39 +67,40 @@ public class Spawner : MonoBehaviour
 
     #endregion
 
-    public void spawnHumans(int amount)
+    public static void spawnHumans(int amount)
     {
-        spawnCreatures(PREFAB_Human, amount);
+        spawnCreatures(_instance.PREFAB_Human, amount);
     }
-    public void spawnLions(int amount)
+    public static void spawnLions(int amount)
     {
-        spawnCreatures(PREFAB_Lion, amount);
+        spawnCreatures(_instance.PREFAB_Lion, amount);
     }
-    public void spawnBoars(int amount)
+    public static void spawnBoars(int amount)
     {
-        spawnCreatures(PREFAB_Boar, amount);
+        spawnCreatures(_instance.PREFAB_Boar, amount);
     }
-    public void spawnRabbits(int amount)
+    public static void spawnRabbits(int amount)
     {
-        spawnCreatures(PREFAB_Rabbit, amount);
+        spawnCreatures(_instance.PREFAB_Rabbit, amount);
     }
 
-    private void spawnCreatures(GameObject prefab, int amount)
+    private static void spawnCreatures(GameObject prefab, int amount)
     {
         for (int i = 0; i < amount; i++)
         {
-            GameObject entity = spawnCreature(prefab, Util.Random.CoordinateInPlayground());
+            spawnCreature(prefab, Util.Random.CoordinateInPlayground());
         }
     }
 
-    private GameObject spawnCreature(GameObject prefab, Vector2 c)
+    private static GameObject spawnCreature(GameObject prefab, Vector2 c)
     {
         return spawnCreature(prefab, (int)c.x, (int)c.y);
     }
 
-    private GameObject spawnCreature(GameObject prefab, int posX, int posY)
+    private static GameObject spawnCreature(GameObject prefab, int posX, int posY)
     {
         GameObject instance = Instantiate(prefab, new Vector2((float)posX + .5f, (float)posY + .5f), Quaternion.identity);
+        instance.name = prefab.name;
         ObjectManager.addCreature(instance.GetComponent<Creature>());
         return instance;
     }

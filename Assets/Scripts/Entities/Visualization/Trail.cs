@@ -22,12 +22,14 @@ public class Trail
     }
 
     private Creature creature;
+    private IDietary dietary;
     private LineRenderer lr;
     private LinkedList<Vertex> verticies = new();
 
-    public Trail (Creature creature)
+    public Trail (Creature creature, IDietary dietary)
     {
         this.creature = creature;
+        this.dietary = dietary;
         lr = creature.GetComponent<LineRenderer>();
 
         lr.startWidth = 1;
@@ -58,7 +60,6 @@ public class Trail
         foreach (Vertex v in verticies)
         {
             lr.SetPosition(index, v.position);
-            //lr.SetColors(v.color, v.color);
             index++;
         }
     }
@@ -100,24 +101,28 @@ public class Trail
 
     private void setStatusColor()
     {
-
+        /*placeholder for gradient
+         * Every Vertex has a StatusColor.
+         * Unity Gradients can only hold up to 8 Color Keys which is not sufficient.
+         *      -> TODO
+         */
     }
 
     private void setDietaryColor()
     {
-        if (creature.dietary.specification == IDietary.Specification.OMNIVORE)
+        if (dietary.specification == IDietary.Specification.OMNIVORE)
         {
             lr.startColor = new Color(1, 1, 0, .5f);
             lr.endColor = new Color(1, 1, 0, 0);
             return;
         }
-        if (creature.dietary.specification == IDietary.Specification.CARNIVORE)
+        if (dietary.specification == IDietary.Specification.CARNIVORE)
         {
             lr.startColor = new Color(1, 0, 0, .5f);
             lr.endColor = new Color(1, 0, 0, 0);
             return;
         }
-        if (creature.dietary.specification == IDietary.Specification.HERBIVORE)
+        if (dietary.specification == IDietary.Specification.HERBIVORE)
         {
             lr.startColor = new Color(0, 1, 0, .5f);
             lr.endColor = new Color(0, 1, 0, 0);
@@ -128,26 +133,26 @@ public class Trail
     private Color getStatusColor()
     {
         float alpha = .25f;
-        if (creature.mission == Creature.Status.WANDERING)
+        if (creature.statusManager.status == StatusManager.Status.WANDERING)
             return new Color(.8f, .8f, .8f, alpha);     //LIGHT GREY
-        if (creature.mission == Creature.Status.THIRSTY)
+        if (creature.statusManager.status == StatusManager.Status.THIRSTY)
             return new Color(.5f, .75f, 1f, alpha);     //LIGHT BLUE
-        if (creature.mission == Creature.Status.DEHYDRATED)
+        if (creature.statusManager.status == StatusManager.Status.DEHYDRATED)
             return new Color(0, .28f, .55f, alpha);     //DARK BLUE
-        if (creature.mission == Creature.Status.HUNGRY)
+        if (creature.statusManager.status == StatusManager.Status.HUNGRY)
             return new Color(1, .83f, .6f, alpha);      //LIGHT ORANGE
-        if (creature.mission == Creature.Status.STARVING)
+        if (creature.statusManager.status == StatusManager.Status.STARVING)
             return new Color(.78f, .52f, .16f, alpha);  //DARK ORANGE
-        if (creature.mission == Creature.Status.FLEEING)
+        if (creature.statusManager.status == StatusManager.Status.FLEEING)
             return new Color(.56f, 1, .63f, alpha);     //LIGHT GREEN
-        if (creature.mission == Creature.Status.HUNTING)
+        if (creature.statusManager.status == StatusManager.Status.HUNTING)
             return new Color(.9f, .34f, .34f, alpha);   //RED
-        if (creature.mission == Creature.Status.LOOKING_FOR_PARTNER)
+        if (creature.statusManager.status == StatusManager.Status.LOOKING_FOR_PARTNER)
             return new Color(1, .6f, .84f, alpha);      //PINK
-        if (creature.mission == Creature.Status.SLEEPING)
+        if (creature.statusManager.status == StatusManager.Status.SLEEPING)
             return new Color(.4f, .4f, .4f, alpha);     //DARK GREY
 
-        return Color.black; //ERROR COLOR
+        return Color.black;                             //ERROR COLOR
     }
     #endregion
 }

@@ -21,9 +21,9 @@ public class Herbivore : IDietary
         return !food.isMeat;
     }
 
-    Creature.Status IDietary.onAttacked()
+    StatusManager.Status IDietary.onAttacked()
     {
-        return Creature.Status.FLEEING;
+        return StatusManager.Status.FLEEING;
     }
 
     public bool isInDangerZone(Creature approacher)
@@ -31,13 +31,13 @@ public class Herbivore : IDietary
         return Util.inRange(creature.gameObject.transform.position, approacher.gameObject.transform.position, dangerZone);
     }
 
-    public Creature.Status onApproached()
+    public StatusManager.Status onApproached()
     {
-        return Creature.Status.FLEEING;
+        return StatusManager.Status.FLEEING;
     }
 
-    Creature.Status IDietary.onNoFood()
+    public StatusManager.Status onNoFood()
     {
-        return creature.mission;
+        return creature.statusManager.status;
     }
 }

@@ -25,14 +25,14 @@ public class Carnivore : IDietary
         return food.isMeat;
     }
 
-    Creature.Status IDietary.onAttacked()
+    public StatusManager.Status onAttacked()
     {
         if (creature.health / creature.MAX_HEALTH <= .2f)
         {
-            return Creature.Status.FLEEING;
+            return StatusManager.Status.FLEEING;
         }
 
-        return Creature.Status.HUNTING;
+        return StatusManager.Status.HUNTING;
     }
 
     public bool isInDangerZone(Creature approacher)
@@ -40,21 +40,21 @@ public class Carnivore : IDietary
         return Util.inRange(creature.gameObject.transform.position, approacher.gameObject.transform.position, dangerZone);
     }
 
-    public Creature.Status onApproached()
+    public StatusManager.Status onApproached()
     {
         if (creature.health / creature.MAX_HEALTH <= .3f)
         {
-            return Creature.Status.FLEEING;
+            return StatusManager.Status.FLEEING;
         }
         if (creature.hunger < 90)
         {
-            return Creature.Status.HUNTING;
+            return StatusManager.Status.HUNTING;
         }
-        return Creature.Status.WANDERING;
+        return StatusManager.Status.WANDERING;
     }
 
-    Creature.Status IDietary.onNoFood()
+    StatusManager.Status IDietary.onNoFood()
     {
-        return Creature.Status.HUNTING;
+        return StatusManager.Status.HUNTING;
     }
 }
