@@ -48,6 +48,6 @@ public class Boar : Creature
 
     protected override void giveBirth()
     {
-        Spawner.spawnBoars(1);
+        Spawner.spawnBoars(1, gameObject.transform.position);
     }
 }

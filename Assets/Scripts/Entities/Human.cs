@@ -83,6 +83,6 @@ public class Human : Creature
 
     protected override void giveBirth()
     {
-        Spawner.spawnHumans(1);
+        Spawner.spawnHumans(1, gameObject.transform.position);
     }
 }

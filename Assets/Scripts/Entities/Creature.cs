@@ -101,9 +101,11 @@ public abstract class Creature : MonoBehaviour
         needAdder();
         needSubtractor();
 
-        //Visualization
-        trail.FixedUpdate();
+        //Component updates
+            //Gender
         gender.FixedUpdate();
+            //Visualization
+        trail.FixedUpdate();
     }
 
     /*  This Method needs to be called by every descenant of this Class!
@@ -115,7 +117,6 @@ public abstract class Creature : MonoBehaviour
         this.health = health;
         this.weight = weight;
         this.movement.speed = speed;
-
     }
 
     #region Brain
@@ -160,6 +161,8 @@ public abstract class Creature : MonoBehaviour
     protected void determineStatus()
     {
         if (statusManager.status == StatusManager.Status.SLEEPING) return;
+        if (statusManager.status == StatusManager.Status.GIVING_BIRTH) return;
+
 
         int normal_cap = 80;
         int important_cap = 35;
@@ -199,23 +202,69 @@ public abstract class Creature : MonoBehaviour
 
     protected void makeStatusBasedMove()
     {
-        //automatic check over time for more important task
-        if (minutes_left_until_status_determining <= 0)
+        automaticStatusDetermination();
+
+        if (statusManager.status == StatusManager.Status.HUNGRY || statusManager.status == StatusManager.Status.STARVING)
         {
-            determineStatus();
-            minutes_left_until_status_determining = MINUTES_UNTIL_STATUS_DETERMINING;
+            onHunger();
+            return;
         }
-        else
+
+        if (statusManager.status == StatusManager.Status.THIRSTY || statusManager.status == StatusManager.Status.DEHYDRATED)
         {
-            minutes_left_until_status_determining -= Gamevariables.MINUTES_PER_TICK;
+            onThirst();
+            return;
         }
 
         if (statusManager.status == StatusManager.Status.FLEEING)
         {
-            //movement.setTarget(-brain.activeFlee.transform.position);
+            onFleeing();
+            return;
         }
 
         if (statusManager.status == StatusManager.Status.HUNTING)
+        {
+            onHunting();
+            return;
+        }
+
+        if (statusManager.status == StatusManager.Status.LOOKING_FOR_PARTNER)
+        {
+            onLookingForPartner();
+            return;
+        }
+
+        if (statusManager.status == StatusManager.Status.GIVING_BIRTH)
+        {
+            onGivingBirth();
+            return;
+        }
+
+        if (statusManager.status == StatusManager.Status.WANDERING)
+        {
+            movement.setRandomTargetIfReached();
+            determineStatus();
+        }
+
+        void automaticStatusDetermination()
+        {
+            if (minutes_left_until_status_determining <= 0)
+            {
+                determineStatus();
+                minutes_left_until_status_determining = MINUTES_UNTIL_STATUS_DETERMINING;
+            }
+            else
+            {
+                minutes_left_until_status_determining -= Gamevariables.MINUTES_PER_TICK;
+            }
+        }
+
+        void onFleeing()
+        {
+            //movement.setTarget(-brain.activeFlee.transform.position);
+        }
+
+        void onHunting()
         {
             if (brain.activeHunt == null)
             {
@@ -237,13 +286,7 @@ public abstract class Creature : MonoBehaviour
             }
         }
 
-        if (statusManager.status == StatusManager.Status.LOOKING_FOR_PARTNER)
-        {
-
-        }
-
-
-        if (statusManager.status == StatusManager.Status.HUNGRY || statusManager.status == StatusManager.Status.STARVING)
+        void onHunger()
         {
             if (Util.inRange(transform.position, movement.target))
             {
@@ -271,7 +314,7 @@ public abstract class Creature : MonoBehaviour
             }
         }
 
-        if (statusManager.status == StatusManager.Status.THIRSTY || statusManager.status == StatusManager.Status.DEHYDRATED)
+        void onThirst()
         {
             if (Util.inRange(transform.position, movement.target))
             {
@@ -285,10 +328,15 @@ public abstract class Creature : MonoBehaviour
             }
         }
 
-        if (statusManager.status == StatusManager.Status.WANDERING)
+        void onLookingForPartner()
         {
-            movement.setRandomTargetIfReached();
-            determineStatus();
+
+        }
+
+        void onGivingBirth()
+        {
+            health -= 20;
+            giveBirth();
         }
     }
 

@@ -50,6 +50,6 @@ public class Rabbit : Creature
 
     protected override void giveBirth()
     {
-        Spawner.spawnRabbits(1);
+        Spawner.spawnRabbits(1, gameObject.transform.position);
     }
 }

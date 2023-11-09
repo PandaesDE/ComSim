@@ -71,24 +71,52 @@ public class Spawner : MonoBehaviour
     {
         spawnCreatures(_instance.PREFAB_Human, amount);
     }
+
+    public static void spawnHumans(int amount, Vector2 position)
+    {
+        spawnCreatures(_instance.PREFAB_Human, amount, position);
+    }
+
     public static void spawnLions(int amount)
     {
         spawnCreatures(_instance.PREFAB_Lion, amount);
     }
+
+    public static void spawnLions(int amount, Vector2 position)
+    {
+        spawnCreatures(_instance.PREFAB_Lion, amount, position);
+    }
+
     public static void spawnBoars(int amount)
     {
         spawnCreatures(_instance.PREFAB_Boar, amount);
     }
+
+    public static void spawnBoars(int amount, Vector2 position)
+    {
+        spawnCreatures(_instance.PREFAB_Boar, amount, position);
+    }
+
     public static void spawnRabbits(int amount)
     {
         spawnCreatures(_instance.PREFAB_Rabbit, amount);
     }
 
-    private static void spawnCreatures(GameObject prefab, int amount)
+    public static void spawnRabbits(int amount, Vector2 position)
+    {
+        spawnCreatures(_instance.PREFAB_Rabbit, amount, position);
+    }
+
+    private static void spawnCreatures(GameObject gameObject, int amount)
+    {
+        spawnCreatures(gameObject, amount, Util.Random.CoordinateInPlayground());
+    }
+
+    private static void spawnCreatures(GameObject prefab, int amount, Vector2 position)
     {
         for (int i = 0; i < amount; i++)
         {
-            spawnCreature(prefab, Util.Random.CoordinateInPlayground());
+            spawnCreature(prefab, position);
         }
     }
 

@@ -50,6 +50,6 @@ public class Lion : Creature
 
     protected override void giveBirth()
     {
-        Spawner.spawnLions(1);
+        Spawner.spawnLions(1, gameObject.transform.position);
     }
 }
