@@ -199,13 +199,11 @@ public abstract class Creature : MonoBehaviour
         if (thirst <= important_cap && thirst < hunger)
         {
             statusManager.status = StatusManager.Status.DEHYDRATED;
-            setWaterTarget();
             return;
         }
         if (hunger <= important_cap)
         {
             statusManager.status = StatusManager.Status.STARVING;
-            setActiveFoodSource();
             return;
         }
 
@@ -214,13 +212,17 @@ public abstract class Creature : MonoBehaviour
         if (thirst <= normal_cap && thirst < hunger)
         {
             statusManager.status = StatusManager.Status.THIRSTY;
-            setWaterTarget();
             return;
         }
         if (hunger <= normal_cap)
         {
             statusManager.status = StatusManager.Status.HUNGRY;
-            setActiveFoodSource();
+            return;
+        }
+
+        if (gender.isReadyForMating && gender.isMale)
+        {
+            statusManager.status = StatusManager.Status.LOOKING_FOR_PARTNER;
             return;
         }
 
@@ -289,21 +291,31 @@ public abstract class Creature : MonoBehaviour
 
         void onFleeing()
         {
+            /*Exit Condition*/
+            //TODO
+            /*Set Target*/
+            //TODO
+            /*Target Reached*/
+            //TODO
+
             //movement.setTarget(-brain.activeFlee.transform.position);
         }
 
         void onHunting()
         {
+            /*Exit Condition*/
             if (hunger >= MAX_HUNGER)
             {
                 determineStatus();
                 return;
             }
+            /*Set Target*/
             if (brain.activeHunt == null)
             {
                 setActiveHunt();
                 return;
             }
+            /*Target Reached*/
             if (Util.inRange(transform.position, brain.activeHunt.transform.position))
             {
                 brain.activeHunt.attack(20);
@@ -312,23 +324,24 @@ public abstract class Creature : MonoBehaviour
 
         void onHunger()
         {
+            /*Exit Condition*/
+            if (hunger >= MAX_HUNGER)
+            {
+                determineStatus();
+                return;
+            }
+            /*Set Target*/
+            if (brain.activeFood == null)
+            {
+                setActiveFoodSource();
+                return;
+            }
+            /*Target Reached*/
             if (Util.inRange(transform.position, movement.target))
             {
-                if (brain.activeFood == null)
-                {
-                    determineStatus();
-                    return;
-                }
-
                 if (!brain.activeFood.hasFood)
                 {
                     brain.SetInactiveFoodSource(brain.activeFood);
-                    determineStatus();
-                    return;
-                }
-
-                if (hunger >= MAX_HUNGER)
-                {
                     determineStatus();
                     return;
                 }
@@ -340,21 +353,43 @@ public abstract class Creature : MonoBehaviour
 
         void onThirst()
         {
-            if (Util.inRange(transform.position, movement.target))
+            /*Exit Condition*/
+            if (thirst >= MAX_THIRST)
             {
-                if (thirst >= MAX_THIRST)
-                {
-                    determineStatus();
-                    return;
-                }
-                //make sure destination reached active water source and not random source
-                drink();
+                determineStatus();
+                return;
+            }
+            /*Set Target*/
+            //TODO
+            /*Target Reached*/
+            if (Util.inRange(transform.position, brain.activeWater))
+            {
+                if (tbm.isWater(brain.activeWater))
+                    drink();
+                else
+                    setActiveWaterSource();
             }
         }
 
         void onLookingForPartner()
         {
-
+            /*Exit Condition*/
+            if (!gender.isReadyForMating)
+            {
+                determineStatus();
+                return;
+            }
+            /*Set Target*/
+            if (brain.activeMate == null)
+            {
+                setActiveMate();
+                return;
+            }
+            /*Target Reached*/
+            if (Util.inRange(transform.position, brain.activeMate.transform.position))
+            {
+                brain.activeMate.gender.mating(gender);
+            }
         }
 
         void onGivingBirth()
@@ -427,14 +462,14 @@ public abstract class Creature : MonoBehaviour
     }
     #endregion
     #region Thirst
-    public void setWaterTarget()
+    protected void setActiveWaterSource()
     {
         if (brain.hasWaterSource())
         {
-            movement.setTarget(brain.getNearestWaterSource());
+            brain.setActiveWaterSource();
             return;
         }
-        movement.setRandomTargetIfReached();
+        statusManager.status = StatusManager.Status.WANDERING;
     }
     #endregion
     #region Social
@@ -444,6 +479,12 @@ public abstract class Creature : MonoBehaviour
     {
         return g.GetComponent<Creature>() != null;
     }
+
+    protected void setActiveMate()
+    {
+
+    }
+
     protected abstract bool isSameSpecies(Creature g);
 
     protected bool isValidPartner(Creature partner)
@@ -584,15 +625,5 @@ public abstract class Creature : MonoBehaviour
     }
 
     #endregion
-
-    ////DEBUG - REMOVE
-    //private void OnDrawGizmos()
-    //{
-    //    Vector2[] va = senses.getVisionCoordinates();
-    //    foreach(Vector2 v in va)
-    //    {
-    //        Gizmos.DrawSphere(v, .5f);
-    //    }
-    //}
 
 }

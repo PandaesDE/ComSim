@@ -6,8 +6,11 @@ public class Brain : Component
     private Creature creature;
 
     public IConsumable activeFood { get; private set; }
+    public Vector2 activeWater { get; private set; }
     public Creature activeHunt { get; private set; }
     public Creature activeFlee { get; private set; }
+    public Creature activeMate { get; private set; }
+
 
     private Dictionary<int, IConsumable> spottedFood;
     private Dictionary<int, IConsumable> inactiveFood;
@@ -54,7 +57,6 @@ public class Brain : Component
 
         foreach (KeyValuePair<int, Creature> keyValue in spottedCreature)
         {
-
             //Food resource missing (consumed)
             if (keyValue.Value == null)
             {
@@ -120,12 +122,31 @@ public class Brain : Component
         activeFood = getNearestFoodSource();
     }
 
-    public IConsumable getNearestFoodSource()
+    public void RemoveFoodSources(List<int> IDs)
+    {
+        for (int i = 0; i < IDs.Count; i++)
+        {
+            RemoveFoodSource(IDs[i]);
+        }
+    }
+
+    public void RemoveFoodSource(IConsumable food)
+    {
+        RemoveFoodSource(food.gameObject.GetInstanceID());
+    }
+
+    public void RemoveFoodSource(int ID)
+    {
+        if (spottedFood.ContainsKey(ID))
+            spottedFood.Remove(ID);
+    }
+
+    private IConsumable getNearestFoodSource()
     {
         if (spottedFood.Count <= 0) return null;
 
         IConsumable closest = null;
-        float minDistance = 100000f;
+        float minDistance = Mathf.Infinity;
         List<int> missingIDs = new();
         List<int> inactiveIDs = new();
 
@@ -157,25 +178,6 @@ public class Brain : Component
         RemoveFoodSources(missingIDs);
         SetInactiveFoodSources(inactiveIDs);
         return closest;
-    }
-
-    public void RemoveFoodSources(List<int> IDs)
-    {
-        for (int i = 0; i < IDs.Count; i++)
-        {
-            RemoveFoodSource(IDs[i]);
-        }
-    }
-
-    public void RemoveFoodSource(IConsumable food)
-    {
-        RemoveFoodSource(food.gameObject.GetInstanceID());
-    }
-
-    public void RemoveFoodSource(int ID)
-    {
-        if (spottedFood.ContainsKey(ID))
-            spottedFood.Remove(ID);
     }
 
     #region inactiveFood
@@ -245,7 +247,12 @@ public class Brain : Component
         return spottedWater.Count > 0;
     }
 
-    public Vector2 getNearestWaterSource()
+    public void setActiveWaterSource()
+    {
+        activeWater = getNearestWaterSource();
+    }
+
+    private Vector2 getNearestWaterSource()
     {
         Vector2 closest = Gamevariables.ERROR_VECTOR2;
         float minDistance = Mathf.Infinity;
@@ -275,6 +282,8 @@ public class Brain : Component
 
         spottedMate[mate.gameObject.GetInstanceID()] = mate;
     }
+
+
 
     public void RemovePotentialMate(int ID)
     {

@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/EditorMapGeneration.unity
     guid: c7aa5c1c68342eb48a2659deecd671cd
+  - enabled: 1
+    path: Assets/Scenes/TestScenes/Template_TestScene.unity
+    guid: 9b43dfedadf760e4da716841c69df179
   m_configObjects: {}

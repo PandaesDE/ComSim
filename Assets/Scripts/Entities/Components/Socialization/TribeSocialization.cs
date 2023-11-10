@@ -1,4 +1,4 @@
-public class Tribe
+public class TribeSocialization : ISocialization
 {
     //Alert System
     //Popularty System

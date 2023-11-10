@@ -7,11 +7,8 @@ public class Female : IGender
     private Creature creature;
     private StatusManager sm;
 
-    private static readonly int DURATION_PREGNANCY = 18 * Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR;
-    private int duration_Pregnancy_Remaining = 0;
-
-    private static readonly int COOLDOWN_PREGNANCY = 9 * Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR;
-    private int cooldown_Pregnancy_Remaining = 0;
+    private Timer duration_Pregnancy = new Timer(18 * Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR);
+    private Timer cooldown_Pregnancy = new Timer(9 * Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR);
     private bool isPregnant = false;
 
     public bool isReadyForMating
@@ -19,7 +16,7 @@ public class Female : IGender
         get
         {
             return  !isPregnant &&
-                    cooldown_Pregnancy_Remaining <= 0;
+                    cooldown_Pregnancy.finished();
 
         }
     }
@@ -42,18 +39,18 @@ public class Female : IGender
     {
         if (isPregnant)
         {
-            if (duration_Pregnancy_Remaining > 0)
+            if (!duration_Pregnancy.finished())
             {
-                duration_Pregnancy_Remaining = Mathf.Clamp(duration_Pregnancy_Remaining - Gamevariables.MINUTES_PER_TICK, 0, DURATION_PREGNANCY);
+                duration_Pregnancy.tick();
             } else
             {
                 sm.status = StatusManager.Status.GIVING_BIRTH;
             }
         } else
         {
-            if (cooldown_Pregnancy_Remaining > 0)
-            {  
-                cooldown_Pregnancy_Remaining = Mathf.Clamp(cooldown_Pregnancy_Remaining - Gamevariables.MINUTES_PER_TICK, 0, COOLDOWN_PREGNANCY);
+            if (!cooldown_Pregnancy.finished())
+            {
+                cooldown_Pregnancy.tick();
             }
         }
     }
@@ -63,8 +60,8 @@ public class Female : IGender
         if (!isSuitable(partner)) return;
         //chance of failure ?
         isPregnant = true;
-        duration_Pregnancy_Remaining = DURATION_PREGNANCY;
-        cooldown_Pregnancy_Remaining = COOLDOWN_PREGNANCY;
+        duration_Pregnancy.reset();
+        cooldown_Pregnancy.reset();
     }
 
     private bool isSuitable(IGender partner)

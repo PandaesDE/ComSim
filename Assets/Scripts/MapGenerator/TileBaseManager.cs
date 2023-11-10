@@ -72,27 +72,31 @@ public class TileBaseManager : MonoBehaviour
 
     public Color getColor()
     {
-        TileBaseManager.tileType t = getTileType();
-        if (t == TileBaseManager.tileType.WATER_DEEP) return go_water_deep.GetComponent<SpriteRenderer>().color;
-        if (t == TileBaseManager.tileType.WATER) return go_water.GetComponent<SpriteRenderer>().color;
-        if (t == TileBaseManager.tileType.SAND) return go_sand.GetComponent<SpriteRenderer>().color;
-        if (t == TileBaseManager.tileType.BUSH) return go_bush.GetComponent<SpriteRenderer>().color;
-        if (t == TileBaseManager.tileType.GRASS) return go_grass.GetComponent<SpriteRenderer>().color;
-        if (t == TileBaseManager.tileType.STONE) return go_stone.GetComponent<SpriteRenderer>().color;
-        if (t == TileBaseManager.tileType.SNOW) return go_snow.GetComponent<SpriteRenderer>().color;
+        tileType t = getTileType();
+        if (t == tileType.WATER_DEEP) return go_water_deep.GetComponent<SpriteRenderer>().color;
+        if (t == tileType.WATER) return go_water.GetComponent<SpriteRenderer>().color;
+        if (t == tileType.SAND) return go_sand.GetComponent<SpriteRenderer>().color;
+        if (t == tileType.BUSH) return go_bush.GetComponent<SpriteRenderer>().color;
+        if (t == tileType.GRASS) return go_grass.GetComponent<SpriteRenderer>().color;
+        if (t == tileType.STONE) return go_stone.GetComponent<SpriteRenderer>().color;
+        if (t == tileType.SNOW) return go_snow.GetComponent<SpriteRenderer>().color;
         return Color.magenta;
     }
 
     public TileBase getTileBase()
     {
-        tileType t = getTileType();
-        if (t == tileType.WATER_DEEP) return tb_water_deep;
-        if (t == tileType.WATER) return tb_water;
-        if (t == tileType.SAND) return tb_sand;
-        if (t == tileType.BUSH) return tb_bush;
-        if (t == tileType.GRASS) return tb_grass;
-        if (t == tileType.STONE) return tb_stone;
-        if (t == tileType.SNOW) return tb_snow;
+        return getTileBase(getTileType());
+    }
+
+    public TileBase getTileBase(tileType tt)
+    {
+        if (tt == tileType.WATER_DEEP) return tb_water_deep;
+        if (tt == tileType.WATER) return tb_water;
+        if (tt == tileType.SAND) return tb_sand;
+        if (tt == tileType.BUSH) return tb_bush;
+        if (tt == tileType.GRASS) return tb_grass;
+        if (tt == tileType.STONE) return tb_stone;
+        if (tt == tileType.SNOW) return tb_snow;
         return null;
     }
 
@@ -114,7 +118,12 @@ public class TileBaseManager : MonoBehaviour
 
     public void SetTile(Vector2Int coord)
     {
-        tilemap.SetTile(new Vector3Int(coord.x, coord.y, 0), getTileBase());
+        SetTile(coord, getTileBase());
+    }
+
+    public void SetTile(Vector2Int coord, TileBase tb)
+    {
+        tilemap.SetTile(new Vector3Int(coord.x, coord.y, 0), tb);
     }
     #endregion
 

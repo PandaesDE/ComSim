@@ -44,8 +44,6 @@ public class MapGenerator : MonoBehaviour
         RenderTileMap();
     }
 
-
-    #region Tilemap approach
     //https://blog.unity.com/engine-platform/procedural-patterns-you-can-use-with-tilemaps-part-1
     private void RenderTileMap()
     {
@@ -64,5 +62,4 @@ public class MapGenerator : MonoBehaviour
             }
         }
     }
-    #endregion
 }
