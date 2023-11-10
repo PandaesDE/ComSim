@@ -16,6 +16,7 @@
 
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Spawner : MonoBehaviour
 {
@@ -53,20 +54,6 @@ public class Spawner : MonoBehaviour
         spawnRabbits(Gamevariables.RABBIT_AMOUNT_START);
     }
 
-    #region DEBUG Functions
-
-    /*This function is to test and verify the Entity Senses*/
-    //private void sensesCheckSetup()
-    //{
-    //    int a = 20;
-    //    Human hum = spawnHuman(new Vector2(a, 0));
-    //    Boar ani = spawnAnimal(animalType.BOAR,new Vector2(-a, 0));
-    //    hum.movement.setTarget(new Vector2(-a, 0));
-    //    ani.movement.setTarget(new Vector2(a, 0));
-    //}
-
-    #endregion
-
     public static void spawnHumans(int amount)
     {
         spawnCreatures(_instance.PREFAB_Human, amount);
@@ -75,6 +62,16 @@ public class Spawner : MonoBehaviour
     public static void spawnHumans(int amount, Vector2 position)
     {
         spawnCreatures(_instance.PREFAB_Human, amount, position);
+    }
+
+    public static Human spawnHuman()
+    {
+        return spawnHuman(Util.Random.CoordinateInPlayground());
+    }
+
+    public static Human spawnHuman(Vector2 position)
+    {
+        return spawnCreature(_instance.PREFAB_Human, position).GetComponent<Human>();
     }
 
     public static void spawnLions(int amount)
@@ -87,6 +84,16 @@ public class Spawner : MonoBehaviour
         spawnCreatures(_instance.PREFAB_Lion, amount, position);
     }
 
+    public static Lion spawnLion()
+    {
+        return spawnLion(Util.Random.CoordinateInPlayground());
+    }
+
+    public static Lion spawnLion(Vector2 position)
+    {
+        return spawnCreature(_instance.PREFAB_Lion, position).GetComponent<Lion>();
+    }
+
     public static void spawnBoars(int amount)
     {
         spawnCreatures(_instance.PREFAB_Boar, amount);
@@ -95,6 +102,16 @@ public class Spawner : MonoBehaviour
     public static void spawnBoars(int amount, Vector2 position)
     {
         spawnCreatures(_instance.PREFAB_Boar, amount, position);
+    }
+
+    public static Boar spawBoar()
+    {
+        return spawBoar(Util.Random.CoordinateInPlayground());
+    }
+
+    public static Boar spawBoar(Vector2 position)
+    {
+        return spawnCreature(_instance.PREFAB_Boar, position).GetComponent<Boar>();
     }
 
     public static void spawnRabbits(int amount)
@@ -107,9 +124,22 @@ public class Spawner : MonoBehaviour
         spawnCreatures(_instance.PREFAB_Rabbit, amount, position);
     }
 
-    private static void spawnCreatures(GameObject gameObject, int amount)
+    public static Rabbit spawRabbit()
     {
-        spawnCreatures(gameObject, amount, Util.Random.CoordinateInPlayground());
+        return spawRabbit(Util.Random.CoordinateInPlayground());
+    }
+
+    public static Rabbit spawRabbit(Vector2 position)
+    {
+        return spawnCreature(_instance.PREFAB_Rabbit, position).GetComponent<Rabbit>();
+    }
+
+    private static void spawnCreatures(GameObject prefab, int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            spawnCreature(prefab, Util.Random.CoordinateInPlayground());
+        }
     }
 
     private static void spawnCreatures(GameObject prefab, int amount, Vector2 position)

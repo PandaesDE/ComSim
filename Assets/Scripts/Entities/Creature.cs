@@ -26,9 +26,9 @@ public abstract class Creature : MonoBehaviour
     //Attributes
     public int MAX_HEALTH;
 
-    public float energy { get; protected set; } = 100;
-    public float health { get; protected set; }
-    public int weight { get; protected set; }
+    public float energy { get; protected set; } = MAX_ENERGY;
+    public float health { get; protected set; } = 0;
+    public int weight { get; protected set; } = 0;
     
 
     //Components
@@ -82,7 +82,6 @@ public abstract class Creature : MonoBehaviour
         tbm = GameObject.Find("Playground").GetComponent<TileBaseManager>();
 
         statusManager = new();
-        gender = Util.Random.Gender(this, statusManager);
         senses = new(this);
         brain = new(this);
         movement = new(this);
@@ -108,16 +107,45 @@ public abstract class Creature : MonoBehaviour
         trail.FixedUpdate();
     }
 
-    /*  This Method needs to be called by every descenant of this Class!
-     */
-    protected void initAttributes(IDietary dietary, int health, int weight, float speed)
+    #region Builder
+    protected Creature addGender(IGender gender)
     {
-        this.dietary = dietary;
-        this.MAX_HEALTH = health;
-        this.health = health;
-        this.weight = weight;
-        this.movement.speed = speed;
+
+        if (this.gender == null) 
+            this.gender = gender;
+        return this;
     }
+
+    protected Creature addDietary(IDietary dietary)
+    {
+        if (this.dietary == null)
+            this.dietary = dietary;
+        return this;
+    }
+    protected Creature addHealth(int health)
+    {
+        if (this.health == 0)
+        {
+            this.MAX_HEALTH = health;
+            this.health = health;
+        }
+        return this;
+    }
+
+    protected Creature addWeigth(int weight)
+    {
+        if (this.weight == 0)
+            this.weight = weight;
+        return this;
+    }
+
+    protected Creature addSpeed(float speed)
+    {
+        if (this.movement.speed == 0)
+            this.movement.speed = speed;
+        return this;
+    }
+    #endregion
 
     #region Brain
     protected void evaluateVision()

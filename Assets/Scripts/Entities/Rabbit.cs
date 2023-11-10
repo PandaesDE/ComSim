@@ -22,11 +22,11 @@ public class Rabbit : Creature
     {
         base.Awake();
 
-        Herbivore dietary = new(this);
-        int health = 45;
-        int weight = 30;
-        float speed = .2f;
-        initAttributes(dietary, health, weight, speed);
+        addGender(Util.Random.Gender(this, statusManager));
+        addDietary(new Herbivore(this));
+        addHealth(45);
+        addWeigth(30);
+        addSpeed(.2f);
     }
 
     protected override void FixedUpdate()

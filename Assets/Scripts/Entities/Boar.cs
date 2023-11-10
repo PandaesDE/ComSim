@@ -20,11 +20,11 @@ public class Boar : Creature
     {
         base.Awake();
 
-        Omnivore dietary = new(this);
-        int health = 150;
-        int weight = 130;
-        float speed = .2f;
-        initAttributes(dietary, health, weight, speed);
+        addGender(Util.Random.Gender(this, statusManager));
+        addDietary(new Omnivore(this));
+        addHealth(150);
+        addWeigth(130);
+        addSpeed(.2f);
     }
 
     protected override void FixedUpdate()

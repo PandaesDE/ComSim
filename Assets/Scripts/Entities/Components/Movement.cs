@@ -5,7 +5,7 @@ using UnityEngine;
 public class Movement
 {
     private Creature creature;
-    public float speed { get; set; }       //moves per Minute
+    public float speed { get; set; } = 0;      //moves per Minute
 
     [SerializeField] public  Vector2 target
     {

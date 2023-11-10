@@ -18,33 +18,28 @@ using UnityEngine;
 
 public class Human : Creature
 {
-    //[SerializeField] private int age = 0;
-
-    /*
-        Idea:
-            - int Groupbias: [0,100]
-                - chance to stay close to other people (gets inhereted to children)
-                - expectation: people in groups are more likely to survive a predator
-
-        TODO:
-            - MAKE FEMALE/ MALE CLASS FOR ALL FOR SEARCHING MATES, PREGNANCY ETC
-            - ONE HUMAN PREFAB
-            - ON INSTANTIATION SETS SPRITE
-     */
-
     [SerializeField] private Sprite spr_Male;
     [SerializeField] private Sprite spr_Female;
 
+    public Human(bool isMale)
+    {
+        if (isMale)
+            addGender(new Male());
+        else
+            addGender(new Female(this, statusManager));
+
+        base.Awake();
+    }
     protected override void Awake()
     {
         base.Awake();
 
-        Omnivore dietary = new(this);
-        int health = 80;
-        int weight = 80;
-        float speed = .2f;
+        addGender(Util.Random.Gender(this, statusManager));
+        addDietary(new Omnivore(this));
+        addHealth(80);
+        addWeigth(80);
+        addSpeed(.2f);
 
-        initAttributes(dietary,health, weight, speed);
         initSprite();
 
 

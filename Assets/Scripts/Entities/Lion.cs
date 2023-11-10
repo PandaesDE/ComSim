@@ -22,11 +22,11 @@ public class Lion : Creature
     {
         base.Awake();
 
-        Carnivore dietary = new(this);
-        int health = 100;
-        int weight = 80;
-        float speed = .2f;
-        initAttributes(dietary, health, weight, speed);
+        addGender(Util.Random.Gender(this, statusManager));
+        addDietary(new Carnivore(this));
+        addHealth(10);
+        addWeigth(80);
+        addSpeed(.2f);
     }
 
     protected override void FixedUpdate()

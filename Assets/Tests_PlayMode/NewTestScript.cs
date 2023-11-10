@@ -4,8 +4,6 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-
-//https://docs.unity3d.com/Packages/com.unity.test-framework@1.3/manual/workflow-create-test.html
 public class NewTestScript
 {
     // A Test behaves as an ordinary method
