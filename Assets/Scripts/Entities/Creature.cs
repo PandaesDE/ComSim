@@ -294,6 +294,11 @@ public abstract class Creature : MonoBehaviour
 
         void onHunting()
         {
+            if (hunger >= MAX_HUNGER)
+            {
+                determineStatus();
+                return;
+            }
             if (brain.activeHunt == null)
             {
                 setActiveHunt();
@@ -301,15 +306,6 @@ public abstract class Creature : MonoBehaviour
             }
             if (Util.inRange(transform.position, brain.activeHunt.transform.position))
             {
-                if (brain.activeHunt == null)
-                {
-                    //?
-                }
-                if (hunger >= MAX_HUNGER)
-                {
-                    //?
-                }
-
                 brain.activeHunt.attack(20);
             }
         }

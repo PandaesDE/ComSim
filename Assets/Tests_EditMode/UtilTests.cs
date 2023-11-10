@@ -4,6 +4,14 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
+
+/* TO WATCH: 
+ *              https://www.youtube.com/watch?v=qCghhGLUa-Y
+ *              https://www.youtube.com/watch?v=QIFxIRQUQzs
+ *              https://www.youtube.com/watch?v=043EY6H5424
+ * REFERENCES:
+ *              https://docs.unity.cn/Packages/com.unity.test-framework@1.3/manual/index.html
+ */
 public class UtilTests
 {
     [Test]
@@ -25,6 +33,4 @@ public class UtilTests
         Assert.True(Util.UI.isValidNumericEntry("10"));
         Assert.True(Util.UI.isValidNumericEntry("10.10"));
     }
-
-    
 }

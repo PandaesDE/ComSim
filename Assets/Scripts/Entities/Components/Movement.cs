@@ -7,10 +7,10 @@ public class Movement
     private Creature creature;
     public float speed { get; set; } = 0;      //moves per Minute
 
-    [SerializeField] public  Vector2 target
+    [SerializeField] public Vector2 target
     {
-        protected set;
         get;
+        protected set;
     }
     [SerializeField] public Direction facing
     { 
@@ -33,6 +33,7 @@ public class Movement
     public Movement(Creature creature)
     {
         this.creature = creature;
+        target = Util.Random.CoordinateInPlayground();
     }
 
     public void MoveToTarget()
