@@ -14,6 +14,7 @@
  *      
  */
 
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public static class Util
@@ -112,9 +113,10 @@ public static class Util
             return txt;
         }
 
-        public static bool isValidNumvericEntry(string txt)
+        public static bool isValidNumericEntry(string txt)
         {
             if (txt.Length <= 0) return false;
+            if (!new Regex("[0-9-.]").IsMatch(txt)) return false;
             if (txt.Equals("-")) return false;
             if (txt.Equals(".")) return false;
             if (txt.Equals("-.")) return false;
