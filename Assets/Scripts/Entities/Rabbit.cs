@@ -52,6 +52,9 @@ public class Rabbit : Creature
 
     protected override void giveBirth()
     {
-        Spawner.spawnRabbits(1, gameObject.transform.position);
+        SpawnOptions options = new SpawnOptions()
+            .set_Amount(1)
+            .set_Position(gameObject.transform.position);
+        Spawner.spawnRabbits(options);
     }
 }

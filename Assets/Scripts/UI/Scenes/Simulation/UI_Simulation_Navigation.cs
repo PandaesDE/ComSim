@@ -209,25 +209,25 @@ public class UI_Simulation_Navigation : MonoBehaviour
                 void spawnHumans()
                 {
                     int amount = int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Human_Adder.text));
-                    Spawner.spawnHumans(amount);
+                    Spawner.spawnHumans(new SpawnOptions(amount, true));
                 }
 
                 void spawnLions()
                 {
                     int amount = int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Lion_Adder.text));
-                    Spawner.spawnLions(amount);
+                    Spawner.spawnLions(new SpawnOptions(amount, true));
                 }
 
                 void spawnBoars()
                 {
                     int amount = int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Boar_Adder.text));
-                    Spawner.spawnBoars(amount);
+                    Spawner.spawnBoars(new SpawnOptions(amount, true));
                 }
 
                 void spawnRabbits()
                 {
                     int amount = int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Rabbit_Adder.text));
-                    Spawner.spawnRabbits(amount);
+                    Spawner.spawnRabbits(new SpawnOptions(amount, true));
                 }
             }
         }

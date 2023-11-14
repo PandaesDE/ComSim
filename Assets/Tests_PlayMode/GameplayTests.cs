@@ -19,8 +19,13 @@ public class GameplayTests
     public IEnumerator Mating_Passed()
     {
         Test_MapGenerator tmg = GameObject.Find("SystemNode").GetComponent<Test_MapGenerator>();
-        Human h1 = Spawner.spawnHuman(new Vector2(0, 0));
-        Human h2 = Spawner.spawnHuman(new Vector2(0, 1));
+
+        Human h1 = Spawner.spawnHumans(new SpawnOptions()
+            .set_Position(new Vector2(0, 0))
+            .set_IsMale(true))[0];
+        Human h2 = Spawner.spawnHumans(new SpawnOptions()
+            .set_Position(new Vector2(0, 1))
+            .set_IsMale(true))[0];
         
         tmg.RenderNormalTestMap(50, 50);
         yield return new WaitForSeconds(3);
