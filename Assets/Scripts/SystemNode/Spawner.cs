@@ -50,55 +50,74 @@ public class Spawner : MonoBehaviour
     IEnumerator spawnEntitiesAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
-        spawnHumans(Gamevariables.HUMAN_AMOUNT_START);
-        spawnLions(Gamevariables.LION_AMOUNT_START);
-        spawnBoars(Gamevariables.BOAR_AMOUNT_START);
-        spawnRabbits(Gamevariables.RABBIT_AMOUNT_START);
+        spawnHumans(new SpawnOptions(Gamevariables.HUMAN_AMOUNT_START, true));
+        spawnLions(new SpawnOptions(Gamevariables.LION_AMOUNT_START, true));
+        spawnBoars(new SpawnOptions(Gamevariables.BOAR_AMOUNT_START, true));
+        spawnRabbits(new SpawnOptions(Gamevariables.RABBIT_AMOUNT_START, true));
     }
 
     public class SpawnOptions
     {
         public int amount = 1;
         public bool isMale = Util.Random.isMale();
-        public Vector2 position = Util.Random.CoordinateInPlayground();
+        public bool isRandom = false;
+
+        private Vector2 _position = Vector2.zero;
+        public Vector2 position
+        {
+            get
+            {
+                if (isRandom)
+                {
+                    return randomPosition;
+                }
+                else
+                {
+                    return _position;
+                }
+            }
+            set
+            {
+                _position = value;
+            }
+        }
+
+        public Vector2 randomPosition { 
+            get 
+            { 
+                return Util.Random.CoordinateInPlayground(); 
+            } 
+        }
+
+        public SpawnOptions() { }
+        public SpawnOptions(int amount, bool isRandom)
+        {
+            this.amount = amount;
+            this.isRandom = isRandom;
+        }
+
     }
 
-    #region Humans
-    public static void spawnHumans(int amount)
+#region Humans
+    public static void spawnHumans(SpawnOptions so)
     {
-        for (int i = 0; i < amount; i++)
+        if (so.isRandom)
         {
-            spawnHuman();
+            for (int i = 0; i < so.amount; i++)
+            {
+                spawnHuman(so.randomPosition, so.isMale);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < so.amount; i++)
+            {
+                spawnHuman(so.position, so.isMale);
+            }
         }
     }
 
-    public static void spawnHumans(int amount, Vector2 position)
-    {
-        for (int i = 0; i < amount; i++)
-        {
-            spawnHuman(position);
-        }
-    }
-
-    public static void spawnHumans(int amount, Vector2 position, bool isMale)
-    {
-        for (int i = 0; i < amount; i++)
-        {
-            spawnHuman(position, isMale);
-        }
-    }
-
-    public static Human spawnHuman()
-    {
-        return spawnHuman(Util.Random.CoordinateInPlayground());
-    }
-
-    public static Human spawnHuman(Vector2 position)
-    {
-        return spawnHuman(position, Util.Random.isMale());
-    }
-
-    public static Human spawnHuman(Vector2 position, bool ismale)
+    private static Human spawnHuman(Vector2 position, bool ismale)
     {
         GameObject human = new GameObject();
         human.AddComponent<Human>()
@@ -107,95 +126,97 @@ public class Spawner : MonoBehaviour
     }
 #endregion
 
+
+
 #region Lions
-    public static void spawnLions(int amount)
+    public static void spawnLions(SpawnOptions so)
     {
-        for (int i = 0; i < amount; i++)
+        if (so.isRandom)
         {
-            spawnLion();
+            for (int i = 0; i < so.amount; i++)
+            {
+                spawnLion(so.randomPosition, so.isMale);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < so.amount; i++)
+            {
+                spawnLion(so.position, so.isMale);
+            }
         }
     }
 
-    public static void spawnLions(int amount, Vector2 position)
-    {
-        for (int i = 0; i < amount; i++)
-        {
-            spawnLion(position);
-        }
-    }
-
-    public static Lion spawnLion()
-    {
-        return spawnLion(Util.Random.CoordinateInPlayground());
-    }
-
-    public static Lion spawnLion(Vector2 position)
+    private static Lion spawnLion(Vector2 position, bool isMale)
     {
         GameObject lion = new GameObject();
-        lion.AddComponent<Lion>();
+        lion.AddComponent<Lion>()
+            .buidGender(isMale);
         return spawnCreature(lion, _instance._Spr_Lion, position).GetComponent<Lion>();
     }
 #endregion
 
+
+
 #region Boars
-    public static void spawnBoars(int amount)
+    public static void spawnBoars(SpawnOptions so)
     {
-        for (int i = 0; i < amount; i++)
+        if (so.isRandom)
         {
-            spawnBoar();
+            for (int i = 0; i < so.amount; i++)
+            {
+                spawnBoar(so.randomPosition, so.isMale);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < so.amount; i++)
+            {
+                spawnBoar(so.position, so.isMale);
+            }
         }
     }
 
-    public static void spawnBoars(int amount, Vector2 position)
-    {
-        for (int i = 0; i < amount; i++)
-        {
-            spawnBoar(position);
-        }
-    }
-
-    public static Boar spawnBoar()
-    {
-        return spawnBoar(Util.Random.CoordinateInPlayground());
-    }
-
-    public static Boar spawnBoar(Vector2 position)
+    private static Boar spawnBoar(Vector2 position, bool isMale)
     {
         GameObject boar = new GameObject();
-        boar.AddComponent<Boar>();
+        boar.AddComponent<Boar>()
+            .buidGender(isMale);
         return spawnCreature(boar, _instance._Spr_Boar, position).GetComponent<Boar>();
     }
 #endregion
 
+
+
 #region Rabbits
-    public static void spawnRabbits(int amount)
+    public static void spawnRabbits(SpawnOptions so)
     {
-        for (int i = 0; i < amount; i++)
+        if (so.isRandom)
         {
-            spawnRabbit();
+            for (int i = 0; i < so.amount; i++)
+            {
+                spawnRabbit(so.randomPosition, so.isMale);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < so.amount; i++)
+            {
+                spawnRabbit(so.position, so.isMale);
+            }
         }
     }
 
-    public static void spawnRabbits(int amount, Vector2 position)
-    {
-        for (int i = 0; i < amount; i++)
-        {
-            spawnRabbit(position);
-        }
-    }
-
-    public static Rabbit spawnRabbit()
-    {
-        return spawnRabbit(Util.Random.CoordinateInPlayground());
-    }
-
-    public static Rabbit spawnRabbit(Vector2 position)
+    public static Rabbit spawnRabbit(Vector2 position, bool isMale)
     {
         GameObject rabbit = new GameObject();
-        rabbit.AddComponent<Rabbit>();
+        rabbit.AddComponent<Rabbit>()
+            .buidGender(isMale);
         return spawnCreature(rabbit, _instance._Spr_Rabbit, position).GetComponent<Rabbit>();
     }
-    #endregion
+#endregion
+
+
 
     private static GameObject spawnCreature(GameObject creature_GO, Sprite spr, Vector2 c)
     {
