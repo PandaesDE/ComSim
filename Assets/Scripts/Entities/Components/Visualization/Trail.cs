@@ -30,7 +30,7 @@ public class Trail
     {
         this.creature = creature;
         this.dietary = dietary;
-        lr = creature.GetComponent<LineRenderer>();
+        lr = creature.gameObject.AddComponent<LineRenderer>();
 
         lr.startWidth = 1;
         lr.endWidth = .1f;

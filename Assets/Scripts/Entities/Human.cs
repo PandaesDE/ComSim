@@ -18,42 +18,15 @@ using UnityEngine;
 
 public class Human : Creature
 {
-    [SerializeField] private Sprite spr_Male;
-    [SerializeField] private Sprite spr_Female;
-
-    public Human(bool isMale)
-    {
-        if (isMale)
-            addGender(new Male());
-        else
-            addGender(new Female(this, statusManager));
-
-        base.Awake();
-    }
     protected override void Awake()
     {
         base.Awake();
 
-        addGender(Util.Random.Gender(this, statusManager));
-        addDietary(new Omnivore(this));
-        addHealth(80);
-        addWeigth(80);
-        addSpeed(.2f);
-
-        initSprite();
-
-
-        void initSprite()
-        {
-            if (gender.isMale)
-            {
-                GetComponent<SpriteRenderer>().sprite = spr_Male;
-            }
-            else
-            {
-                GetComponent<SpriteRenderer>().sprite = spr_Female;
-            }
-        }
+        buildGender(Util.Random.Gender(this));
+        buildDietary(new Omnivore(this));
+        buildHealth(80);
+        buildWeight(80);
+        buildSpeed(.2f);
     }
 
     protected override void FixedUpdate()

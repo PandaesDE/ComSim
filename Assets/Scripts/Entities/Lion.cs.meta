@@ -4,7 +4,8 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - PREFAB_CORPSE: {fileID: 346594161483134204, guid: 7bf9a7511f71b224892288980941cfbe, type: 3}
+  - _material: {instanceID: 0}
+  - spr_General: {fileID: 21300000, guid: e197e75b8cc182e4b84f43f3cac5c56b, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

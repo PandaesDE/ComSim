@@ -14,17 +14,21 @@
  *      
  */
 
+using UnityEngine;
+
 public class Boar : Creature
 {
+    [SerializeField] private Sprite spr_General;
+
     protected override void Awake()
     {
         base.Awake();
 
-        addGender(Util.Random.Gender(this, statusManager));
-        addDietary(new Omnivore(this));
-        addHealth(150);
-        addWeigth(130);
-        addSpeed(.2f);
+        buildGender(Util.Random.Gender(this));
+        buildDietary(new Omnivore(this));
+        buildHealth(150);
+        buildWeight(130);
+        buildSpeed(.2f);
     }
 
     protected override void FixedUpdate()

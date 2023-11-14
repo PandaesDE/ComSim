@@ -43,11 +43,15 @@ public static class Util
 
     public static class Random
     {
-        public static IGender Gender(Creature c, StatusManager sm)
+        public static IGender Gender(Creature c)
         {
-            int r = UnityEngine.Random.Range(0, 2);
-            if (r < 1) return new Male();
-            return new Female(c, sm);
+            if (isMale()) return new Male();
+            return new Female(c);
+        }
+
+        public static bool isMale()
+        {
+            return UnityEngine.Random.Range(0, 2) < 1;
         }
 
         public static float Float(float max)

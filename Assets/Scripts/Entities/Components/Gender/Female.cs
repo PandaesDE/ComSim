@@ -5,7 +5,6 @@ using UnityEngine;
 public class Female : IGender
 {
     private Creature creature;
-    private StatusManager sm;
 
     private Timer duration_Pregnancy = new Timer(18 * Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR);
     private Timer cooldown_Pregnancy = new Timer(9 * Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR);
@@ -29,10 +28,9 @@ public class Female : IGender
         }
     }
 
-    public Female(Creature creature, StatusManager sm)
+    public Female(Creature creature)
     {
         this.creature = creature;
-        this.sm = sm;
     }
 
     public void FixedUpdate()
@@ -44,7 +42,7 @@ public class Female : IGender
                 duration_Pregnancy.tick();
             } else
             {
-                sm.status = StatusManager.Status.GIVING_BIRTH;
+                creature.statusManager.status = StatusManager.Status.GIVING_BIRTH;
             }
         } else
         {

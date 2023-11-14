@@ -23,6 +23,8 @@ public abstract class Creature : MonoBehaviour
     public static readonly float MAX_HUNGER = 100f;
     public static readonly float MAX_THIRST = 100f;
 
+
+
     //Attributes
     public int MAX_HEALTH;
 
@@ -30,6 +32,7 @@ public abstract class Creature : MonoBehaviour
     public float health { get; protected set; } = 0;
     public int weight { get; protected set; } = 0;
     
+
 
     //Components
         //Information storing and handling
@@ -51,8 +54,7 @@ public abstract class Creature : MonoBehaviour
     public Trail trail { get; private set; }
 
         //States
-    private readonly int MINUTES_UNTIL_STATUS_DETERMINING = 60;
-    private int minutes_left_until_status_determining = 0;
+    private Timer automatic_status_update = new Timer(Gamevariables.MINUTES_PER_HOUR);
     public StatusManager statusManager { get; protected set; }
 
 
@@ -61,6 +63,8 @@ public abstract class Creature : MonoBehaviour
     protected TileBaseManager tbm;
 
 
+
+    //Movement
     public Movement.Direction facing
     { 
         get
@@ -69,22 +73,52 @@ public abstract class Creature : MonoBehaviour
         }
     }
 
+    //GameObject
+    [SerializeField] private Material _material;
+
+
     //Needs
     public float hunger = 100f;
     public float thirst = 100f;
-
-    //Corpse
-    [SerializeField] private GameObject PREFAB_CORPSE;
-
 
     protected virtual void Awake()
     {
         tbm = GameObject.Find("Playground").GetComponent<TileBaseManager>();
 
-        statusManager = new();
-        senses = new(this);
-        brain = new(this);
-        movement = new(this);
+        initializeCreatureComponents();
+
+        
+
+        void initializeCreatureComponents()
+        {
+            if (statusManager == null) statusManager = new();
+            if (senses == null) senses = new(this);
+            if (brain == null) brain = new(this);
+            if (movement == null) movement = new(this);
+        }
+
+        /*void initializeUnityComponents()
+        {
+            SpriteRenderer sr;
+            Rigidbody2D rb2d;
+            BoxCollider2D bc2D;
+
+            if (!gameObject.TryGetComponent(out sr))
+            {
+                sr = gameObject.AddComponent<SpriteRenderer>();
+            }
+            sr.material = _material;
+            
+            if (!gameObject.TryGetComponent(out rb2d))
+            {
+                rb2d = gameObject.AddComponent<Rigidbody2D>();
+            }
+
+            if (!gameObject.TryGetComponent(out bc2D))
+            {
+                bc2D = gameObject.AddComponent<BoxCollider2D>();
+            }
+        }*/
     }
 
     protected void Start()
@@ -108,7 +142,19 @@ public abstract class Creature : MonoBehaviour
     }
 
     #region Builder
-    protected Creature addGender(IGender gender)
+    public Creature buidGender(bool isMale)
+    {
+        if (isMale)
+        {
+            this.gender = new Male();
+        } else
+        {
+            this.gender = new Female(this);
+        }
+        return this;
+    }
+    
+    protected Creature buildGender(IGender gender)
     {
 
         if (this.gender == null) 
@@ -116,13 +162,13 @@ public abstract class Creature : MonoBehaviour
         return this;
     }
 
-    protected Creature addDietary(IDietary dietary)
+    protected Creature buildDietary(IDietary dietary)
     {
         if (this.dietary == null)
             this.dietary = dietary;
         return this;
     }
-    protected Creature addHealth(int health)
+    protected Creature buildHealth(int health)
     {
         if (this.health == 0)
         {
@@ -132,14 +178,14 @@ public abstract class Creature : MonoBehaviour
         return this;
     }
 
-    protected Creature addWeigth(int weight)
+    protected Creature buildWeight(int weight)
     {
         if (this.weight == 0)
             this.weight = weight;
         return this;
     }
 
-    protected Creature addSpeed(float speed)
+    protected Creature buildSpeed(float speed)
     {
         if (this.movement.speed == 0)
             this.movement.speed = speed;
@@ -278,15 +324,14 @@ public abstract class Creature : MonoBehaviour
 
         void automaticStatusDetermination()
         {
-            if (minutes_left_until_status_determining <= 0)
+            if (automatic_status_update.finished())
             {
                 determineStatus();
-                minutes_left_until_status_determining = MINUTES_UNTIL_STATUS_DETERMINING;
+                automatic_status_update.reset();
+                return;
             }
-            else
-            {
-                minutes_left_until_status_determining -= Gamevariables.MINUTES_PER_TICK;
-            }
+            
+            automatic_status_update.tick();
         }
 
         void onFleeing()
@@ -616,8 +661,10 @@ public abstract class Creature : MonoBehaviour
 
     protected void death()
     {
-        GameObject instance = Instantiate(PREFAB_CORPSE, transform.position, transform.rotation);
-        Corpse c = instance.GetComponent<Corpse>();
+        GameObject corpse_GO = new GameObject();
+        corpse_GO.AddComponent<Corpse>();
+        Instantiate(corpse_GO, transform.position, transform.rotation);
+        Corpse c = corpse_GO.GetComponent<Corpse>();
         c.setWeight(weight);
 
         ObjectManager.addCorpse(c);

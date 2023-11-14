@@ -18,15 +18,17 @@ using UnityEngine;
 
 public class Lion : Creature
 {
+    [SerializeField] private Sprite spr_General;
+
     protected override void Awake()
     {
         base.Awake();
 
-        addGender(Util.Random.Gender(this, statusManager));
-        addDietary(new Carnivore(this));
-        addHealth(10);
-        addWeigth(80);
-        addSpeed(.2f);
+        buildGender(Util.Random.Gender(this));
+        buildDietary(new Carnivore(this));
+        buildHealth(10);
+        buildWeight(80);
+        buildSpeed(.2f);
     }
 
     protected override void FixedUpdate()

@@ -18,15 +18,17 @@ using UnityEngine;
 
 public class Rabbit : Creature
 {
+    [SerializeField] private Sprite spr_General;
+
     protected override void Awake()
     {
         base.Awake();
 
-        addGender(Util.Random.Gender(this, statusManager));
-        addDietary(new Herbivore(this));
-        addHealth(45);
-        addWeigth(30);
-        addSpeed(.2f);
+        buildGender(Util.Random.Gender(this));
+        buildDietary(new Herbivore(this));
+        buildHealth(45);
+        buildWeight(30);
+        buildSpeed(.2f);
     }
 
     protected override void FixedUpdate()
