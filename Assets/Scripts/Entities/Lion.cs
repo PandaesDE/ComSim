@@ -24,11 +24,11 @@ public class Lion : Creature
     {
         base.Awake();
 
-        buildGender(Util.Random.Gender(this));
-        buildDietary(new Carnivore(this));
-        buildHealth(10);
-        buildWeight(80);
-        buildSpeed(.2f);
+        build_Gender(Util.Random.Gender(this));
+        build_Dietary(new Carnivore(this));
+        build_Health(10);
+        build_Weight(80);
+        build_Speed(.2f);
     }
 
     protected override void FixedUpdate()

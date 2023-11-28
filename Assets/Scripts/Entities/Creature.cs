@@ -36,19 +36,19 @@ public abstract class Creature : MonoBehaviour
 
     //Components
         //Information storing and handling
-    protected Brain brain;
+    [SerializeField]protected Brain brain;
 
         //Sensory of environment
-    protected Senses senses;
+    [SerializeField]protected Senses senses;
 
         //Handles food, hunt and flee associated behavior
-    protected IDietary dietary;
+    [SerializeField]protected IDietary dietary;
 
         //Handles social associated behavior
     public IGender gender { get; protected set; }
 
         //Movement
-    protected Movement movement;
+    [SerializeField]protected Movement movement;
 
         //Visualization
     public Trail trail { get; private set; }
@@ -96,29 +96,6 @@ public abstract class Creature : MonoBehaviour
             if (brain == null) brain = new(this);
             if (movement == null) movement = new(this);
         }
-
-        /*void initializeUnityComponents()
-        {
-            SpriteRenderer sr;
-            Rigidbody2D rb2d;
-            BoxCollider2D bc2D;
-
-            if (!gameObject.TryGetComponent(out sr))
-            {
-                sr = gameObject.AddComponent<SpriteRenderer>();
-            }
-            sr.material = _material;
-            
-            if (!gameObject.TryGetComponent(out rb2d))
-            {
-                rb2d = gameObject.AddComponent<Rigidbody2D>();
-            }
-
-            if (!gameObject.TryGetComponent(out bc2D))
-            {
-                bc2D = gameObject.AddComponent<BoxCollider2D>();
-            }
-        }*/
     }
 
     protected void Start()
@@ -142,7 +119,7 @@ public abstract class Creature : MonoBehaviour
     }
 
     #region Builder
-    public Creature buidGender(bool isMale)
+    public Creature build_Gender(bool isMale)
     {
         if (isMale)
         {
@@ -154,7 +131,7 @@ public abstract class Creature : MonoBehaviour
         return this;
     }
     
-    protected Creature buildGender(IGender gender)
+    protected Creature build_Gender(IGender gender)
     {
 
         if (this.gender == null) 
@@ -162,13 +139,13 @@ public abstract class Creature : MonoBehaviour
         return this;
     }
 
-    protected Creature buildDietary(IDietary dietary)
+    protected Creature build_Dietary(IDietary dietary)
     {
         if (this.dietary == null)
             this.dietary = dietary;
         return this;
     }
-    protected Creature buildHealth(int health)
+    protected Creature build_Health(int health)
     {
         if (this.health == 0)
         {
@@ -178,14 +155,14 @@ public abstract class Creature : MonoBehaviour
         return this;
     }
 
-    protected Creature buildWeight(int weight)
+    protected Creature build_Weight(int weight)
     {
         if (this.weight == 0)
             this.weight = weight;
         return this;
     }
 
-    protected Creature buildSpeed(float speed)
+    protected Creature build_Speed(float speed)
     {
         if (this.movement.speed == 0)
             this.movement.speed = speed;
@@ -216,7 +193,7 @@ public abstract class Creature : MonoBehaviour
                 }
 
                 /* Creature Evaluation */
-                if (isCreature(g))
+                if (g.TryGetComponent<Creature>(out _))
                 {
                     evaluateCreature(g.GetComponent<Creature>());
                     continue;
@@ -401,18 +378,27 @@ public abstract class Creature : MonoBehaviour
             /*Exit Condition*/
             if (thirst >= MAX_THIRST)
             {
+                //brain.activeWater = null;
                 determineStatus();
                 return;
             }
             /*Set Target*/
-            //TODO
+            if (brain.activeWater == null)
+            {
+                brain.setActiveWaterSource();
+                if (brain.activeWater != null)
+                {
+                    movement.setTarget(brain.activeWater);
+                }
+                return;
+            }
             /*Target Reached*/
-            if (Util.inRange(transform.position, brain.activeWater))
+            if (movement.targetReached())
             {
                 if (tbm.isWater(brain.activeWater))
                     drink();
                 else
-                    setActiveWaterSource();
+                    brain.setActiveWaterSource();
             }
         }
 
@@ -474,9 +460,6 @@ public abstract class Creature : MonoBehaviour
         if (brain.activeHunt != null)
         {
             movement.setTarget(brain.activeHunt.gameObject);
-        } else
-        {
-            movement.setRandomTargetIfReached();
         }
     }
     #endregion
@@ -507,24 +490,9 @@ public abstract class Creature : MonoBehaviour
     }
     #endregion
     #region Thirst
-    protected void setActiveWaterSource()
-    {
-        if (brain.hasWaterSource())
-        {
-            brain.setActiveWaterSource();
-            return;
-        }
-        statusManager.status = StatusManager.Status.WANDERING;
-    }
+
     #endregion
     #region Social
-    
-    
-    protected bool isCreature(GameObject g)
-    {
-        return g.GetComponent<Creature>() != null;
-    }
-
     protected void setActiveMate()
     {
 
@@ -661,14 +629,7 @@ public abstract class Creature : MonoBehaviour
 
     protected void death()
     {
-        GameObject corpse_GO = new GameObject();
-        corpse_GO.AddComponent<Corpse>();
-        Instantiate(corpse_GO, transform.position, transform.rotation);
-        Corpse c = corpse_GO.GetComponent<Corpse>();
-        c.setWeight(weight);
-
-        ObjectManager.addCorpse(c);
-        ObjectManager.deleteCreature(this);
+        Spawner.spawnCorpse(this);
     }
 
     #endregion

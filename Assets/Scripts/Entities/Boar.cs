@@ -24,11 +24,11 @@ public class Boar : Creature
     {
         base.Awake();
 
-        buildGender(Util.Random.Gender(this));
-        buildDietary(new Omnivore(this));
-        buildHealth(150);
-        buildWeight(130);
-        buildSpeed(.2f);
+        build_Gender(Util.Random.Gender(this));
+        build_Dietary(new Omnivore(this));
+        build_Health(150);
+        build_Weight(130);
+        build_Speed(.2f);
     }
 
     protected override void FixedUpdate()

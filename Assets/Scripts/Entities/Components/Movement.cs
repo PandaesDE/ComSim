@@ -82,7 +82,7 @@ public class Movement
         }
     }
 
-    public void CalculateNextSteps(Vector3 destination)
+    private void CalculateNextSteps(Vector3 destination)
     {
         Vector2 vect = Util.Conversion.Vector3ToVector2(destination - creature.transform.position);
 
@@ -108,7 +108,7 @@ public class Movement
         }
     }
 
-    public void MakeStep()
+    private void MakeStep()
     {
         if (facing == Direction.NORTH)
         {

@@ -4994,10 +4994,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c668d9df5656c142bfab5c298b66bcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PREFAB_Human: {fileID: 346594161483134204, guid: c0c7086a5a905a94097b5ca5e1c1e0db, type: 3}
-  PREFAB_Boar: {fileID: 346594161483134204, guid: 8aca4ba671169d246bfbd78edeb4e144, type: 3}
-  PREFAB_Rabbit: {fileID: 346594161483134204, guid: 2fb0f1f274df4e34199a8e530d7f3402, type: 3}
-  PREFAB_Lion: {fileID: 346594161483134204, guid: 71efd56eb279aa0499cf1429f6b7421e, type: 3}
+  _2Dlit: {fileID: 2100000, guid: 20155b856eab2094a8768a59f9c123f5, type: 2}
+  _spr_Human_Male: {fileID: 21300000, guid: 8bf7fc8fe9f4df94394eca03ada8f856, type: 3}
+  _spr_Human_Female: {fileID: 21300000, guid: d11448647f01edf42a59fdc7ded38d0e, type: 3}
+  _Spr_Lion: {fileID: 21300000, guid: e197e75b8cc182e4b84f43f3cac5c56b, type: 3}
+  _Spr_Boar: {fileID: 21300000, guid: c0735d08629131346a175e93c7b6d0e3, type: 3}
+  _Spr_Rabbit: {fileID: 21300000, guid: 8b9f583c5f571e948b57ab6865ff0b43, type: 3}
+  _Spr_Corpse: {fileID: -2413806693520163455, guid: 5dfd136e8d85c104dbb6560b3512a1a4, type: 3}
 --- !u!114 &747089661
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -22,11 +22,11 @@ public class Human : Creature
     {
         base.Awake();
 
-        buildGender(Util.Random.Gender(this));
-        buildDietary(new Omnivore(this));
-        buildHealth(80);
-        buildWeight(80);
-        buildSpeed(.2f);
+        build_Gender(Util.Random.Gender(this));
+        build_Dietary(new Omnivore(this));
+        build_Health(80);
+        build_Weight(80);
+        build_Speed(.2f);
     }
 
     protected override void FixedUpdate()

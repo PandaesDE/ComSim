@@ -14,6 +14,7 @@
  *      
  */
 
+using System;
 using UnityEngine;
 
 public class Gamevariables
@@ -52,4 +53,11 @@ public class Gamevariables
 
     //Error - Values
     public static Vector2 ERROR_VECTOR2 = Vector2.positiveInfinity;
+
+    public enum z_layer
+    {
+        ENTITY = -1,
+        WORLD = 0
+    }
+
 }

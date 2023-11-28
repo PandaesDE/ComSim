@@ -176,6 +176,7 @@ public class UI_Simulation_Navigation : MonoBehaviour
                 btn_All_Remover.onClick.AddListener(delegate
                 {
                     ObjectManager.deleteAllCreatures();
+                    ObjectManager.deleteAllCorpses();
                 });
 
                 btn_All_Adder.onClick.AddListener(delegate

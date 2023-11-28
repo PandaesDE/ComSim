@@ -24,11 +24,11 @@ public class Rabbit : Creature
     {
         base.Awake();
 
-        buildGender(Util.Random.Gender(this));
-        buildDietary(new Herbivore(this));
-        buildHealth(45);
-        buildWeight(30);
-        buildSpeed(.2f);
+        build_Gender(Util.Random.Gender(this));
+        build_Dietary(new Herbivore(this));
+        build_Health(45);
+        build_Weight(30);
+        build_Speed(.2f);
     }
 
     protected override void FixedUpdate()

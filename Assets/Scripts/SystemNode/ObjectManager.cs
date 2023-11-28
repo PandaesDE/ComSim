@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class ObjectManager : MonoBehaviour
 {
-    private static List<Creature> allCreatures;
-    private static List<Corpse> allCorpses;
+    private static Dictionary<int,Creature> allCreatures;
+    private static Dictionary<int,Corpse> allCorpses;
 
     private void Awake()
     {
@@ -23,17 +23,21 @@ public class ObjectManager : MonoBehaviour
     #region Creatures
     public static void addCreature(Creature toAdd)
     {
-        allCreatures.Add(toAdd);
+        allCreatures.Add(toAdd.GetInstanceID(), toAdd);
     }
 
-    public static void addCreatures(List<Creature> toAdd)
+    public static void addCreatures(List<Creature> toAddList)
     {
-        allCreatures.AddRange(toAdd);
+        for (int i = 0; i < toAddList.Count; i++)
+        {
+            Creature creature = toAddList[i];
+            allCreatures.Add(creature.GetInstanceID(), creature);
+        }
     }
 
     public static void deleteAllCreatures()
     {
-        foreach (Creature c in allCreatures)
+        foreach (Creature c in allCreatures.Values)
         {
             Destroy(c.gameObject);
         }
@@ -42,18 +46,18 @@ public class ObjectManager : MonoBehaviour
 
     public static void deleteCreature(Creature toDelete)
     {
-        if (!allCreatures.Contains(toDelete))
+        if (!allCreatures.ContainsKey(toDelete.GetInstanceID()))
         {
             UnregisteredObjectException($"{toDelete}");
         }
 
-        allCreatures.Remove(toDelete);
+        allCreatures.Remove(toDelete.GetInstanceID());
         Destroy(toDelete.gameObject);
     }
 
     public static void changeTrailColor()
     {
-        foreach (Creature c in allCreatures)
+        foreach (Creature c in allCreatures.Values)
         {
             c.trail.setColor();
         }
@@ -63,18 +67,27 @@ public class ObjectManager : MonoBehaviour
     #region Corpses
     public static void addCorpse(Corpse toAdd)
     {
-        allCorpses.Add(toAdd);
+        allCorpses.Add(toAdd.GetInstanceID(), toAdd);
     }
 
     public static void deleteCorpse(Corpse toDelete)
     {
-        if (!allCorpses.Contains(toDelete))
+        if (!allCorpses.ContainsKey(toDelete.GetInstanceID()))
         {
             UnregisteredObjectException($"{toDelete}");
         }
 
-        allCorpses.Remove(toDelete);
+        allCorpses.Remove(toDelete.GetInstanceID());
         Destroy(toDelete.gameObject);
+    }
+
+    public static void deleteAllCorpses()
+    {
+        foreach (Corpse c in allCorpses.Values)
+        {
+            Destroy(c.gameObject);
+        }
+        allCorpses.Clear();
     }
     #endregion
 

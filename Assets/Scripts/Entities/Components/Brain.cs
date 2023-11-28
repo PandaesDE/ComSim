@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Brain : Component
+public class Brain
 {
     private Creature creature;
 
     public IConsumable activeFood { get; private set; }
-    public Vector2 activeWater { get; private set; }
+    public GameObject activeWater { get; private set; }
     public Creature activeHunt { get; private set; }
     public Creature activeFlee { get; private set; }
     public Creature activeMate { get; private set; }
@@ -16,7 +16,7 @@ public class Brain : Component
     private Dictionary<int, IConsumable> inactiveFood;
     private Dictionary<int, Creature> spottedCreature;
     private Dictionary<int, Creature> spottedMate;
-    private Dictionary<int, Vector2> spottedWater;
+    private Dictionary<int, GameObject> spottedWater;
 
 
     public Brain(Creature creature)
@@ -25,7 +25,7 @@ public class Brain : Component
         inactiveFood = new Dictionary<int, IConsumable>();
         spottedCreature = new Dictionary<int, Creature>();
         spottedMate = new Dictionary<int, Creature>();
-        spottedWater = new Dictionary<int, Vector2>();
+        spottedWater = new Dictionary<int, GameObject>();
         this.creature = creature;
     }
 
@@ -238,8 +238,7 @@ public class Brain : Component
     public void addWaterSource(GameObject water)
     {
         if (spottedWater.ContainsKey(water.GetInstanceID())) return;
-        Vector2Int waterCoords = Util.Conversion.Vector3ToVector2Int(water.transform.position);
-        spottedWater.Add(water.GetInstanceID(), waterCoords);
+        spottedWater.Add(water.GetInstanceID(), water);
     }
 
     public bool hasWaterSource()
@@ -252,13 +251,13 @@ public class Brain : Component
         activeWater = getNearestWaterSource();
     }
 
-    private Vector2 getNearestWaterSource()
+    private GameObject getNearestWaterSource()
     {
-        Vector2 closest = Gamevariables.ERROR_VECTOR2;
+        GameObject closest = null;
         float minDistance = Mathf.Infinity;
-        foreach (KeyValuePair<int, Vector2> keyValue in spottedWater)
+        foreach (KeyValuePair<int, GameObject> keyValue in spottedWater)
         {
-            float distance = Vector3.Distance(keyValue.Value, creature.transform.position);
+            float distance = Vector3.Distance(keyValue.Value.transform.position, creature.transform.position);
             if (distance < minDistance)
             {
                 minDistance = distance;
