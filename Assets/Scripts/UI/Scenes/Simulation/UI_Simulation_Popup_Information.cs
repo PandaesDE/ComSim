@@ -57,6 +57,14 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (target == null)
+        {
+            /*Gets only called once since the class is in inactive state afterwards*/
+            resetInputs();
+            setActive(false);
+            return;
+        }
+
         updateChangingInfo();
     }
 
@@ -86,13 +94,6 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
 
     private void updateChangingInfo()
     {
-        if (target == null)
-        {
-            resetInputs();
-            setActive(false);
-            return;
-        }
-
         display_Name.text = target.name;
         //Debug
         updatePosition();
