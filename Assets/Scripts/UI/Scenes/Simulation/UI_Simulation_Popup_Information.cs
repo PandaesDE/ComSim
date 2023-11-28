@@ -25,6 +25,8 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
 
     [SerializeField] private TMP_Text display_Name;
     [SerializeField] private TMP_Text display_Status;
+    [SerializeField] private TMP_Text display_Position;
+    [SerializeField] private TMP_Text display_Target;
 
     [SerializeField] private GameObject image_Object;
     private Image image;
@@ -92,12 +94,18 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
         }
 
         display_Name.text = target.name;
+        //Debug
+        updatePosition();
+        updateTarget();
+        //Stats
         updateHealthBar();
         updateHungerBar();
         updateThirstBar();
         updateEnergyBar();
         updateStatus();
     }
+
+
     private void resetInputs()
     {
         tgl_Follow.isOn = false;
@@ -107,6 +115,17 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
     {
         image.sprite = target.GetComponent<SpriteRenderer>().sprite;
     }
+
+    private void updatePosition()
+    {
+        display_Position.text = "" + (Vector2)target.transform.position;
+    }
+
+    private void updateTarget()
+    {
+        display_Target.text = "" + target.movement.target;
+    }
+
     private void updateHealthBar()
     {
         sdr_Health.value = (float)target.health / (float)target.MAX_HEALTH;

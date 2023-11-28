@@ -48,7 +48,7 @@ public abstract class Creature : MonoBehaviour
     public IGender gender { get; protected set; }
 
         //Movement
-    [SerializeField]protected Movement movement;
+    public Movement movement { get; protected set; }
 
         //Visualization
     public Trail trail { get; private set; }
