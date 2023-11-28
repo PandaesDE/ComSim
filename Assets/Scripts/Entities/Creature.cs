@@ -394,10 +394,7 @@ public abstract class Creature : MonoBehaviour
             /*Target Reached*/
             if (movement.targetReached())
             {
-                if (tbm.isWater(brain.activeWater))
-                    drink();
-                else
-                    brain.setActiveWaterSource();
+                drink();
             }
         }
 
