@@ -1,5 +1,13 @@
 public class StatusManager
 {
+    public Status status { get; private set; } = Status.WANDERING;
+
+    private Brain _brain = null;
+
+    public StatusManager(Brain brain)
+    {
+        this._brain = brain;
+    }
     public enum Status
     {
         WANDERING,
@@ -14,6 +22,10 @@ public class StatusManager
         GIVING_BIRTH
     }
 
-    public Status status = Status.WANDERING;
+    public void setState(Status status)
+    {
+        _brain.onStateChange();
+        this.status = status;
+    }
 
 }

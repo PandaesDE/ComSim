@@ -42,7 +42,8 @@ public class Female : IGender
                 duration_Pregnancy.tick();
             } else
             {
-                creature.statusManager.status = StatusManager.Status.GIVING_BIRTH;
+
+                creature.statusManager.setState(StatusManager.Status.GIVING_BIRTH);
             }
         } else
         {

@@ -58,7 +58,6 @@ public abstract class Creature : MonoBehaviour
     public StatusManager statusManager { get; protected set; }
 
 
-
     //Map
     protected TileBaseManager tbm;
 
@@ -91,9 +90,9 @@ public abstract class Creature : MonoBehaviour
 
         void initializeCreatureComponents()
         {
-            if (statusManager == null) statusManager = new();
             if (senses == null) senses = new(this);
             if (brain == null) brain = new(this);
+            if (statusManager == null) statusManager = new(brain);
             if (movement == null) movement = new(this);
         }
     }
@@ -221,36 +220,36 @@ public abstract class Creature : MonoBehaviour
         //Important States
         if (thirst <= important_cap && thirst < hunger)
         {
-            statusManager.status = StatusManager.Status.DEHYDRATED;
+            statusManager.setState(StatusManager.Status.DEHYDRATED);
             return;
         }
         if (hunger <= important_cap)
         {
-            statusManager.status = StatusManager.Status.STARVING;
-            return;
+            statusManager.setState(StatusManager.Status.STARVING);
+                return;
         }
 
 
         //Normal States
         if (thirst <= normal_cap && thirst < hunger)
         {
-            statusManager.status = StatusManager.Status.THIRSTY;
-            return;
+            statusManager.setState(StatusManager.Status.THIRSTY);
+                    return;
         }
         if (hunger <= normal_cap)
         {
-            statusManager.status = StatusManager.Status.HUNGRY;
-            return;
+            statusManager.setState(StatusManager.Status.HUNGRY);
+                        return;
         }
 
         if (gender.isReadyForMating && gender.isMale)
         {
-            statusManager.status = StatusManager.Status.LOOKING_FOR_PARTNER;
+            statusManager.setState(StatusManager.Status.LOOKING_FOR_PARTNER);
             return;
         }
 
 
-        statusManager.status = StatusManager.Status.WANDERING;
+        statusManager.setState(StatusManager.Status.WANDERING);
     }
 
     protected void makeStatusBasedMove()
@@ -444,7 +443,7 @@ public abstract class Creature : MonoBehaviour
             {
                 StatusManager.Status evaluation = dietary.onApproached();
                 if (evaluation != StatusManager.Status.WANDERING)
-                    statusManager.status = evaluation;
+                    statusManager.setState(evaluation);
             }
             brain.AddSpottedCreature(creature);
         }
@@ -471,7 +470,7 @@ public abstract class Creature : MonoBehaviour
             brain.setActiveFoodSource();
         } else
         {
-            statusManager.status = dietary.onNoFood();
+            statusManager.setState(dietary.onNoFood());
             if (statusManager.status == StatusManager.Status.HUNTING)
                 setActiveHunt();
             return;
@@ -589,7 +588,7 @@ public abstract class Creature : MonoBehaviour
         {
             //REGULAR WAKE UP
             brain.ActivateAllInactiveFoodSources();
-            statusManager.status = StatusManager.Status.WANDERING;
+            statusManager.setState(StatusManager.Status.WANDERING);
         }
     }
 
@@ -604,7 +603,7 @@ public abstract class Creature : MonoBehaviour
         float lightfactor = lightScaler * addPerTick * Gamevariables.LIGHT_INTENSITY;
 
         energy = Mathf.Clamp(energy - addPerTick - lightfactor, 0, MAX_ENERGY);
-        if (energy <= 0) statusManager.status = StatusManager.Status.SLEEPING;
+        if (energy <= 0) statusManager.setState(StatusManager.Status.SLEEPING);
     }
     #endregion
 
@@ -615,7 +614,7 @@ public abstract class Creature : MonoBehaviour
     public void attack(int damage = 20)
     {
         health -= damage;
-        statusManager.status = dietary.onAttacked();
+        statusManager.setState(dietary.onAttacked());
         if (health <= 0)
         {
             death();

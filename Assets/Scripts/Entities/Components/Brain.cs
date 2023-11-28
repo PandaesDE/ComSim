@@ -29,6 +29,15 @@ public class Brain
         this.creature = creature;
     }
 
+    public void onStateChange()
+    {
+        activeFood = null;
+        activeWater = null;
+        activeHunt = null;
+        activeFlee = null;
+        activeMate = null;
+    }
+
     #region Survival
     public void AddSpottedCreature(Creature c)
     {
