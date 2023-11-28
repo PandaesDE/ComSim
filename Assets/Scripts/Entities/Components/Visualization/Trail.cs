@@ -30,7 +30,7 @@ public class Trail
     {
         this.creature = creature;
         this.dietary = dietary;
-        lr = creature.gameObject.AddComponent<LineRenderer>();
+        lr = creature.GetComponent<LineRenderer>();
 
         lr.startWidth = 1;
         lr.endWidth = .1f;
@@ -41,11 +41,7 @@ public class Trail
     {
         if (Gamevariables.SHOW_TRAIL)
         {
-            float x = creature.transform.position.x;
-            float y = creature.transform.position.y;
-            float z = 0;
-            Vector3 position = new Vector3(x, y, z);
-            AddVertex(new Vertex(position, getStatusColor()));
+            AddVertex(new Vertex(creature.transform.position, getStatusColor()));
             renderLine();
         } else if (verticies.Count > 0)
         {
