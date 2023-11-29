@@ -243,9 +243,16 @@ public class UI_Simulation_Navigation : MonoBehaviour
     private void displayTicksToTime(int min)
     {
         string time = min + " Minutes";
+        string exp = "";
         if (min == 1) time = min + " Minute";
         if (min >= Gamevariables.MINUTES_PER_HOUR) time = min / Gamevariables.MINUTES_PER_HOUR + " Hour";
-        display_TicksToTime.text = time + " = 1 Tick";
+        if (min > 5)
+        {
+            display_TicksToTime.color = Color.red;
+            exp = "(experimental)";
+        }
+        else display_TicksToTime.color= Color.white;
+        display_TicksToTime.text = $"{time} = 1 Tick {exp}";
     }
 
     private void displayPauseButtonText(string txt)
