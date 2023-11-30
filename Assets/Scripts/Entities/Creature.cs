@@ -354,11 +354,25 @@ public abstract class Creature : MonoBehaviour
             /*Set Target*/
             if (brain.activeFood == null)
             {
-                setActiveFoodSource();
-                return;
+                if (brain.HasFoodSource())
+                {
+                    brain.setActiveFoodSource();
+                    if (brain.activeFood != null)
+                        movement.setTarget(brain.activeFood.gameObject.transform.position);
+                    else
+                        movement.setRandomTargetIfReached();
+                }
+                else
+                {
+                    statusManager.setState(dietary.onNoFood());
+                    if (statusManager.status == StatusManager.Status.HUNTING)
+                        setActiveHunt();
+                    else
+                        movement.setRandomTargetIfReached();
+                }
             }
             /*Target Reached*/
-            if (Util.inRange(transform.position, movement.target))
+            if (movement.targetReached())
             {
                 if (!brain.activeFood.hasFood)
                 {
@@ -386,9 +400,9 @@ public abstract class Creature : MonoBehaviour
             {
                 brain.setActiveWaterSource();
                 if (brain.activeWater != null)
-                {
-                    movement.setTarget(brain.activeWater);
-                }
+                    movement.setTarget(brain.activeWater.transform.position);
+                else
+                    movement.setRandomTargetIfReached();
                 return;
             }
             /*Target Reached*/
@@ -409,7 +423,11 @@ public abstract class Creature : MonoBehaviour
             /*Set Target*/
             if (brain.activeMate == null)
             {
-                setActiveMate();
+                brain.setActiveMate();
+                if (brain.activeMate != null)
+                    movement.setMovingTarget(brain.activeMate.gameObject);
+                else
+                    movement.setRandomTargetIfReached();
                 return;
             }
             /*Target Reached*/
@@ -455,28 +473,11 @@ public abstract class Creature : MonoBehaviour
 
         if (brain.activeHunt != null)
         {
-            movement.setTarget(brain.activeHunt.gameObject);
+            movement.setMovingTarget(brain.activeHunt.gameObject);
         }
     }
     #endregion
     #region Hunger
-    protected void setActiveFoodSource()
-    {
-        if (brain.HasFoodSource())
-        {
-            brain.setActiveFoodSource();
-        } else
-        {
-            statusManager.setState(dietary.onNoFood());
-            if (statusManager.status == StatusManager.Status.HUNTING)
-                setActiveHunt();
-            return;
-        }
-        if (brain.activeFood != null)
-            movement.setTarget(brain.activeFood.gameObject);
-        else
-            movement.setRandomTargetIfReached();
-    }
 
     protected bool isEdibleFoodSource(GameObject g)
     {
@@ -489,10 +490,6 @@ public abstract class Creature : MonoBehaviour
 
     #endregion
     #region Social
-    protected void setActiveMate()
-    {
-
-    }
 
     protected abstract bool isSameSpecies(Creature g);
 

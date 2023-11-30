@@ -5,8 +5,10 @@ using UnityEngine;
 public class Movement
 {
     private Creature creature;
-    public float speed { get; set; } = 0;      //moves per Minute
+    public float speed { get; set; } = .2f;      //moves per Minute
 
+    private bool _isMoving = false;
+    private GameObject _movingTarget = null;
     [SerializeField] public Vector2 target
     {
         get;
@@ -36,8 +38,44 @@ public class Movement
         target = Util.Random.CoordinateInPlayground();
     }
 
+    public void setRandomTarget()
+    {
+        setTarget(Util.Random.CoordinateInPlayground());
+    }
+
+    public void setRandomTargetIfReached()
+    {
+        if (targetReached()) setRandomTarget();
+    }
+
+    public void setMovingTarget(GameObject g)
+    {
+        _isMoving = true;
+        _movingTarget = g;
+    }
+
+    public void setTarget(Vector2 destination)
+    {
+        _isMoving = false;
+        float x = Mathf.Clamp(destination.x, -Gamevariables.playgroundSize.x / 2, Gamevariables.playgroundSize.x / 2);
+        float y = Mathf.Clamp(destination.y, -Gamevariables.playgroundSize.y / 2, Gamevariables.playgroundSize.y / 2);
+
+        destination = new Vector2(x, y);
+        target = destination;
+        nextSteps = Vector2Int.zero;
+    }
+
+    public bool targetReached()
+    {
+        return Util.inRange(creature.transform.position, target);
+    }
+
     public void MoveToTarget()
     {
+        if (_isMoving)
+        {
+            target = _movingTarget.transform.position;
+        }
         if (Util.inRange(creature.transform.position, target))
             return;
         float theoreticalMoves = speed * Gamevariables.MINUTES_PER_TICK + leftOverSteps;
@@ -138,36 +176,5 @@ public class Movement
             creature.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.left);
             return;
         }
-    }
-
-    public void setRandomTarget()
-    {
-        target = Util.Random.CoordinateInPlayground();
-        nextSteps = Vector2Int.zero;
-    }
-
-    public void setRandomTargetIfReached()
-    {
-        if (targetReached()) setRandomTarget();
-    }
-
-    public void setTarget(GameObject g)
-    {
-        setTarget(g.transform.position);
-    }
-
-    public void setTarget(Vector2 destination)
-    {
-        float x = Mathf.Clamp(destination.x, -Gamevariables.playgroundSize.x / 2, Gamevariables.playgroundSize.x / 2);
-        float y = Mathf.Clamp(destination.y, -Gamevariables.playgroundSize.y / 2, Gamevariables.playgroundSize.y / 2);
-
-        destination = new Vector2(x, y);
-        target = destination;
-        nextSteps = Vector2Int.zero;
-    }
-
-    public bool targetReached()
-    {
-        return Util.inRange(creature.transform.position, target);
     }
 }
