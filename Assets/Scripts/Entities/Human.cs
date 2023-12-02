@@ -63,4 +63,10 @@ public class Human : Creature
             .SetPosition(gameObject.transform.position);
         Spawner.SpawnHumans(options);
     }
+
+    protected override void OnDeath(DeathReason dr)
+    {
+        Spawner.MakeCorpse(this);
+        Statistics.incrementHumanDeathReason(dr);
+    }
 }

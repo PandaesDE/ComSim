@@ -62,4 +62,10 @@ public class Rabbit : Creature
             .SetPosition(gameObject.transform.position);
         Spawner.SpawnRabbits(options);
     }
+
+    protected override void OnDeath(DeathReason dr)
+    {
+        Spawner.MakeCorpse(this);
+        Statistics.incrementRabbitDeathReason(dr);
+    }
 }

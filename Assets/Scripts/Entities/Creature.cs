@@ -26,6 +26,13 @@ using UnityEngine;
 
 public abstract class Creature : MonoBehaviour
 {
+    public enum DeathReason
+    {
+        forthirst,
+        starvation,
+        casualty
+    }
+
     //Constants
     public static readonly int MAX_ENERGY = 100;
     public static readonly float MAX_HUNGER = 100f;
@@ -548,7 +555,7 @@ public abstract class Creature : MonoBehaviour
         float restingFactor = 1f;
         if (StatusManager.Status == StatusManager.State.sleeping) restingFactor = .85f; //[4] https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2929498/#:~:text=It%20is%20believed%20that%20during,prolonged%20state%20of%20physical%20inactivity.
         hunger -= subPerMinute * (float)Gamevariables.MinutesPerTick * restingFactor;
-        if (hunger <= 0) Death();
+        if (hunger <= 0) OnDeath(DeathReason.starvation);
     }
     #endregion
     #region Thirst
@@ -569,7 +576,7 @@ public abstract class Creature : MonoBehaviour
         float restingFactor = 1f;
         if (StatusManager.Status == StatusManager.State.sleeping) restingFactor = .85f; //[4] https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2929498/#:~:text=It%20is%20believed%20that%20during,prolonged%20state%20of%20physical%20inactivity.
         thirst -= subPerMinute * (float)Gamevariables.MinutesPerTick * restingFactor;
-        if (thirst <= 0) Death();
+        if (thirst <= 0) OnDeath(DeathReason.forthirst);
     }
     #endregion
     #region Energy
@@ -619,7 +626,7 @@ public abstract class Creature : MonoBehaviour
         StatusManager.SetState(dietary.OnAttacked());
         if (Health <= 0)
         {
-            Death();
+            OnDeath(DeathReason.casualty);
         }
     }
     protected void Regenerate(float addPercentPerHour = .01f)
@@ -628,10 +635,8 @@ public abstract class Creature : MonoBehaviour
         Health = Mathf.Clamp(Health + add, 0, maxHealth);
     }
 
-    protected void Death()
-    {
-        Spawner.MakeCorpse(this);
-    }
+    protected abstract void OnDeath(DeathReason dr);
+
 
     #endregion
 
