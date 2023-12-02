@@ -6,12 +6,20 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - Input handling of start settings
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene:
+ *          - Settings Menu
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
  */
 
 using TMPro;
@@ -22,84 +30,84 @@ using UnityEngine.UI;
 public class Menu_Settings : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] private Button btn_Home;
-    [SerializeField] private Button btn_Editor;
+    [SerializeField] private Button _btn_Home;
+    [SerializeField] private Button _btn_Editor;
 
-    [SerializeField] private TMP_InputField ipt_Seed;
-    [SerializeField] private TMP_InputField ipt_X_Offset;
-    [SerializeField] private TMP_InputField ipt_Y_Offset;
+    [SerializeField] private TMP_InputField _ipt_Seed;
+    [SerializeField] private TMP_InputField _ipt_X_Offset;
+    [SerializeField] private TMP_InputField _ipt_Y_Offset;
 
-    [SerializeField] private TMP_InputField ipt_Humans;
-    [SerializeField] private TMP_InputField ipt_Lions;
-    [SerializeField] private TMP_InputField ipt_Boars;
-    [SerializeField] private TMP_InputField ipt_Rabbits;
+    [SerializeField] private TMP_InputField _ipt_Humans;
+    [SerializeField] private TMP_InputField _ipt_Lions;
+    [SerializeField] private TMP_InputField _ipt_Boars;
+    [SerializeField] private TMP_InputField _ipt_Rabbits;
 
     // Start is called before the first frame update
     private void Awake()
     {
-        ipt_X_Offset.characterValidation = TMP_InputField.CharacterValidation.Digit;
-        ipt_Y_Offset.characterValidation = TMP_InputField.CharacterValidation.Digit;
+        _ipt_X_Offset.characterValidation = TMP_InputField.CharacterValidation.Digit;
+        _ipt_Y_Offset.characterValidation = TMP_InputField.CharacterValidation.Digit;
 
-        btn_Home.onClick.AddListener(delegate { toHome(); });
-        btn_Editor.onClick.AddListener(delegate { toEditor(); });
+        _btn_Home.onClick.AddListener(delegate { ToHome(); });
+        _btn_Editor.onClick.AddListener(delegate { ToEditor(); });
 
-        ipt_Seed.onValueChanged.AddListener(delegate { seedChanged(); });
-        ipt_X_Offset.onValueChanged.AddListener(delegate { coordinatesChanged(); });
-        ipt_Y_Offset.onValueChanged.AddListener(delegate { coordinatesChanged(); });
+        _ipt_Seed.onValueChanged.AddListener(delegate { SeedChanged(); });
+        _ipt_X_Offset.onValueChanged.AddListener(delegate { CoordinatesChanged(); });
+        _ipt_Y_Offset.onValueChanged.AddListener(delegate { CoordinatesChanged(); });
 
-        displaySerializedSettings();
+        DisplaySerializedSettings();
     }
 
-    private void seedChanged()
+    private void SeedChanged()
     {
-        if (!ipt_Seed.isFocused) return;
+        if (!_ipt_Seed.isFocused) return;
 
-        Vector2 coords = Util.Conversion.SeedToCoordinates(ipt_Seed.text);
-        ipt_X_Offset.text = "" + coords.x;
-        ipt_Y_Offset.text = "" + coords.y;
+        Vector2 coords = Util.Conversion.SeedToCoordinates(_ipt_Seed.text);
+        _ipt_X_Offset.text = "" + coords.x;
+        _ipt_Y_Offset.text = "" + coords.y;
     }
 
-    private void coordinatesChanged()
+    private void CoordinatesChanged()
     {
-        if (!ipt_X_Offset.isFocused && !ipt_Y_Offset.isFocused) return;
+        if (!_ipt_X_Offset.isFocused && !_ipt_Y_Offset.isFocused) return;
 
-        ipt_Seed.text = "";
+        _ipt_Seed.text = "";
     }
 
-    private void displaySerializedSettings()
+    private void DisplaySerializedSettings()
     {
         GameSettingsObject settings = ConfigManager.ReadSettings();
-        ipt_Seed.text = settings.Seed;
-        ipt_Humans.text = "" + settings.Human_Amount_Start;
-        ipt_Lions.text = "" + settings.Lion_Amount_Start;
-        ipt_Boars.text = "" + settings.Boar_Amount_Start;
-        ipt_Rabbits.text = "" + settings.Rabbit_Amount_Start;
-        ipt_X_Offset.text = "" + settings.Pso_Ground.xOrg;
-        ipt_Y_Offset.text = "" + settings.Pso_Ground.yOrg;
+        _ipt_Seed.text = settings.seed;
+        _ipt_Humans.text = "" + settings.startAmountHuman;
+        _ipt_Lions.text = "" + settings.startAmountLion;
+        _ipt_Boars.text = "" + settings.startAmountBoar;
+        _ipt_Rabbits.text = "" + settings.startAmountRabbit;
+        _ipt_X_Offset.text = "" + settings.PSO_Ground.xOrg;
+        _ipt_Y_Offset.text = "" + settings.PSO_Ground.yOrg;
     }
 
-    private void toEditor()
+    private void ToEditor()
     {
-        saveSettings();
+        SaveSettings();
         SceneManager.LoadScene("EditorMapGeneration");
     }
 
-    private void toHome()
+    private void ToHome()
     {
-        saveSettings();
+        SaveSettings();
         SceneManager.LoadScene("MainMenu");
     }
 
-    private void saveSettings()
+    private void SaveSettings()
     {
         GameSettingsObject settings = ConfigManager.ReadSettings();
-        settings.Seed =                 Util.UI.preventNullOrEmptyInputString(ipt_Seed.text);
-        settings.Human_Amount_Start =   int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Humans.text));
-        settings.Lion_Amount_Start =    int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Lions.text));
-        settings.Boar_Amount_Start =    int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Boars.text));
-        settings.Rabbit_Amount_Start =  int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Rabbits.text));
-        settings.Pso_Ground.xOrg =      float.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_X_Offset.text));
-        settings.Pso_Ground.yOrg =      float.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Y_Offset.text));
+        settings.seed =                 Util.UI.PreventNullOrEmptyInputString(_ipt_Seed.text);
+        settings.startAmountHuman =   int.Parse(Util.UI.PreventNullOrEmptyInputNumber(_ipt_Humans.text));
+        settings.startAmountLion =    int.Parse(Util.UI.PreventNullOrEmptyInputNumber(_ipt_Lions.text));
+        settings.startAmountBoar =    int.Parse(Util.UI.PreventNullOrEmptyInputNumber(_ipt_Boars.text));
+        settings.startAmountRabbit =  int.Parse(Util.UI.PreventNullOrEmptyInputNumber(_ipt_Rabbits.text));
+        settings.PSO_Ground.xOrg =      float.Parse(Util.UI.PreventNullOrEmptyInputNumber(_ipt_X_Offset.text));
+        settings.PSO_Ground.yOrg =      float.Parse(Util.UI.PreventNullOrEmptyInputNumber(_ipt_Y_Offset.text));
         ConfigManager.SaveSettings(settings);
     }
 

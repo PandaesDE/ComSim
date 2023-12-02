@@ -1,32 +1,52 @@
+/*  Head
+ *      Author:             Schneider Erik
+ *      1st Supervisor:     Prof.Dr Ralph Lano
+ *      2nd Supervisor:     Prof.Dr Matthias Hopf
+ *      Project-Title:      ComSim
+ *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
+ *      University:         Technische Hochschule Nürnberg
+ *  
+ *  Description:
+ *      - Object Class to Store SpawnSettings
+ *  
+ *  References:
+ *      Scene:
+ *          - 
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
+ */
+
 using UnityEngine;
 
 public class SpawnOptions
 {
-    public int amount = 1;
-    public bool isMale = Util.Random.isMale();
-    public bool isRandom = false;
+    public int Amount { get; private set; } = 1;
+    public bool IsMale { get; private set; } = Util.Random.IsMale();
+    public bool RandomSpawn { get; private set; } = false;
 
     private Vector2 _position = Vector2.zero;
-    public Vector2 position
+    public Vector2 Position
     {
         get
         {
-            if (isRandom)
+            if (RandomSpawn)
             {
-                return randomPosition;
+                return RandomPosition;
             }
             else
             {
                 return _position;
             }
         }
-        set
-        {
-            _position = value;
-        }
     }
 
-    public Vector2 randomPosition
+    public Vector2 RandomPosition
     {
         get
         {
@@ -37,29 +57,29 @@ public class SpawnOptions
     public SpawnOptions() { }
     public SpawnOptions(int amount, bool isRandom)
     {
-        this.amount = amount;
-        this.isRandom = isRandom;
+        this.Amount = amount;
+        this.RandomSpawn = isRandom;
     }
 
-    public SpawnOptions set_Amount(int amount)
+    public SpawnOptions SetAmount(int amount)
     {
-        this.amount = amount;
+        this.Amount = amount;
         return this;
     }
 
-    public SpawnOptions set_IsMale(bool isMale)
+    public SpawnOptions SetIsMale(bool isMale)
     {
-        this.isMale = isMale;   
+        this.IsMale = isMale;   
         return this;
     }
 
-    public SpawnOptions set_IsRandom(bool isRandom)
+    public SpawnOptions SetIsRandom(bool isRandom)
     {
-        this.isRandom = isRandom;
+        this.RandomSpawn = isRandom;
         return this;
     }
 
-    public SpawnOptions set_Position(Vector2 position)
+    public SpawnOptions SetPosition(Vector2 position)
     {
         this._position = position;
         return this;

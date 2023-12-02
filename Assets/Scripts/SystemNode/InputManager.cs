@@ -6,15 +6,24 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
- *  
- *  Class Infos:
- *      - this class handles all the User Inputs within the, including:
+ *  Description:
+ *      - this class handles all the User Inputs, including:
  *          - Mouse
  *          - Keyboard
  *          - UI Inputs
- *  Class References:
- *      
+ *  
+ *  References:
+ *      Scene:
+ *          - Simulation scene(s)
+ *          - EditorMapGeneration
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
  */
 
 using UnityEngine;
@@ -22,41 +31,41 @@ using UnityEngine.SceneManagement;
 
 public class InputManager : MonoBehaviour
 {
-    private Scene curScene;
+    private Scene _curScene;
 
-    [SerializeField] private GameObject infoMenuObject;
-    private UI_Simulation_Popup_Information infoMenu;
-    private CameraManager cameraManager;
+    [SerializeField] private GameObject _infoMenuObject;
+    private UI_Simulation_Popup_Information _infoMenu;
+    private CameraManager _cameraManager;
 
 
 
     private void Awake()
     {
-        curScene = SceneManager.GetActiveScene();
+        _curScene = SceneManager.GetActiveScene();
 
-        if (curScene.name == "Simulation")
-            infoMenu = infoMenuObject.GetComponent<UI_Simulation_Popup_Information>();
-        cameraManager = GetComponent<CameraManager>();
+        if (_curScene.name == "Simulation")
+            _infoMenu = _infoMenuObject.GetComponent<UI_Simulation_Popup_Information>();
+        _cameraManager = GetComponent<CameraManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        handleGeneralInputs();
+        HandleGeneralInputs();
 
-        if (curScene.name == "Simulation")
+        if (_curScene.name == "Simulation")
         {
-            handleSimulationInputs();
+            HandleSimulationInputs();
             return;
         }
-        if (curScene.name == "EditorMapGeneration")
+        if (_curScene.name == "EditorMapGeneration")
         {
-            handleMapEditorInputs();
+            HandleMapEditorInputs();
             return;
         }
     }
 
-    private void handleGeneralInputs()
+    private void HandleGeneralInputs()
     {
         //Middle Click Hold
         if (Input.GetMouseButton(2))
@@ -64,22 +73,22 @@ public class InputManager : MonoBehaviour
             //https://discussions.unity.com/t/how-to-detect-mouse-movement-as-an-input/22062/4
             if (Input.GetAxis("Mouse X") != 0)
             {
-                cameraManager.moveHorizontalBy(Input.GetAxis("Mouse X"));
+                _cameraManager.MoveHorizontalBy(Input.GetAxis("Mouse X"));
             }
             if (Input.GetAxis("Mouse Y") != 0)
             {
-                cameraManager.moveVerticalBy(Input.GetAxis("Mouse Y"));
+                _cameraManager.MoveVerticalBy(Input.GetAxis("Mouse Y"));
             }
         }
 
         //on scroll
         if (Input.mouseScrollDelta.y != 0)
         {
-            cameraManager.zoom();
+            _cameraManager.Zoom();
         }
     }
 
-    private void handleSimulationInputs()
+    private void HandleSimulationInputs()
     {
         //Left Click
         if (Input.GetMouseButtonDown(0))
@@ -96,7 +105,7 @@ public class InputManager : MonoBehaviour
             {
                 if (hits[i].transform.GetComponent<Creature>() != null)
                 {
-                    infoMenu.setTarget(hits[i].transform.GetComponent<Creature>());
+                    _infoMenu.SetTarget(hits[i].transform.GetComponent<Creature>());
                     break;
                 }
             }
@@ -104,24 +113,25 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            pauseGame();
+            PauseGame();
         }
     }
 
-    private void handleMapEditorInputs()
+    private void HandleMapEditorInputs()
     {
-
+        //so far empty because there is no need
+        //for structural puproses this is a placeholder
     }
 
-    public void toMainMenu()
+    public void ToMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
     }
 
-    public void pauseGame()
+    public void PauseGame()
     {
-        Gamevariables.GAME_PAUSED = !Gamevariables.GAME_PAUSED;
-        if (Gamevariables.GAME_PAUSED)
+        Gamevariables.GamePaused = !Gamevariables.GamePaused;
+        if (Gamevariables.GamePaused)
         {
             Time.timeScale = 0;
         }
@@ -131,17 +141,17 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    public void changeTicksPerSecond(float val)
+    public void ChangeTicksPerSecond(float val)
     {
         Time.fixedDeltaTime = val;
     }
 
     /* val is between inclusive 0 and 9*/
-    public void changeTicksToTime(float index)
+    public void ChangeTicksToTime(float index)
     {
         int[] values = { 1 , 5, 10, 15, 30, 45, 60, 90, 120, 240};
         index = Mathf.Clamp(index, 0, values.Length - 1);
 
-        Gamevariables.MINUTES_PER_TICK = values[(int)index];
+        Gamevariables.MinutesPerTick = values[(int)index];
     }
 }

@@ -6,12 +6,20 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - UI handling of MapGenerator
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene:
+ *          - Mapgenerator
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
  */
 
 using TMPro;
@@ -21,153 +29,153 @@ using UnityEngine.UI;
 
 public class UI_MapGeneration : MonoBehaviour
 {
-    [SerializeField] private Button btn_Back;
+    [SerializeField] private Button _btn_Back;
 
-    [SerializeField] private TMP_Dropdown drd_PerlinNoiseSettings;
+    [SerializeField] private TMP_Dropdown _drd_PerlinNoiseSettings;
 
-    [SerializeField] private TMP_InputField inp_Persistence;
-    [SerializeField] private TMP_InputField inp_Frequency;
-    [SerializeField] private TMP_InputField inp_Octaves;
-    [SerializeField] private TMP_InputField inp_Amplitude;
-    [SerializeField] private TMP_InputField inp_X_Offset;
-    [SerializeField] private TMP_InputField inp_Y_Offset;
+    [SerializeField] private TMP_InputField _inp_Persistence;
+    [SerializeField] private TMP_InputField _inp_Frequency;
+    [SerializeField] private TMP_InputField _inp_Octaves;
+    [SerializeField] private TMP_InputField _inp_Amplitude;
+    [SerializeField] private TMP_InputField _inp_X_Offset;
+    [SerializeField] private TMP_InputField _inp_Y_Offset;
 
-    private NoiseTextureGenerator ntg;
-    private PerlinSettingsObject active_pso;
-    private EditorMapGenerator emg;
+    private NoiseTextureGenerator _ntg;
+    private PerlinSettingsObject _active_pso;
+    private EditorMapGenerator _emg;
 
     private void Awake()
     {
         //https://discussions.unity.com/t/making-a-input-field-only-accepting-numbers/117245
-        inp_Persistence.characterValidation = TMP_InputField.CharacterValidation.Decimal;
-        inp_Frequency.characterValidation = TMP_InputField.CharacterValidation.Decimal;
-        inp_Octaves.characterValidation = TMP_InputField.CharacterValidation.Integer;
-        inp_Amplitude.characterValidation = TMP_InputField.CharacterValidation.Decimal;
+        _inp_Persistence.characterValidation = TMP_InputField.CharacterValidation.Decimal;
+        _inp_Frequency.characterValidation = TMP_InputField.CharacterValidation.Decimal;
+        _inp_Octaves.characterValidation = TMP_InputField.CharacterValidation.Integer;
+        _inp_Amplitude.characterValidation = TMP_InputField.CharacterValidation.Decimal;
 
-        ntg = GameObject.Find("Playground").GetComponent<NoiseTextureGenerator>();
-        emg = GameObject.Find("Playground").GetComponent<EditorMapGenerator>();
+        _ntg = GameObject.Find("Playground").GetComponent<NoiseTextureGenerator>();
+        _emg = GameObject.Find("Playground").GetComponent<EditorMapGenerator>();
 
-        btn_Back.onClick.AddListener(delegate { toSettingsMenu(); });
+        _btn_Back.onClick.AddListener(delegate { ToSettingsMenu(); });
 
-        drd_PerlinNoiseSettings.onValueChanged.AddListener(delegate {
-            changeActivePerlinSettings(drd_PerlinNoiseSettings.options[drd_PerlinNoiseSettings.value].text);
+        _drd_PerlinNoiseSettings.onValueChanged.AddListener(delegate {
+            ChangeActivePerlinSettings(_drd_PerlinNoiseSettings.options[_drd_PerlinNoiseSettings.value].text);
         });
 
-        inp_Persistence.onValueChanged.AddListener(delegate {
-            changePersistence();
+        _inp_Persistence.onValueChanged.AddListener(delegate {
+            ChangePersistence();
         });
-        inp_Frequency.onValueChanged.AddListener(delegate {
-            changeFrequency();
+        _inp_Frequency.onValueChanged.AddListener(delegate {
+            ChangeFrequency();
         });
-        inp_Octaves.onValueChanged.AddListener(delegate {
-            changeOctaves();
+        _inp_Octaves.onValueChanged.AddListener(delegate {
+            ChangeOctaves();
         });
-        inp_Amplitude.onValueChanged.AddListener(delegate {
-            changeAmplitude();
+        _inp_Amplitude.onValueChanged.AddListener(delegate {
+            ChangeAmplitude();
         });
 
-        inp_X_Offset.onValueChanged.AddListener(delegate
+        _inp_X_Offset.onValueChanged.AddListener(delegate
         {
-            changeXOffset();
+            ChangeXOffset();
         });
 
-        inp_Y_Offset.onValueChanged.AddListener(delegate
+        _inp_Y_Offset.onValueChanged.AddListener(delegate
         {
-            changeYOffset();
+            ChangeYOffset();
         });
     }
 
     private void Start()
     {
-        changeActivePerlinSettings(drd_PerlinNoiseSettings.options[drd_PerlinNoiseSettings.value].text);
-        setValues();
+        ChangeActivePerlinSettings(_drd_PerlinNoiseSettings.options[_drd_PerlinNoiseSettings.value].text);
+        SetValues();
     }
 
-    private void toSettingsMenu()
+    private void ToSettingsMenu()
     {
 
         GameSettingsObject settings = ConfigManager.ReadSettings();
 
-        settings.Pso_Ground = ntg.pso_ground;
-        settings.Pso_Bush = ntg.pso_bush;
+        settings.PSO_Ground = _ntg.PSO_Ground;
+        settings.PSO_Bush = _ntg.PSO_Bush;
 
         ConfigManager.SaveSettings(settings);
         SceneManager.LoadScene("SettingsMenu");
     }
 
-    private void setValues()
+    private void SetValues()
     {
-        inp_Persistence.text = "" + active_pso.persistence;
-        inp_Frequency.text = "" + active_pso.frequency;
-        inp_Octaves.text = "" + active_pso.octaves;
-        inp_Amplitude.text = "" + active_pso.amplitude;
-        inp_X_Offset.text = "" + active_pso.xOrg;
-        inp_Y_Offset.text = "" + active_pso.yOrg;
+        _inp_Persistence.text = "" + _active_pso.persistence;
+        _inp_Frequency.text = "" + _active_pso.frequency;
+        _inp_Octaves.text = "" + _active_pso.octaves;
+        _inp_Amplitude.text = "" + _active_pso.amplitude;
+        _inp_X_Offset.text = "" + _active_pso.xOrg;
+        _inp_Y_Offset.text = "" + _active_pso.yOrg;
     }
 
-    private void changePersistence()
+    private void ChangePersistence()
     {
-        if (!Util.UI.isValidNumericEntry(inp_Persistence.text)) return;
-        active_pso.persistence = float.Parse(inp_Persistence.text);
-        emg.renderTexture();
+        if (!Util.UI.IsValidNumericEntry(_inp_Persistence.text)) return;
+        _active_pso.persistence = float.Parse(_inp_Persistence.text);
+        _emg.RenderTexture();
     }
 
-    private void changeFrequency()
+    private void ChangeFrequency()
     {
 
-        if (!Util.UI.isValidNumericEntry(inp_Frequency.text)) return;
-        active_pso.frequency = float.Parse(inp_Frequency.text);
-        emg.renderTexture();
+        if (!Util.UI.IsValidNumericEntry(_inp_Frequency.text)) return;
+        _active_pso.frequency = float.Parse(_inp_Frequency.text);
+        _emg.RenderTexture();
     }
 
-    private void changeOctaves()
+    private void ChangeOctaves()
     {
-        if (!Util.UI.isValidNumericEntry(inp_Octaves.text)) return;
-        active_pso.octaves = int.Parse(inp_Octaves.text);
-        emg.renderTexture();
+        if (!Util.UI.IsValidNumericEntry(_inp_Octaves.text)) return;
+        _active_pso.octaves = int.Parse(_inp_Octaves.text);
+        _emg.RenderTexture();
     }
 
-    private void changeAmplitude()
+    private void ChangeAmplitude()
     {
-        if (!Util.UI.isValidNumericEntry(inp_Amplitude.text)) return;
-        active_pso.amplitude = float.Parse(inp_Amplitude.text);
-        emg.renderTexture();
+        if (!Util.UI.IsValidNumericEntry(_inp_Amplitude.text)) return;
+        _active_pso.amplitude = float.Parse(_inp_Amplitude.text);
+        _emg.RenderTexture();
     }
 
-    private void changeXOffset()
+    private void ChangeXOffset()
     {
-        if (!Util.UI.isValidNumericEntry(inp_X_Offset.text)) return;
-        active_pso.xOrg = float.Parse(inp_X_Offset.text);
-        emg.renderTexture();
+        if (!Util.UI.IsValidNumericEntry(_inp_X_Offset.text)) return;
+        _active_pso.xOrg = float.Parse(_inp_X_Offset.text);
+        _emg.RenderTexture();
     }
 
-    private void changeYOffset()
+    private void ChangeYOffset()
     {
-        if (!Util.UI.isValidNumericEntry(inp_Y_Offset.text)) return;
-        active_pso.yOrg = float.Parse(inp_Y_Offset.text);
-        emg.renderTexture();
+        if (!Util.UI.IsValidNumericEntry(_inp_Y_Offset.text)) return;
+        _active_pso.yOrg = float.Parse(_inp_Y_Offset.text);
+        _emg.RenderTexture();
     }
 
-    private void changeActivePerlinSettings(string txt)
+    private void ChangeActivePerlinSettings(string txt)
     {
         if (txt.Equals("Ground"))
         {
-            if (ntg.pso_ground == null)
+            if (_ntg.PSO_Ground == null)
             {
                 Debug.LogError("Editor Map Generator has not yet initialized its Perlin-Noise Settings Object");
             }
-            active_pso = ntg.pso_ground;
-            setValues();
+            _active_pso = _ntg.PSO_Ground;
+            SetValues();
             return;
         }
         if (txt.Equals("Bush"))
         {
-            if (ntg.pso_bush == null)
+            if (_ntg.PSO_Bush == null)
             {
                 Debug.LogError("Editor Map Generator has not yet initialized its Perlin-Noise Settings Object");
             }
-            active_pso = ntg.pso_bush;
-            setValues();
+            _active_pso = _ntg.PSO_Bush;
+            SetValues();
             return;
         }
     }

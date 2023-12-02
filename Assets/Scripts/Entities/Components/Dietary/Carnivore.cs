@@ -1,15 +1,38 @@
-using UnityEngine;
+/*  Head
+ *      Author:             Schneider Erik
+ *      1st Supervisor:     Prof.Dr Ralph Lano
+ *      2nd Supervisor:     Prof.Dr Matthias Hopf
+ *      Project-Title:      ComSim
+ *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
+ *      University:         Technische Hochschule Nürnberg
+ *  
+ *  Description:
+ *      - Dietary component of a creature
+ *      - Handles food and related behavior
+ *  
+ *  References:
+ *      Scene:
+ *          - Indirectly (Component of Creature.cs) for simulation scene(s)
+ *      Script:
+ *          - One instance per creature
+ *  
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
+ */
 
 public class Carnivore : IDietary
 {
-    private static readonly float dangerZone = 7;
-    private Creature creature;
+    private static readonly float _s_dangerZone = 7;
+    private Creature _creature;
 
 
 
     public Carnivore(Creature creature)
     {
-        this.creature = creature;
+        this._creature = creature;
     }
 
     public IDietary.Specification specification
@@ -20,41 +43,41 @@ public class Carnivore : IDietary
         }
     }
 
-    public bool isEdibleFoodSource(IConsumable food)
+    public bool IsEdibleFoodSource(IConsumable food)
     {
-        return food.isMeat;
+        return food.IsMeat;
     }
 
-    public StatusManager.Status onAttacked()
+    public StatusManager.Status OnAttacked()
     {
-        if (creature.health / creature.MAX_HEALTH <= .2f)
+        if (_creature.health / _creature.maxHealth <= .2f)
         {
-            return StatusManager.Status.FLEEING;
+            return StatusManager.Status.fleeing;
         }
 
-        return StatusManager.Status.HUNTING;
+        return StatusManager.Status.hunting;
     }
 
-    public bool isInDangerZone(Creature approacher)
+    public bool IsInDangerZone(Creature approacher)
     {
-        return Util.inRange(creature.gameObject.transform.position, approacher.gameObject.transform.position, dangerZone);
+        return Util.InRange(_creature.gameObject.transform.position, approacher.gameObject.transform.position, _s_dangerZone);
     }
 
-    public StatusManager.Status onApproached()
+    public StatusManager.Status OnApproached()
     {
-        if (creature.health / creature.MAX_HEALTH <= .3f)
+        if (_creature.health / _creature.maxHealth <= .3f)
         {
-            return StatusManager.Status.FLEEING;
+            return StatusManager.Status.fleeing;
         }
-        if (creature.hunger < 90)
+        if (_creature.hunger < 90)
         {
-            return StatusManager.Status.HUNTING;
+            return StatusManager.Status.hunting;
         }
-        return StatusManager.Status.WANDERING;
+        return StatusManager.Status.wandering;
     }
 
-    StatusManager.Status IDietary.onNoFood()
+    StatusManager.Status IDietary.OnNoFood()
     {
-        return StatusManager.Status.HUNTING;
+        return StatusManager.Status.hunting;
     }
 }

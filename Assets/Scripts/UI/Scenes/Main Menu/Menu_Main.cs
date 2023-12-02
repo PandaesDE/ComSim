@@ -6,12 +6,21 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - Game startscreen
+ *      - Navigation to wanted scenes
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene:
+ *          - Main Menu
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
  */
 
 using UnityEngine;
@@ -20,22 +29,22 @@ using UnityEngine.UI;
 
 public class Menu_Main : MonoBehaviour
 {
-    [SerializeField] private Button btn_Start;
-    [SerializeField] private Button btn_Settings;
+    [SerializeField] private Button _btn_Start;
+    [SerializeField] private Button _btn_Settings;
 
     // Start is called before the first frame update
     void Start()
     {
-        btn_Start.onClick.AddListener(toSimulation);
-        btn_Settings.onClick.AddListener(toSettings);
+        _btn_Start.onClick.AddListener(ToSimulation);
+        _btn_Settings.onClick.AddListener(ToSettings);
     }
 
-    private void toSimulation()
+    private void ToSimulation()
     {
         SceneManager.LoadScene("Simulation");
     }
 
-    private void toSettings()
+    private void ToSettings()
     {
         SceneManager.LoadScene("SettingsMenu");
     }

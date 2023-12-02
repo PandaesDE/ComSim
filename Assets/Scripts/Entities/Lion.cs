@@ -6,55 +6,63 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - Carnivore Creature
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene: Lion GameObjects
+ *          - 
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
  */
 
 using UnityEngine;
 
 public class Lion : Creature
 {
-    [SerializeField] private Sprite spr_General;
+    [SerializeField] private Sprite spr_General;    //TODO DELETE?
 
     protected override void Awake()
     {
         base.Awake();
 
-        build_Gender(Util.Random.Gender(this));
-        build_Dietary(new Carnivore(this));
-        build_Health(10);
-        build_Weight(80);
-        build_Speed(.2f);
+        BuildGender(Util.Random.Gender(this));
+        BuildDietary(new Carnivore(this));
+        BuildHealth(10);
+        BuildWeight(80);
+        BuildSpeed(.2f);
     }
 
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        if (statusManager.status != StatusManager.Status.SLEEPING)
+        if (StatusManager.status != StatusManager.Status.sleeping)
         {
-            movement.MoveToTarget();
-            evaluateVision();
-            makeStatusBasedMove();
+            Movement.MoveToTarget();
+            EvaluateVision();
+            MakeStatusBasedMove();
         }
     }
 
     /*Gets called by Parent*/
-    protected override bool isSameSpecies(Creature c)
+    protected override bool IsSameSpecies(Creature c)
     {
-        Lion partner = c.gameObject.GetComponent<Lion>();
+        Lion partner = c.gameObject.GetComponent<Lion>();   //TODO TryGet..
         if (partner == null) return false;
         return true;
     }
 
-    protected override void giveBirth()
+    protected override void GiveBirth()
     {
         SpawnOptions options = new SpawnOptions()
-            .set_Amount(1)
-            .set_Position(gameObject.transform.position);
-        Spawner.spawnLions(options);
+            .SetAmount(1)
+            .SetPosition(gameObject.transform.position);
+        Spawner.SpawnLions(options);
     }
 }

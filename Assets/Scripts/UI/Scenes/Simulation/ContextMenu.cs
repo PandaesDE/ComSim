@@ -1,21 +1,44 @@
-using System.Collections.Generic;
+/*  Head
+ *      Author:             Schneider Erik
+ *      1st Supervisor:     Prof.Dr Ralph Lano
+ *      2nd Supervisor:     Prof.Dr Matthias Hopf
+ *      Project-Title:      ComSim
+ *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
+ *      University:         Technische Hochschule Nürnberg
+ *  
+ *  Description:
+ *      - Logical helper class for ContextMenu navigation
+ *  
+ *  References:
+ *      Scene:
+ *          - Simulation scene(s)
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
+ */
+
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ContextMenu
 {
-    private GameObject content;
+    private GameObject _content;
 
-    private Button btn_previous;
+    private Button _btn_previous;
 
-    private ContextMenu previous;
+    private ContextMenu _previous;
 
     public ContextMenu(GameObject content)
     {
-        this.content = content;
+        this._content = content;
     }
 
-    public void setNext(Button btn_to_next, ContextMenu next)
+    public void SetNext(Button btn_to_next, ContextMenu next)
     {
         btn_to_next.onClick.AddListener(delegate
         {
@@ -24,37 +47,37 @@ public class ContextMenu
         });
     }
 
-    public void setPrevious(Button btn_previous, ContextMenu previous)
+    public void SetPrevious(Button btn_previous, ContextMenu previous)
     {
-        this.previous = previous;
-        this.btn_previous = btn_previous;
-        this.btn_previous.onClick.AddListener(delegate
+        this._previous = previous;
+        this._btn_previous = btn_previous;
+        this._btn_previous.onClick.AddListener(delegate
         {
-            this.previous.Show();
-            if (!this.previous.hasPrevious())
+            this._previous.Show();
+            if (!this._previous.HasPrevious())
             {
-                this.btn_previous.gameObject.SetActive(false);
+                this._btn_previous.gameObject.SetActive(false);
             }
             Hide();
         });
     }
 
-    public bool hasPrevious()
+    public bool HasPrevious()
     {
-        return this.previous != null;
+        return this._previous != null;
     }
 
     public void Show()
     {
-        if (this.previous != null)
+        if (this._previous != null)
         {
-            this.btn_previous.gameObject.SetActive(true);
+            this._btn_previous.gameObject.SetActive(true);
         }
-        this.content.SetActive(true);
+        this._content.SetActive(true);
     }
 
     public void Hide()
     {
-        this.content.SetActive(false);
+        this._content.SetActive(false);
     }
 }

@@ -6,77 +6,76 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - Sensoric component of a creature
+ *      - detects 2d Colliders within vision
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene:
+ *          - Indirectly (Component of Creature.cs) for simulation scene(s)
+ *      Script:
+ *          - One instance per creature
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - https://www.youtube.com/watch?v=xp37Hz1t1Q8
  */
 
 using UnityEngine;
 
-/*  *** INFO ***
- *  This Script only Works under following conditions:
- *  - The Layer of the gameObject with the Script needs to be "Vision"
- *  - The Script is on the Child gameObject of the actual Entity
- */
-
-/*  *** Notes ***
- *  https://www.youtube.com/watch?v=xp37Hz1t1Q8
- */
-
 public class Senses
 {
-    private Creature creature;
+    private Creature _creature;
 
     private static readonly int VISION_DISTANCE = 15;
     private static readonly int VISION_WIDTH = 7;
 
     public Senses(Creature creature)
     {
-        this.creature = creature;
+        this._creature = creature;
     }    
 
-    public Vector2[] getVisionCoordinates()
+    public Vector2[] GetVisionCoordinates()
     {
         Vector2[] vc = new Vector2[VISION_DISTANCE * VISION_WIDTH];
         
 
-        switch (creature.facing)
+        switch (_creature.Facing)
         {
-            case Movement.Direction.NORTH:
+            case Movement.Direction.north:
                 for (int i = 0; i < VISION_DISTANCE; i++)
                 {
                     for (int j = 0; j < VISION_WIDTH; j++)
                     {
                         vc[j + VISION_WIDTH * i] = new Vector2(
-                            creature.transform.position.x + j - (VISION_WIDTH/2),
-                            creature.transform.position.y + i
+                            _creature.transform.position.x + j - (VISION_WIDTH/2),
+                            _creature.transform.position.y + i
                         );
                     }
                 }
                 return vc;
-            case Movement.Direction.EAST:
+            case Movement.Direction.east:
                 for (int i = 0; i < VISION_DISTANCE; i++)
                 {
                     for (int j = 0; j < VISION_WIDTH; j++)
                     {
                         vc[j + VISION_WIDTH * i] = new Vector2(
-                            creature.transform.position.x + i,
-                            creature.transform.position.y + j - (VISION_WIDTH / 2)
+                            _creature.transform.position.x + i,
+                            _creature.transform.position.y + j - (VISION_WIDTH / 2)
                         );
                     }
                 }
                 return vc;
-            case Movement.Direction.SOUTH:
+            case Movement.Direction.south:
                 for (int i = 0; i < VISION_DISTANCE; i++)
                 {
                     for (int j = 0; j < VISION_WIDTH; j++)
                     {
                         vc[j + VISION_WIDTH * i] = new Vector2(
-                            creature.transform.position.x + j - (VISION_WIDTH / 2),
-                            creature.transform.position.y - i
+                            _creature.transform.position.x + j - (VISION_WIDTH / 2),
+                            _creature.transform.position.y - i
                         );
                     }
                 }
@@ -87,8 +86,8 @@ public class Senses
                     for (int j = 0; j < VISION_WIDTH; j++)
                     {
                         vc[j + VISION_WIDTH * i] = new Vector2(
-                            creature.transform.position.x - i,
-                            creature.transform.position.y + j - (VISION_WIDTH / 2)
+                            _creature.transform.position.x - i,
+                            _creature.transform.position.y + j - (VISION_WIDTH / 2)
                         );
                     }
                 }

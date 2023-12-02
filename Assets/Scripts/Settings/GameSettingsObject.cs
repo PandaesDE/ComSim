@@ -1,24 +1,46 @@
-
+/*  Head
+ *      Author:             Schneider Erik
+ *      1st Supervisor:     Prof.Dr Ralph Lano
+ *      2nd Supervisor:     Prof.Dr Matthias Hopf
+ *      Project-Title:      ComSim
+ *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
+ *      University:         Technische Hochschule Nürnberg
+ *  
+ *  Description:
+ *      - Object Class to Store GameSettings
+ *  
+ *  References:
+ *      Scene:
+ *          - 
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
+ */
 
 [System.Serializable]
 public class GameSettingsObject
 {
-    public string Seed = "";
-    public PerlinSettingsObject Pso_Ground;
-    public PerlinSettingsObject Pso_Bush;
-    public int Human_Amount_Start = 0;
-    public int Lion_Amount_Start = 0;
-    public int Boar_Amount_Start = 0;
-    public int Rabbit_Amount_Start = 0;
+    public string seed = "";
+    public PerlinSettingsObject PSO_Ground;
+    public PerlinSettingsObject PSO_Bush;
+    public int startAmountHuman = 0;
+    public int startAmountLion = 0;
+    public int startAmountBoar = 0;
+    public int startAmountRabbit = 0;
 
     public bool Equals(GameSettingsObject gso)
     {
-        return this.Seed == gso.Seed &&
-                this.Pso_Ground.Equals(gso.Pso_Ground) &&
-                this.Pso_Bush.Equals(gso.Pso_Bush) &&
-                this.Human_Amount_Start == gso.Human_Amount_Start &&
-                this.Lion_Amount_Start == gso.Lion_Amount_Start &&
-                this.Boar_Amount_Start == gso.Boar_Amount_Start &&
-                this.Rabbit_Amount_Start == gso.Rabbit_Amount_Start;
+        return this.seed == gso.seed &&
+                this.PSO_Ground.Equals(gso.PSO_Ground) &&
+                this.PSO_Bush.Equals(gso.PSO_Bush) &&
+                this.startAmountHuman == gso.startAmountHuman &&
+                this.startAmountLion == gso.startAmountLion &&
+                this.startAmountBoar == gso.startAmountBoar &&
+                this.startAmountRabbit == gso.startAmountRabbit;
     }
 }

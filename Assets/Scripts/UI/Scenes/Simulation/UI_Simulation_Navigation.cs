@@ -6,12 +6,20 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - defines all UI and handles it within the top Navigation during a simulation
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene:
+ *          - simulation navigation(s)
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
  */
 
 using TMPro;
@@ -24,211 +32,211 @@ public class UI_Simulation_Navigation : MonoBehaviour
     InputManager im;
 
     //Functionality
-    [SerializeField] private Button btn_Pause;
-    [SerializeField] private Button btn_Home;
+    [SerializeField] private Button _btn_Pause;
+    [SerializeField] private Button _btn_Home;
 
     //Context Menu
-    [SerializeField] private Button btn_to_HomeCm;
+    [SerializeField] private Button _btn_to_HomeCm;
 
         //Head
-    [SerializeField] private ContextMenu head;
-    [SerializeField] private Button btn_to_VisualizeCM;
-    [SerializeField] private Button btn_to_EntitiesCM;
-    [SerializeField] private Button btn_to_StatisticsCM;
-    [SerializeField] private GameObject go_head_content;
+    [SerializeField] private ContextMenu _head;
+    [SerializeField] private Button _btn_to_VisualizeCM;
+    [SerializeField] private Button _btn_to_EntitiesCM;
+    [SerializeField] private Button _btn_to_StatisticsCM;
+    [SerializeField] private GameObject _go_head_content;
 
         //Visualization
-    [SerializeField] private ContextMenu visualize;
-    [SerializeField] private GameObject go_visualize_content;
+    [SerializeField] private ContextMenu _visualize;
+    [SerializeField] private GameObject _go_visualize_content;
 
-    [SerializeField] private Toggle tgl_Trails;
-    [SerializeField] private Slider sdr_Trail_Length;
-    [SerializeField] private TMP_Text display_Trail_Length;
-    [SerializeField] private TMP_Dropdown drd_Trail_Color;
+    [SerializeField] private Toggle _tgl_Trails;
+    [SerializeField] private Slider _sdr_Trail_Length;
+    [SerializeField] private TMP_Text _display_Trail_Length;
+    [SerializeField] private TMP_Dropdown _drd_Trail_Color;
         //Entities
-    [SerializeField] private ContextMenu entities;
-    [SerializeField] private GameObject go_entities_content;
+    [SerializeField] private ContextMenu _entities;
+    [SerializeField] private GameObject _go_entities_content;
 
-    [SerializeField] private TMP_InputField ipt_Human_Adder;
-    [SerializeField] private TMP_InputField ipt_Lion_Adder;
-    [SerializeField] private TMP_InputField ipt_Boar_Adder;
-    [SerializeField] private TMP_InputField ipt_Rabbit_Adder;
+    [SerializeField] private TMP_InputField _ipt_Human_Adder;
+    [SerializeField] private TMP_InputField _ipt_Lion_Adder;
+    [SerializeField] private TMP_InputField _ipt_Boar_Adder;
+    [SerializeField] private TMP_InputField _ipt_Rabbit_Adder;
 
-    [SerializeField] private Button btn_All_Adder;
-    [SerializeField] private Button btn_All_Remover;
-    [SerializeField] private Button btn_Human_Adder;
-    [SerializeField] private Button btn_Lion_Adder;
-    [SerializeField] private Button btn_Boar_Adder;
-    [SerializeField] private Button btn_Rabbit_Adder;
+    [SerializeField] private Button _btn_All_Adder;
+    [SerializeField] private Button _btn_All_Remover;
+    [SerializeField] private Button _btn_Human_Adder;
+    [SerializeField] private Button _btn_Lion_Adder;
+    [SerializeField] private Button _btn_Boar_Adder;
+    [SerializeField] private Button _btn_Rabbit_Adder;
 
     //Statistics
-    [SerializeField] private ContextMenu statistics;
-    [SerializeField] private GameObject go_statistics_content;
+    [SerializeField] private ContextMenu _statistics;
+    [SerializeField] private GameObject _go_statistics_content;
 
     //Time
-    [SerializeField] private Slider sdr_TicksPerSecond;
-    [SerializeField] private Slider sdr_TicksToTime;
+    [SerializeField] private Slider _sdr_TicksPerSecond;
+    [SerializeField] private Slider _sdr_TicksToTime;
 
-    [SerializeField] private TMP_Text display_Day;
-    [SerializeField] private TMP_Text display_Time;
-    [SerializeField] private TMP_Text display_TicksToTime;
-    [SerializeField] private TMP_Text display_TicksPerSecond;
+    [SerializeField] private TMP_Text _display_Day;
+    [SerializeField] private TMP_Text _display_Time;
+    [SerializeField] private TMP_Text _display_TicksToTime;
+    [SerializeField] private TMP_Text _display_TicksPerSecond;
 
 
     private void Awake()
     {
         im = GetComponent<InputManager>();
 
-        btn_Pause.onClick.AddListener(delegate
+        _btn_Pause.onClick.AddListener(delegate
         {
-            im.pauseGame();
-            if (Gamevariables.GAME_PAUSED)
+            im.PauseGame();
+            if (Gamevariables.GamePaused)
             {
-                displayPauseButtonText("R");
+                DisplayPauseButtonText("R");
             }
             else
             {
-                displayPauseButtonText("P");
+                DisplayPauseButtonText("P");
             }
         });
-        btn_Home.onClick.AddListener(delegate {
-            im.toMainMenu();
+        _btn_Home.onClick.AddListener(delegate {
+            im.ToMainMenu();
         });
-        initializeTicksPerSecondSlider();
-        initializeTicksToTimeSlider();
-        initializeContextMenus();
+        InitializeTicksPerSecondSlider();
+        InitializeTicksToTimeSlider();
+        InitializeContextMenus();
 
-        void initializeTicksPerSecondSlider()
+        void InitializeTicksPerSecondSlider()
         {
-            sdr_TicksPerSecond.onValueChanged.AddListener( delegate {
-                float tps = sdr_TicksPerSecond.value;
-                im.changeTicksPerSecond(tps);
-                display_TicksPerSecond.text = $"{(1 / tps)} Ticks/Second";
+            _sdr_TicksPerSecond.onValueChanged.AddListener( delegate {
+                float tps = _sdr_TicksPerSecond.value;
+                im.ChangeTicksPerSecond(tps);
+                _display_TicksPerSecond.text = $"{(1 / tps)} Ticks/Second";
             });
-            sdr_TicksPerSecond.value = 1 / Time.fixedDeltaTime;
+            _sdr_TicksPerSecond.value = 1 / Time.fixedDeltaTime;
         }
 
-        void initializeTicksToTimeSlider()
+        void InitializeTicksToTimeSlider()
         {
-            sdr_TicksToTime.onValueChanged.AddListener( delegate {
-                float ttt = sdr_TicksToTime.value;
-                im.changeTicksToTime(ttt);
-                displayTicksToTime(Gamevariables.MINUTES_PER_TICK);
+            _sdr_TicksToTime.onValueChanged.AddListener( delegate {
+                float ttt = _sdr_TicksToTime.value;
+                im.ChangeTicksToTime(ttt);
+                DisplayTicksToTime(Gamevariables.MinutesPerTick);
             });
-            sdr_TicksToTime.value = Gamevariables.MINUTES_PER_TICK;
+            _sdr_TicksToTime.value = Gamevariables.MinutesPerTick;
         }
 
-        void initializeContextMenus()
+        void InitializeContextMenus()
         {
-            initializeContextMenuNavigation();
-            initializeVisualizationContextMenu();
-            initializeEntitiesContextMenu();
+            InitializeContextMenuNavigation();
+            InitializeVisualizationContextMenu();
+            InitializeEntitiesContextMenu();
 
-            void initializeContextMenuNavigation()
+            void InitializeContextMenuNavigation()
             {
-                head = new ContextMenu(go_head_content);
-                visualize = new ContextMenu(go_visualize_content);
-                entities = new ContextMenu(go_entities_content);
-                statistics = new ContextMenu(go_statistics_content);
+                _head = new ContextMenu(_go_head_content);
+                _visualize = new ContextMenu(_go_visualize_content);
+                _entities = new ContextMenu(_go_entities_content);
+                _statistics = new ContextMenu(_go_statistics_content);
 
-                head.setNext(btn_to_VisualizeCM, visualize);
-                head.setNext(btn_to_EntitiesCM, entities);
-                head.setNext(btn_to_StatisticsCM, statistics);
+                _head.SetNext(_btn_to_VisualizeCM, _visualize);
+                _head.SetNext(_btn_to_EntitiesCM, _entities);
+                _head.SetNext(_btn_to_StatisticsCM, _statistics);
 
-                visualize.setPrevious(btn_to_HomeCm, head);
-                entities.setPrevious(btn_to_HomeCm, head);
-                statistics.setPrevious(btn_to_HomeCm, head);
+                _visualize.SetPrevious(_btn_to_HomeCm, _head);
+                _entities.SetPrevious(_btn_to_HomeCm, _head);
+                _statistics.SetPrevious(_btn_to_HomeCm, _head);
             }
 
-            void initializeVisualizationContextMenu()
+            void InitializeVisualizationContextMenu()
             {
-                tgl_Trails.onValueChanged.AddListener(delegate
+                _tgl_Trails.onValueChanged.AddListener(delegate
                 {
-                    Gamevariables.SHOW_TRAIL = tgl_Trails.isOn;
+                    Gamevariables.ShowTrail = _tgl_Trails.isOn;
                 });
-                tgl_Trails.isOn = Gamevariables.SHOW_TRAIL;
+                _tgl_Trails.isOn = Gamevariables.ShowTrail;
 
-                sdr_Trail_Length.onValueChanged.AddListener(delegate
+                _sdr_Trail_Length.onValueChanged.AddListener(delegate
                 {
-                    Gamevariables.TRAIL_LENGTH = (int)sdr_Trail_Length.value;
-                    display_Trail_Length.text = $"Length = {Gamevariables.TRAIL_LENGTH}";
+                    Gamevariables.TrailLength = (int)_sdr_Trail_Length.value;
+                    _display_Trail_Length.text = $"Length = {Gamevariables.TrailLength}";
                 });
-                sdr_Trail_Length.value = Gamevariables.TRAIL_LENGTH;
+                _sdr_Trail_Length.value = Gamevariables.TrailLength;
 
-                drd_Trail_Color.onValueChanged.AddListener(delegate
+                _drd_Trail_Color.onValueChanged.AddListener(delegate
                 {
-                    string val = drd_Trail_Color.options[drd_Trail_Color.value].text;
+                    string val = _drd_Trail_Color.options[_drd_Trail_Color.value].text;
 
                     if (val.Equals("Dietary"))
                     {
-                        Gamevariables.TRAIL_COLOR = Trail.ColorScheme.DIETARY;
+                        Gamevariables.TrailColor = Trail.ColorScheme.dietary;
                     } else
                     {
-                        Gamevariables.TRAIL_COLOR = Trail.ColorScheme.DEFAULT;
+                        Gamevariables.TrailColor = Trail.ColorScheme.@default;
                     }
 
-                    ObjectManager.changeTrailColor();
+                    ObjectManager.ChangeTrailColor();
                 });
             }
 
-            void initializeEntitiesContextMenu()
+            void InitializeEntitiesContextMenu()
             {
-                btn_All_Remover.onClick.AddListener(delegate
+                _btn_All_Remover.onClick.AddListener(delegate
                 {
-                    ObjectManager.deleteAllCreatures();
-                    ObjectManager.deleteAllCorpses();
+                    ObjectManager.DeleteAllCreatures();
+                    ObjectManager.DeleteAllCorpses();
                 });
 
-                btn_All_Adder.onClick.AddListener(delegate
+                _btn_All_Adder.onClick.AddListener(delegate
                 {
-                    spawnHumans();
-                    spawnLions();
-                    spawnBoars();
-                    spawnRabbits();
+                    SpawnHumans();
+                    SpawnLions();
+                    SpawnBoars();
+                    SpawnRabbits();
                 });
 
-                btn_Human_Adder.onClick.AddListener(delegate
+                _btn_Human_Adder.onClick.AddListener(delegate
                 {
-                    spawnHumans();
+                    SpawnHumans();
                 });
 
-                btn_Lion_Adder.onClick.AddListener(delegate
+                _btn_Lion_Adder.onClick.AddListener(delegate
                 {
-                    spawnLions();
+                    SpawnLions();
                 });
 
-                btn_Boar_Adder.onClick.AddListener(delegate
+                _btn_Boar_Adder.onClick.AddListener(delegate
                 {
-                    spawnBoars();
+                    SpawnBoars();
                 });
 
-                btn_Rabbit_Adder.onClick.AddListener(delegate
+                _btn_Rabbit_Adder.onClick.AddListener(delegate
                 {
-                    spawnRabbits();
+                    SpawnRabbits();
                 });
 
-                void spawnHumans()
+                void SpawnHumans()
                 {
-                    int amount = int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Human_Adder.text));
-                    Spawner.spawnHumans(new SpawnOptions(amount, true));
+                    int amount = int.Parse(Util.UI.PreventNullOrEmptyInputNumber(_ipt_Human_Adder.text));
+                    Spawner.SpawnHumans(new SpawnOptions(amount, true));
                 }
 
-                void spawnLions()
+                void SpawnLions()
                 {
-                    int amount = int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Lion_Adder.text));
-                    Spawner.spawnLions(new SpawnOptions(amount, true));
+                    int amount = int.Parse(Util.UI.PreventNullOrEmptyInputNumber(_ipt_Lion_Adder.text));
+                    Spawner.SpawnLions(new SpawnOptions(amount, true));
                 }
 
-                void spawnBoars()
+                void SpawnBoars()
                 {
-                    int amount = int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Boar_Adder.text));
-                    Spawner.spawnBoars(new SpawnOptions(amount, true));
+                    int amount = int.Parse(Util.UI.PreventNullOrEmptyInputNumber(_ipt_Boar_Adder.text));
+                    Spawner.SpawnBoars(new SpawnOptions(amount, true));
                 }
 
-                void spawnRabbits()
+                void SpawnRabbits()
                 {
-                    int amount = int.Parse(Util.UI.preventNullOrEmptyInputNumber(ipt_Rabbit_Adder.text));
-                    Spawner.spawnRabbits(new SpawnOptions(amount, true));
+                    int amount = int.Parse(Util.UI.PreventNullOrEmptyInputNumber(_ipt_Rabbit_Adder.text));
+                    Spawner.SpawnRabbits(new SpawnOptions(amount, true));
                 }
             }
         }
@@ -236,11 +244,11 @@ public class UI_Simulation_Navigation : MonoBehaviour
 
     private void FixedUpdate()
     {
-        displayDay(1 + Gamevariables.MINUTES_PASSED / (Gamevariables.MINUTES_PER_HOUR * Gamevariables.HOURS_PER_DAY));
-        displayTime(formatTime());
+        DisplayDay(1 + Gamevariables.MinutesPassed / (Gamevariables.MINUTES_PER_HOUR * Gamevariables.HOURS_PER_DAY));
+        DisplayTime(FormatTime());
     }
 
-    private void displayTicksToTime(int min)
+    private void DisplayTicksToTime(int min)
     {
         string time = min + " Minutes";
         string exp = "";
@@ -248,33 +256,33 @@ public class UI_Simulation_Navigation : MonoBehaviour
         if (min >= Gamevariables.MINUTES_PER_HOUR) time = min / Gamevariables.MINUTES_PER_HOUR + " Hour";
         if (min > 5)
         {
-            display_TicksToTime.color = Color.red;
+            _display_TicksToTime.color = Color.red;
             exp = "(experimental)";
         }
-        else display_TicksToTime.color= Color.white;
-        display_TicksToTime.text = $"{time} = 1 Tick {exp}";
+        else _display_TicksToTime.color= Color.white;
+        _display_TicksToTime.text = $"{time} = 1 Tick {exp}";
     }
 
-    private void displayPauseButtonText(string txt)
+    private void DisplayPauseButtonText(string txt)
     {
-        btn_Pause.transform.GetChild(0).GetComponent<TMP_Text>().text = txt;
+        _btn_Pause.transform.GetChild(0).GetComponent<TMP_Text>().text = txt;
     }
 
 
     #region Day & Night Cycle
-    private void displayDay(int day)
+    private void DisplayDay(int day)
     {
-        display_Day.text = "Day: " + day;
+        _display_Day.text = "Day: " + day;
     }
 
-    private void displayTime(string formattedTime)
+    private void DisplayTime(string formattedTime)
     {
-        display_Time.text = formattedTime;
+        _display_Time.text = formattedTime;
     }
 
-    private string formatTime()
+    private string FormatTime()
     {
-        int minutes_passed_today = Gamevariables.MINUTES_PASSED % (Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR);
+        int minutes_passed_today = Gamevariables.MinutesPassed % (Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR);
 
         int display_hours = minutes_passed_today / Gamevariables.MINUTES_PER_HOUR;
         float display_minutes = minutes_passed_today % Gamevariables.MINUTES_PER_HOUR;

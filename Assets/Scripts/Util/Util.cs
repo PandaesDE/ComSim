@@ -6,12 +6,20 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - helper class with specialized subclasses
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene:
+ *          - scene independent
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
  */
 
 using System.Text.RegularExpressions;
@@ -19,7 +27,7 @@ using UnityEngine;
 
 public static class Util
 {
-    public static bool inRange(Vector2 position, Vector2 destination, float range = 1)
+    public static bool InRange(Vector2 position, Vector2 destination, float range = 1)
     {
         return
             position.x > destination.x - range &&
@@ -28,7 +36,7 @@ public static class Util
             position.y < destination.y + range;
     }
 
-    public static int roundFloatUpPositiveDownNegative(float val)
+    public static int RoundFloatUpPositiveDownNegative(float val)
     {
         if (val < 0)
         {
@@ -45,11 +53,11 @@ public static class Util
     {
         public static IGender Gender(Creature c)
         {
-            if (isMale()) return new Male();
+            if (IsMale()) return new Male();
             return new Female(c);
         }
 
-        public static bool isMale()
+        public static bool IsMale()
         {
             return UnityEngine.Random.Range(0, 2) < 1;
         }
@@ -77,8 +85,8 @@ public static class Util
 
         public static Vector2 CoordinateInPlayground()
         {
-            int halfW = Gamevariables.playgroundSize.x / 2;
-            int halfH = Gamevariables.playgroundSize.y / 2;
+            int halfW = Gamevariables.PLAYGROUND_SIZE.x / 2;
+            int halfH = Gamevariables.PLAYGROUND_SIZE.y / 2;
             return new Vector2(UnityEngine.Random.Range(-halfW, halfW), UnityEngine.Random.Range(-halfH, halfH));
         }
     }
@@ -105,19 +113,19 @@ public static class Util
 
     public static class UI
     {
-        public static string preventNullOrEmptyInputString(string txt)
+        public static string PreventNullOrEmptyInputString(string txt)
         {
             if (string.IsNullOrEmpty(txt)) return "";
             return txt;
         }
 
-        public static string preventNullOrEmptyInputNumber(string txt)
+        public static string PreventNullOrEmptyInputNumber(string txt)
         {
             if (string.IsNullOrEmpty(txt)) return "0";
             return txt;
         }
 
-        public static bool isValidNumericEntry(string txt)
+        public static bool IsValidNumericEntry(string txt)
         {
             if (txt.Length <= 0) return false;
             if (!new Regex("[0-9-.]").IsMatch(txt)) return false;

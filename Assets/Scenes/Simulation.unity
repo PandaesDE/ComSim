@@ -1252,17 +1252,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c28ad906e0bd22c4aa9be96ba13c38e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  display_Name: {fileID: 1375930423}
-  display_Status: {fileID: 2134349683}
-  display_Position: {fileID: 525033437}
-  display_Target: {fileID: 1500534305}
-  image_Object: {fileID: 590714365}
-  sdr_Health: {fileID: 865367624}
-  sdr_Hunger: {fileID: 755566126}
-  sdr_Thirst: {fileID: 836896752}
-  sdr_Energy: {fileID: 1613765761}
-  btn_close: {fileID: 1170850225}
-  tgl_Follow: {fileID: 715157047}
+  _display_Name: {fileID: 1375930423}
+  _display_Status: {fileID: 2134349683}
+  _display_Position: {fileID: 525033437}
+  _display_Target: {fileID: 1500534305}
+  _image_Object: {fileID: 590714365}
+  _sdr_Health: {fileID: 865367624}
+  _sdr_Hunger: {fileID: 755566126}
+  _sdr_Thirst: {fileID: 836896752}
+  _sdr_Energy: {fileID: 1613765761}
+  _btn_close: {fileID: 1170850225}
+  _tgl_Follow: {fileID: 715157047}
 --- !u!1 &343768638
 GameObject:
   m_ObjectHideFlags: 0
@@ -5189,7 +5189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3af5e18eff953448bf64d81a6974995, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  infoMenuObject: {fileID: 291555677}
+  _infoMenuObject: {fileID: 291555677}
 --- !u!114 &747089662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5214,7 +5214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4012faa3da160fa42b14e90665e3d4ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  light: {fileID: 1465996686}
+  _light: {fileID: 1465996686}
 --- !u!114 &747089664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5227,36 +5227,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91bd0a67ae544f646a14a7a99a78fe43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  btn_Pause: {fileID: 1064332950}
-  btn_Home: {fileID: 925463632}
-  btn_to_HomeCm: {fileID: 1589013991}
-  btn_to_VisualizeCM: {fileID: 1234946672}
-  btn_to_EntitiesCM: {fileID: 709307741}
-  btn_to_StatisticsCM: {fileID: 459430458}
-  go_head_content: {fileID: 1257502397}
-  go_visualize_content: {fileID: 1307931098}
-  tgl_Trails: {fileID: 1164451937}
-  sdr_Trail_Length: {fileID: 140052052}
-  display_Trail_Length: {fileID: 534257918}
-  drd_Trail_Color: {fileID: 789957111}
-  go_entities_content: {fileID: 819992993}
-  ipt_Human_Adder: {fileID: 557694014}
-  ipt_Lion_Adder: {fileID: 2057996225}
-  ipt_Boar_Adder: {fileID: 684580609}
-  ipt_Rabbit_Adder: {fileID: 454237473}
-  btn_All_Adder: {fileID: 887035326}
-  btn_All_Remover: {fileID: 1472398539}
-  btn_Human_Adder: {fileID: 1626700729}
-  btn_Lion_Adder: {fileID: 1458087745}
-  btn_Boar_Adder: {fileID: 866163978}
-  btn_Rabbit_Adder: {fileID: 1457327311}
-  go_statistics_content: {fileID: 905535329}
-  sdr_TicksPerSecond: {fileID: 1595497643}
-  sdr_TicksToTime: {fileID: 592486142}
-  display_Day: {fileID: 575581665}
-  display_Time: {fileID: 804479572}
-  display_TicksToTime: {fileID: 217588626}
-  display_TicksPerSecond: {fileID: 1935055477}
+  _btn_Pause: {fileID: 1064332950}
+  _btn_Home: {fileID: 925463632}
+  _btn_to_HomeCm: {fileID: 1589013991}
+  _btn_to_VisualizeCM: {fileID: 1234946672}
+  _btn_to_EntitiesCM: {fileID: 709307741}
+  _btn_to_StatisticsCM: {fileID: 459430458}
+  _go_head_content: {fileID: 1257502397}
+  _go_visualize_content: {fileID: 1307931098}
+  _tgl_Trails: {fileID: 1164451937}
+  _sdr_Trail_Length: {fileID: 140052052}
+  _display_Trail_Length: {fileID: 534257918}
+  _drd_Trail_Color: {fileID: 789957111}
+  _go_entities_content: {fileID: 819992993}
+  _ipt_Human_Adder: {fileID: 557694014}
+  _ipt_Lion_Adder: {fileID: 2057996225}
+  _ipt_Boar_Adder: {fileID: 684580609}
+  _ipt_Rabbit_Adder: {fileID: 454237473}
+  _btn_All_Adder: {fileID: 887035326}
+  _btn_All_Remover: {fileID: 1472398539}
+  _btn_Human_Adder: {fileID: 1626700729}
+  _btn_Lion_Adder: {fileID: 1458087745}
+  _btn_Boar_Adder: {fileID: 866163978}
+  _btn_Rabbit_Adder: {fileID: 1457327311}
+  _go_statistics_content: {fileID: 905535329}
+  _sdr_TicksPerSecond: {fileID: 1595497643}
+  _sdr_TicksToTime: {fileID: 592486142}
+  _display_Day: {fileID: 575581665}
+  _display_Time: {fileID: 804479572}
+  _display_TicksToTime: {fileID: 217588626}
+  _display_TicksPerSecond: {fileID: 1935055477}
 --- !u!114 &747089665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7882,7 +7882,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: White
+  m_text: Default
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8824,7 +8824,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e225e53924c96284da1c7248d784a308, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tbm: {fileID: 0}
+  tbm: {fileID: 1078496220}
 --- !u!212 &1078496219
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8845,7 +8845,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 20155b856eab2094a8768a59f9c123f5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8890,22 +8890,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemap: {fileID: 1939928361}
-  go_water_deep: {fileID: 6647578400627049961, guid: 99a468f980c0e224291e7b46c80f67b4, type: 3}
-  go_water: {fileID: 6647578400627049961, guid: 4cef34eefb5f3884caf177ff8b78bc5a, type: 3}
-  go_sand: {fileID: 6647578400627049961, guid: fb5a890c26aadb545b4ce631451bc832, type: 3}
-  go_grass: {fileID: 6647578400627049961, guid: b86fb0610c6ac374a8e4f64841eba7a2, type: 3}
-  go_bush: {fileID: 6647578400627049961, guid: d6c11e23a7219294b8fc6993182e7885, type: 3}
-  go_stone: {fileID: 6647578400627049961, guid: f406c25381544dc498c3134f18e966e2, type: 3}
-  go_snow: {fileID: 6647578400627049961, guid: 18ae08d1b0ccd86499524b824aa2e8e3, type: 3}
-  tb_water_deep: {fileID: 11400000, guid: 7e5a8af28a8660540ba8859ed1933425, type: 2}
-  tb_water: {fileID: 11400000, guid: 85605d0a35d2004469e8638b9b26ac88, type: 2}
-  tb_sand: {fileID: 11400000, guid: 7c40233a9ed6cee44b64dc4a8fbacd28, type: 2}
-  tb_grass: {fileID: 11400000, guid: d7ec156b01c43314889ab87e1b871a24, type: 2}
-  tb_bush: {fileID: 11400000, guid: 9dde405f07f7bd348833cc255d9fe913, type: 2}
-  tb_stone: {fileID: 11400000, guid: efc4eff3651153a4a845bafcffa5177b, type: 2}
-  tb_snow: {fileID: 11400000, guid: 8943ab5d31be7f04285aac945e88b454, type: 2}
-  sample_ground: 0
-  sample_bush: 0
+  _go_water_deep: {fileID: 6647578400627049961, guid: 99a468f980c0e224291e7b46c80f67b4, type: 3}
+  _go_water: {fileID: 6647578400627049961, guid: 4cef34eefb5f3884caf177ff8b78bc5a, type: 3}
+  _go_sand: {fileID: 6647578400627049961, guid: fb5a890c26aadb545b4ce631451bc832, type: 3}
+  _go_grass: {fileID: 6647578400627049961, guid: b86fb0610c6ac374a8e4f64841eba7a2, type: 3}
+  _go_bush: {fileID: 6647578400627049961, guid: d6c11e23a7219294b8fc6993182e7885, type: 3}
+  _go_stone: {fileID: 6647578400627049961, guid: f406c25381544dc498c3134f18e966e2, type: 3}
+  _go_snow: {fileID: 6647578400627049961, guid: 18ae08d1b0ccd86499524b824aa2e8e3, type: 3}
+  _tb_water_deep: {fileID: 11400000, guid: 7e5a8af28a8660540ba8859ed1933425, type: 2}
+  _tb_water: {fileID: 11400000, guid: 85605d0a35d2004469e8638b9b26ac88, type: 2}
+  _tb_sand: {fileID: 11400000, guid: 7c40233a9ed6cee44b64dc4a8fbacd28, type: 2}
+  _tb_grass: {fileID: 11400000, guid: d7ec156b01c43314889ab87e1b871a24, type: 2}
+  _tb_bush: {fileID: 11400000, guid: 9dde405f07f7bd348833cc255d9fe913, type: 2}
+  _tb_stone: {fileID: 11400000, guid: efc4eff3651153a4a845bafcffa5177b, type: 2}
+  _tb_snow: {fileID: 11400000, guid: 8943ab5d31be7f04285aac945e88b454, type: 2}
+  groundSample: 0
+  bushSample: 0
 --- !u!1 &1081512489
 GameObject:
   m_ObjectHideFlags: 0
@@ -11663,7 +11663,7 @@ GameObject:
   - component: {fileID: 1579348743}
   - component: {fileID: 1579348742}
   m_Layer: 5
-  m_Name: EnergyPanel
+  m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,10 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
+/*  Head
+ *      Author:             Schneider Erik
+ *      1st Supervisor:     Prof.Dr Ralph Lano
+ *      2nd Supervisor:     Prof.Dr Matthias Hopf
+ *      Project-Title:      ComSim
+ *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
+ *      University:         Technische Hochschule Nürnberg
+ *  
+ *  Description:
+ *      - Movement component of a creature
+ *  
+ *  References:
+ *      Scene:
+ *          - Indirectly (Component of Creature.cs) for simulation scene(s)
+ *      Script:
+ *          - One instance per creature
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
+ */
+
 using UnityEngine;
 
 public class Movement
 {
-    private Creature creature;
+    private Creature _creature;
     public float speed { get; set; } = .2f;      //moves per Minute
 
     private bool _isMoving = false;
@@ -20,54 +42,54 @@ public class Movement
         protected set;
     }
 
-    [SerializeField] private Vector2Int nextSteps = Vector2Int.zero;
-    [SerializeField] private float leftOverSteps = 0;   //in between moves
+    [SerializeField] private Vector2Int _nextSteps = Vector2Int.zero;
+    [SerializeField] private float _leftOverSteps = 0;   //in between moves | Subtick
 
 
     public enum Direction
     {
-        NORTH,
-        EAST,
-        SOUTH,
-        WEST
+        north,
+        east,
+        south,
+        west
     }
 
     public Movement(Creature creature)
     {
-        this.creature = creature;
+        this._creature = creature;
         target = Util.Random.CoordinateInPlayground();
     }
 
-    public void setRandomTarget()
+    public void SetRandomTarget()
     {
-        setTarget(Util.Random.CoordinateInPlayground());
+        SetTarget(Util.Random.CoordinateInPlayground());
     }
 
-    public void setRandomTargetIfReached()
+    public void SetRandomTargetIfReached()
     {
-        if (targetReached()) setRandomTarget();
+        if (TargetReached()) SetRandomTarget();
     }
 
-    public void setMovingTarget(GameObject g)
+    public void SetMovingTarget(GameObject g)
     {
         _isMoving = true;
         _movingTarget = g;
     }
 
-    public void setTarget(Vector2 destination)
+    public void SetTarget(Vector2 destination)
     {
         _isMoving = false;
-        float x = Mathf.Clamp(destination.x, -Gamevariables.playgroundSize.x / 2, Gamevariables.playgroundSize.x / 2);
-        float y = Mathf.Clamp(destination.y, -Gamevariables.playgroundSize.y / 2, Gamevariables.playgroundSize.y / 2);
+        float x = Mathf.Clamp(destination.x, -Gamevariables.PLAYGROUND_SIZE.x / 2, Gamevariables.PLAYGROUND_SIZE.x / 2);
+        float y = Mathf.Clamp(destination.y, -Gamevariables.PLAYGROUND_SIZE.y / 2, Gamevariables.PLAYGROUND_SIZE.y / 2);
 
         destination = new Vector2(x, y);
         target = destination;
-        nextSteps = Vector2Int.zero;
+        _nextSteps = Vector2Int.zero;
     }
 
-    public bool targetReached()
+    public bool TargetReached()
     {
-        return Util.inRange(creature.transform.position, target);
+        return Util.InRange(_creature.transform.position, target);
     }
 
     public void MoveToTarget()
@@ -76,44 +98,44 @@ public class Movement
         {
             target = _movingTarget.transform.position;
         }
-        if (Util.inRange(creature.transform.position, target))
+        if (Util.InRange(_creature.transform.position, target))
             return;
-        float theoreticalMoves = speed * Gamevariables.MINUTES_PER_TICK + leftOverSteps;
+        float theoreticalMoves = speed * Gamevariables.MinutesPerTick + _leftOverSteps;
         int moves = (int)theoreticalMoves;
-        leftOverSteps = theoreticalMoves - moves;
+        _leftOverSteps = theoreticalMoves - moves;
 
         for (int i = 0; i < moves; i++)
         {
             //chance to not make a move based on health
-            if (Util.Random.Float(0f, 1f) > creature.health / creature.MAX_HEALTH)
+            if (Util.Random.Float(0f, 1f) > _creature.health / _creature.maxHealth)
                 continue;
 
-            if (nextSteps == Vector2.zero)
+            if (_nextSteps == Vector2.zero)
                 CalculateNextSteps(target);
 
-            if (Mathf.Abs(nextSteps.x) > Mathf.Abs(nextSteps.y))
+            if (Mathf.Abs(_nextSteps.x) > Mathf.Abs(_nextSteps.y))
             {
-                if (nextSteps.x > 0)
+                if (_nextSteps.x > 0)
                 {
-                    facing = Direction.EAST;
+                    facing = Direction.east;
                     MakeStep();
                 }
                 else
                 {
-                    facing = Direction.WEST;
+                    facing = Direction.west;
                     MakeStep();
                 }
             }
             else
             {
-                if (nextSteps.y > 0)
+                if (_nextSteps.y > 0)
                 {
-                    facing = Direction.NORTH;
+                    facing = Direction.north;
                     MakeStep();
                 }
                 else
                 {
-                    facing = Direction.SOUTH;
+                    facing = Direction.south;
                     MakeStep();
                 }
             }
@@ -122,58 +144,58 @@ public class Movement
 
     private void CalculateNextSteps(Vector3 destination)
     {
-        Vector2 vect = Util.Conversion.Vector3ToVector2(destination - creature.transform.position);
+        Vector2 vect = Util.Conversion.Vector3ToVector2(destination - _creature.transform.position);
 
         if (vect.x == 0 || vect.y == 0)
         {
-            nextSteps = new Vector2Int((int)vect.x, (int)vect.y);
+            _nextSteps = new Vector2Int((int)vect.x, (int)vect.y);
             return;
         }
 
         if (Mathf.Abs(vect.x) >= Mathf.Abs(vect.y))
         {
-            int x = Util.roundFloatUpPositiveDownNegative(vect.x / Mathf.Abs(vect.y));
+            int x = Util.RoundFloatUpPositiveDownNegative(vect.x / Mathf.Abs(vect.y));
             int y = 1;
             if (vect.y < 0) y = -1;
-            nextSteps = new Vector2Int(x, y);
+            _nextSteps = new Vector2Int(x, y);
         }
         else
         {
-            int y = Util.roundFloatUpPositiveDownNegative(vect.y / Mathf.Abs(vect.x));
+            int y = Util.RoundFloatUpPositiveDownNegative(vect.y / Mathf.Abs(vect.x));
             int x = 1;
             if (vect.x < 0) x = -1;
-            nextSteps = new Vector2Int(x, y);
+            _nextSteps = new Vector2Int(x, y);
         }
     }
 
     private void MakeStep()
     {
-        if (facing == Direction.NORTH)
+        if (facing == Direction.north)
         {
-            nextSteps -= Vector2Int.up;
-            creature.transform.position += Vector3.up;
-            creature.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
+            _nextSteps -= Vector2Int.up;
+            _creature.transform.position += Vector3.up;
+            _creature.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
             return;
         }
-        if (facing == Direction.EAST)
+        if (facing == Direction.east)
         {
-            nextSteps -= Vector2Int.right;
-            creature.transform.position += Vector3.right;
-            creature.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.right);
+            _nextSteps -= Vector2Int.right;
+            _creature.transform.position += Vector3.right;
+            _creature.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.right);
             return;
         }
-        if (facing == Direction.SOUTH)
+        if (facing == Direction.south)
         {
-            nextSteps -= Vector2Int.down;
-            creature.transform.position += Vector3.down;
-            creature.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.down);
+            _nextSteps -= Vector2Int.down;
+            _creature.transform.position += Vector3.down;
+            _creature.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.down);
             return;
         }
-        if (facing == Direction.WEST)
+        if (facing == Direction.west)
         {
-            nextSteps -= Vector2Int.left;
-            creature.transform.position += Vector3.left;
-            creature.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.left);
+            _nextSteps -= Vector2Int.left;
+            _creature.transform.position += Vector3.left;
+            _creature.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.left);
             return;
         }
     }

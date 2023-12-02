@@ -6,12 +6,20 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - Omnivore, Social Creature
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene: Human GameObjects
+ *          - 
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
  */
 
 using UnityEngine;
@@ -22,38 +30,38 @@ public class Human : Creature
     {
         base.Awake();
 
-        build_Gender(Util.Random.Gender(this));
-        build_Dietary(new Omnivore(this));
-        build_Health(80);
-        build_Weight(80);
-        build_Speed(.2f);
+        BuildGender(Util.Random.Gender(this));
+        BuildDietary(new Omnivore(this));
+        BuildHealth(80);
+        BuildWeight(80);
+        BuildSpeed(.2f);
     }
 
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        if (statusManager.status == StatusManager.Status.GIVING_BIRTH) return;
-        if (statusManager.status != StatusManager.Status.SLEEPING)
+        if (StatusManager.status == StatusManager.Status.giving_birth) return;
+        if (StatusManager.status != StatusManager.Status.sleeping)
         {
-            movement.MoveToTarget();
-            evaluateVision();
-            makeStatusBasedMove();
+            Movement.MoveToTarget();
+            EvaluateVision();
+            MakeStatusBasedMove();
         }
     }
 
     /*Gets called by Parent*/
-    protected override bool isSameSpecies(Creature c)
+    protected override bool IsSameSpecies(Creature c)
     {
         Human partner = c.gameObject.GetComponent<Human>();
         if (partner == null) return false;
         return true;
     }
 
-    protected override void giveBirth()
+    protected override void GiveBirth()
     {
         SpawnOptions options = new SpawnOptions()
-            .set_Amount(1)
-            .set_Position(gameObject.transform.position);
-        Spawner.spawnHumans(options);
+            .SetAmount(1)
+            .SetPosition(gameObject.transform.position);
+        Spawner.SpawnHumans(options);
     }
 }

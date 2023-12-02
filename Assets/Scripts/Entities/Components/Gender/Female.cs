@@ -1,26 +1,47 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+/*  Head
+ *      Author:             Schneider Erik
+ *      1st Supervisor:     Prof.Dr Ralph Lano
+ *      2nd Supervisor:     Prof.Dr Matthias Hopf
+ *      Project-Title:      ComSim
+ *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
+ *      University:         Technische Hochschule Nürnberg
+ *  
+ *  Description:
+ *      - Gender component of a creature
+ *      - Handles gender and related behavior
+ *  
+ *  References:
+ *      Scene:
+ *          - Indirectly (Component of Creature.cs) for simulation scene(s)
+ *      Script:
+ *          - One instance per creature
+ *  
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
+ */
 
 public class Female : IGender
 {
-    private Creature creature;
+    private Creature _creature;
 
-    private Timer duration_Pregnancy = new Timer(18 * Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR);
-    private Timer cooldown_Pregnancy = new Timer(9 * Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR);
-    private bool isPregnant = false;
+    private Timer _durationPregnancy = new Timer(18 * Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR);
+    private Timer _cooldownPregnancy = new Timer(9 * Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR);
+    private bool _isPregnant = false;
 
-    public bool isReadyForMating
+    public bool IsReadyForMating
     {
         get
         {
-            return  !isPregnant &&
-                    cooldown_Pregnancy.finished();
+            return  !_isPregnant &&
+                    _cooldownPregnancy.Finished();
 
         }
     }
 
-    public bool isMale
+    public bool IsMale
     {
         get
         {
@@ -30,42 +51,42 @@ public class Female : IGender
 
     public Female(Creature creature)
     {
-        this.creature = creature;
+        this._creature = creature;
     }
 
     public void FixedUpdate()
     {
-        if (isPregnant)
+        if (_isPregnant)
         {
-            if (!duration_Pregnancy.finished())
+            if (!_durationPregnancy.Finished())
             {
-                duration_Pregnancy.tick();
+                _durationPregnancy.Tick();
             } else
             {
 
-                creature.statusManager.setState(StatusManager.Status.GIVING_BIRTH);
+                _creature.StatusManager.SetState(StatusManager.Status.giving_birth);
             }
         } else
         {
-            if (!cooldown_Pregnancy.finished())
+            if (!_cooldownPregnancy.Finished())
             {
-                cooldown_Pregnancy.tick();
+                _cooldownPregnancy.Tick();
             }
         }
     }
 
-    public void mating(IGender partner)
+    public void MateWith(IGender partner)
     {
-        if (!isSuitable(partner)) return;
+        if (!IsSuitable(partner)) return;
         //chance of failure ?
-        isPregnant = true;
-        duration_Pregnancy.reset();
-        cooldown_Pregnancy.reset();
+        _isPregnant = true;
+        _durationPregnancy.Reset();
+        _cooldownPregnancy.Reset();
     }
 
-    private bool isSuitable(IGender partner)
+    private bool IsSuitable(IGender partner)
     {
-        return isMale != partner.isMale;
+        return IsMale != partner.IsMale;
     }
 
 

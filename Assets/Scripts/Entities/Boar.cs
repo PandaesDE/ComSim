@@ -6,55 +6,63 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - Omnivore, Strong Creature
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene: 
+ *          - Boar GameObject
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
  */
 
 using UnityEngine;
 
 public class Boar : Creature
 {
-    [SerializeField] private Sprite spr_General;
+    [SerializeField] private Sprite _spr_General; //TODO DELETE?
 
     protected override void Awake()
     {
         base.Awake();
 
-        build_Gender(Util.Random.Gender(this));
-        build_Dietary(new Omnivore(this));
-        build_Health(150);
-        build_Weight(130);
-        build_Speed(.2f);
+        BuildGender(Util.Random.Gender(this));
+        BuildDietary(new Omnivore(this));
+        BuildHealth(150);
+        BuildWeight(130);
+        BuildSpeed(.2f);
     }
 
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        if (statusManager.status != StatusManager.Status.SLEEPING)
+        if (StatusManager.status != StatusManager.Status.sleeping)
         {
-            movement.MoveToTarget();
-            evaluateVision();
-            makeStatusBasedMove();
+            Movement.MoveToTarget();
+            EvaluateVision();
+            MakeStatusBasedMove();
         }
     }
 
     /*Gets called by Parent*/
-    protected override bool isSameSpecies(Creature c)
+    protected override bool IsSameSpecies(Creature c)
     {
-        Boar partner = c.gameObject.GetComponent<Boar>();
+        Boar partner = c.gameObject.GetComponent<Boar>();   //TODO TryGetComponent
         if (partner == null) return false;
         return true;
     }
 
-    protected override void giveBirth()
+    protected override void GiveBirth()
     {
         SpawnOptions options = new SpawnOptions()
-            .set_Amount(1)
-            .set_Position(gameObject.transform.position);
-        Spawner.spawnBoars(options);
+            .SetAmount(1)
+            .SetPosition(gameObject.transform.position);
+        Spawner.SpawnBoars(options);
     }
 }

@@ -6,21 +6,30 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - Consumable interface
+ *      - Defines Edible Objects
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene:
+ *          - Indirectly (IConsumable Objects) for simulation scene(s)
+ *      Script:
+ *          - One instance per creature
+ *  
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
  */
 
 using UnityEngine;
 
 public interface IConsumable
 {
-    public bool isConsumed { get; }
-    public bool isMeat { get; }
-    public bool hasFood { get; }
-    public GameObject gameObject { get; }
+    public bool IsConsumed { get; }
+    public bool IsMeat { get; }
+    public bool HasFood { get; }
+    public GameObject gameObject { get; }   //TODO DELETE?
     public float Consume();
 }

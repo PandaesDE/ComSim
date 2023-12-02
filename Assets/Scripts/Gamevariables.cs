@@ -6,12 +6,20 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - interface for all generic game variables
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene:
+ *          - scene independent
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
  */
 
 using System;
@@ -20,44 +28,44 @@ using UnityEngine;
 public class Gamevariables
 {
     //init Settings
-    public static readonly Vector2Int playgroundSize = new Vector2Int(360, 200);
+    public static readonly Vector2Int PLAYGROUND_SIZE = new Vector2Int(360, 200);
     public static readonly float TICKRATE = .5f;
 
-    public static int HUMAN_AMOUNT_START = 0;
-    public static int LION_AMOUNT_START = 0;
-    public static int BOAR_AMOUNT_START = 0;
-    public static int RABBIT_AMOUNT_START = 0;
-    public static bool GAME_PAUSED = false;
+    public static int HumanAmountStart = 0;
+    public static int LionAmountStart = 0;
+    public static int BoarAmountStart = 0;
+    public static int RabbitAmountStart = 0;
+    public static bool GamePaused = false;
 
     //VISUALIZATION
-    public static bool SHOW_TRAIL = true;
-    public static int TRAIL_LENGTH = 15;
-    public static Trail.ColorScheme TRAIL_COLOR = Trail.ColorScheme.DEFAULT;
+    public static bool ShowTrail = true;
+    public static int TrailLength = 15;
+    public static Trail.ColorScheme TrailColor = Trail.ColorScheme.@default;
 
     //WORLD
-    public static string SEED = "";
-    public static PerlinSettingsObject PSO_GROUND = new PerlinSettingsObject(-.5f, .6f, 8, 1, 0, 0, 100);
-    public static PerlinSettingsObject PSO_BUSH = new PerlinSettingsObject(.5f, 3f, 3, 1, 0, 0, 100);
+    public static string Seed = "";
+    public static PerlinSettingsObject PSO_Ground = new(-.5f, .6f, 8, 1, 0, 0, 100);
+    public static PerlinSettingsObject PSO_Bush = new(.5f, 3f, 3, 1, 0, 0, 100);
 
     //Time
     public static readonly int HOURS_PER_DAY = 24;
     public static readonly int MINUTES_PER_HOUR = 60;
 
-    public static int MINUTES_PER_TICK = 1;
-    public static int MINUTES_PASSED = 0;
+    public static int MinutesPerTick = 1;
+    public static int MinutesPassed = 0;
 
     //Light
     /* between 0 - 1*/
-    public static float LIGHT_INTENSITY = 1f;
+    public static float LightIntensity = 1f;
 
 
     //Error - Values
-    public static Vector2 ERROR_VECTOR2 = Vector2.positiveInfinity;
+    public static readonly Vector2 ERROR_VECTOR2 = Vector2.negativeInfinity;
 
     public enum z_layer
     {
-        ENTITY = -1,
-        WORLD = 0
+        entity = -1,
+        world = 0
     }
 
 }

@@ -1,3 +1,28 @@
+/*  Head
+ *      Author:             Schneider Erik
+ *      1st Supervisor:     Prof.Dr Ralph Lano
+ *      2nd Supervisor:     Prof.Dr Matthias Hopf
+ *      Project-Title:      ComSim
+ *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
+ *      University:         Technische Hochschule Nürnberg
+ *  
+ *  Description:
+ *      - Dietary component of a creature
+ *      - Handles food and related behavior
+ *  
+ *  References:
+ *      Scene:
+ *          - Indirectly (Component of Creature.cs) for simulation scene(s)
+ *      Script:
+ *          - One instance per creature
+ *  
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
+ */
+
 public class Herbivore : IDietary
 {
     private static readonly float dangerZone = 7;
@@ -16,28 +41,28 @@ public class Herbivore : IDietary
         }
     }
 
-    public bool isEdibleFoodSource(IConsumable food)
+    public bool IsEdibleFoodSource(IConsumable food)
     {
-        return !food.isMeat;
+        return !food.IsMeat;
     }
 
-    StatusManager.Status IDietary.onAttacked()
+    StatusManager.Status IDietary.OnAttacked()
     {
-        return StatusManager.Status.FLEEING;
+        return StatusManager.Status.fleeing;
     }
 
-    public bool isInDangerZone(Creature approacher)
+    public bool IsInDangerZone(Creature approacher)
     {
-        return Util.inRange(creature.gameObject.transform.position, approacher.gameObject.transform.position, dangerZone);
+        return Util.InRange(creature.gameObject.transform.position, approacher.gameObject.transform.position, dangerZone);
     }
 
-    public StatusManager.Status onApproached()
+    public StatusManager.Status OnApproached()
     {
-        return StatusManager.Status.FLEEING;
+        return StatusManager.Status.fleeing;
     }
 
-    public StatusManager.Status onNoFood()
+    public StatusManager.Status OnNoFood()
     {
-        return creature.statusManager.status;
+        return creature.StatusManager.status;
     }
 }

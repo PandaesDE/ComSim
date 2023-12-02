@@ -6,12 +6,20 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - Stores data about Tiles and it's GameObjects
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene:
+ *          - 
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
  */
 
 using UnityEngine;
@@ -21,82 +29,82 @@ public class TileBaseManager : MonoBehaviour
 { 
     public Tilemap tilemap;
 
-    [SerializeField] private GameObject go_water_deep;
-    [SerializeField] private GameObject go_water;
-    [SerializeField] private GameObject go_sand;
-    [SerializeField] private GameObject go_grass;
-    [SerializeField] private GameObject go_bush;
-    [SerializeField] private GameObject go_stone;
-    [SerializeField] private GameObject go_snow;
+    [SerializeField] private GameObject _go_water_deep;
+    [SerializeField] private GameObject _go_water;
+    [SerializeField] private GameObject _go_sand;
+    [SerializeField] private GameObject _go_grass;
+    [SerializeField] private GameObject _go_bush;
+    [SerializeField] private GameObject _go_stone;
+    [SerializeField] private GameObject _go_snow;
 
-    [SerializeField] private TileBase tb_water_deep;
-    [SerializeField] private TileBase tb_water;
-    [SerializeField] private TileBase tb_sand;
-    [SerializeField] private TileBase tb_grass;
-    [SerializeField] private TileBase tb_bush;
-    [SerializeField] private TileBase tb_stone;
-    [SerializeField] private TileBase tb_snow;
+    [SerializeField] private TileBase _tb_water_deep;
+    [SerializeField] private TileBase _tb_water;
+    [SerializeField] private TileBase _tb_sand;
+    [SerializeField] private TileBase _tb_grass;
+    [SerializeField] private TileBase _tb_bush;
+    [SerializeField] private TileBase _tb_stone;
+    [SerializeField] private TileBase _tb_snow;
 
-    public enum tileType
+    public enum TileType
     {
-        WATER_DEEP,
-        WATER,
-        SAND,
-        GRASS,
-        BUSH,
-        STONE,
-        SNOW
+        water_deep,
+        water,
+        sand,
+        grass,
+        bush,
+        stone,
+        snow
     }
 
-    public float sample_ground;
-    public float sample_bush;
+    public float groundSample;
+    public float bushSample;
 
-    public tileType getTileType()
+    public TileType GetTileType()
     {
-        if (sample_ground < .19f)
-            return tileType.WATER_DEEP;
-        if (sample_ground < .2f)
-            return tileType.WATER;
-        if (sample_ground < .23f)
-            return tileType.SAND;
-        if (sample_ground < .6f)
-            if (sample_ground >= .28f  && sample_ground <.75f && sample_bush < .05f)
-                return tileType.BUSH;
+        if (groundSample < .19f)
+            return TileType.water_deep;
+        if (groundSample < .2f)
+            return TileType.water;
+        if (groundSample < .23f)
+            return TileType.sand;
+        if (groundSample < .6f)
+            if (groundSample >= .28f  && groundSample <.75f && bushSample < .05f)
+                return TileType.bush;
             else 
-                return tileType.GRASS;
-        if (sample_ground < .8f)
-            return tileType.STONE;
+                return TileType.grass;
+        if (groundSample < .8f)
+            return TileType.stone;
 
-        return tileType.SNOW;
+        return TileType.snow;
     }
 
-    public Color getColor()
+    public Color GetColor()
     {
-        tileType t = getTileType();
-        if (t == tileType.WATER_DEEP) return go_water_deep.GetComponent<SpriteRenderer>().color;
-        if (t == tileType.WATER) return go_water.GetComponent<SpriteRenderer>().color;
-        if (t == tileType.SAND) return go_sand.GetComponent<SpriteRenderer>().color;
-        if (t == tileType.BUSH) return go_bush.GetComponent<SpriteRenderer>().color;
-        if (t == tileType.GRASS) return go_grass.GetComponent<SpriteRenderer>().color;
-        if (t == tileType.STONE) return go_stone.GetComponent<SpriteRenderer>().color;
-        if (t == tileType.SNOW) return go_snow.GetComponent<SpriteRenderer>().color;
+        TileType t = GetTileType();
+        if (t == TileType.water_deep) return _go_water_deep.GetComponent<SpriteRenderer>().color;
+        if (t == TileType.water) return _go_water.GetComponent<SpriteRenderer>().color;
+        if (t == TileType.sand) return _go_sand.GetComponent<SpriteRenderer>().color;
+        if (t == TileType.bush) return _go_bush.GetComponent<SpriteRenderer>().color;
+        if (t == TileType.grass) return _go_grass.GetComponent<SpriteRenderer>().color;
+        if (t == TileType.stone) return _go_stone.GetComponent<SpriteRenderer>().color;
+        if (t == TileType.snow) return _go_snow.GetComponent<SpriteRenderer>().color;
         return Color.magenta;
     }
 
-    public TileBase getTileBase()
+    public TileBase GetTileBase()
     {
-        return getTileBase(getTileType());
+        return GetTileBase(GetTileType());
     }
 
-    public TileBase getTileBase(tileType tt)
+    public TileBase GetTileBase(TileType tt)
     {
-        if (tt == tileType.WATER_DEEP) return tb_water_deep;
-        if (tt == tileType.WATER) return tb_water;
-        if (tt == tileType.SAND) return tb_sand;
-        if (tt == tileType.BUSH) return tb_bush;
-        if (tt == tileType.GRASS) return tb_grass;
-        if (tt == tileType.STONE) return tb_stone;
-        if (tt == tileType.SNOW) return tb_snow;
+        if (tt == TileType.water_deep) return _tb_water_deep;
+        if (tt == TileType.water) return _tb_water;
+        if (tt == TileType.sand) return _tb_sand;
+        if (tt == TileType.bush) return _tb_bush;
+        if (tt == TileType.grass) return _tb_grass;
+        if (tt == TileType.stone) return _tb_stone;
+        if (tt == TileType.snow) return _tb_snow;
         return null;
     }
 
@@ -118,7 +126,7 @@ public class TileBaseManager : MonoBehaviour
 
     public void SetTile(Vector2Int coord)
     {
-        SetTile(coord, getTileBase());
+        SetTile(coord, GetTileBase());
     }
 
     public void SetTile(Vector2Int coord, TileBase tb)
@@ -127,31 +135,31 @@ public class TileBaseManager : MonoBehaviour
     }
     #endregion
 
-    public bool isWater(TileBase tb)
-    {
-        //probably doesn't work
-        return tb_water.Equals(tb);
-    }
+    //public bool IsWater(TileBase tb)
+    //{
+    //    //probably doesn't work
+    //    return _tb_water.Equals(tb);
+    //}
 
-    public bool isWater(GameObject g)
+    public bool IsWater(GameObject g)
     {
         return g.tag == "Water";
     }
 
-    public bool isWater(Vector2 coord)
-    {
-        return tb_water.Equals(tilemap.GetTile(new Vector3Int((int)coord.x, (int)coord.y, 0)));
-    }
+    //public bool IsWater(Vector2 coord)
+    //{
+    //    return _tb_water.Equals(tilemap.GetTile(new Vector3Int((int)coord.x, (int)coord.y, 0)));
+    //}
 
-    public bool isBerry(TileBase tb)
-    {
-        return tb_bush.Equals(tb);
-    }
+    //public bool IsBerry(TileBase tb)
+    //{
+    //    return _tb_bush.Equals(tb);
+    //}
 
-    public bool isBerry(Vector2 coord)
-    {
-        return tb_bush.Equals(tilemap.GetTile(new Vector3Int((int)coord.x, (int)coord.y, 0)));
-    }
+    //public bool IsBerry(Vector2 coord)
+    //{
+    //    return _tb_bush.Equals(tilemap.GetTile(new Vector3Int((int)coord.x, (int)coord.y, 0)));
+    //}
 }
 
 

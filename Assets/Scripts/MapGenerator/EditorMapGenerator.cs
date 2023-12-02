@@ -6,13 +6,20 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - Creates Sprite to visualize generated World
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      This script is only for the EditorMapGeneration Scene
- *      
+ *  References:
+ *      Scene: 
+ *          - This script is only for the EditorMapGeneration Scene
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
  */
 
 using UnityEngine;
@@ -20,36 +27,36 @@ using UnityEngine;
 public class EditorMapGenerator : MonoBehaviour
 {
     // Width and height of the texture in pixels.
-    private int CELLS_HORIZONTAL;
-    private int CELLS_VERTICAL;
+    private int _cellsHorizontal;
+    private int _cellsVertical;
 
-    private Texture2D noiseTex;
+    private Texture2D _noiseTex;
 
-    private NoiseTextureGenerator ntg;
-    private SpriteRenderer rend;
+    private NoiseTextureGenerator _ntg;
+    private SpriteRenderer _rend;
 
 
     private void Awake()
     {
-        CELLS_HORIZONTAL = Screen.width;
-        CELLS_VERTICAL = Screen.height;
+        _cellsHorizontal = Screen.width;
+        _cellsVertical = Screen.height;
 
-        noiseTex = new Texture2D(CELLS_HORIZONTAL, CELLS_VERTICAL);
+        _noiseTex = new Texture2D(_cellsHorizontal, _cellsVertical);
 
-        rend = GetComponent<SpriteRenderer>();
-        ntg = GetComponent<NoiseTextureGenerator>();
+        _rend = GetComponent<SpriteRenderer>();
+        _ntg = GetComponent<NoiseTextureGenerator>();
 
-        rend.sprite = Sprite.Create(noiseTex, new Rect(0, 0, CELLS_HORIZONTAL, CELLS_VERTICAL), new Vector2(0.5f, 0.5f));
+        _rend.sprite = Sprite.Create(_noiseTex, new Rect(0, 0, _cellsHorizontal, _cellsVertical), new Vector2(0.5f, 0.5f));
     }
 
     private void Start()
     {
-        renderTexture();
+        RenderTexture();
     }
 
-    public void renderTexture()
+    public void RenderTexture()
     {
-        ntg.CalcNoise(noiseTex, CELLS_HORIZONTAL, CELLS_VERTICAL);
+        _ntg.CalcNoise(_noiseTex, _cellsHorizontal, _cellsVertical);
     }
 
 

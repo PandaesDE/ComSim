@@ -6,12 +6,20 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - Class to produce Berries for Bush GameObjects
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene: 
+ *          - Attatched to Bush GameObject Tiles
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
  */
 
 using UnityEngine;
@@ -22,14 +30,14 @@ public class Bush : MonoBehaviour, IConsumable
     private static readonly int MAX_BERRIES = 80;
     private static readonly int BERRY_GROW_TIME_MINUTES = 288; //5 Berries per Day
 
-    public bool isConsumed
+    public bool IsConsumed
     {
         get
         {
             return false;
         }
     }
-    public bool isMeat
+    public bool IsMeat
     {
         get
         {
@@ -37,64 +45,64 @@ public class Bush : MonoBehaviour, IConsumable
         }
     }
 
-    public bool hasFood
+    public bool HasFood
     {
         get
         {
-            return berries > 0;
+            return _berries > 0;
         }
     }
 
-    [SerializeField] private int berry_grow_minutes = 0;
-    [SerializeField] private int berries;
+    [SerializeField] private int _berry_grow_minutes = 0;
+    [SerializeField] private int _berries;
 
 
     private void Awake()
     {
-        berries = Util.Random.Int(MAX_BERRIES);
+        _berries = Util.Random.Int(MAX_BERRIES);
     }
 
     private void Start()
     {
-        adjustColor();
+        AdjustColor();
     }
 
     private void FixedUpdate()
     {
-        if (berries >= MAX_BERRIES) return;
-        growBerries();
+        if (_berries >= MAX_BERRIES) return;
+        GrowBerries();
     }
 
-    private void growBerries()
+    private void GrowBerries()
     {
-        if (berry_grow_minutes >= BERRY_GROW_TIME_MINUTES)
+        if (_berry_grow_minutes >= BERRY_GROW_TIME_MINUTES)
         {
-            berry_grow_minutes -= BERRY_GROW_TIME_MINUTES;
-            berries++;
-            adjustColor();
+            _berry_grow_minutes -= BERRY_GROW_TIME_MINUTES;
+            _berries++;
+            AdjustColor();
         }
 
-        berry_grow_minutes += Gamevariables.MINUTES_PER_TICK;
+        _berry_grow_minutes += Gamevariables.MinutesPerTick;
     }
 
-    private void adjustColor()
+    private void AdjustColor()
     {
-        GetComponent<SpriteRenderer>().color = new Color(1f, 1f - ((float)berries / (float)MAX_BERRIES), 0, 1f);
+        GetComponent<SpriteRenderer>().color = new Color(1f, 1f - ((float)_berries / (float)MAX_BERRIES), 0, 1f);
     }
 
 
     public float Consume()
     {
-        if (berries <= 0) return 0;
+        if (_berries <= 0) return 0;
 
-        int berries_eaten = Gamevariables.MINUTES_PER_TICK; // 1 Berry per Minute
-        if (berries - berries_eaten < 0)
+        int berries_eaten = Gamevariables.MinutesPerTick; // 1 Berry per Minute
+        if (_berries - berries_eaten < 0)
         {
-            berries_eaten = berries;
+            berries_eaten = _berries;
         }
 
-        berries -= berries_eaten;
-        adjustColor();
+        _berries -= berries_eaten;
+        AdjustColor();
         return (float)berries_eaten * NUTRITION_PER_BERRY;
     }
 }

@@ -6,12 +6,22 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - handles the day and night cylce
+ *      - handles the light intensity for the given time
+ *      - increases the Gametime (MinutesPassed)
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene:
+ *          - 
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
  */
 
 using UnityEngine.Rendering.Universal;
@@ -21,20 +31,20 @@ public class DayNightCycle : MonoBehaviour
 {
     private static readonly float MAX_LIGHT_INTENSITY = 1f;
     private static readonly float MIN_LIGHT_INTENSITY = .1f;
-    [SerializeField] private new Light2D light;
+    [SerializeField] private Light2D _light;
     /*passed minutes relative to current Day*/
-    private int clock_minutes = 0;
+    private int _clock_minutes = 0;
 
     private void FixedUpdate()
     {
-        Gamevariables.MINUTES_PASSED += Gamevariables.MINUTES_PER_TICK;
-        clock_minutes = Gamevariables.MINUTES_PASSED % (Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR);
+        Gamevariables.MinutesPassed += Gamevariables.MinutesPerTick;
+        _clock_minutes = Gamevariables.MinutesPassed % (Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR);
 
-        Gamevariables.LIGHT_INTENSITY = Mathf.Clamp(calculateLightIntensity(), MIN_LIGHT_INTENSITY, MAX_LIGHT_INTENSITY);
-        light.intensity = Gamevariables.LIGHT_INTENSITY;
+        Gamevariables.LightIntensity = Mathf.Clamp(CalculateLightIntensity(), MIN_LIGHT_INTENSITY, MAX_LIGHT_INTENSITY);
+        _light.intensity = Gamevariables.LightIntensity;
     }
 
-    private float calculateLightIntensity()
+    private float CalculateLightIntensity()
     {
         int DARK_morningMinutes =       6  * Gamevariables.MINUTES_PER_HOUR;
         int UPRISE_morningMinutes =     2  * Gamevariables.MINUTES_PER_HOUR;
@@ -42,17 +52,17 @@ public class DayNightCycle : MonoBehaviour
         int DOWNFALL_eveningMinutes =   2  * Gamevariables.MINUTES_PER_HOUR; 
 
 
-        if (clock_minutes <= DARK_morningMinutes)
+        if (_clock_minutes <= DARK_morningMinutes)
             return 0;
 
-        if (clock_minutes <= DARK_morningMinutes + UPRISE_morningMinutes)
-            return getPercentage(clock_minutes - DARK_morningMinutes, UPRISE_morningMinutes);
+        if (_clock_minutes <= DARK_morningMinutes + UPRISE_morningMinutes)
+            return getPercentage(_clock_minutes - DARK_morningMinutes, UPRISE_morningMinutes);
 
-        if (clock_minutes <= DARK_morningMinutes + UPRISE_morningMinutes + BRIGHT_dayMinutes)
+        if (_clock_minutes <= DARK_morningMinutes + UPRISE_morningMinutes + BRIGHT_dayMinutes)
             return 1f;
 
-        if (clock_minutes <= DARK_morningMinutes + UPRISE_morningMinutes + BRIGHT_dayMinutes + DOWNFALL_eveningMinutes)
-            return 1f - getPercentage(clock_minutes - DARK_morningMinutes - UPRISE_morningMinutes - BRIGHT_dayMinutes, DOWNFALL_eveningMinutes);
+        if (_clock_minutes <= DARK_morningMinutes + UPRISE_morningMinutes + BRIGHT_dayMinutes + DOWNFALL_eveningMinutes)
+            return 1f - getPercentage(_clock_minutes - DARK_morningMinutes - UPRISE_morningMinutes - BRIGHT_dayMinutes, DOWNFALL_eveningMinutes);
 
         return 0;
 

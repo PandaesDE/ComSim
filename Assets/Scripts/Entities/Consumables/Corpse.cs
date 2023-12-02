@@ -6,31 +6,35 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - Consumable Creature after it passed
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene: 
+ *          - Attached on any Creature GameObject after Death
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
  */
 
 using UnityEngine;
 
 public class Corpse : MonoBehaviour, IConsumable
 {
-    /*  This script is disabled by default and will be enabled once a Creature passed
-     * 
-     */
+    private static readonly int _s_decayDays = 5;
 
-    private static readonly int decayDays = 5;
-
-    private int WEIGHT_START;
-    private int weight = 0;
+    private int _weightStart;
+    private int _weight = 0;
     private bool _isConsumed = false;
 
-    [SerializeField] private int decayMinutes;
+    [SerializeField] private int _decayMinutes;
 
-    public bool isConsumed
+    public bool IsConsumed
     {
         get
         {
@@ -38,7 +42,7 @@ public class Corpse : MonoBehaviour, IConsumable
         }
     }
 
-    public bool isMeat
+    public bool IsMeat
     {
         get
         {
@@ -46,49 +50,49 @@ public class Corpse : MonoBehaviour, IConsumable
         }
     }
 
-    public bool hasFood
+    public bool HasFood
     {
         get
         {
-            return weight > 0;
+            return _weight > 0;
         }
     }
 
     private void Awake()
     {
-        decayMinutes = decayDays * Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR;
+        _decayMinutes = _s_decayDays * Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR;
     }
 
     private void FixedUpdate()
     {
-        if (decayMinutes <= 0 || weight <= 0)
+        if (_decayMinutes <= 0 || _weight <= 0)
         {
             _isConsumed = true;
-            ObjectManager.deleteCorpse(this);
+            ObjectManager.DeleteCorpse(this);
         }
-        decayMinutes -= Gamevariables.MINUTES_PER_TICK;
+        _decayMinutes -= Gamevariables.MinutesPerTick;
     }
 
     public float Consume()
     {
-        if (weight <= 0) return 0;
+        if (_weight <= 0) return 0;
 
-        int amount = WEIGHT_START / 10;
+        int amount = _weightStart / 10;
 
-        if (weight - amount <= 0) {
-            return weight;
+        if (_weight - amount <= 0) {
+            return _weight;
         }
 
-        weight -= amount;
+        _weight -= amount;
 
         return amount;
     }
 
     //getter & setter
-    public void setWeight(int w)
+    public void SetWeight(int w)
     {
-        this.weight = w;
-        this.WEIGHT_START = w;
+        this._weight = w;
+        this._weightStart = w;
     }
 
 

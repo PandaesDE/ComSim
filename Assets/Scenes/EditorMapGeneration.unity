@@ -2449,14 +2449,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8caa881a655ca0d4481dda816124a35a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  btn_Back: {fileID: 2021855323}
-  drd_PerlinNoiseSettings: {fileID: 1875469265}
-  inp_Persistence: {fileID: 396080295}
-  inp_Frequency: {fileID: 1116748663}
-  inp_Octaves: {fileID: 322314376}
-  inp_Amplitude: {fileID: 1545786062}
-  inp_X_Offset: {fileID: 698482866}
-  inp_Y_Offset: {fileID: 1022442101}
+  _btn_Back: {fileID: 2021855323}
+  _drd_PerlinNoiseSettings: {fileID: 1875469265}
+  _inp_Persistence: {fileID: 396080295}
+  _inp_Frequency: {fileID: 1116748663}
+  _inp_Octaves: {fileID: 322314376}
+  _inp_Amplitude: {fileID: 1545786062}
+  _inp_X_Offset: {fileID: 698482866}
+  _inp_Y_Offset: {fileID: 1022442101}
 --- !u!114 &700225336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5689,8 +5689,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3af5e18eff953448bf64d81a6974995, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ui: {fileID: 0}
-  infoMenuObject: {fileID: 0}
+  _infoMenuObject: {fileID: 0}
 --- !u!114 &1893491192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6280,7 +6279,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 889c1bb2e5c456449a38bab72f6b8339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pso_ground:
+  PSO_Ground:
     octaves: 0
     persistence: 0
     frequency: 0
@@ -6288,7 +6287,7 @@ MonoBehaviour:
     xOrg: 0
     yOrg: 0
     zoom: 0
-  pso_bush:
+  PSO_Bush:
     octaves: 0
     persistence: 0
     frequency: 0
@@ -6309,22 +6308,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemap: {fileID: 0}
-  go_water_deep: {fileID: 6647578400627049961, guid: 99a468f980c0e224291e7b46c80f67b4, type: 3}
-  go_water: {fileID: 6647578400627049961, guid: 4cef34eefb5f3884caf177ff8b78bc5a, type: 3}
-  go_sand: {fileID: 6647578400627049961, guid: fb5a890c26aadb545b4ce631451bc832, type: 3}
-  go_grass: {fileID: 6647578400627049961, guid: b86fb0610c6ac374a8e4f64841eba7a2, type: 3}
-  go_bush: {fileID: 6647578400627049961, guid: d6c11e23a7219294b8fc6993182e7885, type: 3}
-  go_stone: {fileID: 6647578400627049961, guid: f406c25381544dc498c3134f18e966e2, type: 3}
-  go_snow: {fileID: 6647578400627049961, guid: 18ae08d1b0ccd86499524b824aa2e8e3, type: 3}
-  tb_water_deep: {fileID: 11400000, guid: 7e5a8af28a8660540ba8859ed1933425, type: 2}
-  tb_water: {fileID: 11400000, guid: 85605d0a35d2004469e8638b9b26ac88, type: 2}
-  tb_sand: {fileID: 11400000, guid: 7c40233a9ed6cee44b64dc4a8fbacd28, type: 2}
-  tb_grass: {fileID: 11400000, guid: d7ec156b01c43314889ab87e1b871a24, type: 2}
-  tb_bush: {fileID: 11400000, guid: 9dde405f07f7bd348833cc255d9fe913, type: 2}
-  tb_stone: {fileID: 11400000, guid: efc4eff3651153a4a845bafcffa5177b, type: 2}
-  tb_snow: {fileID: 11400000, guid: 8943ab5d31be7f04285aac945e88b454, type: 2}
-  sample_ground: 0
-  sample_bush: 0
+  _go_water_deep: {fileID: 6647578400627049961, guid: 99a468f980c0e224291e7b46c80f67b4, type: 3}
+  _go_water: {fileID: 6647578400627049961, guid: 4cef34eefb5f3884caf177ff8b78bc5a, type: 3}
+  _go_sand: {fileID: 6647578400627049961, guid: fb5a890c26aadb545b4ce631451bc832, type: 3}
+  _go_grass: {fileID: 6647578400627049961, guid: b86fb0610c6ac374a8e4f64841eba7a2, type: 3}
+  _go_bush: {fileID: 6647578400627049961, guid: d6c11e23a7219294b8fc6993182e7885, type: 3}
+  _go_stone: {fileID: 6647578400627049961, guid: f406c25381544dc498c3134f18e966e2, type: 3}
+  _go_snow: {fileID: 6647578400627049961, guid: 18ae08d1b0ccd86499524b824aa2e8e3, type: 3}
+  _tb_water_deep: {fileID: 11400000, guid: 7e5a8af28a8660540ba8859ed1933425, type: 2}
+  _tb_water: {fileID: 11400000, guid: 85605d0a35d2004469e8638b9b26ac88, type: 2}
+  _tb_sand: {fileID: 11400000, guid: 7c40233a9ed6cee44b64dc4a8fbacd28, type: 2}
+  _tb_grass: {fileID: 11400000, guid: d7ec156b01c43314889ab87e1b871a24, type: 2}
+  _tb_bush: {fileID: 11400000, guid: 9dde405f07f7bd348833cc255d9fe913, type: 2}
+  _tb_stone: {fileID: 11400000, guid: efc4eff3651153a4a845bafcffa5177b, type: 2}
+  _tb_snow: {fileID: 11400000, guid: 8943ab5d31be7f04285aac945e88b454, type: 2}
+  groundSample: 0
+  bushSample: 0
 --- !u!1 &2138228212
 GameObject:
   m_ObjectHideFlags: 0

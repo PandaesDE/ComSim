@@ -6,12 +6,21 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - creates background texture for menu scenes
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene:
+ *          - Main Menu
+ *          - Settings Menu
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
  */
 
 using UnityEngine;
@@ -19,30 +28,30 @@ using UnityEngine;
 public class MenuBackground : MonoBehaviour
 {
     // Width and height of the texture in pixels.
-    [SerializeField] private int CELLS_HORIZONTAL;
-    [SerializeField] private int CELLS_VERTICAL;
+    [SerializeField] private int _cellsHorizontal;
+    [SerializeField] private int _cellsVertical;
 
-    private Texture2D noiseTex;
+    private Texture2D _noiseTex;
 
-    private NoiseTextureGenerator ntg;
-    private SpriteRenderer rend;
+    private NoiseTextureGenerator _ntg;
+    private SpriteRenderer _rend;
 
 
     private void Awake()
     {
-        CELLS_HORIZONTAL = Gamevariables.playgroundSize.x;
-        CELLS_VERTICAL = Gamevariables.playgroundSize.y;
+        _cellsHorizontal = Gamevariables.PLAYGROUND_SIZE.x;
+        _cellsVertical = Gamevariables.PLAYGROUND_SIZE.y;
 
-        noiseTex = new Texture2D(CELLS_HORIZONTAL, CELLS_VERTICAL);
+        _noiseTex = new Texture2D(_cellsHorizontal, _cellsVertical);
 
-        rend = GetComponent<SpriteRenderer>();
-        ntg = GetComponent<NoiseTextureGenerator>();
+        _rend = GetComponent<SpriteRenderer>();
+        _ntg = GetComponent<NoiseTextureGenerator>();
 
-        rend.sprite = Sprite.Create(noiseTex, new Rect(0, 0, CELLS_HORIZONTAL, CELLS_VERTICAL), new Vector2(0.5f, 0.5f));
+        _rend.sprite = Sprite.Create(_noiseTex, new Rect(0, 0, _cellsHorizontal, _cellsVertical), new Vector2(0.5f, 0.5f));
     }
 
     private void Update()
     {
-        ntg.CalcNoise(noiseTex, CELLS_HORIZONTAL, CELLS_VERTICAL);
+        _ntg.CalcNoise(_noiseTex, _cellsHorizontal, _cellsVertical);
     }
 }

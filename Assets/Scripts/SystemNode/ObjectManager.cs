@@ -1,4 +1,29 @@
-/*This Class keeps track of all Creature instances, which are used for iterative changes and statistical purposes. This Class also handles all Object destructions*/
+/*  Head
+ *      Author:             Schneider Erik
+ *      1st Supervisor:     Prof.Dr Ralph Lano
+ *      2nd Supervisor:     Prof.Dr Matthias Hopf
+ *      Project-Title:      ComSim
+ *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
+ *      University:         Technische Hochschule Nürnberg
+ *  
+ *  Description:
+ *      - This Class keeps track of all Creature instances, which are used for iterative changes and statistical purposes.
+ *      - This Class also handles all Object destructions
+ *  
+ *  References:
+ *      Scene:
+ *          - Simulation scene(s)
+ *          - EditorMapGeneration
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
+ */
+
 
 
 using System.Collections.Generic;
@@ -6,88 +31,88 @@ using UnityEngine;
 
 public class ObjectManager : MonoBehaviour
 {
-    private static Dictionary<int,Creature> allCreatures;
-    private static Dictionary<int,Corpse> allCorpses;
+    private static Dictionary<int,Creature> _s_allCreatures;
+    private static Dictionary<int,Corpse> _s_allCorpses;
 
     private void Awake()
     {
-        if (allCreatures != null || allCorpses != null)
+        if (_s_allCreatures != null || _s_allCorpses != null)
         {
             /*this class has already been assigned*/
             return;
         }
-        allCreatures = new();
-        allCorpses = new();
+        _s_allCreatures = new();
+        _s_allCorpses = new();
     }
 
     #region Creatures
-    public static void addCreature(Creature toAdd)
+    public static void AddCreature(Creature toAdd)
     {
-        allCreatures.Add(toAdd.GetInstanceID(), toAdd);
+        _s_allCreatures.Add(toAdd.GetInstanceID(), toAdd);
     }
 
-    public static void addCreatures(List<Creature> toAddList)
+    public static void AddCreatures(List<Creature> toAddList)
     {
         for (int i = 0; i < toAddList.Count; i++)
         {
             Creature creature = toAddList[i];
-            allCreatures.Add(creature.GetInstanceID(), creature);
+            _s_allCreatures.Add(creature.GetInstanceID(), creature);
         }
     }
 
-    public static void deleteAllCreatures()
+    public static void DeleteAllCreatures()
     {
-        foreach (Creature c in allCreatures.Values)
+        foreach (Creature c in _s_allCreatures.Values)
         {
             Destroy(c.gameObject);
         }
-        allCreatures.Clear();
+        _s_allCreatures.Clear();
     }
 
-    public static void deleteCreature(Creature toDelete)
+    public static void DeleteCreature(Creature toDelete)
     {
-        if (!allCreatures.ContainsKey(toDelete.GetInstanceID()))
+        if (!_s_allCreatures.ContainsKey(toDelete.GetInstanceID()))
         {
             UnregisteredObjectException($"{toDelete}");
         }
 
-        allCreatures.Remove(toDelete.GetInstanceID());
+        _s_allCreatures.Remove(toDelete.GetInstanceID());
         Destroy(toDelete.gameObject);
     }
 
-    public static void changeTrailColor()
+    public static void ChangeTrailColor()
     {
-        foreach (Creature c in allCreatures.Values)
+        foreach (Creature c in _s_allCreatures.Values)
         {
-            c.trail.setColor();
+            c.Trail.SetColor();
         }
     }
     #endregion
 
     #region Corpses
-    public static void addCorpse(Corpse toAdd)
+    public static void AddCorpse(Corpse toAdd)
     {
-        allCorpses.Add(toAdd.GetInstanceID(), toAdd);
+        _s_allCorpses.Add(toAdd.GetInstanceID(), toAdd);
     }
 
-    public static void deleteCorpse(Corpse toDelete)
+    public static void DeleteCorpse(Corpse toDelete)
     {
-        if (!allCorpses.ContainsKey(toDelete.GetInstanceID()))
+        if (!_s_allCorpses.ContainsKey(toDelete.GetInstanceID()))
         {
             UnregisteredObjectException($"{toDelete}");
         }
 
-        allCorpses.Remove(toDelete.GetInstanceID());
+        _s_allCorpses.Remove(toDelete.GetInstanceID());
         Destroy(toDelete.gameObject);
     }
 
-    public static void deleteAllCorpses()
+    public static void DeleteAllCorpses()
     {
-        foreach (Corpse c in allCorpses.Values)
+        foreach (Corpse c in _s_allCorpses.Values)
         {
             Destroy(c.gameObject);
         }
-        allCorpses.Clear();
+        _s_allCorpses.Clear();
     }
     #endregion
 

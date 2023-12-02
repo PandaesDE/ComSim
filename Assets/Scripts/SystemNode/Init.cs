@@ -6,12 +6,20 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - Initialize generic settings
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene:
+ *          - 
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
  */
 
 using UnityEngine;
@@ -21,11 +29,11 @@ public class Init : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        initGameSettings();
+        InitGameSettings();
         ConfigManager.LoadSettings();
     }
 
-    private void initGameSettings()
+    private void InitGameSettings()
     {
         Time.timeScale = 1;
         Time.fixedDeltaTime = Gamevariables.TICKRATE;

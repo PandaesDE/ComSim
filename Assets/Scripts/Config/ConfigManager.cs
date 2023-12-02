@@ -6,23 +6,30 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
- *      - This Class Handles the persistend serialization of needed Values in between Simulation Sessions
+ *  Description:
+ *      - This class handles the persistend read and write serialization operations of needed values in between simulation sessions
  *  
- *  Class Infos:
- *      - This Script is not tied to any Gameobject in any Scene
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene:
+ *          - Any scene
+ *      Script:
+ *          - Can be used by any class statically
+ *          - Usually in between Scene Scene changing
+ *          
+ *  Notes:
+ *      - 
+ *  
+ *  Sources:
+ *      - 
  */
 
 
 using System.IO;
 using UnityEngine;
 
-public class ConfigManager
+public static class ConfigManager
 {
-    //private static bool isRead = false;
+    //private static bool _s_isRead = false;
 
     //Chat-GPT
     public static void LoadSettings()
@@ -32,13 +39,13 @@ public class ConfigManager
 
     public static void LoadSettings(GameSettingsObject settings)
     {
-        Gamevariables.SEED = settings.Seed;
-        Gamevariables.HUMAN_AMOUNT_START = settings.Human_Amount_Start;
-        Gamevariables.LION_AMOUNT_START = settings.Lion_Amount_Start;
-        Gamevariables.BOAR_AMOUNT_START = settings.Boar_Amount_Start;
-        Gamevariables.RABBIT_AMOUNT_START = settings.Rabbit_Amount_Start;
-        Gamevariables.PSO_GROUND = settings.Pso_Ground;
-        Gamevariables.PSO_BUSH = settings.Pso_Bush;
+        Gamevariables.Seed = settings.seed;
+        Gamevariables.HumanAmountStart = settings.startAmountHuman;
+        Gamevariables.LionAmountStart = settings.startAmountLion;
+        Gamevariables.BoarAmountStart = settings.startAmountBoar;
+        Gamevariables.RabbitAmountStart = settings.startAmountRabbit;
+        Gamevariables.PSO_Ground = settings.PSO_Ground;
+        Gamevariables.PSO_Bush = settings.PSO_Bush;
     }
 
     public static void SaveSettings(GameSettingsObject settings)
@@ -67,7 +74,7 @@ public class ConfigManager
         if (!File.Exists(filePath))
         {
             //default config
-            return getStaticConfig();
+            return GetStaticConfig();
         }
 
         string json = File.ReadAllText(filePath);
@@ -79,21 +86,21 @@ public class ConfigManager
      * if this method gets called before ReadSettings() is called once, this will return the default config
      * if this method gets called after ReadSettings() was called, this will return the settings read.
      */
-    private static GameSettingsObject getStaticConfig()
+    private static GameSettingsObject GetStaticConfig()
     {
         GameSettingsObject settings = new();
-        settings.Seed = Gamevariables.SEED;
-        settings.Human_Amount_Start = Gamevariables.HUMAN_AMOUNT_START;
-        settings.Lion_Amount_Start = Gamevariables.LION_AMOUNT_START;
-        settings.Boar_Amount_Start = Gamevariables.BOAR_AMOUNT_START;
-        settings.Rabbit_Amount_Start = Gamevariables.RABBIT_AMOUNT_START;
-        settings.Pso_Ground = Gamevariables.PSO_GROUND;
-        settings.Pso_Bush = Gamevariables.PSO_BUSH;
+        settings.seed = Gamevariables.Seed;
+        settings.startAmountHuman = Gamevariables.HumanAmountStart;
+        settings.startAmountLion = Gamevariables.LionAmountStart;
+        settings.startAmountBoar = Gamevariables.BoarAmountStart;
+        settings.startAmountRabbit = Gamevariables.RabbitAmountStart;
+        settings.PSO_Ground = Gamevariables.PSO_Ground;
+        settings.PSO_Bush = Gamevariables.PSO_Bush;
         return settings;
     }
 
-    private static bool areSettingsUnchanged(GameSettingsObject settings)
+    /*private static bool AreSettingsUnchanged(GameSettingsObject settings)
     {
         return settings.Equals(getStaticConfig());
-    }
+    }*/
 }

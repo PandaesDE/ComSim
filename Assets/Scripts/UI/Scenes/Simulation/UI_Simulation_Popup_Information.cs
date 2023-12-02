@@ -6,12 +6,20 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - defines all UI and handles it within the Entity popup information window during a simulation
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene:
+ *          - simulation navigation(s)
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
  */
 
 using TMPro;
@@ -20,139 +28,133 @@ using UnityEngine.UI;
 
 public class UI_Simulation_Popup_Information : MonoBehaviour
 {
-    private Creature target;
-    private CameraManager cameraManager;
+    private Creature _target;
+    private CameraManager _cameraManager;
 
-    [SerializeField] private TMP_Text display_Name;
-    [SerializeField] private TMP_Text display_Status;
-    [SerializeField] private TMP_Text display_Position;
-    [SerializeField] private TMP_Text display_Target;
+    [SerializeField] private TMP_Text _display_Name;
+    [SerializeField] private TMP_Text _display_Status;
+    [SerializeField] private TMP_Text _display_Position;
+    [SerializeField] private TMP_Text _display_Target;
 
-    [SerializeField] private GameObject image_Object;
-    private Image image;
+    [SerializeField] private GameObject _image_Object;
+    private Image _image;
 
-    [SerializeField] private Slider sdr_Health;
-    [SerializeField] private Slider sdr_Hunger;
-    [SerializeField] private Slider sdr_Thirst;
-    [SerializeField] private Slider sdr_Energy;
+    [SerializeField] private Slider _sdr_Health;
+    [SerializeField] private Slider _sdr_Hunger;
+    [SerializeField] private Slider _sdr_Thirst;
+    [SerializeField] private Slider _sdr_Energy;
 
-    [SerializeField] private Button btn_close;
+    [SerializeField] private Button _btn_close;
 
-    [SerializeField] private Toggle tgl_Follow;
-
-
-    /*
-     * Ideas:
-     * - Follow Button (with cam)
-     */
+    [SerializeField] private Toggle _tgl_Follow;
 
     private void Awake()
     {
-        cameraManager = GameObject.Find("SystemNode").GetComponent<CameraManager>();
+        _cameraManager = GameObject.Find("SystemNode").GetComponent<CameraManager>();
 
-        image = image_Object.GetComponent<Image>();
-        btn_close.onClick.AddListener(delegate { setActive(false); });
-        tgl_Follow.onValueChanged.AddListener(delegate { followTarget(tgl_Follow.isOn); });
+        _image = _image_Object.GetComponent<Image>();
+        _btn_close.onClick.AddListener(delegate { SetActive(false); });
+        _tgl_Follow.onValueChanged.AddListener(delegate { FollowTarget(_tgl_Follow.isOn); });
     }
 
     private void FixedUpdate()
     {
-        if (target == null)
+        if (_target == null)
         {
             /*Gets only called once since the class is in inactive state afterwards*/
-            resetInputs();
-            setActive(false);
+            ResetInputs();
+            SetActive(false);
             return;
         }
 
-        updateChangingInfo();
+        UpdateChangingInfo();
     }
 
-    public void setTarget(Creature t)
+    public void SetTarget(Creature t)
     {
-        this.target = t;
-        followTarget(tgl_Follow.isOn);
-        setActive(true);
-        updateAllInfo();
+        this._target = t;
+        FollowTarget(_tgl_Follow.isOn);
+        SetActive(true);
+        UpdateAllInfo();
     }
 
-    private void followTarget(bool follow)
+    private void FollowTarget(bool follow)
     {
-        if (target == null)
+        if (_target == null)
         {
-            cameraManager.followTarget(follow, null);
+            _cameraManager.FollowTarget(follow, null);
             return;
         }
-        cameraManager.followTarget(follow, target.gameObject);
+        _cameraManager.FollowTarget(follow, _target.gameObject);
     }
 
-    private void updateAllInfo()
+    private void UpdateAllInfo()
     {
-        updateImage();
-        updateChangingInfo();
+        UpdateImage();
+        UpdateChangingInfo();
     }
 
-    private void updateChangingInfo()
+    private void UpdateChangingInfo()
     {
-        display_Name.text = target.name;
+        _display_Name.text = _target.name;
         //Debug
-        updatePosition();
-        updateTarget();
+        UpdatePosition();
+        UpdateTarget();
         //Stats
-        updateHealthBar();
-        updateHungerBar();
-        updateThirstBar();
-        updateEnergyBar();
-        updateStatus();
+        UpdateHealthBar();
+        UpdateHungerBar();
+        UpdateThirstBar();
+        UpdateEnergyBar();
+        UpdateStatus();
     }
 
 
-    private void resetInputs()
+    private void ResetInputs()
     {
-        tgl_Follow.isOn = false;
+        _tgl_Follow.isOn = false;
     }
 
-    private void updateImage()
+    private void UpdateImage()
     {
-        image.sprite = target.GetComponent<SpriteRenderer>().sprite;
+        _image.sprite = _target.GetComponent<SpriteRenderer>().sprite;
     }
 
-    private void updatePosition()
+    private void UpdatePosition()
     {
-        display_Position.text = "" + (Vector2)target.transform.position;
+        _display_Position.text = "" + (Vector2)_target.transform.position;
     }
 
-    private void updateTarget()
+    private void UpdateTarget()
     {
-        display_Target.text = "" + target.movement.target;
+        _display_Target.text = "" + _target.Movement.target;
     }
 
-    private void updateHealthBar()
+    private void UpdateHealthBar()
     {
-        sdr_Health.value = (float)target.health / (float)target.MAX_HEALTH;
+        _sdr_Health.value = (float)_target.health / (float)_target.maxHealth;
     }
 
-    private void updateHungerBar()
+    private void UpdateHungerBar()
     {
-        sdr_Hunger.value = target.hunger / Creature.MAX_HUNGER;
+        _sdr_Hunger.value = _target.hunger / Creature.MAX_HUNGER;
     }
 
-    private void updateThirstBar()
+    private void UpdateThirstBar()
     {
-        sdr_Thirst.value = target.thirst / Creature.MAX_THIRST;
+        _sdr_Thirst.value = _target.thirst / Creature.MAX_THIRST;
     }
 
-    private void updateEnergyBar()
+    private void UpdateEnergyBar()
     {
-        sdr_Energy.value = target.energy / Creature.MAX_ENERGY;
+        _sdr_Energy.value = _target.energy / Creature.MAX_ENERGY;
     }
 
-    private void updateStatus()
+    private void UpdateStatus()
     {
-        display_Status.text = (target.statusManager.status + "").ToLower();
+        _display_Status.text = (_target.StatusManager.status + "").ToLower();
     }
 
-    private void setActive(bool state) 
+    private void SetActive(bool state) 
     {
         gameObject.SetActive(state);
     }

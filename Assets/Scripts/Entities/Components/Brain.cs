@@ -1,9 +1,36 @@
+/*  Head
+ *      Author:             Schneider Erik
+ *      1st Supervisor:     Prof.Dr Ralph Lano
+ *      2nd Supervisor:     Prof.Dr Matthias Hopf
+ *      Project-Title:      ComSim
+ *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
+ *      University:         Technische Hochschule Nürnberg
+ *  
+ *  Description:
+ *      - stores values of every interactalbe Object
+ *      - provides Add and Remove method for every dictionary
+ *      - finds the closest object of every dictionary
+ *      - Brain component of a creature
+ *  
+ *  References:
+ *      Scene:
+ *          - Indirectly (Component of Creature.cs) for simulation scene(s)
+ *      Script:
+ *          - One instance per creature
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
+ */
+
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Brain
 {
-    private Creature creature;
+    private Creature _creature;
 
     public IConsumable activeFood { get; private set; }
     public GameObject activeWater { get; private set; }
@@ -12,24 +39,24 @@ public class Brain
     public Creature activeMate { get; private set; }
 
 
-    private Dictionary<int, IConsumable> spottedFoods;
-    private Dictionary<int, IConsumable> inactiveFoods;
-    private Dictionary<int, Creature> spottedCreatures;
-    private Dictionary<int, Creature> spottedMates;          /*List of Same Species and opposite Gender*/
-    private Dictionary<int, GameObject> spottedWaterSources;
+    private Dictionary<int, IConsumable> _spottedFoods;
+    private Dictionary<int, IConsumable> _inactiveFoods;
+    private Dictionary<int, Creature> _spottedCreatures;
+    private Dictionary<int, Creature> _spottedMates;          /*List of Same Species and opposite Gender*/
+    private Dictionary<int, GameObject> _spottedWaterSources;
 
 
     public Brain(Creature creature)
     {
-        spottedFoods = new Dictionary<int, IConsumable>();
-        inactiveFoods = new Dictionary<int, IConsumable>();
-        spottedCreatures = new Dictionary<int, Creature>();
-        spottedMates = new Dictionary<int, Creature>();
-        spottedWaterSources = new Dictionary<int, GameObject>();
-        this.creature = creature;
+        _spottedFoods = new Dictionary<int, IConsumable>();
+        _inactiveFoods = new Dictionary<int, IConsumable>();
+        _spottedCreatures = new Dictionary<int, Creature>();
+        _spottedMates = new Dictionary<int, Creature>();
+        _spottedWaterSources = new Dictionary<int, GameObject>();
+        this._creature = creature;
     }
 
-    public void onStateChange()
+    public void OnStateChange()
     {
         activeFood = null;
         activeWater = null;
@@ -42,29 +69,29 @@ public class Brain
     public void AddSpottedCreature(Creature c)
     {
         int ID = c.gameObject.GetInstanceID();
-        if (spottedCreatures.ContainsKey(ID)) return;
-        spottedCreatures[ID] = c;
+        if (_spottedCreatures.ContainsKey(ID)) return;
+        _spottedCreatures[ID] = c;
     }
 
-    public bool hasSpottedCreature()
+    public bool HasSpottedCreature()
     {
-        return spottedCreatures.Count > 0;
+        return _spottedCreatures.Count > 0;
     }
 
-    public void setActiveHunt()
+    public void SetActiveHunt()
     {
-        activeHunt = getNearestCreature();
+        activeHunt = GetNearestCreature();
     }
 
-    public Creature getNearestCreature()
+    public Creature GetNearestCreature()
     {
-        if (!hasSpottedCreature()) return null;
+        if (!HasSpottedCreature()) return null;
 
         Creature closest = null;
         float minDistance = Mathf.Infinity;
         List<int> missingIDs = new();
 
-        foreach (KeyValuePair<int, Creature> keyValue in spottedCreatures)
+        foreach (KeyValuePair<int, Creature> keyValue in _spottedCreatures)
         {
             //Food resource missing (consumed)
             if (keyValue.Value == null)
@@ -73,7 +100,7 @@ public class Brain
                 continue;
             }
 
-            float distance = Vector3.Distance(keyValue.Value.gameObject.transform.position, creature.transform.position);
+            float distance = Vector3.Distance(keyValue.Value.gameObject.transform.position, _creature.transform.position);
             if (distance < minDistance)
             {
                 minDistance = distance;
@@ -94,16 +121,16 @@ public class Brain
 
     public void RemoveSpottedCreature(int ID)
     {
-        if (spottedCreatures.ContainsKey(ID))
-            spottedCreatures.Remove(ID);
+        if (_spottedCreatures.ContainsKey(ID))
+            _spottedCreatures.Remove(ID);
     }
     #endregion
     #region Hunger
     public bool HasFoodSource()
     {
-        if (spottedFoods.Count <= 0)
+        if (_spottedFoods.Count <= 0)
         {
-            if (inactiveFoods.Count <= 0)
+            if (_inactiveFoods.Count <= 0)
             {
                 return false;
             }
@@ -121,14 +148,14 @@ public class Brain
     public void AddFoodSource(IConsumable food)
     {
         int ID = food.gameObject.GetInstanceID();
-        if (spottedFoods.ContainsKey(ID)) return;
-        if (inactiveFoods.ContainsKey(ID)) return;
-        spottedFoods[ID] = food;
+        if (_spottedFoods.ContainsKey(ID)) return;
+        if (_inactiveFoods.ContainsKey(ID)) return;
+        _spottedFoods[ID] = food;
     }
 
-    public void setActiveFoodSource()
+    public void SetActiveFoodSource()
     {
-        activeFood = getNearestFoodSource();
+        activeFood = GetNearestFoodSource();
     }
 
     public void RemoveFoodSources(List<int> IDs)
@@ -146,38 +173,38 @@ public class Brain
 
     public void RemoveFoodSource(int ID)
     {
-        if (spottedFoods.ContainsKey(ID))
-            spottedFoods.Remove(ID);
+        if (_spottedFoods.ContainsKey(ID))
+            _spottedFoods.Remove(ID);
     }
 
-    private IConsumable getNearestFoodSource()
+    private IConsumable GetNearestFoodSource()
     {
-        if (spottedFoods.Count <= 0) return null;
+        if (_spottedFoods.Count <= 0) return null;
 
         IConsumable closest = null;
         float minDistance = Mathf.Infinity;
         List<int> missingIDs = new();
         List<int> inactiveIDs = new();
 
-        foreach (KeyValuePair<int, IConsumable> keyValue in spottedFoods)
+        foreach (KeyValuePair<int, IConsumable> keyValue in _spottedFoods)
         {
 
             //Food resource missing (consumed)
-            if (keyValue.Value == null || keyValue.Value.isConsumed)
+            if (keyValue.Value == null || keyValue.Value.IsConsumed)
             {
                 missingIDs.Add(keyValue.Key);
                 continue;
             }
 
             //no Food Resource left for now
-            if (!keyValue.Value.hasFood)
+            if (!keyValue.Value.HasFood)
             {
                 inactiveIDs.Add(keyValue.Key);
                 continue;
             }
 
 
-            float distance = Vector3.Distance(keyValue.Value.gameObject.transform.position, creature.transform.position);
+            float distance = Vector3.Distance(keyValue.Value.gameObject.transform.position, _creature.transform.position);
             if (distance < minDistance)
             {
                 minDistance = distance;
@@ -193,7 +220,7 @@ public class Brain
     public void ActivateAllInactiveFoodSources()
     {
         List<int> nowActiveIDs = new();
-        foreach (KeyValuePair<int, IConsumable> food in inactiveFoods)
+        foreach (KeyValuePair<int, IConsumable> food in _inactiveFoods)
         {
             int ID = food.Key;
             nowActiveIDs.Add(ID);
@@ -208,9 +235,9 @@ public class Brain
 
     public void ReactivateFoodSource(int ID)
     {
-        if (!inactiveFoods.ContainsKey(ID)) return;
-        IConsumable food = inactiveFoods[ID];
-        inactiveFoods.Remove(ID);
+        if (!_inactiveFoods.ContainsKey(ID)) return;
+        IConsumable food = _inactiveFoods[ID];
+        _inactiveFoods.Remove(ID);
         AddFoodSource(food);
     }
 
@@ -232,13 +259,13 @@ public class Brain
     public void SetInactiveFoodSource(int ID)
     {
         /*Remove from FoodSourceList*/
-        if (!spottedFoods.ContainsKey(ID)) return;
-        IConsumable food = spottedFoods[ID];
+        if (!_spottedFoods.ContainsKey(ID)) return;
+        IConsumable food = _spottedFoods[ID];
         RemoveFoodSource(ID);
 
         /*Add to inactiveFood*/
-        if (inactiveFoods.ContainsKey(ID)) return;
-        inactiveFoods[ID] = food;
+        if (_inactiveFoods.ContainsKey(ID)) return;
+        _inactiveFoods[ID] = food;
     }
     #endregion
 
@@ -246,13 +273,13 @@ public class Brain
     #region Thirst
     public void addWaterSource(GameObject water)
     {
-        if (spottedWaterSources.ContainsKey(water.GetInstanceID())) return;
-        spottedWaterSources.Add(water.GetInstanceID(), water);
+        if (_spottedWaterSources.ContainsKey(water.GetInstanceID())) return;
+        _spottedWaterSources.Add(water.GetInstanceID(), water);
     }
 
     public bool hasWaterSource()
     {
-        return spottedWaterSources.Count > 0;
+        return _spottedWaterSources.Count > 0;
     }
 
     public void setActiveWaterSource()
@@ -264,9 +291,9 @@ public class Brain
     {
         GameObject closest = null;
         float minDistance = Mathf.Infinity;
-        foreach (KeyValuePair<int, GameObject> keyValue in spottedWaterSources)
+        foreach (KeyValuePair<int, GameObject> keyValue in _spottedWaterSources)
         {
-            float distance = Vector3.Distance(keyValue.Value.transform.position, creature.transform.position);
+            float distance = Vector3.Distance(keyValue.Value.transform.position, _creature.transform.position);
             if (distance < minDistance)
             {
                 minDistance = distance;
@@ -278,43 +305,43 @@ public class Brain
 
     public void RemoveWaterSource(int ID)
     {
-        if (spottedWaterSources.ContainsKey(ID))
-            spottedWaterSources.Remove(ID);
+        if (_spottedWaterSources.ContainsKey(ID))
+            _spottedWaterSources.Remove(ID);
     }
     #endregion
     #region Social
     public void AddPotentialMate(Creature mate)
     {
-        if (spottedMates.ContainsKey(mate.gameObject.GetInstanceID())) return;
+        if (_spottedMates.ContainsKey(mate.gameObject.GetInstanceID())) return;
         if (mate == null) return;
 
-        spottedMates[mate.gameObject.GetInstanceID()] = mate;
+        _spottedMates[mate.gameObject.GetInstanceID()] = mate;
     }
 
-    public void setActiveMate()
+    public void SetActiveMate()
     {
-        activeMate = getNearestMate();
+        activeMate = GetNearestMate();
     }
 
     public void RemovePotentialMate(int ID)
     {
-        if (spottedMates.ContainsKey(ID))
-            spottedMates.Remove(ID);
+        if (_spottedMates.ContainsKey(ID))
+            _spottedMates.Remove(ID);
     }
 
-    public bool hasPotentialMates()
+    public bool HasPotentialMates()
     {
-        return spottedMates.Count > 0;
+        return _spottedMates.Count > 0;
     }
-    private Creature getNearestMate()
+    private Creature GetNearestMate()
     {
         
-        if (!hasPotentialMates()) return null;
+        if (!HasPotentialMates()) return null;
         
         Creature closest = null;
         float minDistance = Mathf.Infinity;
 
-        foreach (KeyValuePair<int, Creature> keyValue in spottedMates)
+        foreach (KeyValuePair<int, Creature> keyValue in _spottedMates)
         {
             //Mate missing (Died)
             if (keyValue.Value == null)
@@ -323,7 +350,7 @@ public class Brain
                 continue;
             }
 
-            float distance = Vector3.Distance(keyValue.Value.gameObject.transform.position, creature.transform.position);
+            float distance = Vector3.Distance(keyValue.Value.gameObject.transform.position, _creature.transform.position);
             if (distance < minDistance)
             {
                 minDistance = distance;

@@ -6,55 +6,63 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - Herbivore Creature
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene: Rabbit GameObjects
+ *          - 
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
  */
 
 using UnityEngine;
 
 public class Rabbit : Creature
 {
-    [SerializeField] private Sprite spr_General;
+    [SerializeField] private Sprite spr_General;        //TODO DELETE?
 
     protected override void Awake()
     {
         base.Awake();
 
-        build_Gender(Util.Random.Gender(this));
-        build_Dietary(new Herbivore(this));
-        build_Health(45);
-        build_Weight(30);
-        build_Speed(.2f);
+        BuildGender(Util.Random.Gender(this));
+        BuildDietary(new Herbivore(this));
+        BuildHealth(45);
+        BuildWeight(30);
+        BuildSpeed(.2f);
     }
 
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        if (statusManager.status != StatusManager.Status.SLEEPING)
+        if (StatusManager.status != StatusManager.Status.sleeping)
         {
-            movement.MoveToTarget();
-            evaluateVision();
-            makeStatusBasedMove();
+            Movement.MoveToTarget();
+            EvaluateVision();
+            MakeStatusBasedMove();
         }
     }
 
     /*Gets called by Parent*/
-    protected override bool isSameSpecies(Creature c)
+    protected override bool IsSameSpecies(Creature c)
     {
-        Rabbit partner = c.gameObject.GetComponent<Rabbit>();
+        Rabbit partner = c.gameObject.GetComponent<Rabbit>();   //TODO TryGet
         if (partner == null) return false;
         return true;
     }
 
-    protected override void giveBirth()
+    protected override void GiveBirth()
     {
         SpawnOptions options = new SpawnOptions()
-            .set_Amount(1)
-            .set_Position(gameObject.transform.position);
-        Spawner.spawnRabbits(options);
+            .SetAmount(1)
+            .SetPosition(gameObject.transform.position);
+        Spawner.SpawnRabbits(options);
     }
 }

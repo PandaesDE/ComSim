@@ -6,20 +6,28 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - Calculate perlin noise texture
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene:
+ *          - EditorMapGenerator
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
  */
 
 using UnityEngine;
 
 public class NoiseTextureGenerator : MonoBehaviour
 {
-    public PerlinSettingsObject pso_ground;
-    public PerlinSettingsObject pso_bush;
+    public PerlinSettingsObject PSO_Ground;
+    public PerlinSettingsObject PSO_Bush;
 
     //[SerializeField] private float blackToWhiteThreshold = .5f;
 
@@ -30,8 +38,8 @@ public class NoiseTextureGenerator : MonoBehaviour
     private void Awake()
     {
         GameSettingsObject settings = ConfigManager.ReadSettings();
-        pso_ground = settings.Pso_Ground;
-        pso_bush = settings.Pso_Bush;
+        PSO_Ground = settings.PSO_Ground;
+        PSO_Bush = settings.PSO_Bush;
 
         tbm = GetComponent<TileBaseManager>();
     }
@@ -47,10 +55,10 @@ public class NoiseTextureGenerator : MonoBehaviour
             {
                 float xOffset = (float)x;
                 float yOffset = (float)y;
-                tbm.sample_bush = Util.MapGeneration.OctavePerlin(xOffset, yOffset, pso_bush);
-                tbm.sample_ground = Util.MapGeneration.OctavePerlin(xOffset, yOffset, pso_ground);
+                tbm.bushSample = Util.MapGeneration.OctavePerlin(xOffset, yOffset, PSO_Bush);
+                tbm.groundSample = Util.MapGeneration.OctavePerlin(xOffset, yOffset, PSO_Ground);
 
-                pix[(int)y * width + (int)x] = tbm.getColor();
+                pix[(int)y * width + (int)x] = tbm.GetColor();
             }
         }
 

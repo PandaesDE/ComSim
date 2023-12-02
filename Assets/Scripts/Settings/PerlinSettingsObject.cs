@@ -6,16 +6,23 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - Object Class to Store PerlinNoise Settings
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene:
+ *          - 
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - https://www.youtube.com/watch?v=jbwjbbc5PjI
  */
 
 
-//https://www.youtube.com/watch?v=jbwjbbc5PjI
 [System.Serializable]
 public class PerlinSettingsObject
 {

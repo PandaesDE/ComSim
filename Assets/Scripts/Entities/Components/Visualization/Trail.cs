@@ -1,4 +1,27 @@
-using System.Collections;
+/*  Head
+ *      Author:             Schneider Erik
+ *      1st Supervisor:     Prof.Dr Ralph Lano
+ *      2nd Supervisor:     Prof.Dr Matthias Hopf
+ *      Project-Title:      ComSim
+ *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
+ *      University:         Technische Hochschule Nürnberg
+ *  
+ *  Description:
+ *      - makes a vizualization of the creature trail
+ *  
+ *  References:
+ *      Scene:
+ *          - Indirectly (Component of Creature.cs) for simulation scene(s)
+ *      Script:
+ *          - One instance per creature
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
+ */
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,8 +29,8 @@ public class Trail
 {
     public enum ColorScheme
     {
-        DEFAULT,
-        DIETARY
+        @default,
+        dietary
     }
 
     private class Vertex
@@ -21,64 +44,64 @@ public class Trail
         }
     }
 
-    private Creature creature;
-    private IDietary dietary;
-    private LineRenderer lr;
-    private LinkedList<Vertex> verticies = new();
+    private Creature _creature;
+    private IDietary _dietary;
+    private LineRenderer _lr;
+    private LinkedList<Vertex> _verticies = new();
 
     public Trail (Creature creature, IDietary dietary)
     {
-        this.creature = creature;
-        this.dietary = dietary;
-        lr = creature.GetComponent<LineRenderer>();
+        this._creature = creature;
+        this._dietary = dietary;
+        _lr = creature.GetComponent<LineRenderer>();
 
-        lr.startWidth = 1;
-        lr.endWidth = .1f;
-        setColor();
+        _lr.startWidth = 1;
+        _lr.endWidth = .1f;
+        SetColor();
     }
 
     public void FixedUpdate()
     {
-        if (Gamevariables.SHOW_TRAIL)
+        if (Gamevariables.ShowTrail)
         {
-            AddVertex(new Vertex(creature.transform.position, getStatusColor()));
-            renderLine();
-        } else if (verticies.Count > 0)
+            AddVertex(new Vertex(_creature.transform.position, GetStatusColor()));
+            RenderLine();
+        } else if (_verticies.Count > 0)
         {
-             verticies.Clear();
+             _verticies.Clear();
         }
     }
 
-    private void renderLine()
+    private void RenderLine()
     {
         int index = 0;
-        lr.positionCount = verticies.Count;
-        foreach (Vertex v in verticies)
+        _lr.positionCount = _verticies.Count;
+        foreach (Vertex v in _verticies)
         {
-            lr.SetPosition(index, v.position);
+            _lr.SetPosition(index, v.position);
             index++;
         }
     }
 
     private void AddVertex(Vertex v)
     {
-        if (verticies.Count >= Gamevariables.TRAIL_LENGTH)
+        if (_verticies.Count >= Gamevariables.TrailLength)
         {
-            int difference = verticies.Count - Gamevariables.TRAIL_LENGTH;
+            int difference = _verticies.Count - Gamevariables.TrailLength;
             for (int i = 0; i < difference; i++)
             {
-                verticies.RemoveLast();
+                _verticies.RemoveLast();
             }
         }
-        verticies.AddFirst(v);
+        _verticies.AddFirst(v);
     }
 
     #region Color
-    public void setColor()
+    public void SetColor()
     {
-        if (Gamevariables.TRAIL_COLOR == ColorScheme.DIETARY)
+        if (Gamevariables.TrailColor == ColorScheme.dietary)
         {
-            setDietaryColor();
+            SetDietaryColor();
             return;
         }
         //if (Gamevariables.TRAIL_COLOR == ColorScheme...)
@@ -86,16 +109,16 @@ public class Trail
         //    setStatusColor();
         //}
 
-        setDefaultColor();
+        SetDefaultColor();
     }
 
-    private void setDefaultColor()
+    private void SetDefaultColor()
     {
-        lr.startColor = new Color(1, 1, 1, .5f);
-        lr.endColor = new Color(1, 1, 1, 0);
+        _lr.startColor = new Color(1, 1, 1, .5f);
+        _lr.endColor = new Color(1, 1, 1, 0);
     }
 
-    private void setStatusColor()
+    private void SetStatusColor()
     {
         /*placeholder for gradient
          * Every Vertex has a StatusColor.
@@ -104,48 +127,48 @@ public class Trail
          */
     }
 
-    private void setDietaryColor()
+    private void SetDietaryColor()
     {
-        if (dietary.specification == IDietary.Specification.OMNIVORE)
+        if (_dietary.specification == IDietary.Specification.OMNIVORE)
         {
-            lr.startColor = new Color(1, 1, 0, .5f);
-            lr.endColor = new Color(1, 1, 0, 0);
+            _lr.startColor = new Color(1, 1, 0, .5f);
+            _lr.endColor = new Color(1, 1, 0, 0);
             return;
         }
-        if (dietary.specification == IDietary.Specification.CARNIVORE)
+        if (_dietary.specification == IDietary.Specification.CARNIVORE)
         {
-            lr.startColor = new Color(1, 0, 0, .5f);
-            lr.endColor = new Color(1, 0, 0, 0);
+            _lr.startColor = new Color(1, 0, 0, .5f);
+            _lr.endColor = new Color(1, 0, 0, 0);
             return;
         }
-        if (dietary.specification == IDietary.Specification.HERBIVORE)
+        if (_dietary.specification == IDietary.Specification.HERBIVORE)
         {
-            lr.startColor = new Color(0, 1, 0, .5f);
-            lr.endColor = new Color(0, 1, 0, 0);
+            _lr.startColor = new Color(0, 1, 0, .5f);
+            _lr.endColor = new Color(0, 1, 0, 0);
             return;
         }
     }
 
-    private Color getStatusColor()
+    private Color GetStatusColor()
     {
         float alpha = .25f;
-        if (creature.statusManager.status == StatusManager.Status.WANDERING)
+        if (_creature.StatusManager.status == StatusManager.Status.wandering)
             return new Color(.8f, .8f, .8f, alpha);     //LIGHT GREY
-        if (creature.statusManager.status == StatusManager.Status.THIRSTY)
+        if (_creature.StatusManager.status == StatusManager.Status.thirsty)
             return new Color(.5f, .75f, 1f, alpha);     //LIGHT BLUE
-        if (creature.statusManager.status == StatusManager.Status.DEHYDRATED)
+        if (_creature.StatusManager.status == StatusManager.Status.dehydrated)
             return new Color(0, .28f, .55f, alpha);     //DARK BLUE
-        if (creature.statusManager.status == StatusManager.Status.HUNGRY)
+        if (_creature.StatusManager.status == StatusManager.Status.hungry)
             return new Color(1, .83f, .6f, alpha);      //LIGHT ORANGE
-        if (creature.statusManager.status == StatusManager.Status.STARVING)
+        if (_creature.StatusManager.status == StatusManager.Status.starving)
             return new Color(.78f, .52f, .16f, alpha);  //DARK ORANGE
-        if (creature.statusManager.status == StatusManager.Status.FLEEING)
+        if (_creature.StatusManager.status == StatusManager.Status.fleeing)
             return new Color(.56f, 1, .63f, alpha);     //LIGHT GREEN
-        if (creature.statusManager.status == StatusManager.Status.HUNTING)
+        if (_creature.StatusManager.status == StatusManager.Status.hunting)
             return new Color(.9f, .34f, .34f, alpha);   //RED
-        if (creature.statusManager.status == StatusManager.Status.LOOKING_FOR_PARTNER)
+        if (_creature.StatusManager.status == StatusManager.Status.looking_for_partner)
             return new Color(1, .6f, .84f, alpha);      //PINK
-        if (creature.statusManager.status == StatusManager.Status.SLEEPING)
+        if (_creature.StatusManager.status == StatusManager.Status.sleeping)
             return new Color(.4f, .4f, .4f, alpha);     //DARK GREY
 
         return Color.black;                             //ERROR COLOR

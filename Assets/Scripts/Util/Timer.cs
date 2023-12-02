@@ -1,28 +1,52 @@
+/*  Head
+ *      Author:             Schneider Erik
+ *      1st Supervisor:     Prof.Dr Ralph Lano
+ *      2nd Supervisor:     Prof.Dr Matthias Hopf
+ *      Project-Title:      ComSim
+ *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
+ *      University:         Technische Hochschule Nürnberg
+ *  
+ *  Description:
+ *      - helper class for tick based timer
+ *  
+ *  References:
+ *      Scene:
+ *          - scene independent
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
+ */
+
 using UnityEngine;
 
 public class Timer
 {
-    private int minutes_max;
-    private int minutes_left;
+    private int _minutesMax;
+    private int _minutesLeft;
     public Timer(int minutes_max)
     {
-        this.minutes_max = minutes_max;
-        this.minutes_left = 0;
+        this._minutesMax = minutes_max;
+        this._minutesLeft = 0;
     }
 
-    public void reset()
+    public void Reset()
     {
-        minutes_left = minutes_max;
+        _minutesLeft = _minutesMax;
     }
 
-    public void tick()
+    public void Tick()
     {
-        minutes_left = Mathf.Clamp(minutes_left - Gamevariables.MINUTES_PER_TICK, 0, minutes_max);
+        _minutesLeft = Mathf.Clamp(_minutesLeft - Gamevariables.MinutesPerTick, 0, _minutesMax);
     }
 
-    public bool finished()
+    public bool Finished()
     {
-        return minutes_left <= 0;
+        return _minutesLeft <= 0;
     }
     
 }

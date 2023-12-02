@@ -6,21 +6,25 @@
  *      Bachelor-Title:     "Erschaffung einer digitalen Evolutionssimulation mit Vertiefung auf Sozialverhalten"
  *      University:         Technische Hochschule Nürnberg
  *  
- *  Class Purposes:
+ *  Description:
+ *      - this class creates special maps for different scenarios
  *  
- *  Class Infos:
- *      
- *  Class References:
- *      
+ *  References:
+ *      Scene:
+ *          - test simulation scene(s)
+ *      Script:
+ *          - 
+ *          
+ *  Notes:
+ *      -
+ *  
+ *  Sources:
+ *      - 
  */
 
-// base: https://docs.unity3d.com/ScriptReference/Mathf.PerlinNoise.html
 
 using UnityEngine;
 
-// Create a texture and fill it with Perlin noise.
-// Try varying the xOrg, yOrg and scale values in the inspector
-// while in Play mode to see the effect they have on the noise.
 
 public class Test_MapGenerator : MonoBehaviour
 {
@@ -41,9 +45,9 @@ public class Test_MapGenerator : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 if ((x + y) % 2 == 0)
-                    tbm.SetTile(new Vector2Int(x - width / 2, y - height / 2), tbm.getTileBase(TileBaseManager.tileType.GRASS));
+                    tbm.SetTile(new Vector2Int(x - width / 2, y - height / 2), tbm.GetTileBase(TileBaseManager.TileType.grass));
                 else
-                    tbm.SetTile(new Vector2Int(x - width / 2, y - height / 2), tbm.getTileBase(TileBaseManager.tileType.SAND));
+                    tbm.SetTile(new Vector2Int(x - width / 2, y - height / 2), tbm.GetTileBase(TileBaseManager.TileType.sand));
             }
         }
     }
