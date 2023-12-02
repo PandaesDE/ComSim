@@ -66,6 +66,6 @@ public class Lion : Creature
     protected override void OnDeath(DeathReason dr)
     {
         Spawner.MakeCorpse(this);
-        Statistics.incrementLionDeathReason(dr);
+        Statistics.IncrementLionDeathReason(dr);
     }
 }

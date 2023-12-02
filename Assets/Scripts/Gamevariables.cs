@@ -68,4 +68,6 @@ public class Gamevariables
         world = 0
     }
 
+    //Debug
+    public static readonly bool LOGGING_ENABLED = false;
 }
