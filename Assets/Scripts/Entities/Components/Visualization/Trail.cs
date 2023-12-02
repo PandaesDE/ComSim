@@ -68,7 +68,8 @@ public class Trail
             RenderLine();
         } else if (_verticies.Count > 0)
         {
-             _verticies.Clear();
+            _verticies.Clear();
+            RenderLine();
         }
     }
 

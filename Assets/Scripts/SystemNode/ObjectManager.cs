@@ -26,65 +26,128 @@
 
 
 
+using Codice.Client.Common.GameUI;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.WSA;
 
 public class ObjectManager : MonoBehaviour
 {
-    private static Dictionary<int,Creature> _s_allCreatures;
-    private static Dictionary<int,Corpse> _s_allCorpses;
+    public static Dictionary<int,Human> AllHumans { get; private set; }
+    public static Dictionary<int,Lion> AllLions {get; private set; }
+    public static Dictionary<int,Boar> AllBoars {get; private set; }
+    public static Dictionary<int,Rabbit> AllRabbits {get; private set; }
+    public static Dictionary<int, Corpse> AllCorpses { get; private set; }
 
     private void Awake()
     {
-        if (_s_allCreatures != null || _s_allCorpses != null)
+        if (AllCorpses != null)
         {
             /*this class has already been assigned*/
             return;
         }
-        _s_allCreatures = new();
-        _s_allCorpses = new();
+        AllHumans = new();
+        AllLions = new();
+        AllBoars = new();
+        AllRabbits = new();
+        AllCorpses = new();
     }
 
     #region Creatures
     public static void AddCreature(Creature toAdd)
     {
-        _s_allCreatures.Add(toAdd.GetInstanceID(), toAdd);
+        if (toAdd.TryGetComponent<Human>(out Human h))
+            AllHumans.Add(h.GetInstanceID(), h);
+        else if (toAdd.TryGetComponent<Lion>(out Lion l))
+            AllLions.Add(l.GetInstanceID(), l);
+        else if (toAdd.TryGetComponent<Boar>(out Boar b))
+            AllBoars.Add(b.GetInstanceID(), b);
+        else if (toAdd.TryGetComponent<Rabbit>(out Rabbit r))
+            AllRabbits.Add(r.GetInstanceID(), r);
+        else
+            throwUnknownCreatureException(toAdd);
     }
 
     public static void AddCreatures(List<Creature> toAddList)
     {
         for (int i = 0; i < toAddList.Count; i++)
         {
-            Creature creature = toAddList[i];
-            _s_allCreatures.Add(creature.GetInstanceID(), creature);
+            AddCreature(toAddList[i]);
         }
     }
 
     public static void DeleteAllCreatures()
     {
-        foreach (Creature c in _s_allCreatures.Values)
+        DeleteCreatureList(AllHumans);
+        DeleteCreatureList(AllLions);
+        DeleteCreatureList(AllBoars);
+        DeleteCreatureList(AllRabbits);
+
+        static void DeleteCreatureList<T>(Dictionary<int, T> creatureDict) where T : Creature
         {
-            Destroy(c.gameObject);
+            foreach (Creature c in creatureDict.Values)
+            {
+                Destroy(c.gameObject);
+            }
+            creatureDict.Clear();
         }
-        _s_allCreatures.Clear();
     }
+
+
 
     public static void DeleteCreature(Creature toDelete)
     {
-        if (!_s_allCreatures.ContainsKey(toDelete.GetInstanceID()))
-        {
-            return; //already deleted
-        }
+        if (toDelete.TryGetComponent<Human>(out Human h))
+            DeleteCreature(AllHumans, h);
+        else if (toDelete.TryGetComponent<Lion>(out Lion l))
+            DeleteCreature(AllLions, l);
+        else if (toDelete.TryGetComponent<Boar>(out Boar b))
+            DeleteCreature(AllBoars, b);
+        else if (toDelete.TryGetComponent<Rabbit>(out Rabbit r))
+            DeleteCreature(AllRabbits, r);
+        else
+            throwUnknownCreatureException(toDelete);
 
-        _s_allCreatures.Remove(toDelete.GetInstanceID());
-        Destroy(toDelete.gameObject);
+        static void DeleteCreature<T>(Dictionary<int,T> creatureDict, T toDelete) where T : Creature
+        {
+            if (!creatureDict.ContainsKey(toDelete.GetInstanceID()))
+            {
+                return; //already deleted
+            }
+
+            creatureDict.Remove(toDelete.GetInstanceID());
+            Destroy(toDelete.gameObject);
+        }
     }
+
 
     public static void ChangeTrailColor()
     {
-        foreach (Creature c in _s_allCreatures.Values)
+
+        foreach (Creature c in GetAllCreatures().Values)
         {
             c.Trail.SetColor();
+        }
+    }
+
+    private static Dictionary<int, Creature> GetAllCreatures()
+    {
+        Dictionary<int, Creature> creatures = new();
+        MergeDictionaries(AllHumans, creatures);
+        MergeDictionaries(AllLions, creatures);
+        MergeDictionaries(AllBoars, creatures);
+        MergeDictionaries(AllRabbits, creatures);
+        return creatures;
+
+        static Dictionary<int, Creature> MergeDictionaries<T>(Dictionary<int, T> source, Dictionary<int, Creature> destination) where T : Creature
+        {
+            foreach (var kvp in source)
+            {
+                destination[kvp.Key] = kvp.Value;
+            }
+            return destination;
         }
     }
     #endregion
@@ -92,27 +155,34 @@ public class ObjectManager : MonoBehaviour
     #region Corpses
     public static void AddCorpse(Corpse toAdd)
     {
-        _s_allCorpses.Add(toAdd.GetInstanceID(), toAdd);
+        AllCorpses.Add(toAdd.GetInstanceID(), toAdd);
     }
 
     public static void DeleteCorpse(Corpse toDelete)
     {
-        if (!_s_allCorpses.ContainsKey(toDelete.GetInstanceID()))
+        if (!AllCorpses.ContainsKey(toDelete.GetInstanceID()))
         {
             return; //already deleted
         }
 
-        _s_allCorpses.Remove(toDelete.GetInstanceID());
+        AllCorpses.Remove(toDelete.GetInstanceID());
         Destroy(toDelete.gameObject);
     }
 
     public static void DeleteAllCorpses()
     {
-        foreach (Corpse c in _s_allCorpses.Values)
+        foreach (Corpse c in AllCorpses.Values)
         {
             Destroy(c.gameObject);
         }
-        _s_allCorpses.Clear();
+        AllCorpses.Clear();
+    }
+    #endregion
+
+    #region Exceptions
+    private static void throwUnknownCreatureException(Creature c)
+    {
+        throw new Exception($"No valid Creature Type: {c}");
     }
     #endregion
 }
