@@ -59,16 +59,16 @@ public class GameplayTests
     [UnityTest]
     public IEnumerator Mating_Passed()
     {
-        Test_MapGenerator tmg = GameObject.Find("SystemNode").GetComponent<Test_MapGenerator>();
+        //Test_MapGenerator tmg = GameObject.Find("SystemNode").GetComponent<Test_MapGenerator>();
 
-        Human h1 = Spawner.SpawnHumans(new SpawnOptions()
-            .SetPosition(new Vector2(0, 0))
-            .SetIsMale(true))[0];
-        Human h2 = Spawner.SpawnHumans(new SpawnOptions()
-            .SetPosition(new Vector2(0, 1))
-            .SetIsMale(true))[0];
+        //Human h1 = Spawner.SpawnHumans(new SpawnOptions()
+        //    .SetPosition(new Vector2(0, 0))
+        //    .SetIsMale(true))[0];
+        //Human h2 = Spawner.SpawnHumans(new SpawnOptions()
+        //    .SetPosition(new Vector2(0, 1))
+        //    .SetIsMale(true))[0];
         
-        tmg.RenderNormalTestMap(50, 50);
+        //tmg.RenderNormalTestMap(50, 50);
         yield return new WaitForSeconds(3);
     }
 

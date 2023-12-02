@@ -206,7 +206,7 @@ public class Spawner : MonoBehaviour
 
         corpse_GO.gameObject.AddComponent<Corpse>();
         Corpse c = corpse_GO.GetComponent<Corpse>();
-        c.SetWeight(corpse_GO.GetComponent<Creature>().weight);
+        c.SetWeight(corpse_GO.GetComponent<Creature>().Weight);
         Destroy(corpse_GO.GetComponent<Creature>());
         Destroy(corpse_GO.GetComponent<LineRenderer>());
 

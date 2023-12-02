@@ -52,8 +52,7 @@ public class Human : Creature
     /*Gets called by Parent*/
     protected override bool IsSameSpecies(Creature c)
     {
-        Human partner = c.gameObject.GetComponent<Human>();
-        if (partner == null) return false;
+        if (!c.TryGetComponent<Human>(out _)) return false;
         return true;
     }
 

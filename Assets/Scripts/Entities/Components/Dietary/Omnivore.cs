@@ -53,7 +53,7 @@ public class Omnivore : IDietary
 
     public StatusManager.Status OnAttacked()
     {
-        if (creature.health / creature.maxHealth <= .5f)
+        if (creature.Health / creature.maxHealth <= .5f)
         {
             return StatusManager.Status.fleeing;
         }
@@ -63,7 +63,7 @@ public class Omnivore : IDietary
 
     public StatusManager.Status OnApproached()
     {
-        if (creature.health / creature.maxHealth <= .8f)
+        if (creature.Health / creature.maxHealth <= .8f)
         {
             return StatusManager.Status.fleeing;
         }

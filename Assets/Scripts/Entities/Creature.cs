@@ -36,9 +36,9 @@ public abstract class Creature : MonoBehaviour
     //Attributes
     public int maxHealth;
 
-    public float energy { get; protected set; } = MAX_ENERGY;
-    public float health { get; protected set; } = 0;
-    public int weight { get; protected set; } = 0;
+    public float Energy { get; protected set; } = MAX_ENERGY;
+    public float Health { get; protected set; } = 0;
+    public int Weight { get; protected set; } = 0;
     
 
 
@@ -62,7 +62,7 @@ public abstract class Creature : MonoBehaviour
     public Trail Trail { get; private set; }
 
         //States
-    private Timer _automaticStatusUpdate = new Timer(Gamevariables.MINUTES_PER_HOUR);
+    private Timer _automaticStatusUpdate = new(Gamevariables.MINUTES_PER_HOUR);
     public StatusManager StatusManager { get; protected set; }
 
 
@@ -98,10 +98,10 @@ public abstract class Creature : MonoBehaviour
 
         void InitializeCreatureComponents()
         {
-            if (senses == null) senses = new(this);
-            if (brain == null) brain = new(this);
-            if (StatusManager == null) StatusManager = new(brain);
-            if (Movement == null) Movement = new(this);
+            senses ??= new(this);
+            brain ??= new(this);
+            StatusManager ??= new(brain);
+            Movement ??= new(this);
         }
     }
 
@@ -140,32 +140,29 @@ public abstract class Creature : MonoBehaviour
     
     protected Creature BuildGender(IGender gender)
     {
-
-        if (this.Gender == null) 
-            this.Gender = gender;
+        this.Gender ??= gender;
         return this;
     }
 
     protected Creature BuildDietary(IDietary dietary)
     {
-        if (this.dietary == null)
-            this.dietary = dietary;
+        this.dietary ??= dietary;
         return this;
     }
     protected Creature BuildHealth(int health)
     {
-        if (this.health == 0)
+        if (this.Health == 0)
         {
             this.maxHealth = health;
-            this.health = health;
+            this.Health = health;
         }
         return this;
     }
 
     protected Creature BuildWeight(int weight)
     {
-        if (this.weight == 0)
-            this.weight = weight;
+        if (this.Weight == 0)
+            this.Weight = weight;
         return this;
     }
 
@@ -447,7 +444,7 @@ public abstract class Creature : MonoBehaviour
 
         void OnGivingBirth()
         {
-            health -= 20;
+            Health -= 20;
             GiveBirth();
         }
     }
@@ -489,8 +486,7 @@ public abstract class Creature : MonoBehaviour
 
     protected bool IsEdibleFoodSource(GameObject g)
     {
-        IConsumable food = g.GetComponent<IConsumable>();
-        if (food == null) return false;
+        if (!g.TryGetComponent<IConsumable>(out IConsumable food)) return false;    //if null return false, if not save in food variable
         return dietary.IsEdibleFoodSource(food);
     }
     #endregion
@@ -583,10 +579,10 @@ public abstract class Creature : MonoBehaviour
         float addPerTick = addPerMinute * (float)Gamevariables.MinutesPerTick;
         float lightfactor = lightScaler * addPerTick * (1f - Gamevariables.LightIntensity);
 
-        energy = Mathf.Clamp(energy + addPerTick + lightfactor, 0, MAX_ENERGY);
-        if (energy >= MAX_ENERGY    ||  //Full
-            energy >= hunger        ||  //Hungry
-            energy >= thirst)           //Thirsty
+        Energy = Mathf.Clamp(Energy + addPerTick + lightfactor, 0, MAX_ENERGY);
+        if (Energy >= MAX_ENERGY    ||  //Full
+            Energy >= hunger        ||  //Hungry
+            Energy >= thirst)           //Thirsty
         {
             //REGULAR WAKE UP
             brain.ActivateAllInactiveFoodSources();
@@ -604,8 +600,8 @@ public abstract class Creature : MonoBehaviour
         float addPerTick = subPerMinute * (float)Gamevariables.MinutesPerTick;
         float lightfactor = lightScaler * addPerTick * Gamevariables.LightIntensity;
 
-        energy = Mathf.Clamp(energy - addPerTick - lightfactor, 0, MAX_ENERGY);
-        if (energy <= 0) StatusManager.SetState(StatusManager.Status.sleeping);
+        Energy = Mathf.Clamp(Energy - addPerTick - lightfactor, 0, MAX_ENERGY);
+        if (Energy <= 0) StatusManager.SetState(StatusManager.Status.sleeping);
     }
     #endregion
 
@@ -615,17 +611,17 @@ public abstract class Creature : MonoBehaviour
 
     public void Attack(int damage = 20)
     {
-        health -= damage;
+        Health -= damage;
         StatusManager.SetState(dietary.OnAttacked());
-        if (health <= 0)
+        if (Health <= 0)
         {
             Death();
         }
     }
     protected void Regenerate(float addPercentPerHour = .01f)
     {
-        float add = addPercentPerHour * health * (float)Gamevariables.MinutesPerTick / (float)Gamevariables.MINUTES_PER_HOUR;
-        health = Mathf.Clamp(health + add, 0, maxHealth);
+        float add = addPercentPerHour * Health * (float)Gamevariables.MinutesPerTick / (float)Gamevariables.MINUTES_PER_HOUR;
+        Health = Mathf.Clamp(Health + add, 0, maxHealth);
     }
 
     protected void Death()

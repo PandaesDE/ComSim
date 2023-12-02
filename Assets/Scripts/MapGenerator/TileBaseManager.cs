@@ -143,7 +143,7 @@ public class TileBaseManager : MonoBehaviour
 
     public bool IsWater(GameObject g)
     {
-        return g.tag == "Water";
+        return g.CompareTag("Water");
     }
 
     //public bool IsWater(Vector2 coord)

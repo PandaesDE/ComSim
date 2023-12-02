@@ -50,7 +50,7 @@ public class Carnivore : IDietary
 
     public StatusManager.Status OnAttacked()
     {
-        if (_creature.health / _creature.maxHealth <= .2f)
+        if (_creature.Health / _creature.maxHealth <= .2f)
         {
             return StatusManager.Status.fleeing;
         }
@@ -65,7 +65,7 @@ public class Carnivore : IDietary
 
     public StatusManager.Status OnApproached()
     {
-        if (_creature.health / _creature.maxHealth <= .3f)
+        if (_creature.Health / _creature.maxHealth <= .3f)
         {
             return StatusManager.Status.fleeing;
         }

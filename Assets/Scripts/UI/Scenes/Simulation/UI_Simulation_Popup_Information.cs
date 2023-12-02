@@ -131,7 +131,7 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
 
     private void UpdateHealthBar()
     {
-        _sdr_Health.value = (float)_target.health / (float)_target.maxHealth;
+        _sdr_Health.value = (float)_target.Health / (float)_target.maxHealth;
     }
 
     private void UpdateHungerBar()
@@ -146,7 +146,7 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
 
     private void UpdateEnergyBar()
     {
-        _sdr_Energy.value = _target.energy / Creature.MAX_ENERGY;
+        _sdr_Energy.value = _target.Energy / Creature.MAX_ENERGY;
     }
 
     private void UpdateStatus()

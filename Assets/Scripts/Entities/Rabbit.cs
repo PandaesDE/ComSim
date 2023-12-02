@@ -26,8 +26,6 @@ using UnityEngine;
 
 public class Rabbit : Creature
 {
-    [SerializeField] private Sprite spr_General;        //TODO DELETE?
-
     protected override void Awake()
     {
         base.Awake();
@@ -53,8 +51,7 @@ public class Rabbit : Creature
     /*Gets called by Parent*/
     protected override bool IsSameSpecies(Creature c)
     {
-        Rabbit partner = c.gameObject.GetComponent<Rabbit>();   //TODO TryGet
-        if (partner == null) return false;
+        if (!c.TryGetComponent<Rabbit>(out _)) return false;
         return true;
     }
 
