@@ -126,7 +126,7 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
 
     private void UpdateTarget()
     {
-        _display_Target.text = "" + _target.Movement.target;
+        _display_Target.text = "" + _target.Movement.Target;
     }
 
     private void UpdateHealthBar()
@@ -151,7 +151,7 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
 
     private void UpdateStatus()
     {
-        _display_Status.text = (_target.StatusManager.status + "").ToLower();
+        _display_Status.text = (_target.StatusManager.Status + "").ToLower();
     }
 
     private void SetActive(bool state) 

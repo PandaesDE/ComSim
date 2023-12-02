@@ -152,23 +152,23 @@ public class Trail
     private Color GetStatusColor()
     {
         float alpha = .25f;
-        if (_creature.StatusManager.status == StatusManager.Status.wandering)
+        if (_creature.StatusManager.Status == StatusManager.State.wandering)
             return new Color(.8f, .8f, .8f, alpha);     //LIGHT GREY
-        if (_creature.StatusManager.status == StatusManager.Status.thirsty)
+        if (_creature.StatusManager.Status == StatusManager.State.thirsty)
             return new Color(.5f, .75f, 1f, alpha);     //LIGHT BLUE
-        if (_creature.StatusManager.status == StatusManager.Status.dehydrated)
+        if (_creature.StatusManager.Status == StatusManager.State.dehydrated)
             return new Color(0, .28f, .55f, alpha);     //DARK BLUE
-        if (_creature.StatusManager.status == StatusManager.Status.hungry)
+        if (_creature.StatusManager.Status == StatusManager.State.hungry)
             return new Color(1, .83f, .6f, alpha);      //LIGHT ORANGE
-        if (_creature.StatusManager.status == StatusManager.Status.starving)
+        if (_creature.StatusManager.Status == StatusManager.State.starving)
             return new Color(.78f, .52f, .16f, alpha);  //DARK ORANGE
-        if (_creature.StatusManager.status == StatusManager.Status.fleeing)
+        if (_creature.StatusManager.Status == StatusManager.State.fleeing)
             return new Color(.56f, 1, .63f, alpha);     //LIGHT GREEN
-        if (_creature.StatusManager.status == StatusManager.Status.hunting)
+        if (_creature.StatusManager.Status == StatusManager.State.hunting)
             return new Color(.9f, .34f, .34f, alpha);   //RED
-        if (_creature.StatusManager.status == StatusManager.Status.looking_for_partner)
+        if (_creature.StatusManager.Status == StatusManager.State.looking_for_partner)
             return new Color(1, .6f, .84f, alpha);      //PINK
-        if (_creature.StatusManager.status == StatusManager.Status.sleeping)
+        if (_creature.StatusManager.Status == StatusManager.State.sleeping)
             return new Color(.4f, .4f, .4f, alpha);     //DARK GREY
 
         return Color.black;                             //ERROR COLOR

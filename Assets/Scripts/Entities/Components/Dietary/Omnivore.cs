@@ -51,31 +51,31 @@ public class Omnivore : IDietary
         return Util.InRange(creature.gameObject.transform.position, approacher.gameObject.transform.position, dangerZone);
     }
 
-    public StatusManager.Status OnAttacked()
+    public StatusManager.State OnAttacked()
     {
         if (creature.Health / creature.maxHealth <= .5f)
         {
-            return StatusManager.Status.fleeing;
+            return StatusManager.State.fleeing;
         }
 
-        return StatusManager.Status.hunting;
+        return StatusManager.State.hunting;
     }
 
-    public StatusManager.Status OnApproached()
+    public StatusManager.State OnApproached()
     {
         if (creature.Health / creature.maxHealth <= .8f)
         {
-            return StatusManager.Status.fleeing;
+            return StatusManager.State.fleeing;
         }
         if (creature.hunger < 60)
         {
-            return StatusManager.Status.hunting;
+            return StatusManager.State.hunting;
         }
-        return StatusManager.Status.wandering;
+        return StatusManager.State.wandering;
     }
 
-    StatusManager.Status IDietary.OnNoFood()
+    StatusManager.State IDietary.OnNoFood()
     {
-        return StatusManager.Status.hunting;
+        return StatusManager.State.hunting;
     }
 }

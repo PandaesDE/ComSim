@@ -40,7 +40,7 @@ public class Rabbit : Creature
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        if (StatusManager.status != StatusManager.Status.sleeping)
+        if (StatusManager.Status != StatusManager.State.sleeping)
         {
             Movement.MoveToTarget();
             EvaluateVision();

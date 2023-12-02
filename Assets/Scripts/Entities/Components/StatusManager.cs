@@ -16,7 +16,7 @@
  *          - One instance per creature
  *          
  *  Notes:
- *      - Refactor to a better State Machine
+ *      - TODO: Refactor to a better State Machine
  *          - https://www.youtube.com/watch?v=Vt8aZDPzRjI
  *  
  *  Sources:
@@ -25,7 +25,7 @@
 
 public class StatusManager
 {
-    public Status status { get; private set; } = Status.wandering;
+    public State Status { get; private set; } = State.wandering;
 
     private Brain _brain = null;
 
@@ -33,7 +33,7 @@ public class StatusManager
     {
         this._brain = brain;
     }
-    public enum Status  
+    public enum State  
     {
         wandering,
         sleeping,
@@ -49,10 +49,10 @@ public class StatusManager
         giving_birth
     }
 
-    public void SetState(Status status)
+    public void SetState(State status)
     {
         _brain.OnStateChange();
-        this.status = status;
+        this.Status = status;
     }
 
 }

@@ -33,8 +33,8 @@ public interface IDietary
     public Specification specification { get; }
     public bool IsEdibleFoodSource(IConsumable food);
     public bool IsInDangerZone(Creature creature);
-    public StatusManager.Status OnNoFood();
-    public StatusManager.Status OnAttacked();
-    public StatusManager.Status OnApproached();
+    public StatusManager.State OnNoFood();
+    public StatusManager.State OnAttacked();
+    public StatusManager.State OnApproached();
 
 }

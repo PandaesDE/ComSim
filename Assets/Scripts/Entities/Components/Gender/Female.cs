@@ -64,7 +64,7 @@ public class Female : IGender
             } else
             {
 
-                _creature.StatusManager.SetState(StatusManager.Status.giving_birth);
+                _creature.StatusManager.SetState(StatusManager.State.giving_birth);
             }
         } else
         {

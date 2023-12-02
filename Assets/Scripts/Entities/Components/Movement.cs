@@ -27,16 +27,16 @@ using UnityEngine;
 public class Movement
 {
     private Creature _creature;
-    public float speed { get; set; } = .2f;      //moves per Minute
+    public float Speed { get; set; } = .2f;      //moves per Minute
 
     private bool _isMoving = false;
     private GameObject _movingTarget = null;
-    [SerializeField] public Vector2 target
+    [SerializeField] public Vector2 Target
     {
         get;
         protected set;
     }
-    [SerializeField] public Direction facing
+    [SerializeField] public Direction Facing
     { 
         get;
         protected set;
@@ -57,7 +57,7 @@ public class Movement
     public Movement(Creature creature)
     {
         this._creature = creature;
-        target = Util.Random.CoordinateInPlayground();
+        Target = Util.Random.CoordinateInPlayground();
     }
 
     public void SetRandomTarget()
@@ -83,24 +83,24 @@ public class Movement
         float y = Mathf.Clamp(destination.y, -Gamevariables.PLAYGROUND_SIZE.y / 2, Gamevariables.PLAYGROUND_SIZE.y / 2);
 
         destination = new Vector2(x, y);
-        target = destination;
+        Target = destination;
         _nextSteps = Vector2Int.zero;
     }
 
     public bool TargetReached()
     {
-        return Util.InRange(_creature.transform.position, target);
+        return Util.InRange(_creature.transform.position, Target);
     }
 
     public void MoveToTarget()
     {
         if (_isMoving)
         {
-            target = _movingTarget.transform.position;
+            Target = _movingTarget.transform.position;
         }
-        if (Util.InRange(_creature.transform.position, target))
+        if (Util.InRange(_creature.transform.position, Target))
             return;
-        float theoreticalMoves = speed * Gamevariables.MinutesPerTick + _leftOverSteps;
+        float theoreticalMoves = Speed * Gamevariables.MinutesPerTick + _leftOverSteps;
         int moves = (int)theoreticalMoves;
         _leftOverSteps = theoreticalMoves - moves;
 
@@ -111,18 +111,18 @@ public class Movement
                 continue;
 
             if (_nextSteps == Vector2.zero)
-                CalculateNextSteps(target);
+                CalculateNextSteps(Target);
 
             if (Mathf.Abs(_nextSteps.x) > Mathf.Abs(_nextSteps.y))
             {
                 if (_nextSteps.x > 0)
                 {
-                    facing = Direction.east;
+                    Facing = Direction.east;
                     MakeStep();
                 }
                 else
                 {
-                    facing = Direction.west;
+                    Facing = Direction.west;
                     MakeStep();
                 }
             }
@@ -130,12 +130,12 @@ public class Movement
             {
                 if (_nextSteps.y > 0)
                 {
-                    facing = Direction.north;
+                    Facing = Direction.north;
                     MakeStep();
                 }
                 else
                 {
-                    facing = Direction.south;
+                    Facing = Direction.south;
                     MakeStep();
                 }
             }
@@ -170,28 +170,28 @@ public class Movement
 
     private void MakeStep()
     {
-        if (facing == Direction.north)
+        if (Facing == Direction.north)
         {
             _nextSteps -= Vector2Int.up;
             _creature.transform.position += Vector3.up;
             _creature.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
             return;
         }
-        if (facing == Direction.east)
+        if (Facing == Direction.east)
         {
             _nextSteps -= Vector2Int.right;
             _creature.transform.position += Vector3.right;
             _creature.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.right);
             return;
         }
-        if (facing == Direction.south)
+        if (Facing == Direction.south)
         {
             _nextSteps -= Vector2Int.down;
             _creature.transform.position += Vector3.down;
             _creature.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.down);
             return;
         }
-        if (facing == Direction.west)
+        if (Facing == Direction.west)
         {
             _nextSteps -= Vector2Int.left;
             _creature.transform.position += Vector3.left;

@@ -88,14 +88,16 @@ public static class ConfigManager
      */
     private static GameSettingsObject GetStaticConfig()
     {
-        GameSettingsObject settings = new();
-        settings.seed = Gamevariables.Seed;
-        settings.startAmountHuman = Gamevariables.HumanAmountStart;
-        settings.startAmountLion = Gamevariables.LionAmountStart;
-        settings.startAmountBoar = Gamevariables.BoarAmountStart;
-        settings.startAmountRabbit = Gamevariables.RabbitAmountStart;
-        settings.PSO_Ground = Gamevariables.PSO_Ground;
-        settings.PSO_Bush = Gamevariables.PSO_Bush;
+        GameSettingsObject settings = new()
+        {
+            seed = Gamevariables.Seed,
+            startAmountHuman = Gamevariables.HumanAmountStart,
+            startAmountLion = Gamevariables.LionAmountStart,
+            startAmountBoar = Gamevariables.BoarAmountStart,
+            startAmountRabbit = Gamevariables.RabbitAmountStart,
+            PSO_Ground = Gamevariables.PSO_Ground,
+            PSO_Bush = Gamevariables.PSO_Bush
+        };
         return settings;
     }
 
