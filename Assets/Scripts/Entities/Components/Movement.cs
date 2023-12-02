@@ -62,7 +62,7 @@ public class Movement
 
     public void SetRandomTarget()
     {
-        SetTarget(Util.Random.CoordinateInPlayground());
+        SetStaticTarget(Util.Random.CoordinateInPlayground());
     }
 
     public void SetRandomTargetIfReached()
@@ -76,7 +76,12 @@ public class Movement
         _movingTarget = g;
     }
 
-    public void SetTarget(Vector2 destination)
+    public bool IsFollowing()
+    {
+        return _isMoving;
+    }
+
+    public void SetStaticTarget(Vector2 destination)
     {
         _isMoving = false;
         float x = Mathf.Clamp(destination.x, -Gamevariables.PLAYGROUND_SIZE.x / 2, Gamevariables.PLAYGROUND_SIZE.x / 2);
@@ -96,7 +101,7 @@ public class Movement
     {
         if (_isMoving)
         {
-            Target = _movingTarget.transform.position;
+            UpdateMovingPosition();
         }
         if (Util.InRange(_creature.transform.position, Target))
             return;
@@ -140,6 +145,16 @@ public class Movement
                 }
             }
         }
+    }
+
+    private void UpdateMovingPosition()
+    {
+        if (_movingTarget == null)
+        {
+            _isMoving = false;
+            return;
+        }
+        Target = _movingTarget.transform.position;
     }
 
     private void CalculateNextSteps(Vector3 destination)

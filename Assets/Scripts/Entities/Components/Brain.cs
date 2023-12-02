@@ -65,6 +65,33 @@ public class Brain
         activeMate = null;
     }
 
+    #region SetActives
+    public void SetActiveFoodSource()
+    {
+        activeFood = GetNearestFoodSource();
+    }
+
+    public void setActiveWaterSource()
+    {
+        activeWater = getNearestWaterSource();
+    }
+
+    public void SetActiveHunt()
+    {
+        activeHunt = GetNearestCreature();
+    }
+
+    public void SetActiveFlee()
+    {
+        activeFlee = GetNearestCreature();
+    }
+
+    public void SetActiveMate()
+    {
+        activeMate = GetNearestMate();
+    }
+    #endregion
+
     #region Survival
     public void AddSpottedCreature(Creature c)
     {
@@ -78,10 +105,7 @@ public class Brain
         return _spottedCreatures.Count > 0;
     }
 
-    public void SetActiveHunt()
-    {
-        activeHunt = GetNearestCreature();
-    }
+
 
     public Creature GetNearestCreature()
     {
@@ -151,11 +175,6 @@ public class Brain
         if (_spottedFoods.ContainsKey(ID)) return;
         if (_inactiveFoods.ContainsKey(ID)) return;
         _spottedFoods[ID] = food;
-    }
-
-    public void SetActiveFoodSource()
-    {
-        activeFood = GetNearestFoodSource();
     }
 
     public void RemoveFoodSources(List<int> IDs)
@@ -282,11 +301,6 @@ public class Brain
         return _spottedWaterSources.Count > 0;
     }
 
-    public void setActiveWaterSource()
-    {
-        activeWater = getNearestWaterSource();
-    }
-
     private GameObject getNearestWaterSource()
     {
         GameObject closest = null;
@@ -318,11 +332,6 @@ public class Brain
         _spottedMates[mate.gameObject.GetInstanceID()] = mate;
     }
 
-    public void SetActiveMate()
-    {
-        activeMate = GetNearestMate();
-    }
-
     public void RemovePotentialMate(int ID)
     {
         if (_spottedMates.ContainsKey(ID))
@@ -341,12 +350,14 @@ public class Brain
         Creature closest = null;
         float minDistance = Mathf.Infinity;
 
+        List<int> missingMates = new();
+
         foreach (KeyValuePair<int, Creature> keyValue in _spottedMates)
         {
             //Mate missing (Died)
             if (keyValue.Value == null)
             {
-                RemovePotentialMate(keyValue.Key);
+                missingMates.Add(keyValue.Key);
                 continue;
             }
 
@@ -357,7 +368,17 @@ public class Brain
                 closest = keyValue.Value;
             }
         }
+
+        RemovePotentialMates(missingMates);
         return closest;
+    }
+
+    private void RemovePotentialMates(List<int> IDs)
+    {
+        for (int i = 0; i < IDs.Count; i++)
+        {
+            RemovePotentialMate(IDs[i]);
+        }
     }
     #endregion
 }

@@ -73,7 +73,7 @@ public class ObjectManager : MonoBehaviour
     {
         if (!_s_allCreatures.ContainsKey(toDelete.GetInstanceID()))
         {
-            UnregisteredObjectException($"{toDelete}");
+            return; //already deleted
         }
 
         _s_allCreatures.Remove(toDelete.GetInstanceID());
@@ -99,7 +99,7 @@ public class ObjectManager : MonoBehaviour
     {
         if (!_s_allCorpses.ContainsKey(toDelete.GetInstanceID()))
         {
-            UnregisteredObjectException($"{toDelete}");
+            return; //already deleted
         }
 
         _s_allCorpses.Remove(toDelete.GetInstanceID());
@@ -113,13 +113,6 @@ public class ObjectManager : MonoBehaviour
             Destroy(c.gameObject);
         }
         _s_allCorpses.Clear();
-    }
-    #endregion
-
-    #region Exceptions
-    private static void UnregisteredObjectException(string unregisteredObject)
-    {
-        throw new System.Exception($"UNREGISTERED CREATURE: This should never happen \n {unregisteredObject}");
     }
     #endregion
 }

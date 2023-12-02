@@ -89,8 +89,10 @@ public class Spawner : MonoBehaviour
 
     private static Human SpawnHuman(Vector2 position, bool ismale)
     {
-        GameObject human = new GameObject();
-        human.name = "Human";
+        GameObject human = new()
+        {
+            name = "Human"
+        };
         human.AddComponent<Human>()
             .BuildGender(ismale);
         return SpawnCreature(human, _instance._Spr_Lion, position).GetComponent<Human>();
@@ -122,8 +124,10 @@ public class Spawner : MonoBehaviour
 
     private static Lion SpawnLion(Vector2 position, bool isMale)
     {
-        GameObject lion = new GameObject();
-        lion.name = "Lion";
+        GameObject lion = new()
+        {
+            name = "Lion"
+        };
         lion.AddComponent<Lion>()
             .BuildGender(isMale);
         return SpawnCreature(lion, _instance._Spr_Lion, position).GetComponent<Lion>();
@@ -155,8 +159,10 @@ public class Spawner : MonoBehaviour
 
     private static Boar SpawnBoar(Vector2 position, bool isMale)
     {
-        GameObject boar = new GameObject();
-        boar.name = "Boar";
+        GameObject boar = new()
+        {
+            name = "Boar"
+        };
         boar.AddComponent<Boar>()
             .BuildGender(isMale);
         return SpawnCreature(boar, _instance._Spr_Boar, position).GetComponent<Boar>();
@@ -188,8 +194,10 @@ public class Spawner : MonoBehaviour
 
     private static Rabbit SpawnRabbit(Vector2 position, bool isMale)
     {
-        GameObject rabbit = new GameObject();
-        rabbit.name = "Rabbit";
+        GameObject rabbit = new()
+        {
+            name = "Rabbit"
+        };
         rabbit.AddComponent<Rabbit>()
             .BuildGender(isMale);
         return SpawnCreature(rabbit, _instance._Spr_Rabbit, position).GetComponent<Rabbit>();
@@ -204,7 +212,7 @@ public class Spawner : MonoBehaviour
         ObjectManager.DeleteCreature(creature);                  //deltes old creature gameObject
 
 
-        corpse_GO.gameObject.AddComponent<Corpse>();
+        corpse_GO.AddComponent<Corpse>();
         Corpse c = corpse_GO.GetComponent<Corpse>();
         c.SetWeight(corpse_GO.GetComponent<Creature>().Weight);
         Destroy(corpse_GO.GetComponent<Creature>());
@@ -216,7 +224,7 @@ public class Spawner : MonoBehaviour
 
         ObjectManager.AddCorpse(c);
 
-        return corpse_GO.gameObject;
+        return corpse_GO;
     }
 
     private static GameObject SpawnCreature(GameObject creature_GO, Sprite spr, Vector2 c)

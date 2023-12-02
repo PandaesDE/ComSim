@@ -231,7 +231,7 @@ public abstract class Creature : MonoBehaviour
         if (hunger <= important_cap)
         {
             StatusManager.SetState(StatusManager.State.starving);
-                return;
+            return;
         }
 
 
@@ -239,12 +239,12 @@ public abstract class Creature : MonoBehaviour
         if (thirst <= normal_cap && thirst < hunger)
         {
             StatusManager.SetState(StatusManager.State.thirsty);
-                    return;
+            return;
         }
         if (hunger <= normal_cap)
         {
             StatusManager.SetState(StatusManager.State.hungry);
-                        return;
+            return;
         }
 
         if (Gender.IsReadyForMating && Gender.IsMale)
@@ -317,14 +317,18 @@ public abstract class Creature : MonoBehaviour
 
         void OnFleeing()
         {
-            /*Exit Condition*/
-            //TODO
+            int stopFleeDistance = 15;
             /*Set Target*/
-            //TODO
-            /*Target Reached*/
-            //TODO
+            if (brain.activeFlee == null)
+            {
+                brain.SetActiveFlee();
+            }
+            /*Exit Condition*/
+            if (brain.activeFlee == null) return;
+            if (!Util.InRange(gameObject.transform.position, brain.activeFlee.transform.position, stopFleeDistance)) return; 
 
-            //movement.setTarget(-brain.activeFlee.transform.position);
+            /*Target Too Close*/
+            Movement.SetStaticTarget(-brain.activeFlee.gameObject.transform.position);
         }
 
         void OnHunting()
@@ -336,10 +340,21 @@ public abstract class Creature : MonoBehaviour
                 return;
             }
             /*Set Target*/
-            if (brain.activeHunt == null)
+            if (brain.activeHunt == null || !Movement.IsFollowing())
             {
-                SetActiveHunt();
-                return;
+                if (brain.HasSpottedCreature())
+                {
+                    brain.SetActiveHunt();
+                }
+
+                if (brain.activeHunt != null)
+                {
+                    Movement.SetMovingTarget(brain.activeHunt.gameObject);
+                } else
+                {
+                    Movement.SetRandomTargetIfReached();
+                    return;
+                }
             }
             /*Target Reached*/
             if (Util.InRange(transform.position, brain.activeHunt.transform.position))
@@ -363,7 +378,7 @@ public abstract class Creature : MonoBehaviour
                 {
                     brain.SetActiveFoodSource();
                     if (brain.activeFood != null)
-                        Movement.SetTarget(brain.activeFood.gameObject.transform.position);
+                        Movement.SetStaticTarget(brain.activeFood.gameObject.transform.position);
                     else
                         Movement.SetRandomTargetIfReached();
                 }
@@ -371,7 +386,7 @@ public abstract class Creature : MonoBehaviour
                 {
                     StatusManager.SetState(dietary.OnNoFood());
                     if (StatusManager.Status == StatusManager.State.hunting)
-                        SetActiveHunt();
+                        return;
                     else
                         Movement.SetRandomTargetIfReached();
                 }
@@ -405,7 +420,7 @@ public abstract class Creature : MonoBehaviour
             {
                 brain.setActiveWaterSource();
                 if (brain.activeWater != null)
-                    Movement.SetTarget(brain.activeWater.transform.position);
+                    Movement.SetStaticTarget(brain.activeWater.transform.position);
                 else
                     Movement.SetRandomTargetIfReached();
                 return;
@@ -426,7 +441,7 @@ public abstract class Creature : MonoBehaviour
                 return;
             }
             /*Set Target*/
-            if (brain.activeMate == null)
+            if (brain.activeMate == null || !Movement.IsFollowing())
             {
                 brain.SetActiveMate();
                 if (brain.activeMate != null)
@@ -438,7 +453,7 @@ public abstract class Creature : MonoBehaviour
             /*Target Reached*/
             if (Util.InRange(transform.position, brain.activeMate.transform.position))
             {
-                brain.activeMate.Gender.MateWith(Gender);
+                brain.activeMate.Gender.MateWith(brain.activeMate.Gender);
             }
         }
 
@@ -469,18 +484,7 @@ public abstract class Creature : MonoBehaviour
         }
     }
     #region Survival
-    protected void SetActiveHunt()
-    {
-        if (brain.HasSpottedCreature())
-        {
-            brain.SetActiveHunt();
-        } 
 
-        if (brain.activeHunt != null)
-        {
-            Movement.SetMovingTarget(brain.activeHunt.gameObject);
-        }
-    }
     #endregion
     #region Hunger
 
