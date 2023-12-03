@@ -218,6 +218,7 @@ public abstract class Creature : MonoBehaviour
 
         float desire_cap = IGender.MAX_DESIRE - Gender.Desire;
         float important_cap = 35;
+        float normal_cap = 80;
 
         //Important States
         if (thirst <= important_cap && thirst < hunger)
@@ -231,19 +232,19 @@ public abstract class Creature : MonoBehaviour
             return;
         }
 
-        if (Gender.IsReadyForMating && Gender.IsMale /* && Gender.Desire > hunger && Gender.Desire > thirst*/)
+        if (Gender.IsReadyForMating && Gender.IsMale && hunger > desire_cap && thirst > desire_cap)
         {
             StatusManager.SetState(StatusManager.State.looking_for_partner);
             return;
         }
 
         //Normal States
-        if (thirst <= desire_cap && thirst < hunger)
+        if (thirst <= normal_cap && thirst < hunger)
         {
             StatusManager.SetState(StatusManager.State.thirsty);
             return;
         }
-        if (hunger <= desire_cap)
+        if (hunger <= normal_cap)
         {
             StatusManager.SetState(StatusManager.State.hungry);
             return;
