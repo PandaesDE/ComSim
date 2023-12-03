@@ -34,6 +34,7 @@ public class Lion : Creature
         BuildDietary(new Carnivore(this));
         BuildHealth(10);
         BuildWeight(80);
+        BuildDamage(25);
         BuildSpeed(.2f);
     }
 

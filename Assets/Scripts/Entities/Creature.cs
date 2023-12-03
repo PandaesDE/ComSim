@@ -30,7 +30,9 @@ public abstract class Creature : MonoBehaviour
     {
         forthirst,
         starvation,
-        casualty
+        casualty_byHuman,
+        casualty_byBoar,
+        casualty_byLion
     }
 
     //Constants
@@ -46,6 +48,7 @@ public abstract class Creature : MonoBehaviour
     public float Energy { get; protected set; } = MAX_ENERGY;
     public float Health { get; protected set; } = 0;
     public int Weight { get; protected set; } = 0;
+    public float Damage { get; protected set; } = 0;
     
 
 
@@ -167,6 +170,13 @@ public abstract class Creature : MonoBehaviour
     {
         if (this.Movement.Speed == 0)
             this.Movement.Speed = speed;
+        return this;
+    }
+
+    protected Creature BuildDamage(float damage)
+    {
+        if (this.Damage == 0)
+            this.Damage = damage;
         return this;
     }
     #endregion
@@ -358,7 +368,7 @@ public abstract class Creature : MonoBehaviour
             /*Target Reached*/
             if (Util.InRange(transform.position, brain.activeHunt.transform.position))
             {
-                brain.activeHunt.Attack(20);
+                brain.activeHunt.Attack(Damage, this);
             }
         }
 
@@ -452,7 +462,7 @@ public abstract class Creature : MonoBehaviour
             /*Target Reached*/
             if (Util.InRange(transform.position, brain.activeMate.transform.position))
             {
-                brain.activeMate.Gender.MateWith(brain.activeMate.Gender);
+                Gender.MateWith(brain.activeMate.Gender);
             }
         }
 
@@ -613,13 +623,18 @@ public abstract class Creature : MonoBehaviour
 
     #region Health
 
-    public void Attack(int damage = 20)
+    public void Attack(float damage, Creature attacker)
     {
         Health -= damage;
         StatusManager.SetState(dietary.OnAttacked());
         if (Health <= 0)
         {
-            OnDeath(DeathReason.casualty);
+            if (attacker.TryGetComponent<Lion>(out _))
+                OnDeath(DeathReason.casualty_byLion);
+            if (attacker.TryGetComponent<Boar>(out _))
+                OnDeath(DeathReason.casualty_byBoar);
+            if (attacker.TryGetComponent<Human>(out _))
+                OnDeath(DeathReason.casualty_byHuman);
         }
     }
     protected void Regenerate(float addPercentPerHour = .01f)

@@ -32,6 +32,7 @@ public class Rabbit : Creature
         BuildDietary(new Herbivore(this));
         BuildHealth(45);
         BuildWeight(30);
+        BuildDamage(1);
         BuildSpeed(.2f);
     }
 

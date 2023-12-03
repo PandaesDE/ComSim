@@ -34,6 +34,7 @@ public class Human : Creature
         BuildDietary(new Omnivore(this));
         BuildHealth(80);
         BuildWeight(80);
+        BuildDamage(10);
         BuildSpeed(.2f);
     }
 

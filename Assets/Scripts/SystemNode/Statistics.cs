@@ -50,7 +50,6 @@ public class Statistics : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!Gamevariables.LOGGING_ENABLED) return;
         if (!_timeBetweenValues.Finished())
         {
             _timeBetweenValues.Tick();

@@ -34,6 +34,7 @@ public class Boar : Creature
         BuildDietary(new Omnivore(this));
         BuildHealth(150);
         BuildWeight(130);
+        BuildDamage(15);
         BuildSpeed(.2f);
     }
 
