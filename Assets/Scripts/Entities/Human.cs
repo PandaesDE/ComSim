@@ -30,6 +30,11 @@ public class Human : Creature
     {
         base.Awake();
 
+        //MaxAge:       https://www.wissenschaftsjahr.de/2013/rueckblicke/forschungsmuseen-erklaeren-den-wandel/senckenberg-naturmuseum.html
+        //MaxAge:       https://www.spiegel.de/wissenschaft/mensch/homo-sapiens-und-neandertaler-40-jahre-alte-greise-a-738722.html
+        //FertilityAge: https://www.researchgate.net/figure/Age-of-menarche-and-the-first-reproduction-A-regression-line-and-95-confidence-limits_fig1_51589335
+
+        BuildAge(18, 30);
         BuildGender(Util.Random.IsMale());
         BuildDietary(new Omnivore(this));
         BuildHealth(80);

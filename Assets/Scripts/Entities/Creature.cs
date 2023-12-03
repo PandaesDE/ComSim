@@ -43,8 +43,10 @@ public abstract class Creature : MonoBehaviour
 
 
     //Attributes
-    public int maxHealth;
-
+    public float MaxAge { get; private set; } = 0;
+    public float Age { get; private set; } = 0;
+    public float FertilityAge { get; private set; } = 0;
+    public int MaxHealth { get; private set; } = 0;
     public float Energy { get; protected set; } = MAX_ENERGY;
     public float Health { get; protected set; } = 0;
     public int Weight { get; protected set; } = 0;
@@ -136,6 +138,22 @@ public abstract class Creature : MonoBehaviour
     }
 
     #region Builder
+    public Creature BuildAge(float age, float fertilityAge, float maxAge)
+    {
+        this.Age = age;
+        this.FertilityAge = fertilityAge;
+        this.MaxAge = maxAge;
+        return this;
+    }
+
+    public Creature BuildAge(float fertilityAge, float maxAge)
+    {
+        this.Age = Util.Random.Float(0, maxAge);
+        this.FertilityAge = fertilityAge;
+        this.MaxAge = maxAge;
+        return this;
+    }
+
     public abstract Creature BuildGender(bool isMale);
     
     protected Creature BuildGender(IGender gender)
@@ -153,7 +171,7 @@ public abstract class Creature : MonoBehaviour
     {
         if (this.Health == 0)
         {
-            this.maxHealth = health;
+            this.MaxHealth = health;
             this.Health = health;
         }
         return this;
@@ -640,7 +658,7 @@ public abstract class Creature : MonoBehaviour
     protected void Regenerate(float addPercentPerHour = .01f)
     {
         float add = addPercentPerHour * Health * (float)Gamevariables.MinutesPerTick / (float)Gamevariables.MINUTES_PER_HOUR;
-        Health = Mathf.Clamp(Health + add, 0, maxHealth);
+        Health = Mathf.Clamp(Health + add, 0, MaxHealth);
     }
 
     protected abstract void OnDeath(DeathReason dr);

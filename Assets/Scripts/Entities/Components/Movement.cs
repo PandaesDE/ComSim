@@ -112,7 +112,7 @@ public class Movement
         for (int i = 0; i < moves; i++)
         {
             //chance to not make a move based on health
-            if (Util.Random.Float(0f, 1f) > _creature.Health / _creature.maxHealth)
+            if (Util.Random.Float(0f, 1f) > _creature.Health / _creature.MaxHealth)
                 continue;
 
             if (_nextSteps == Vector2.zero)

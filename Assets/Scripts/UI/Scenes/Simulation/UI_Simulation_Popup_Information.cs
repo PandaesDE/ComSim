@@ -186,7 +186,7 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
 
     private void UpdateHealthBar()
     {
-        _sdr_Health.value = (float)_target.Health / (float)_target.maxHealth;
+        _sdr_Health.value = (float)_target.Health / (float)_target.MaxHealth;
     }
 
     private void UpdateHungerBar()

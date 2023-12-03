@@ -27,7 +27,10 @@ public class Rabbit : Creature
     protected override void Awake()
     {
         base.Awake();
+        //MaxAge:       https://agriculture.vic.gov.au/livestock-and-animals/animal-welfare-victoria/other-pets/rabbits/owning-a-rabbit#:~:text=Rabbits%20generally%20live%20for%205,care%20for%20them%20that%20long.
+        //FertilityAge: https://www.msdvetmanual.com/all-other-pets/rabbits/breeding-and-reproduction-of-rabbits#:~:text=Rabbit%20breeds%20of%20medium%20to,of%20hormones%20as%20in%20humans.
 
+        BuildAge(.3f, 7);
         BuildGender(Util.Random.IsMale());
         BuildDietary(new Herbivore(this));
         BuildHealth(45);
