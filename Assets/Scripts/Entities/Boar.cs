@@ -60,8 +60,10 @@ public class Boar : Creature
         //https://www.researchgate.net/publication/259823483_Birth_rate_and_offspring_survival_in_a_free-ranging_wild_boar_Sus_scrofa_population
         int amount = Util.Random.Int(5, 10);
         SpawnOptions options = new SpawnOptions()
-            .SetAmount(amount)
-            .SetPosition(gameObject.transform.position);
+        {
+            Amount = amount,
+            Position = gameObject.transform.position,
+        };
         Spawner.SpawnBoars(options);
     }
 
@@ -76,7 +78,8 @@ public class Boar : Creature
         if (isMale)
         {
             int matingCooldown = 1 * Gamevariables.MINUTES_PER_HOUR * Gamevariables.HOURS_PER_DAY;
-            this.Gender = new Male(matingCooldown);
+            float daysUntilMaxDesire = 3f;
+            this.Gender = new Male(matingCooldown, daysUntilMaxDesire);
         }
         else
         {

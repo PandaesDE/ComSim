@@ -55,6 +55,14 @@ public class Female : IGender
         }
     }
 
+    public float Desire
+    {
+        get
+        {
+            return 0;
+        }
+    }
+
     public Female(Creature creature, int cooldownPregancy, int durationPregnancy)
     {
         this._creature = creature;

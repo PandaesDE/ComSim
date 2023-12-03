@@ -24,6 +24,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
@@ -60,41 +61,31 @@ public class Spawner : MonoBehaviour
     IEnumerator spawnEntitiesAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
-        SpawnHumans(new SpawnOptions(Gamevariables.HumanAmountStart, true));
-        SpawnLions(new SpawnOptions(Gamevariables.LionAmountStart, true));
-        SpawnBoars(new SpawnOptions(Gamevariables.BoarAmountStart, true));
-        SpawnRabbits(new SpawnOptions(Gamevariables.RabbitAmountStart, true));
+        SpawnHumans(new SpawnOptions(Gamevariables.HumanAmountStart, true, true));
+        SpawnLions(new SpawnOptions(Gamevariables.LionAmountStart, true, true));
+        SpawnBoars(new SpawnOptions(Gamevariables.BoarAmountStart, true, true));
+        SpawnRabbits(new SpawnOptions(Gamevariables.RabbitAmountStart, true, true));
     }
 
 #region Humans
     public static List<Human> SpawnHumans(SpawnOptions so)
     {
         List<Human> outp = new();
-        if (so.RandomSpawn)
+        for (int i = 0; i < so.Amount; i++)
         {
-            for (int i = 0; i < so.Amount; i++)
-            {
-                outp.Add(SpawnHuman(so.RandomPosition, so.IsMale));
-            }
-        }
-        else
-        {
-            for (int i = 0; i < so.Amount; i++)
-            {
-                outp.Add(SpawnHuman(so.Position, so.IsMale));
-            }
+            outp.Add(SpawnHuman(so.Position, so.IsMale));
         }
         return outp;
     }
 
-    private static Human SpawnHuman(Vector2 position, bool ismale)
+    private static Human SpawnHuman(Vector2 position, bool isMale)
     {
         GameObject human = new()
         {
-            name = "Human"
+            name = AddValuesToName("Human", isMale)
         };
         human.AddComponent<Human>()
-            .BuildGender(ismale);
+            .BuildGender(isMale);
         return SpawnCreature(human, _instance._Spr_Lion, position).GetComponent<Human>();
     }
 #endregion
@@ -105,19 +96,9 @@ public class Spawner : MonoBehaviour
     public static List<Lion> SpawnLions(SpawnOptions so)
     {
         List<Lion> outp = new();
-        if (so.RandomSpawn)
+        for (int i = 0; i < so.Amount; i++)
         {
-            for (int i = 0; i < so.Amount; i++)
-            {
-                outp.Add(SpawnLion(so.RandomPosition, so.IsMale));
-            }
-        }
-        else
-        {
-            for (int i = 0; i < so.Amount; i++)
-            {
-                outp.Add(SpawnLion(so.Position, so.IsMale));
-            }
+            outp.Add(SpawnLion(so.Position, so.IsMale));
         }
         return outp;
     }
@@ -126,7 +107,7 @@ public class Spawner : MonoBehaviour
     {
         GameObject lion = new()
         {
-            name = "Lion"
+            name = AddValuesToName("Lion", isMale)
         };
         lion.AddComponent<Lion>()
             .BuildGender(isMale);
@@ -140,19 +121,9 @@ public class Spawner : MonoBehaviour
     public static List<Boar> SpawnBoars(SpawnOptions so)
     {
         List<Boar> outp = new();
-        if (so.RandomSpawn)
+        for (int i = 0; i < so.Amount; i++)
         {
-            for (int i = 0; i < so.Amount; i++)
-            {
-                outp.Add(SpawnBoar(so.RandomPosition, so.IsMale));
-            }
-        }
-        else
-        {
-            for (int i = 0; i < so.Amount; i++)
-            {
-                outp.Add(SpawnBoar(so.Position, so.IsMale));
-            }
+            outp.Add(SpawnBoar(so.Position, so.IsMale));
         }
         return outp;
     }
@@ -161,7 +132,7 @@ public class Spawner : MonoBehaviour
     {
         GameObject boar = new()
         {
-            name = "Boar"
+            name = AddValuesToName("Boar", isMale)
         };
         boar.AddComponent<Boar>()
             .BuildGender(isMale);
@@ -175,19 +146,9 @@ public class Spawner : MonoBehaviour
     public static List<Rabbit> SpawnRabbits(SpawnOptions so)
     {
         List<Rabbit> outp = new();
-        if (so.RandomSpawn)
+        for (int i = 0; i < so.Amount; i++)
         {
-            for (int i = 0; i < so.Amount; i++)
-            {
-                outp.Add(SpawnRabbit(so.RandomPosition, so.IsMale));
-            }
-        }
-        else
-        {
-            for (int i = 0; i < so.Amount; i++)
-            {
-                outp.Add(SpawnRabbit(so.Position, so.IsMale));
-            }
+            outp.Add(SpawnRabbit(so.Position, so.IsMale));
         }
         return outp;
     }
@@ -196,7 +157,7 @@ public class Spawner : MonoBehaviour
     {
         GameObject rabbit = new()
         {
-            name = "Rabbit"
+            name = AddValuesToName("Rabbit", isMale)
         };
         rabbit.AddComponent<Rabbit>()
             .BuildGender(isMale);
@@ -251,5 +212,12 @@ public class Spawner : MonoBehaviour
         rb2d.bodyType = RigidbodyType2D.Kinematic;
         creature_GO.AddComponent<BoxCollider2D>();
         return creature_GO;
+    }
+
+    private static string AddValuesToName(string name, bool isMale)
+    {
+        char gender = 'F';
+        if (isMale) gender = 'M';
+        return $"{name} ({gender})";
     }
 }

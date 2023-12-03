@@ -28,6 +28,8 @@ using UnityEngine;
 public class Male : IGender
 {
     private Timer _cooldownMating;
+    private float _desireIncreaseRatePerMinute;
+
 
     public bool IsReadyForMating
     {
@@ -53,9 +55,17 @@ public class Male : IGender
         }
     }
 
-    public Male(int cooldownMating)
+    public float Desire
+    {
+        get;
+        private set;
+    }
+
+    public Male(int cooldownMating, float daysUntilMaxDesire)
     {
         _cooldownMating = new(cooldownMating);
+        _desireIncreaseRatePerMinute = (float)IGender.MAX_DESIRE / (daysUntilMaxDesire * (float)Gamevariables.HOURS_PER_DAY * (float)Gamevariables.MINUTES_PER_HOUR);
+        Desire = 0;
     }
 
     public void FixedUpdate()
@@ -64,11 +74,21 @@ public class Male : IGender
         {
             _cooldownMating.Tick();
         }
+
+        IncreaseDesire();
     }
 
     public void MateWith(IGender partner)
     {
         partner.MateWith(this);
+        Desire = 0;
         _cooldownMating.Reset();
+    }
+
+    private void IncreaseDesire()
+    {
+        if (Desire >= IGender.MAX_DESIRE) return;
+        float increase = _desireIncreaseRatePerMinute * Gamevariables.MinutesPerTick;
+        Desire = Mathf.Clamp(Desire + increase, 0 , IGender.MAX_DESIRE);
     }
 }

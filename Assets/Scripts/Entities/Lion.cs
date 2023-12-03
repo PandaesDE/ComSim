@@ -60,8 +60,10 @@ public class Lion : Creature
         //https://nationalzoo.si.edu/animals/lion#:~:text=They%20typically%20give%20birth%20to,eating%20meat%20at%20three%20months.
         int amount = Util.Random.Int(1, 4);
         SpawnOptions options = new SpawnOptions()
-            .SetAmount(amount)
-            .SetPosition(gameObject.transform.position);
+        {
+            Amount = amount,
+            Position = gameObject.transform.position,
+        };
         Spawner.SpawnLions(options);
     }
 
@@ -76,7 +78,8 @@ public class Lion : Creature
         if (isMale)
         {
             int matingCooldown = 1 * Gamevariables.MINUTES_PER_HOUR * Gamevariables.HOURS_PER_DAY;
-            this.Gender = new Male(matingCooldown);
+            float daysUntilMaxDesire = 1.5f;
+            this.Gender = new Male(matingCooldown, daysUntilMaxDesire);
         }
         else
         {

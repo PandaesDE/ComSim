@@ -218,25 +218,25 @@ public class UI_Simulation_Navigation : MonoBehaviour
                 void SpawnHumans()
                 {
                     int amount = int.Parse(Util.UI.PreventNullOrEmptyInputNumber(_ipt_Human_Adder.text));
-                    Spawner.SpawnHumans(new SpawnOptions(amount, true));
+                    Spawner.SpawnHumans(new SpawnOptions(amount, true, true));
                 }
 
                 void SpawnLions()
                 {
                     int amount = int.Parse(Util.UI.PreventNullOrEmptyInputNumber(_ipt_Lion_Adder.text));
-                    Spawner.SpawnLions(new SpawnOptions(amount, true));
+                    Spawner.SpawnLions(new SpawnOptions(amount, true, true));
                 }
 
                 void SpawnBoars()
                 {
                     int amount = int.Parse(Util.UI.PreventNullOrEmptyInputNumber(_ipt_Boar_Adder.text));
-                    Spawner.SpawnBoars(new SpawnOptions(amount, true));
+                    Spawner.SpawnBoars(new SpawnOptions(amount, true, true));
                 }
 
                 void SpawnRabbits()
                 {
                     int amount = int.Parse(Util.UI.PreventNullOrEmptyInputNumber(_ipt_Rabbit_Adder.text));
-                    Spawner.SpawnRabbits(new SpawnOptions(amount, true));
+                    Spawner.SpawnRabbits(new SpawnOptions(amount, true, true));
                 }
             }
         }

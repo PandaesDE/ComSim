@@ -25,9 +25,11 @@
 
 public interface IGender
 {
+    public static readonly float MAX_DESIRE = 100;
     public bool IsReadyForMating { get; }
     public bool IsMale { get; }
     public bool IsPregnant { get; }
+    public float Desire { get; }
     public void FixedUpdate();
     public void MateWith(IGender partner);
 }

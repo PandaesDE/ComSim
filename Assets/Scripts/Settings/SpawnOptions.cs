@@ -26,24 +26,47 @@ using UnityEngine;
 
 public class SpawnOptions
 {
-    public int Amount { get; private set; } = 1;
-    public bool IsMale { get; private set; } = Util.Random.IsMale();
-    public bool RandomSpawn { get; private set; } = false;
+    public int Amount = 1;
 
+    private bool _randomGender = true;
+    private bool _isMale = false;
+    public bool IsMale
+    {
+        get
+        {
+            if (_randomGender)
+                return Util.Random.IsMale();
+            else
+                return _isMale;
+        }
+        set
+        {
+            _randomGender = false;
+            _isMale = value;
+        }
+    }
+
+    private bool _randomSpawn = true;
     private Vector2 _position = Vector2.zero;
     public Vector2 Position
     {
         get
         {
-            if (RandomSpawn)
+            if (_randomSpawn)
             {
-                return RandomPosition;
+                return Util.Random.CoordinateInPlayground();
             }
             else
             {
                 return _position;
             }
         }
+        set
+        {
+            _randomSpawn = false;
+            _position = value;
+        }
+
     }
 
     public Vector2 RandomPosition
@@ -55,33 +78,10 @@ public class SpawnOptions
     }
 
     public SpawnOptions() { }
-    public SpawnOptions(int amount, bool isRandom)
+    public SpawnOptions(int amount, bool randomSpawn, bool randomGender)
     {
         this.Amount = amount;
-        this.RandomSpawn = isRandom;
-    }
-
-    public SpawnOptions SetAmount(int amount)
-    {
-        this.Amount = amount;
-        return this;
-    }
-
-    public SpawnOptions SetIsMale(bool isMale)
-    {
-        this.IsMale = isMale;   
-        return this;
-    }
-
-    public SpawnOptions SetIsRandom(bool isRandom)
-    {
-        this.RandomSpawn = isRandom;
-        return this;
-    }
-
-    public SpawnOptions SetPosition(Vector2 position)
-    {
-        this._position = position;
-        return this;
+        this._randomSpawn = randomSpawn;
+        this._randomGender = randomGender;
     }
 }

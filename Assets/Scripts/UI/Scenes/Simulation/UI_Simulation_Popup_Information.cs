@@ -43,6 +43,7 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
     [SerializeField] private Sprite _spr_Female;
     [SerializeField] private Sprite _spr_Pregnant;
 
+    [SerializeField] private Slider _sdr_Desire;
     [SerializeField] private Slider _sdr_Health;
     [SerializeField] private Slider _sdr_Hunger;
     [SerializeField] private Slider _sdr_Thirst;
@@ -113,6 +114,7 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
         UpdatePosition();
         UpdateTarget();
         //Stats
+        UpdateDesireBar(initialize);
         UpdateHealthBar();
         UpdateHungerBar();
         UpdateThirstBar();
@@ -162,6 +164,25 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
     {
         _display_Target.text = "" + _target.Movement.Target;
     }
+
+    private void UpdateDesireBar(bool initialize)
+    {
+        if (initialize)
+        {
+            if (!_target.Gender.IsMale)
+            {
+                _sdr_Desire.gameObject.SetActive(false);
+            } 
+            else
+            {
+                _sdr_Desire.gameObject.SetActive(true);
+            }
+        }
+        if (!_target.Gender.IsMale) return;
+
+        _sdr_Desire.value = _target.Gender.Desire / IGender.MAX_DESIRE;
+    }
+
 
     private void UpdateHealthBar()
     {

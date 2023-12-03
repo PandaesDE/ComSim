@@ -53,7 +53,7 @@ public static class Util
     {
         public static bool IsMale()
         {
-            return UnityEngine.Random.Range(0, 2) < 1;
+            return UnityEngine.Random.value > .5f;
         }
 
         public static float Float(float max)
