@@ -36,8 +36,12 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
     [SerializeField] private TMP_Text _display_Position;
     [SerializeField] private TMP_Text _display_Target;
 
-    [SerializeField] private GameObject _image_Object;
-    private Image _image;
+    [SerializeField] private Image _img_Species;
+    [SerializeField] private Image _img_Gender;
+
+    [SerializeField] private Sprite _spr_Male;
+    [SerializeField] private Sprite _spr_Female;
+    [SerializeField] private Sprite _spr_Pregnant;
 
     [SerializeField] private Slider _sdr_Health;
     [SerializeField] private Slider _sdr_Hunger;
@@ -48,11 +52,12 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
 
     [SerializeField] private Toggle _tgl_Follow;
 
+    private bool _wasPregnant;
+
     private void Awake()
     {
         _cameraManager = GameObject.Find("SystemNode").GetComponent<CameraManager>();
 
-        _image = _image_Object.GetComponent<Image>();
         _btn_close.onClick.AddListener(delegate { SetActive(false); });
         _tgl_Follow.onValueChanged.AddListener(delegate { FollowTarget(_tgl_Follow.isOn); });
     }
@@ -67,7 +72,7 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
             return;
         }
 
-        UpdateChangingInfo();
+        UpdateChangingInfo(false);
     }
 
     public void SetTarget(Creature t)
@@ -88,15 +93,22 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
         _cameraManager.FollowTarget(follow, _target.gameObject);
     }
 
+
+    //called once upon initialization
     private void UpdateAllInfo()
     {
-        UpdateImage();
-        UpdateChangingInfo();
+        _display_Name.text = _target.name;
+        _wasPregnant = _target.Gender.IsPregnant;
+
+        UpdateSpecies();
+        UpdateChangingInfo(true);
     }
 
-    private void UpdateChangingInfo()
+    //called every FixedUpdate
+    private void UpdateChangingInfo(bool initialize)
     {
-        _display_Name.text = _target.name;
+        //Details
+        UpdateGender(initialize);
         //Debug
         UpdatePosition();
         UpdateTarget();
@@ -114,9 +126,31 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
         _tgl_Follow.isOn = false;
     }
 
-    private void UpdateImage()
+    private void UpdateSpecies()
     {
-        _image.sprite = _target.GetComponent<SpriteRenderer>().sprite;
+        _img_Species.sprite = _target.GetComponent<SpriteRenderer>().sprite;
+    }
+
+    private void UpdateGender(bool initialize)
+    {
+        //do nothing if state didn't change
+        if (_wasPregnant == _target.Gender.IsPregnant && !initialize)
+            return;
+
+        if (_target.Gender.IsMale)
+        {
+            _img_Gender.sprite = _spr_Male;
+            return;
+        } 
+
+        if (_target.Gender.IsPregnant)
+        {
+            _img_Gender.sprite= _spr_Pregnant;
+        } 
+        else
+        {
+            _img_Gender.sprite = _spr_Female;
+        }
     }
 
     private void UpdatePosition()

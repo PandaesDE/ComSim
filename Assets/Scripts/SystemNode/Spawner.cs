@@ -241,7 +241,7 @@ public class Spawner : MonoBehaviour
 
     private static GameObject AddEntityComponents(GameObject creature_GO, Sprite spr, int posX, int posY)
     {
-        creature_GO.transform.position = new Vector3(posX + .5f, posY + .5f, (float)Gamevariables.z_layer.entity);
+        creature_GO.transform.position = new Vector3(posX + .5f, posY + .5f, (float)Gamevariables.Z_layer.entity);
         SpriteRenderer sr = creature_GO.AddComponent<SpriteRenderer>();
         sr.material = _instance._2Dlit;
         sr.sprite = spr;

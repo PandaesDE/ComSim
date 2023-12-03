@@ -32,20 +32,30 @@ public class CameraManager : MonoBehaviour
 
     private GameObject _target;
 
-    private readonly int ZOOM_MAX = 100;
-    private readonly int ZOOM_MIN = 10;
-    private readonly int ZOOM_FACTOR = 5;
+    private int _zoomMax = 100;
+    private int _zoomMin = 10;
+    private int _zoomFactor = 5;
 
     [SerializeField] private Nullable<float> _playgroundWidth;
-    [SerializeField] private Nullable<float> _playgroundHeight;
+    [SerializeField] Nullable<float> _playgroundHeight;
 
     private void Awake()
     {
         _camera = Camera.main;
         if (_playgroundWidth == null)
+        {
             _playgroundWidth = (float)Gamevariables.PLAYGROUND_SIZE.x;
+        }
         if (_playgroundHeight == null)
+        {
             _playgroundHeight = (float)Gamevariables.PLAYGROUND_SIZE.y;
+            _zoomMax = (int)(_playgroundHeight / 2);
+        }
+    }
+
+    private void Start()
+    {
+        Zoom(0); //adjust on intialization
     }
 
     private void FixedUpdate()
@@ -75,7 +85,7 @@ public class CameraManager : MonoBehaviour
         bool lookedBounds = IsOutOfBound(vect);
         
         if(!lookedBounds) 
-            _camera.transform.position += new Vector3(vect.x, vect.y, 0);
+            _camera.transform.position += (Vector3)vect;
     }
 
     public bool CanMoveHorizontalBy(float xMove)
@@ -92,11 +102,15 @@ public class CameraManager : MonoBehaviour
         return true;
     }
 
-    public void Zoom()
+    public void Zoom(float val)
     {
-        float zoom = _camera.orthographicSize - Input.mouseScrollDelta.y * ZOOM_FACTOR;
-        _camera.orthographicSize = Mathf.Clamp(zoom, ZOOM_MIN, ZOOM_MAX);
-        IsOutOfBound(Vector2.zero);
+        float zoom = _camera.orthographicSize - val * _zoomFactor;
+        _camera.orthographicSize = Mathf.Clamp(zoom, _zoomMin, _zoomMax);
+        if (IsOutOfBound(Vector2.zero)) 
+        {
+            _camera.transform.position = new Vector3(0, 0, (float)Gamevariables.Z_layer.camera);
+            return;
+        }
         //camera.transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, -10); //wonky
     }
 
@@ -125,7 +139,6 @@ public class CameraManager : MonoBehaviour
     {
         float playgroundHalfWidth = _playgroundWidth.Value / 2;
 
-        //Lock to Horizontal bounds
         if (_camera.transform.position.x + moveX + GetWidth() / 2 > playgroundHalfWidth)
         {
             _camera.transform.position = new Vector3(playgroundHalfWidth - GetWidth() / 2, _camera.transform.position.y, _camera.transform.position.z);

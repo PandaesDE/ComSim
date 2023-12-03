@@ -30,7 +30,7 @@ public class Human : Creature
     {
         base.Awake();
 
-        BuildGender(Util.Random.Gender(this));
+        BuildGender(Util.Random.IsMale());
         BuildDietary(new Omnivore(this));
         BuildHealth(80);
         BuildWeight(80);
@@ -58,8 +58,9 @@ public class Human : Creature
 
     protected override void GiveBirth()
     {
+        int amount = Util.Random.Int(1, 2);
         SpawnOptions options = new SpawnOptions()
-            .SetAmount(1)
+            .SetAmount(amount)
             .SetPosition(gameObject.transform.position);
         Spawner.SpawnHumans(options);
     }
@@ -68,5 +69,21 @@ public class Human : Creature
     {
         Spawner.MakeCorpse(this);
         Statistics.IncrementHumanDeathReason(dr);
+    }
+
+    public override Creature BuildGender(bool isMale)
+    {
+        if (isMale)
+        {
+            int matingCooldown = 1 * Gamevariables.MINUTES_PER_HOUR * Gamevariables.HOURS_PER_DAY;
+            this.Gender = new Male(matingCooldown);
+        }
+        else
+        {
+            int durationPregnancy = (int)(1 * (float)Gamevariables.HUMAN_PREGNANCY_TIME_DAYS * (float)Gamevariables.MINUTES_PER_HOUR * (float)Gamevariables.HOURS_PER_DAY);
+            int cooldownPregnancy = durationPregnancy / 2;
+            this.Gender = new Female(this, cooldownPregnancy, durationPregnancy);
+        }
+        return this;
     }
 }

@@ -133,17 +133,7 @@ public abstract class Creature : MonoBehaviour
     }
 
     #region Builder
-    public Creature BuildGender(bool isMale)
-    {
-        if (isMale)
-        {
-            this.Gender = new Male();
-        } else
-        {
-            this.Gender = new Female(this);
-        }
-        return this;
-    }
+    public abstract Creature BuildGender(bool isMale);
     
     protected Creature BuildGender(IGender gender)
     {
@@ -468,6 +458,7 @@ public abstract class Creature : MonoBehaviour
         {
             Health -= 20;
             GiveBirth();
+            StatusManager.SetState(StatusManager.State.wandering);
         }
     }
 

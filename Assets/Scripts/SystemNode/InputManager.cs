@@ -84,7 +84,7 @@ public class InputManager : MonoBehaviour
         //on scroll
         if (Input.mouseScrollDelta.y != 0)
         {
-            _cameraManager.Zoom();
+            _cameraManager.Zoom(Input.mouseScrollDelta.y);
         }
     }
 

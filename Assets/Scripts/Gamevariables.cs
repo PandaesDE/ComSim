@@ -28,8 +28,10 @@ using UnityEngine;
 public class Gamevariables
 {
     //init Settings
-    public static readonly Vector2Int PLAYGROUND_SIZE = new Vector2Int(360, 200);
+    public static readonly Vector2Int PLAYGROUND_SIZE = new Vector2Int(200, 100);
     public static readonly float TICKRATE = .5f;
+
+    public static readonly int HUMAN_PREGNANCY_TIME_DAYS = 18;
 
     public static int HumanAmountStart = 0;
     public static int LionAmountStart = 0;
@@ -62,8 +64,9 @@ public class Gamevariables
     //Error - Values
     public static readonly Vector2 ERROR_VECTOR2 = Vector2.negativeInfinity;
 
-    public enum z_layer
+    public enum Z_layer
     {
+        camera = -10,
         entity = -1,
         world = 0
     }

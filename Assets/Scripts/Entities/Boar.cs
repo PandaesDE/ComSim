@@ -30,7 +30,7 @@ public class Boar : Creature
     {
         base.Awake();
 
-        BuildGender(Util.Random.Gender(this));
+        BuildGender(Util.Random.IsMale());
         BuildDietary(new Omnivore(this));
         BuildHealth(150);
         BuildWeight(130);
@@ -57,8 +57,10 @@ public class Boar : Creature
 
     protected override void GiveBirth()
     {
+        //https://www.researchgate.net/publication/259823483_Birth_rate_and_offspring_survival_in_a_free-ranging_wild_boar_Sus_scrofa_population
+        int amount = Util.Random.Int(5, 10);
         SpawnOptions options = new SpawnOptions()
-            .SetAmount(1)
+            .SetAmount(amount)
             .SetPosition(gameObject.transform.position);
         Spawner.SpawnBoars(options);
     }
@@ -67,5 +69,22 @@ public class Boar : Creature
     {
         Spawner.MakeCorpse(this);
         Statistics.IncrementBoarDeathReason(dr);
+    }
+
+    public override Creature BuildGender(bool isMale)
+    {
+        if (isMale)
+        {
+            int matingCooldown = 1 * Gamevariables.MINUTES_PER_HOUR * Gamevariables.HOURS_PER_DAY;
+            this.Gender = new Male(matingCooldown);
+        }
+        else
+        {
+            //https://de.wikipedia.org/wiki/Wildschwein
+            int durationPregnancy = (int)(120 / 270 * (float)Gamevariables.HUMAN_PREGNANCY_TIME_DAYS * (float)Gamevariables.MINUTES_PER_HOUR * (float)Gamevariables.HOURS_PER_DAY);
+            int cooldownPregnancy = durationPregnancy / 2;
+            this.Gender = new Female(this, cooldownPregnancy, durationPregnancy);
+        }
+        return this;
     }
 }

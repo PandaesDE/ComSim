@@ -27,15 +27,21 @@ public class Female : IGender
 {
     private Creature _creature;
 
-    private Timer _durationPregnancy = new Timer(18 * Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR);
-    private Timer _cooldownPregnancy = new Timer(9 * Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR);
-    private bool _isPregnant = false;
+    private Timer _durationPregnancy;
+    private Timer _cooldownPregnancy;
+    
+    
+    public bool IsPregnant
+    {
+        get;
+        private set;
+    }
 
     public bool IsReadyForMating
     {
         get
         {
-            return  !_isPregnant &&
+            return  !IsPregnant &&
                     _cooldownPregnancy.Finished();
 
         }
@@ -49,22 +55,25 @@ public class Female : IGender
         }
     }
 
-    public Female(Creature creature)
+    public Female(Creature creature, int cooldownPregancy, int durationPregnancy)
     {
         this._creature = creature;
+        this._cooldownPregnancy = new(cooldownPregancy);
+        this._durationPregnancy = new(durationPregnancy);
+        IsPregnant = false;
     }
 
     public void FixedUpdate()
     {
-        if (_isPregnant)
+        if (IsPregnant)
         {
             if (!_durationPregnancy.Finished())
             {
                 _durationPregnancy.Tick();
             } else
             {
-
                 _creature.StatusManager.SetState(StatusManager.State.giving_birth);
+                IsPregnant = false;
             }
         } else
         {
@@ -79,7 +88,7 @@ public class Female : IGender
     {
         if (!IsSuitable(partner)) return;
         //chance of failure ?
-        _isPregnant = true;
+        IsPregnant = true;
         _durationPregnancy.Reset();
         _cooldownPregnancy.Reset();
     }

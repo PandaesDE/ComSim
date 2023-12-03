@@ -27,6 +27,7 @@ public interface IGender
 {
     public bool IsReadyForMating { get; }
     public bool IsMale { get; }
+    public bool IsPregnant { get; }
     public void FixedUpdate();
     public void MateWith(IGender partner);
 }

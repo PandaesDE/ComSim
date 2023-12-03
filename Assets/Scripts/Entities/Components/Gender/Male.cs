@@ -27,14 +27,13 @@ using UnityEngine;
 
 public class Male : IGender
 {
-    private static readonly int s_COOLDOWN_MATING = 3 * Gamevariables.HOURS_PER_DAY * Gamevariables.MINUTES_PER_HOUR;
-    private int _cooldownMating = 0;
+    private Timer _cooldownMating;
 
     public bool IsReadyForMating
     {
         get
         {
-            return _cooldownMating <= 0;
+            return _cooldownMating.Finished();
         }
     }
     
@@ -46,17 +45,30 @@ public class Male : IGender
         }
     }
 
+    public bool IsPregnant
+    {
+        get
+        {
+            return false;
+        }
+    }
+
+    public Male(int cooldownMating)
+    {
+        _cooldownMating = new(cooldownMating);
+    }
+
     public void FixedUpdate()
     {
-        if (_cooldownMating > 0)
+        if (!_cooldownMating.Finished())
         {
-            _cooldownMating = Mathf.Clamp(_cooldownMating - Gamevariables.MinutesPerTick, 0, s_COOLDOWN_MATING);
+            _cooldownMating.Tick();
         }
     }
 
     public void MateWith(IGender partner)
     {
         partner.MateWith(this);
-        _cooldownMating = s_COOLDOWN_MATING;
+        _cooldownMating.Reset();
     }
 }

@@ -51,12 +51,6 @@ public static class Util
 
     public static class Random
     {
-        public static IGender Gender(Creature c)
-        {
-            if (IsMale()) return new Male();
-            return new Female(c);
-        }
-
         public static bool IsMale()
         {
             return UnityEngine.Random.Range(0, 2) < 1;
