@@ -34,6 +34,7 @@ public abstract class Creature : MonoBehaviour
         casualty_byHuman,
         casualty_byBoar,
         casualty_byLion,
+        maternal,
         senescence
     }
 
@@ -45,7 +46,7 @@ public abstract class Creature : MonoBehaviour
 
 
     //Attributes
-    private Timer _aging = new((int)(Gamevariables.AGE_DAYS_AS_YEARS_CONVERISON * (float)Gamevariables.HOURS_PER_DAY * (float)Gamevariables.MINUTES_PER_HOUR));
+    private Timer _aging;
     public float MaxAge { get; private set; } = 0;
     public float Age { get; set; } = 0;
     public float FertilityAge { get; private set; } = 0;
@@ -107,6 +108,8 @@ public abstract class Creature : MonoBehaviour
     {
         tbm = GameObject.Find("Playground").GetComponent<TileBaseManager>();
 
+        _aging = new((int)(Gamevariables.AGE_DAYS_AS_YEARS_CONVERISON * (float)Gamevariables.HOURS_PER_DAY * (float)Gamevariables.MINUTES_PER_HOUR));
+        _aging.Reset();
         InitializeCreatureComponents();
 
         
@@ -482,8 +485,8 @@ public abstract class Creature : MonoBehaviour
 
         void OnGivingBirth()
         {
-            Health -= 20;
             GiveBirth();
+            BirthDamage(20);
             StatusManager.SetState(StatusManager.State.wandering);
         }
     }
@@ -651,6 +654,16 @@ public abstract class Creature : MonoBehaviour
                 OnDeath(DeathReason.casualty_byHuman);
         }
     }
+
+    private void BirthDamage(float birthDamage)
+    {
+        Health -= birthDamage;
+        if (Health <= 0)
+        {
+            OnDeath(DeathReason.maternal);
+        }
+    }
+
     protected void Regenerate(float addPercentPerHour = .01f)
     {
         float add = addPercentPerHour * Health * (float)Gamevariables.MinutesPerTick / (float)Gamevariables.MINUTES_PER_HOUR;

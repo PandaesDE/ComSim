@@ -65,12 +65,13 @@ public class Human : Creature
     protected override void GiveBirth()
     {
         int amount = Util.Random.Int(1, 2);
-        SpawnOptions options = new SpawnOptions()
+        SpawnOptions options = new()
         {
             Amount = amount,
             Age = 0,
             Position = gameObject.transform.position,
         };
+        Gender.Children = amount;
         Spawner.SpawnHumans(options);
     }
 

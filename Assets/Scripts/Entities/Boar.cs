@@ -64,12 +64,13 @@ public class Boar : Creature
     {
         //https://www.researchgate.net/publication/259823483_Birth_rate_and_offspring_survival_in_a_free-ranging_wild_boar_Sus_scrofa_population
         int amount = Util.Random.Int(5, 10);
-        SpawnOptions options = new SpawnOptions()
+        SpawnOptions options = new()
         {
             Amount = amount,
             Age = 0,
             Position = gameObject.transform.position,
         };
+        Gender.Children = amount;
         Spawner.SpawnBoars(options);
     }
 

@@ -64,12 +64,13 @@ public class Lion : Creature
     {
         //https://nationalzoo.si.edu/animals/lion#:~:text=They%20typically%20give%20birth%20to,eating%20meat%20at%20three%20months.
         int amount = Util.Random.Int(1, 4);
-        SpawnOptions options = new SpawnOptions()
+        SpawnOptions options = new()
         {
             Amount = amount,
             Age = 0,
             Position = gameObject.transform.position,
         };
+        Gender.Children = amount;
         Spawner.SpawnLions(options);
     }
 

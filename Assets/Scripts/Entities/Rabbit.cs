@@ -68,6 +68,7 @@ public class Rabbit : Creature
             Age = 0,
             Position = gameObject.transform.position,
         };
+        Gender.Children = amount;
         Spawner.SpawnRabbits(options);
     }
 
@@ -88,7 +89,7 @@ public class Rabbit : Creature
         else
         {
             //https://de.wikipedia.org/wiki/Wildkaninchen
-            int durationPregnancy = (int)(30 / 270 * (float)Gamevariables.HUMAN_PREGNANCY_TIME_DAYS * (float)Gamevariables.MINUTES_PER_HOUR * (float)Gamevariables.HOURS_PER_DAY);
+            int durationPregnancy = (int)((30 / 270) * (float)Gamevariables.HUMAN_PREGNANCY_TIME_DAYS * (float)Gamevariables.MINUTES_PER_HOUR * (float)Gamevariables.HOURS_PER_DAY);
             int cooldownPregnancy = durationPregnancy / 2;
             this.Gender = new Female(this, cooldownPregnancy, durationPregnancy);
         }

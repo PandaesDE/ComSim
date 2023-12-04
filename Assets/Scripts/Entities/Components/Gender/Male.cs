@@ -63,6 +63,12 @@ public class Male : IGender
         private set;
     }
 
+    public int Children
+    {
+        get;
+        set;
+    }
+
     public Male(Creature creature, int cooldownMating, float daysUntilMaxDesire)
     {
         _creature = creature;

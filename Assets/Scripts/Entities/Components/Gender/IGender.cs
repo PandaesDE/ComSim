@@ -30,6 +30,7 @@ public interface IGender
     public bool IsMale { get; }
     public bool IsPregnant { get; }
     public float Desire { get; }
+    public int Children { get; set; }
     public void FixedUpdate();
     public void MateWith(IGender partner);
 }

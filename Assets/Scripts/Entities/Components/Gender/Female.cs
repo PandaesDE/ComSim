@@ -64,6 +64,12 @@ public class Female : IGender
         }
     }
 
+    public int Children
+    {
+        get;
+        set;
+    }
+
     public Female(Creature creature, int cooldownPregancy, int durationPregnancy)
     {
         this._creature = creature;
