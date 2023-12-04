@@ -89,13 +89,13 @@ public class Menu_Settings : MonoBehaviour
     private void ToEditor()
     {
         SaveSettings();
-        SceneManager.LoadScene("EditorMapGeneration");
+        GameManager.LoadScene(GameManager.Scenes.EDITOR_MAP_GENERATION);
     }
 
     private void ToHome()
     {
         SaveSettings();
-        SceneManager.LoadScene("MainMenu");
+        GameManager.LoadScene(GameManager.Scenes.MAIN_MENU);
     }
 
     private void SaveSettings()

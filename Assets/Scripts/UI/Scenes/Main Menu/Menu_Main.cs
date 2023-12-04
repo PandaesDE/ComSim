@@ -41,12 +41,12 @@ public class Menu_Main : MonoBehaviour
 
     private void ToSimulation()
     {
-        SceneManager.LoadScene("Simulation");
+        GameManager.LoadScene(GameManager.Scenes.SIMULATION);
     }
 
     private void ToSettings()
     {
-        SceneManager.LoadScene("SettingsMenu");
+        GameManager.LoadScene(GameManager.Scenes.SETTINGS_MENU);
     }
 
 

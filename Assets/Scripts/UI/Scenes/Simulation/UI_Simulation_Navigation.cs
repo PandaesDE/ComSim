@@ -113,6 +113,7 @@ public class UI_Simulation_Navigation : MonoBehaviour
                 im.ChangeTicksPerSecond(tps);
                 _display_TicksPerSecond.text = $"{(1 / tps)} Ticks/Second";
             });
+            //initial value
             _sdr_TicksPerSecond.value = 1 / Time.fixedDeltaTime;
         }
 
@@ -123,7 +124,9 @@ public class UI_Simulation_Navigation : MonoBehaviour
                 im.ChangeTicksToTime(ttt);
                 DisplayTicksToTime(Gamevariables.MinutesPerTick);
             });
-            _sdr_TicksToTime.value = Gamevariables.MinutesPerTick;
+
+            //initial value (1) -> 5min/Tick
+            _sdr_TicksToTime.value = 1;
         }
 
         void InitializeContextMenus()

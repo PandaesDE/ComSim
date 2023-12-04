@@ -125,7 +125,7 @@ public class InputManager : MonoBehaviour
 
     public void ToMainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        GameManager.LoadScene(GameManager.Scenes.MAIN_MENU);
     }
 
     public void PauseGame()

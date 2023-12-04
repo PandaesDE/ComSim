@@ -48,7 +48,7 @@ public class Gamevariables
     //WORLD
     public static string Seed = "";
     public static PerlinSettingsObject PSO_Ground = new(-.5f, .6f, 8, 1, 0, 0, 100);
-    public static PerlinSettingsObject PSO_Bush = new(.5f, 3f, 3, 1, 0, 0, 100);
+    public static PerlinSettingsObject PSO_Bush = new(1f, 80f, 1, 1, 0, 0, 100);
 
     //Time
     public static readonly int HOURS_PER_DAY = 24;

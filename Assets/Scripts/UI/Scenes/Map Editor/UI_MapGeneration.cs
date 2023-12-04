@@ -100,7 +100,7 @@ public class UI_MapGeneration : MonoBehaviour
         settings.PSO_Bush = _ntg.PSO_Bush;
 
         ConfigManager.SaveSettings(settings);
-        SceneManager.LoadScene("SettingsMenu");
+        GameManager.LoadScene(GameManager.Scenes.SETTINGS_MENU);
     }
 
     private void SetValues()
