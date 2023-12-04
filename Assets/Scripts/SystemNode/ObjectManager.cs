@@ -37,6 +37,13 @@ public class ObjectManager : MonoBehaviour
     public static Dictionary<int,Boar> AllBoars {get; private set; }
     public static Dictionary<int,Rabbit> AllRabbits {get; private set; }
     public static Dictionary<int, Corpse> AllCorpses { get; private set; }
+    public static int AllCreatureCount
+    {
+        get
+        {
+            return AllHumans.Count + AllLions.Count + AllBoars.Count + AllRabbits.Count;
+        }
+    }
 
     private void Awake()
     {

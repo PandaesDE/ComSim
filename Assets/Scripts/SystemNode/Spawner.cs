@@ -24,11 +24,11 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+    public static bool S_InitializedSpawns { get; private set; } = false;
 
     [SerializeField] private Material _2Dlit;
     [SerializeField] private Sprite _Spr_Human_Male;
@@ -65,6 +65,7 @@ public class Spawner : MonoBehaviour
         SpawnLions(new SpawnOptions(Gamevariables.LionAmountStart, true, true));
         SpawnBoars(new SpawnOptions(Gamevariables.BoarAmountStart, true, true));
         SpawnRabbits(new SpawnOptions(Gamevariables.RabbitAmountStart, true, true));
+        S_InitializedSpawns = true;
     }
 
 #region Humans

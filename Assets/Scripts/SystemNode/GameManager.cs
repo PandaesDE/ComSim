@@ -36,9 +36,32 @@ public class GameManager : MonoBehaviour
         public static readonly string EDITOR_MAP_GENERATION =    "EditorMapGeneration";
     }
 
+    [SerializeField] private GameObject _gameOverBody;
+
+    private static readonly int _S_MAX_CREATURES = 300;
+    private static bool _gameOver = false;
+
     private void Awake()
     {
         InitSimulation();
+    }
+
+    private void FixedUpdate()
+    {
+        CheckGameOverConditions();
+    }
+
+    public static void PauseGame()
+    {
+        Gamevariables.GamePaused = !Gamevariables.GamePaused;
+        if (Gamevariables.GamePaused)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
     }
 
     public static void LoadScene(string scene)
@@ -69,15 +92,43 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private static void InitSimulation()
+    public static void InitSimulation()
     {
         InitGameSettings();
         ConfigManager.LoadSettings();
     }
 
+    private void GameOver()
+    {
+        _gameOver = true;
+        _gameOverBody.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    private void CheckGameOverConditions()
+    {
+        if (_gameOver) return;
+
+        int objCount = ObjectManager.AllCreatureCount;
+        //extinct
+        if (objCount <= 0 && Spawner.S_InitializedSpawns)
+        {
+            GameOver();
+        }
+        //overpopulation
+        if (objCount >= _S_MAX_CREATURES)
+        {
+            GameOver();
+        }
+    }
+
     private static void InitGameSettings()
     {
+        _gameOver = false;
+
         Time.timeScale = 1;
         Time.fixedDeltaTime = Gamevariables.TICKRATE;
+
+        Gamevariables.MinutesPassed = 0;
     }
 }

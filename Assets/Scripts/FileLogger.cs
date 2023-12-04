@@ -14,6 +14,9 @@ public class FileLogger
         this._path = path;
     }
 
+    public string GetLog() { return _output; }
+    public void ClearLog() { _output = ""; }
+
     public void AddLogEntry_Count(string title, List<int> counts)
     {
         StringBuilder stringBuilder = new();

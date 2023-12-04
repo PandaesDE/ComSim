@@ -113,7 +113,7 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            PauseGame();
+            GameManager.PauseGame();
         }
     }
 
@@ -126,19 +126,6 @@ public class InputManager : MonoBehaviour
     public void ToMainMenu()
     {
         GameManager.LoadScene(GameManager.Scenes.MAIN_MENU);
-    }
-
-    public void PauseGame()
-    {
-        Gamevariables.GamePaused = !Gamevariables.GamePaused;
-        if (Gamevariables.GamePaused)
-        {
-            Time.timeScale = 0;
-        }
-        else
-        {
-            Time.timeScale = 1;
-        }
     }
 
     public void ChangeTicksPerSecond(float val)

@@ -89,7 +89,7 @@ public class UI_Simulation_Navigation : MonoBehaviour
 
         _btn_Pause.onClick.AddListener(delegate
         {
-            im.PauseGame();
+            GameManager.PauseGame();
             if (Gamevariables.GamePaused)
             {
                 DisplayPauseButtonText("R");
