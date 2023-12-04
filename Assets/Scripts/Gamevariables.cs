@@ -32,6 +32,7 @@ public class Gamevariables
     public static readonly float TICKRATE = .5f;
 
     public static readonly int HUMAN_PREGNANCY_TIME_DAYS = 18;
+    public static readonly float AGE_DAYS_AS_YEARS_CONVERISON = 3;
 
     public static int HumanAmountStart = 0;
     public static int LionAmountStart = 0;

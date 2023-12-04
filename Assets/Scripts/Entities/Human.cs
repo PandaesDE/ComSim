@@ -68,6 +68,7 @@ public class Human : Creature
         SpawnOptions options = new SpawnOptions()
         {
             Amount = amount,
+            Age = 0,
             Position = gameObject.transform.position,
         };
         Spawner.SpawnHumans(options);
@@ -85,7 +86,7 @@ public class Human : Creature
         {
             int matingCooldown = 1 * Gamevariables.MINUTES_PER_HOUR * Gamevariables.HOURS_PER_DAY;
             float daysUntilMaxDesire = 3f;
-            this.Gender = new Male(matingCooldown, daysUntilMaxDesire);
+            this.Gender = new Male(this, matingCooldown, daysUntilMaxDesire);
         }
         else
         {

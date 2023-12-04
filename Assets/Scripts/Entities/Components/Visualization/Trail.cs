@@ -55,8 +55,8 @@ public class Trail
         this._dietary = dietary;
         _lr = creature.GetComponent<LineRenderer>();
 
-        _lr.startWidth = 1;
-        _lr.endWidth = .1f;
+        _lr.startWidth = Mathf.Clamp(_creature.Age / _creature.FertilityAge, 0, 1);
+        _lr.endWidth = 0;
         SetColor();
     }
 
@@ -64,6 +64,10 @@ public class Trail
     {
         if (Gamevariables.ShowTrail)
         {
+            if (_creature.Age <= _creature.FertilityAge)
+            {
+                _lr.startWidth = _creature.Age / _creature.FertilityAge;
+            }
             AddVertex(new Vertex(_creature.transform.position, GetStatusColor()));
             RenderLine();
         } else if (_verticies.Count > 0)

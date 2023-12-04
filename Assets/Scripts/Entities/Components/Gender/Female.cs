@@ -42,6 +42,7 @@ public class Female : IGender
         get
         {
             return  !IsPregnant &&
+                    _creature.Age >= _creature.FertilityAge &&
                     _cooldownPregnancy.Finished();
 
         }
@@ -96,9 +97,9 @@ public class Female : IGender
     {
         if (!IsSuitable(partner)) return;
         //chance of failure ?
-        IsPregnant = true;
         _durationPregnancy.Reset();
         _cooldownPregnancy.Reset();
+        IsPregnant = true;
     }
 
     private bool IsSuitable(IGender partner)

@@ -35,6 +35,8 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
     [SerializeField] private TMP_Text _display_Status;
     [SerializeField] private TMP_Text _display_Position;
     [SerializeField] private TMP_Text _display_Target;
+    [SerializeField] private TMP_Text _display_Age;
+    [SerializeField] private TMP_Text _display_AgeStage;
 
     [SerializeField] private Image _img_Species;
     [SerializeField] private Image _img_Gender;
@@ -110,6 +112,7 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
     {
         //Details
         UpdateGender(initialize);
+        UpdateAge();
         //Debug
         UpdatePosition();
         UpdateTarget();
@@ -155,14 +158,30 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
         }
     }
 
+    private void UpdateAge()
+    {
+        string ageStage = "Adult";
+        Color fertile = Color.green;
+        
+        if (_target.Age < _target.FertilityAge)
+        {
+            ageStage = "Child";
+            fertile = Color.red;
+        }
+
+        _display_Age.text = $"{(int)_target.Age}/{_target.MaxAge}";
+        _display_AgeStage.text = ageStage;
+        _display_AgeStage.color = fertile;
+    }
+
     private void UpdatePosition()
     {
-        _display_Position.text = "" + (Vector2)_target.transform.position;
+        _display_Position.text = $"{(Vector2)_target.transform.position}";
     }
 
     private void UpdateTarget()
     {
-        _display_Target.text = "" + _target.Movement.Target;
+        _display_Target.text = $"{_target.Movement.Target}";
     }
 
     private void UpdateDesireBar(bool initialize)
@@ -206,7 +225,7 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
 
     private void UpdateStatus()
     {
-        _display_Status.text = (_target.StatusManager.Status + "").ToLower();
+        _display_Status.text = $"{_target.StatusManager.Status}";
     }
 
     private void SetActive(bool state) 

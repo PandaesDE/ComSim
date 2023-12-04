@@ -16,7 +16,8 @@
  *          - 
  *          
  *  Notes:
- *      - 
+ *      - Awake will create a Creature with random Settings.
+ *      | To make a custom Creature (e.g Birth) you overwrite after Awake (see Spawner.cs)
  *  
  *  Sources:
  *      - 
@@ -32,7 +33,8 @@ public abstract class Creature : MonoBehaviour
         starvation,
         casualty_byHuman,
         casualty_byBoar,
-        casualty_byLion
+        casualty_byLion,
+        senescence
     }
 
     //Constants
@@ -43,8 +45,9 @@ public abstract class Creature : MonoBehaviour
 
 
     //Attributes
+    private Timer _aging = new((int)(Gamevariables.AGE_DAYS_AS_YEARS_CONVERISON * (float)Gamevariables.HOURS_PER_DAY * (float)Gamevariables.MINUTES_PER_HOUR));
     public float MaxAge { get; private set; } = 0;
-    public float Age { get; private set; } = 0;
+    public float Age { get; set; } = 0;
     public float FertilityAge { get; private set; } = 0;
     public int MaxHealth { get; private set; } = 0;
     public float Energy { get; protected set; } = MAX_ENERGY;
@@ -129,6 +132,7 @@ public abstract class Creature : MonoBehaviour
         //Game Logic
         NeedAdder();
         NeedSubtractor();
+        Aging();
 
         //Component updates
             //Gender
@@ -138,14 +142,6 @@ public abstract class Creature : MonoBehaviour
     }
 
     #region Builder
-    public Creature BuildAge(float age, float fertilityAge, float maxAge)
-    {
-        this.Age = age;
-        this.FertilityAge = fertilityAge;
-        this.MaxAge = maxAge;
-        return this;
-    }
-
     public Creature BuildAge(float fertilityAge, float maxAge)
     {
         this.Age = Util.Random.Float(0, maxAge);
@@ -665,5 +661,26 @@ public abstract class Creature : MonoBehaviour
 
 
     #endregion
+
+    private void Aging()
+    {
+        if (_aging.Finished())
+        {
+            if (Age == MaxAge)
+            {
+                OnDeath(DeathReason.senescence);
+                return;
+            }
+
+            Age++;
+            if (Age <= FertilityAge)
+            {
+                float scale = Mathf.Clamp(Age / FertilityAge, .25f, 1);
+                transform.localScale = new Vector3(scale, scale, scale);
+            }
+            _aging.Reset();
+        }
+        _aging.Tick();
+    }
 
 }

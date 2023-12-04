@@ -24,6 +24,7 @@
 
 public class Rabbit : Creature
 {
+
     protected override void Awake()
     {
         base.Awake();
@@ -61,9 +62,10 @@ public class Rabbit : Creature
     {
         //https://www.rspca.org.uk/adviceandwelfare/pets/rabbits/health/pregnancy#:~:text=Rabbits%20have%20evolved%20to%20reproduce,eight%20kits%20(baby%20rabbits).
         int amount = Util.Random.Int(5, 8);
-        SpawnOptions options = new SpawnOptions()
+        SpawnOptions options = new()
         {
             Amount = amount,
+            Age = 0,
             Position = gameObject.transform.position,
         };
         Spawner.SpawnRabbits(options);
@@ -81,7 +83,7 @@ public class Rabbit : Creature
         {
             int matingCooldown = 1 * Gamevariables.MINUTES_PER_HOUR * Gamevariables.HOURS_PER_DAY;
             float daysUntilMaxDesire = .5f;
-            this.Gender = new Male(matingCooldown, daysUntilMaxDesire);
+            this.Gender = new Male(this, matingCooldown, daysUntilMaxDesire);
         }
         else
         {

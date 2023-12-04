@@ -27,6 +27,7 @@ using UnityEngine;
 
 public class Male : IGender
 {
+    private Creature _creature;
     private Timer _cooldownMating;
     private float _desireIncreaseRatePerMinute;
 
@@ -35,7 +36,8 @@ public class Male : IGender
     {
         get
         {
-            return _cooldownMating.Finished();
+            return  _creature.Age >= _creature.FertilityAge &&
+                    _cooldownMating.Finished();
         }
     }
     
@@ -61,8 +63,9 @@ public class Male : IGender
         private set;
     }
 
-    public Male(int cooldownMating, float daysUntilMaxDesire)
+    public Male(Creature creature, int cooldownMating, float daysUntilMaxDesire)
     {
+        _creature = creature;
         _cooldownMating = new(cooldownMating);
         _desireIncreaseRatePerMinute = (float)IGender.MAX_DESIRE / (daysUntilMaxDesire * (float)Gamevariables.HOURS_PER_DAY * (float)Gamevariables.MINUTES_PER_HOUR);
         Desire = 0;

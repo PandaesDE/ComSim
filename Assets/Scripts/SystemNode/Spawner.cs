@@ -31,8 +31,8 @@ public class Spawner : MonoBehaviour
 {
 
     [SerializeField] private Material _2Dlit;
-    [SerializeField] private Sprite _spr_Human_Male;
-    [SerializeField] private Sprite _spr_Human_Female;
+    [SerializeField] private Sprite _Spr_Human_Male;
+    [SerializeField] private Sprite _Spr_Human_Female;
     [SerializeField] private Sprite _Spr_Lion;
     [SerializeField] private Sprite _Spr_Boar;
     [SerializeField] private Sprite _Spr_Rabbit;
@@ -73,12 +73,12 @@ public class Spawner : MonoBehaviour
         List<Human> outp = new();
         for (int i = 0; i < so.Amount; i++)
         {
-            outp.Add(SpawnHuman(so.Position, so.IsMale));
+            outp.Add(SpawnHuman(so.Position, so.IsMale, so.Age));
         }
         return outp;
     }
 
-    private static Human SpawnHuman(Vector2 position, bool isMale)
+    private static Human SpawnHuman(Vector2 position, bool isMale, int age)
     {
         GameObject human = new()
         {
@@ -86,24 +86,30 @@ public class Spawner : MonoBehaviour
         };
         human.AddComponent<Human>()
             .BuildGender(isMale);
-        return SpawnCreature(human, _instance._Spr_Lion, position).GetComponent<Human>();
+
+        if (age >= 0) human.GetComponent<Human>().Age = age;
+
+        if (isMale)
+            return SpawnCreature(human, _instance._Spr_Human_Male, position).GetComponent<Human>();
+        else
+            return SpawnCreature(human, _instance._Spr_Human_Female, position).GetComponent<Human>();
     }
-#endregion
+    #endregion
 
 
 
-#region Lions
+    #region Lions
     public static List<Lion> SpawnLions(SpawnOptions so)
     {
         List<Lion> outp = new();
         for (int i = 0; i < so.Amount; i++)
         {
-            outp.Add(SpawnLion(so.Position, so.IsMale));
+            outp.Add(SpawnLion(so.Position, so.IsMale, so.Age));
         }
         return outp;
     }
 
-    private static Lion SpawnLion(Vector2 position, bool isMale)
+    private static Lion SpawnLion(Vector2 position, bool isMale, int age)
     {
         GameObject lion = new()
         {
@@ -111,6 +117,10 @@ public class Spawner : MonoBehaviour
         };
         lion.AddComponent<Lion>()
             .BuildGender(isMale);
+
+        if (age >= 0) lion.GetComponent<Lion>().Age = age;
+
+
         return SpawnCreature(lion, _instance._Spr_Lion, position).GetComponent<Lion>();
     }
 #endregion
@@ -123,12 +133,12 @@ public class Spawner : MonoBehaviour
         List<Boar> outp = new();
         for (int i = 0; i < so.Amount; i++)
         {
-            outp.Add(SpawnBoar(so.Position, so.IsMale));
+            outp.Add(SpawnBoar(so.Position, so.IsMale, so.Age));
         }
         return outp;
     }
 
-    private static Boar SpawnBoar(Vector2 position, bool isMale)
+    private static Boar SpawnBoar(Vector2 position, bool isMale, int age)
     {
         GameObject boar = new()
         {
@@ -136,6 +146,9 @@ public class Spawner : MonoBehaviour
         };
         boar.AddComponent<Boar>()
             .BuildGender(isMale);
+
+        if (age >= 0) boar.GetComponent<Boar>().Age = age;
+
         return SpawnCreature(boar, _instance._Spr_Boar, position).GetComponent<Boar>();
     }
 #endregion
@@ -148,12 +161,12 @@ public class Spawner : MonoBehaviour
         List<Rabbit> outp = new();
         for (int i = 0; i < so.Amount; i++)
         {
-            outp.Add(SpawnRabbit(so.Position, so.IsMale));
+            outp.Add(SpawnRabbit(so.Position, so.IsMale, so.Age));
         }
         return outp;
     }
 
-    private static Rabbit SpawnRabbit(Vector2 position, bool isMale)
+    private static Rabbit SpawnRabbit(Vector2 position, bool isMale, int age)
     {
         GameObject rabbit = new()
         {
@@ -161,6 +174,9 @@ public class Spawner : MonoBehaviour
         };
         rabbit.AddComponent<Rabbit>()
             .BuildGender(isMale);
+
+        if (age >= 0) rabbit.GetComponent<Rabbit>().Age = age;
+
         return SpawnCreature(rabbit, _instance._Spr_Rabbit, position).GetComponent<Rabbit>();
     }
 #endregion

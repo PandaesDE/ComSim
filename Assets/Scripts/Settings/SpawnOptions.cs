@@ -16,7 +16,8 @@
  *          - 
  *          
  *  Notes:
- *      -
+ *      - Every Value that can be Random is by default random.
+ *      | This will change after explicitly setting that value.
  *  
  *  Sources:
  *      - 
@@ -28,6 +29,7 @@ public class SpawnOptions
 {
     public int Amount = 1;
 
+    #region Gender
     private bool _randomGender = true;
     private bool _isMale = false;
     public bool IsMale
@@ -45,7 +47,8 @@ public class SpawnOptions
             _isMale = value;
         }
     }
-
+    #endregion
+    #region Position
     private bool _randomSpawn = true;
     private Vector2 _position = Vector2.zero;
     public Vector2 Position
@@ -68,14 +71,25 @@ public class SpawnOptions
         }
 
     }
-
-    public Vector2 RandomPosition
+    #endregion
+    #region Age
+    /* 
+     * Age is by Creature initialization random, by setting the value negative we essentialy say,
+     * that we don't want to override. Setting the value to >=0 will result in a successful overwrite
+     */
+    private int _age = -1;
+    public int Age
     {
         get
         {
-            return Util.Random.CoordinateInPlayground();
+            return _age;
+        }
+        set
+        {
+            _age = value;
         }
     }
+    #endregion
 
     public SpawnOptions() { }
     public SpawnOptions(int amount, bool randomSpawn, bool randomGender)
