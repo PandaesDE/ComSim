@@ -32,16 +32,16 @@ public class Statistics : MonoBehaviour
     private Timer _timeBetweenValues = new(Gamevariables.MINUTES_PER_HOUR);
 
     //Count History
-    [SerializeField] private static List<int> _humanCounts = new();
-    [SerializeField] private static List<int> _lionCounts = new();
-    [SerializeField] private static List<int> _boarCounts = new();
-    [SerializeField] private static List<int> _rabbitCounts = new();
+    public static List<int> HumanCounts {get; private set;}= new();
+    public static List<int> LionCounts {get; private set;}= new();
+    public static List<int> BoarCounts {get; private set;}= new();
+    public static List<int> RabbitCounts {get; private set;}= new();
 
     //Death Reasons
-    [SerializeField] private static Dictionary<Creature.DeathReason, int> _humanDeathReasons= new();
-    [SerializeField] private static Dictionary<Creature.DeathReason, int> _lionDeathReasons= new();
-    [SerializeField] private static Dictionary<Creature.DeathReason, int> _boarDeathReasons= new();
-    [SerializeField] private static Dictionary<Creature.DeathReason, int> _rabbitDeathReasons= new();
+    public static Dictionary<Creature.DeathReason, int> HumanDeathReasons {get; private set;}= new();
+    public static Dictionary<Creature.DeathReason, int> LionDeathReasons {get; private set;}= new();
+    public static Dictionary<Creature.DeathReason, int> BoarDeathReasons {get; private set;}= new();
+    public static Dictionary<Creature.DeathReason, int> RabbitDeathReasons { get; private set; } = new();
 
     private void Awake()
     {
@@ -57,10 +57,10 @@ public class Statistics : MonoBehaviour
         }
         _timeBetweenValues.Reset();
 
-        _humanCounts.Add(ObjectManager.AllHumans.Count);
-        _lionCounts.Add(ObjectManager.AllLions.Count);
-        _boarCounts.Add(ObjectManager.AllBoars.Count);
-        _rabbitCounts.Add(ObjectManager.AllRabbits.Count);
+        HumanCounts.Add(ObjectManager.AllHumans.Count);
+        LionCounts.Add(ObjectManager.AllLions.Count);
+        BoarCounts.Add(ObjectManager.AllBoars.Count);
+        RabbitCounts.Add(ObjectManager.AllRabbits.Count);
     }
 
     public string GetLog()
@@ -72,35 +72,35 @@ public class Statistics : MonoBehaviour
 
     public void ClearStatistics()
     {
-        _humanCounts.Clear();
-        _lionCounts.Clear();
-        _boarCounts.Clear();
-        _rabbitCounts.Clear();
+        HumanCounts.Clear();
+        LionCounts.Clear();
+        BoarCounts.Clear();
+        RabbitCounts.Clear();
 
-        _humanDeathReasons.Clear();
-        _lionDeathReasons.Clear();
-        _boarDeathReasons.Clear();
-        _rabbitDeathReasons.Clear();
+        HumanDeathReasons.Clear();
+        LionDeathReasons.Clear();
+        BoarDeathReasons.Clear();
+        RabbitDeathReasons.Clear();
     }
 
     public static void IncrementHumanDeathReason(Creature.DeathReason reason)
     {
-        IncrementDeathReason(_humanDeathReasons, reason);
+        IncrementDeathReason(HumanDeathReasons, reason);
     }
 
     public static void IncrementLionDeathReason(Creature.DeathReason reason)
     {
-        IncrementDeathReason(_lionDeathReasons, reason);
+        IncrementDeathReason(LionDeathReasons, reason);
     }
 
     public static void IncrementBoarDeathReason(Creature.DeathReason reason)
     {
-        IncrementDeathReason(_boarDeathReasons, reason);
+        IncrementDeathReason(BoarDeathReasons, reason);
     }
 
     public static void IncrementRabbitDeathReason(Creature.DeathReason reason)
     {
-        IncrementDeathReason(_rabbitDeathReasons, reason);
+        IncrementDeathReason(RabbitDeathReasons, reason);
     }
 
     private static void IncrementDeathReason(Dictionary<Creature.DeathReason,int> drList, Creature.DeathReason dr)
@@ -114,15 +114,15 @@ public class Statistics : MonoBehaviour
 
     private void FillLog()
     {
-        _logger.AddLogEntry_Count("Human Amount History", _humanCounts);
-        _logger.AddLogEntry_Count("Lion Amount History", _lionCounts);
-        _logger.AddLogEntry_Count("Boar Amount History", _boarCounts);
-        _logger.AddLogEntry_Count("Rabbit Amount History", _rabbitCounts);
+        _logger.AddLogEntry_Count("Human Amount History", HumanCounts);
+        _logger.AddLogEntry_Count("Lion Amount History", LionCounts);
+        _logger.AddLogEntry_Count("Boar Amount History", BoarCounts);
+        _logger.AddLogEntry_Count("Rabbit Amount History", RabbitCounts);
 
-        _logger.AddLogEntry_DeathReaons("Human Death Reasons", _humanDeathReasons);
-        _logger.AddLogEntry_DeathReaons("Lion Death Reasons", _lionDeathReasons);
-        _logger.AddLogEntry_DeathReaons("Boar Death Reasons", _boarDeathReasons);
-        _logger.AddLogEntry_DeathReaons("Rabbit Death Reasons", _rabbitDeathReasons);
+        _logger.AddLogEntry_DeathReaons("Human Death Reasons", HumanDeathReasons);
+        _logger.AddLogEntry_DeathReaons("Lion Death Reasons", LionDeathReasons);
+        _logger.AddLogEntry_DeathReaons("Boar Death Reasons", BoarDeathReasons);
+        _logger.AddLogEntry_DeathReaons("Rabbit Death Reasons", RabbitDeathReasons);
     }
 
     private void OnApplicationQuit()

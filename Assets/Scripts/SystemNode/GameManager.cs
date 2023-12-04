@@ -103,9 +103,10 @@ public class GameManager : MonoBehaviour
         Spawner.NewStartSpawn();
     }
 
-    private void GameOver()
+    private void GameOver(string gameOverReason)
     {
         _gameOver = true;
+        _gameOverBody.GetComponent<UI_GameOver>().SetGameOverText(gameOverReason);
         _gameOverBody.SetActive(true);
         Time.timeScale = 0;
     }
@@ -118,12 +119,12 @@ public class GameManager : MonoBehaviour
         //extinct
         if (objCount <= 0 && Spawner.S_InitializedSpawns)
         {
-            GameOver();
+            GameOver("all species extinct");
         }
         //overpopulation
         if (objCount >= _S_MAX_CREATURES)
         {
-            GameOver();
+            GameOver("overpopulation");
         }
     }
 

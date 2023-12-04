@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -34,5 +33,31 @@ public class UI_GameOver : MonoBehaviour
         {
             GameManager.LoadScene(GameManager.Scenes.MAIN_MENU);
         });
+    }
+
+    public void SetGameOverText(string gameOverReason)
+    {
+        _display_GameOverText.text =
+            $"due to: {gameOverReason}\n" +
+            $"{SpeciesSpecificStatistic("Human", Statistics.HumanCounts, Statistics.HumanDeathReasons)}\n" +
+            $"{SpeciesSpecificStatistic("Lion", Statistics.LionCounts, Statistics.LionDeathReasons)}\n" +
+            $"{SpeciesSpecificStatistic("Boar", Statistics.BoarCounts, Statistics.BoarDeathReasons)}\n" +
+            $"{SpeciesSpecificStatistic("Rabbit", Statistics.RabbitCounts, Statistics.RabbitDeathReasons)}\n";
+    }
+
+    private string SpeciesSpecificStatistic(string species, List<int> counts, Dictionary<Creature.DeathReason, int> drDict)
+    {
+        return  $"{species} amount: {counts[1]} - {counts[^1]}, " +
+                $"deathsBy: {DeathReasonDictToString(drDict)}";
+    }
+
+    private string DeathReasonDictToString(Dictionary<Creature.DeathReason, int> drDict)
+    {
+        string outp = "";
+        foreach (KeyValuePair<Creature.DeathReason, int> kvp in drDict) 
+        { 
+            outp += $"{kvp.Key}: {kvp.Value}, "; 
+        }
+        return outp;
     }
 }
