@@ -38,12 +38,14 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject _gameOverBody;
 
-    private static readonly int _S_MAX_CREATURES = 300;
+    private static readonly int _S_MAX_CREATURES = 200; //200 DEFAULT
     private static bool _gameOver = false;
 
-    private void Awake()
+    private void Start()
     {
-        InitSimulation();
+        ConfigManager.LoadSettings();
+        Time.fixedDeltaTime = Gamevariables.TICKRATE;
+        InitNewSimulation();
     }
 
     private void FixedUpdate()
@@ -69,7 +71,6 @@ public class GameManager : MonoBehaviour
         if (scene == Scenes.SIMULATION)
         {
             SceneManager.LoadScene(Scenes.SIMULATION);
-            InitSimulation();
             return;
         }
 
@@ -92,10 +93,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static void InitSimulation()
+    public void InitNewSimulation()
     {
+        GetComponent<Statistics>().ClearStatistics();
         InitGameSettings();
-        ConfigManager.LoadSettings();
+
+        ObjectManager.DeleteAllCreatures();
+        ObjectManager.DeleteAllCorpses();
+        Spawner.NewStartSpawn();
     }
 
     private void GameOver()
@@ -127,7 +132,6 @@ public class GameManager : MonoBehaviour
         _gameOver = false;
 
         Time.timeScale = 1;
-        Time.fixedDeltaTime = Gamevariables.TICKRATE;
 
         Gamevariables.MinutesPassed = 0;
     }

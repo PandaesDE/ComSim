@@ -11,17 +11,23 @@ public class UI_GameOver : MonoBehaviour
     [SerializeField] private Button _btn_Quit;
     [SerializeField] private TMP_Text _display_GameOverText;
 
+    private GameManager gameManager;
+    private Statistics statistics;
+
     private void Awake()
     {
+        gameManager = GameObject.Find("SystemNode").GetComponent<GameManager>();
+        statistics = GameObject.Find("SystemNode").GetComponent<Statistics>();
+
         _btn_Continue.onClick.AddListener(delegate
         {
-            GameManager.InitSimulation();
+            gameManager.InitNewSimulation();
             gameObject.SetActive(false);
         });
 
         _btn_Copy.onClick.AddListener(delegate
         {
-            GUIUtility.systemCopyBuffer = Statistics.GetLog();
+            GUIUtility.systemCopyBuffer = statistics.GetLog();
         });
         
         _btn_Quit.onClick.AddListener(delegate

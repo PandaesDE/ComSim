@@ -61,11 +61,17 @@ public class Spawner : MonoBehaviour
     IEnumerator spawnEntitiesAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
+        S_InitializedSpawns = true;
+        NewStartSpawn();
+    }
+
+    public static void NewStartSpawn()
+    {
+        if (!S_InitializedSpawns) return; //prevents double StartSpawn in first iteration
         SpawnHumans(new SpawnOptions(Gamevariables.HumanAmountStart, true, true));
         SpawnLions(new SpawnOptions(Gamevariables.LionAmountStart, true, true));
         SpawnBoars(new SpawnOptions(Gamevariables.BoarAmountStart, true, true));
         SpawnRabbits(new SpawnOptions(Gamevariables.RabbitAmountStart, true, true));
-        S_InitializedSpawns = true;
     }
 
 #region Humans

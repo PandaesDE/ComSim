@@ -28,7 +28,7 @@ using UnityEngine;
 
 public class Statistics : MonoBehaviour
 {
-    private static FileLogger _s_logger;
+    private FileLogger _logger;
     private Timer _timeBetweenValues = new(Gamevariables.MINUTES_PER_HOUR);
 
     //Count History
@@ -45,7 +45,7 @@ public class Statistics : MonoBehaviour
 
     private void Awake()
     {
-        _s_logger = new(Path.Combine(Application.dataPath, "LogData"));
+        _logger = new(Path.Combine(Application.dataPath, "LogData"));
     }
 
     void FixedUpdate()
@@ -63,11 +63,24 @@ public class Statistics : MonoBehaviour
         _rabbitCounts.Add(ObjectManager.AllRabbits.Count);
     }
 
-    public static string GetLog()
+    public string GetLog()
     {
-        _s_logger.ClearLog();
+        _logger.ClearLog();
         FillLog();
-        return _s_logger.GetLog();
+        return _logger.GetLog();
+    }
+
+    public void ClearStatistics()
+    {
+        _humanCounts.Clear();
+        _lionCounts.Clear();
+        _boarCounts.Clear();
+        _rabbitCounts.Clear();
+
+        _humanDeathReasons.Clear();
+        _lionDeathReasons.Clear();
+        _boarDeathReasons.Clear();
+        _rabbitDeathReasons.Clear();
     }
 
     public static void IncrementHumanDeathReason(Creature.DeathReason reason)
@@ -99,24 +112,24 @@ public class Statistics : MonoBehaviour
         drList[dr]++;
     }
 
-    private static void FillLog()
+    private void FillLog()
     {
-        _s_logger.AddLogEntry_Count("Human Amount History", _humanCounts);
-        _s_logger.AddLogEntry_Count("Lion Amount History", _lionCounts);
-        _s_logger.AddLogEntry_Count("Boar Amount History", _boarCounts);
-        _s_logger.AddLogEntry_Count("Rabbit Amount History", _rabbitCounts);
+        _logger.AddLogEntry_Count("Human Amount History", _humanCounts);
+        _logger.AddLogEntry_Count("Lion Amount History", _lionCounts);
+        _logger.AddLogEntry_Count("Boar Amount History", _boarCounts);
+        _logger.AddLogEntry_Count("Rabbit Amount History", _rabbitCounts);
 
-        _s_logger.AddLogEntry_DeathReaons("Human Death Reasons", _humanDeathReasons);
-        _s_logger.AddLogEntry_DeathReaons("Lion Death Reasons", _lionDeathReasons);
-        _s_logger.AddLogEntry_DeathReaons("Boar Death Reasons", _boarDeathReasons);
-        _s_logger.AddLogEntry_DeathReaons("Rabbit Death Reasons", _rabbitDeathReasons);
+        _logger.AddLogEntry_DeathReaons("Human Death Reasons", _humanDeathReasons);
+        _logger.AddLogEntry_DeathReaons("Lion Death Reasons", _lionDeathReasons);
+        _logger.AddLogEntry_DeathReaons("Boar Death Reasons", _boarDeathReasons);
+        _logger.AddLogEntry_DeathReaons("Rabbit Death Reasons", _rabbitDeathReasons);
     }
 
     private void OnApplicationQuit()
     {
         if (!Gamevariables.LOGGING_ENABLED) return;
-        _s_logger.ClearLog();
+        _logger.ClearLog();
         FillLog();
-        _s_logger.Log();
+        _logger.Log();
     }
 }
