@@ -33,6 +33,7 @@ public class Rabbit : Creature
 
         BuildAge(.3f, 7);
         BuildGender(Util.Random.IsMale());
+        BuildSocialBehaviour(new NonSocializer());
         BuildDietary(new Herbivore(this));
         BuildHealth(45);
         BuildWeight(30);

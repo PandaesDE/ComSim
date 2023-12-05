@@ -35,8 +35,9 @@ public class Boar : Creature
 
         BuildAge(.42f, 10);
         BuildGender(Util.Random.IsMale());
+        BuildSocialBehaviour(new NonSocializer());
         BuildDietary(new Omnivore(this));
-        BuildHealth(150);
+        BuildHealth(110);
         BuildWeight(130);
         BuildDamage(15);
         BuildSpeed(.2f);

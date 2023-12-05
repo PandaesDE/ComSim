@@ -8,7 +8,7 @@
  *  
  *  Description:
  *      - Dietary component of a creature
- *      - Handles food and related behavior
+ *      - Handles food and related behaviour
  *  
  *  References:
  *      Scene:
@@ -25,7 +25,7 @@
 
 public class Carnivore : IDietary
 {
-    private static readonly float _s_dangerZone = 7;
+    private static readonly float _S_DANGER_ZONE = 7;
     private Creature _creature;
 
 
@@ -60,7 +60,7 @@ public class Carnivore : IDietary
 
     public bool IsInDangerZone(Creature approacher)
     {
-        return Util.InRange(_creature.gameObject.transform.position, approacher.gameObject.transform.position, _s_dangerZone);
+        return Util.InRange(_creature.gameObject.transform.position, approacher.gameObject.transform.position, _S_DANGER_ZONE);
     }
 
     public StatusManager.State OnApproached()

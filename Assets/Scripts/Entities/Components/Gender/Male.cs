@@ -8,7 +8,7 @@
  *  
  *  Description:
  *      - Gender component of a creature
- *      - Handles gender and related behavior
+ *      - Handles gender and related behaviour
  *  
  *  References:
  *      Scene:

@@ -26,7 +26,7 @@ using UnityEngine;
 
 public class Corpse : MonoBehaviour, IConsumable
 {
-    private static readonly int _s_decayDays = 5;
+    private static readonly int _s_decayDays = 3;
 
     private int _weightStart;
     private int _weight = 0;

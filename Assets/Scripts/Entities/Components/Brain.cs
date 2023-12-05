@@ -78,7 +78,12 @@ public class Brain
 
     public void SetActiveHunt()
     {
-        activeHunt = GetNearestCreature();
+        SetActiveHunt(GetNearestCreature());
+    }
+
+    public void SetActiveHunt(Creature toHunt)
+    {
+        activeHunt = toHunt;
     }
 
     public void SetActiveFlee()

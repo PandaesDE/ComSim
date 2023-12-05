@@ -36,6 +36,7 @@ public class Human : Creature
 
         BuildAge(18, 30);
         BuildGender(Util.Random.IsMale());
+        BuildSocialBehaviour(new TribeMember(this));
         BuildDietary(new Omnivore(this));
         BuildHealth(80);
         BuildWeight(80);
@@ -47,12 +48,22 @@ public class Human : Creature
     {
         base.FixedUpdate();
         if (StatusManager.Status == StatusManager.State.giving_birth) return;
-        if (StatusManager.Status != StatusManager.State.sleeping)
-        {
-            Movement.MoveToTarget();
-            EvaluateVision();
-            MakeStatusBasedMove();
-        }
+        if (StatusManager.Status == StatusManager.State.sleeping) return;
+
+        Movement.MoveToTarget();
+        EvaluateVision();
+        MakeStatusBasedMove();
+    }
+
+    public void Alert(Creature toAttack)
+    {
+        if (StatusManager.Status == StatusManager.State.giving_birth) return;
+        if (StatusManager.Status == StatusManager.State.sleeping) return;
+
+        StatusManager.SetState(StatusManager.State.hunting);
+
+        brain.SetActiveHunt(toAttack);
+        Movement.SetMovingTarget(brain.activeHunt.gameObject);
     }
 
     /*Gets called by Parent*/

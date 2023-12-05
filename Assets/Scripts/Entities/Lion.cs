@@ -35,8 +35,9 @@ public class Lion : Creature
 
         BuildAge(2, 12);
         BuildGender(Util.Random.IsMale());
+        BuildSocialBehaviour(new NonSocializer());
         BuildDietary(new Carnivore(this));
-        BuildHealth(80);
+        BuildHealth(65);
         BuildWeight(80);
         BuildDamage(35);
         BuildSpeed(.2f);

@@ -22,11 +22,20 @@
  *      - 
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public interface ISocialization
+public class NonSocializer : ISocialBehaviour
 {
-    
+    public void OnAttacked(Creature attacker)
+    {
+
+    }
+
+    public void OnAttacking(Creature victim)
+    {
+
+    }
+
+    public void OnFleeing(Creature attacker)
+    {
+
+    }
 }

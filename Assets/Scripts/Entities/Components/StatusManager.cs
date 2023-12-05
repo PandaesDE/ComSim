@@ -45,7 +45,7 @@ public class StatusManager
         starving,
         dehydrated,
         fleeing,
-        protecting,
+        //protecting? TODO,
         giving_birth
     }
 

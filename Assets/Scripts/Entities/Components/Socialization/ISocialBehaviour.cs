@@ -26,7 +26,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SimpleSocialization : ISocialization
+public interface ISocialBehaviour
 {
-    
+    public void OnAttacked(Creature attacker);
+    public void OnAttacking(Creature victim);
+    public void OnFleeing(Creature attacker);
 }

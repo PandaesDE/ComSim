@@ -65,11 +65,13 @@ public abstract class Creature : MonoBehaviour
         //Sensory of environment
     [SerializeField]protected Senses senses;
 
-        //Handles food, hunt and flee associated behavior
+        //Handles food, hunt and flee associated behaviour
     [SerializeField]protected IDietary dietary;
 
-        //Handles social associated behavior
+        //Handles reproductive behaviour
     public IGender Gender { get; protected set; }
+        //Handles social behaviour
+    public ISocialBehaviour socialBehaviour { get; protected set; }
 
         //Movement
     public Movement Movement { get; protected set; }
@@ -161,6 +163,12 @@ public abstract class Creature : MonoBehaviour
         return this;
     }
 
+    protected Creature BuildSocialBehaviour(ISocialBehaviour socialBehaviour)
+    {
+        this.socialBehaviour ??= socialBehaviour;
+        return this;
+    }
+
     protected Creature BuildDietary(IDietary dietary)
     {
         this.dietary ??= dietary;
@@ -237,7 +245,7 @@ public abstract class Creature : MonoBehaviour
         }
     }
 
-    protected void DetermineStatus()
+    protected virtual void DetermineStatus()
     {
         if (StatusManager.Status == StatusManager.State.sleeping) return;
         if (StatusManager.Status == StatusManager.State.giving_birth) return;
@@ -277,13 +285,10 @@ public abstract class Creature : MonoBehaviour
             return;
         }
 
-
-
-
         StatusManager.SetState(StatusManager.State.wandering);
     }
 
-    protected void MakeStatusBasedMove()
+    protected virtual void MakeStatusBasedMove()
     {
         AutomaticStatusDetermination();
 
@@ -328,167 +333,6 @@ public abstract class Creature : MonoBehaviour
             Movement.SetRandomTargetIfReached();
             DetermineStatus();
         }
-
-        void AutomaticStatusDetermination()
-        {
-            if (_automaticStatusUpdate.Finished())
-            {
-                DetermineStatus();
-                _automaticStatusUpdate.Reset();
-                return;
-            }
-            
-            _automaticStatusUpdate.Tick();
-        }
-
-        void OnFleeing()
-        {
-            int stopFleeDistance = 15;
-            /*Set Target*/
-            if (brain.activeFlee == null)
-            {
-                brain.SetActiveFlee();
-            }
-            /*Exit Condition*/
-            if (brain.activeFlee == null) return;
-            if (!Util.InRange(gameObject.transform.position, brain.activeFlee.transform.position, stopFleeDistance)) return; 
-
-            /*Target Too Close*/
-            Movement.SetStaticTarget(-brain.activeFlee.gameObject.transform.position);
-        }
-
-        void OnHunting()
-        {
-            /*Exit Condition*/
-            if (hunger >= MAX_HUNGER)
-            {
-                DetermineStatus();
-                return;
-            }
-            /*Set Target*/
-            if (brain.activeHunt == null || !Movement.IsFollowing())
-            {
-                if (brain.HasSpottedCreature())
-                {
-                    brain.SetActiveHunt();
-                }
-
-                if (brain.activeHunt != null)
-                {
-                    Movement.SetMovingTarget(brain.activeHunt.gameObject);
-                } else
-                {
-                    Movement.SetRandomTargetIfReached();
-                    return;
-                }
-            }
-            /*Target Reached*/
-            if (Util.InRange(transform.position, brain.activeHunt.transform.position))
-            {
-                brain.activeHunt.Attack(Damage, this);
-            }
-        }
-
-        void OnHunger()
-        {
-            /*Exit Condition*/
-            if (hunger >= MAX_HUNGER)
-            {
-                DetermineStatus();
-                return;
-            }
-            /*Set Target*/
-            if (brain.activeFood == null)
-            {
-                if (brain.HasFoodSource())
-                {
-                    brain.SetActiveFoodSource();
-                    if (brain.activeFood != null)
-                        Movement.SetStaticTarget(brain.activeFood.gameObject.transform.position);
-                    else
-                        Movement.SetRandomTargetIfReached();
-                }
-                else
-                {
-                    StatusManager.SetState(dietary.OnNoFood());
-                    if (StatusManager.Status == StatusManager.State.hunting)
-                        return;
-                    else
-                        Movement.SetRandomTargetIfReached();
-                }
-            }
-            /*Target Reached*/
-            if (Movement.TargetReached())
-            {
-                if (!brain.activeFood.HasFood)
-                {
-                    brain.SetInactiveFoodSource(brain.activeFood);
-                    DetermineStatus();
-                    return;
-                }
-
-                Eat(brain.activeFood.Consume());
-                return;
-            }
-        }
-
-        void OnThirst()
-        {
-            /*Exit Condition*/
-            if (thirst >= MAX_THIRST)
-            {
-                //brain.activeWater = null;
-                DetermineStatus();
-                return;
-            }
-            /*Set Target*/
-            if (brain.activeWater == null)
-            {
-                brain.setActiveWaterSource();
-                if (brain.activeWater != null)
-                    Movement.SetStaticTarget(brain.activeWater.transform.position);
-                else
-                    Movement.SetRandomTargetIfReached();
-                return;
-            }
-            /*Target Reached*/
-            if (Movement.TargetReached())
-            {
-                Drink();
-            }
-        }
-
-        void OnLookingForPartner()
-        {
-            /*Exit Condition*/
-            if (!Gender.IsReadyForMating)
-            {
-                DetermineStatus();
-                return;
-            }
-            /*Set Target*/
-            if (brain.activeMate == null || !Movement.IsFollowing())
-            {
-                brain.SetActiveMate();
-                if (brain.activeMate != null)
-                    Movement.SetMovingTarget(brain.activeMate.gameObject);
-                else
-                    Movement.SetRandomTargetIfReached();
-                return;
-            }
-            /*Target Reached*/
-            if (Util.InRange(transform.position, brain.activeMate.transform.position))
-            {
-                Gender.MateWith(brain.activeMate.Gender);
-            }
-        }
-
-        void OnGivingBirth()
-        {
-            GiveBirth();
-            BirthDamage(20);
-            StatusManager.SetState(StatusManager.State.wandering);
-        }
     }
 
     private void EvaluateCreature(Creature creature)
@@ -510,6 +354,170 @@ public abstract class Creature : MonoBehaviour
             brain.AddSpottedCreature(creature);
         }
     }
+    #region State Machine Actions
+    protected void AutomaticStatusDetermination()
+    {
+        if (_automaticStatusUpdate.Finished())
+        {
+            DetermineStatus();
+            _automaticStatusUpdate.Reset();
+            return;
+        }
+
+        _automaticStatusUpdate.Tick();
+    }
+
+    protected void OnFleeing()
+    {
+        int stopFleeDistance = 15;
+        /*Set Target*/
+        if (brain.activeFlee == null)
+        {
+            brain.SetActiveFlee();
+        }
+        /*Exit Condition*/
+        if (brain.activeFlee == null) return;
+        if (!Util.InRange(gameObject.transform.position, brain.activeFlee.transform.position, stopFleeDistance)) return;
+
+        /*Target Too Close*/
+        Movement.SetStaticTarget(-brain.activeFlee.gameObject.transform.position);
+    }
+
+    protected void OnHunting()
+    {
+        /*Exit Condition*/
+        if (hunger >= MAX_HUNGER)
+        {
+            DetermineStatus();
+            return;
+        }
+        /*Set Target*/
+        if (brain.activeHunt == null || !Movement.IsFollowing())
+        {
+            if (brain.HasSpottedCreature())
+            {
+                brain.SetActiveHunt();
+            }
+
+            if (brain.activeHunt != null)
+            {
+                Movement.SetMovingTarget(brain.activeHunt.gameObject);
+            }
+            else
+            {
+                Movement.SetRandomTargetIfReached();
+                return;
+            }
+        }
+        /*Target Reached*/
+        if (Util.InRange(transform.position, brain.activeHunt.transform.position))
+        {
+            brain.activeHunt.Attack(Damage, this);
+        }
+    }
+
+    protected void OnHunger()
+    {
+        /*Exit Condition*/
+        if (hunger >= MAX_HUNGER)
+        {
+            DetermineStatus();
+            return;
+        }
+        /*Set Target*/
+        if (brain.activeFood == null)
+        {
+            if (brain.HasFoodSource())
+            {
+                brain.SetActiveFoodSource();
+                if (brain.activeFood != null)
+                    Movement.SetStaticTarget(brain.activeFood.gameObject.transform.position);
+                else
+                    Movement.SetRandomTargetIfReached();
+            }
+            else
+            {
+                StatusManager.SetState(dietary.OnNoFood());
+                if (StatusManager.Status == StatusManager.State.hunting)
+                    return;
+                else
+                    Movement.SetRandomTargetIfReached();
+            }
+        }
+        /*Target Reached*/
+        if (Movement.TargetReached())
+        {
+            if (!brain.activeFood.HasFood)
+            {
+                brain.SetInactiveFoodSource(brain.activeFood);
+                DetermineStatus();
+                return;
+            }
+
+            Eat(brain.activeFood.Consume());
+            return;
+        }
+    }
+
+    protected void OnThirst()
+    {
+        /*Exit Condition*/
+        if (thirst >= MAX_THIRST)
+        {
+            //brain.activeWater = null;
+            DetermineStatus();
+            return;
+        }
+        /*Set Target*/
+        if (brain.activeWater == null)
+        {
+            brain.setActiveWaterSource();
+            if (brain.activeWater != null)
+                Movement.SetStaticTarget(brain.activeWater.transform.position);
+            else
+                Movement.SetRandomTargetIfReached();
+            return;
+        }
+        /*Target Reached*/
+        if (Movement.TargetReached())
+        {
+            Drink();
+        }
+    }
+
+    protected void OnLookingForPartner()
+    {
+        /*Exit Condition*/
+        if (!Gender.IsReadyForMating)
+        {
+            DetermineStatus();
+            return;
+        }
+        /*Set Target*/
+        if (brain.activeMate == null || !Movement.IsFollowing())
+        {
+            brain.SetActiveMate();
+            if (brain.activeMate != null)
+                Movement.SetMovingTarget(brain.activeMate.gameObject);
+            else
+                Movement.SetRandomTargetIfReached();
+            return;
+        }
+        /*Target Reached*/
+        if (Util.InRange(transform.position, brain.activeMate.transform.position))
+        {
+            Gender.MateWith(brain.activeMate.Gender);
+        }
+    }
+
+    protected void OnGivingBirth()
+    {
+        GiveBirth();
+        BirthDamage(20);
+        StatusManager.SetState(StatusManager.State.wandering);
+    }
+    #endregion
+
     #region Survival
 
     #endregion
