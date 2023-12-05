@@ -28,6 +28,7 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+    //first spawn iteration finished
     public static bool S_InitializedSpawns { get; private set; } = false;
 
     [SerializeField] private Material _2Dlit;

@@ -61,6 +61,8 @@ public class Statistics : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!Spawner.S_InitializedSpawns) return;
+
         if (!_timeBetweenValues.Finished())
         {
             _timeBetweenValues.Tick();

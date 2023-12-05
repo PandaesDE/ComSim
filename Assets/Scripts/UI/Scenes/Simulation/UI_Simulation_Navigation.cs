@@ -80,28 +80,23 @@ public class UI_Simulation_Navigation : MonoBehaviour
         public TMP_Text Males;
         public TMP_Text Females;
         public TMP_Text DeathsBy;
-        public TMP_Text Count;
     }
 
     [SerializeField] private TMP_Text _display_Human_Males;
     [SerializeField] private TMP_Text _display_Human_Females;
     [SerializeField] private TMP_Text _display_Human_DeathsBy;
-    [SerializeField] private TMP_Text _display_Human_Count;
 
     [SerializeField] private TMP_Text _display_Lion_Males;
     [SerializeField] private TMP_Text _display_Lion_Females;
     [SerializeField] private TMP_Text _display_Lion_DeathsBy;
-    [SerializeField] private TMP_Text _display_Lion_Count;
 
     [SerializeField] private TMP_Text _display_Boar_Males;
     [SerializeField] private TMP_Text _display_Boar_Females;
     [SerializeField] private TMP_Text _display_Boar_DeathsBy;
-    [SerializeField] private TMP_Text _display_Boar_Count;
 
     [SerializeField] private TMP_Text _display_Rabbit_Males;
     [SerializeField] private TMP_Text _display_Rabbit_Females;
     [SerializeField] private TMP_Text _display_Rabbit_DeathsBy;
-    [SerializeField] private TMP_Text _display_Rabbit_Count;
 
     //Time
     [SerializeField] private Slider _sdr_TicksPerSecond;
@@ -282,7 +277,6 @@ public class UI_Simulation_Navigation : MonoBehaviour
                 void UpdateStatistics() {
                     UpdateSpecies(new StatisticDisplayBatch()
                     {
-                        Count = _display_Human_Count,
                         Males = _display_Human_Males,
                         Females = _display_Human_Females,
                         DeathsBy = _display_Human_DeathsBy
@@ -290,7 +284,6 @@ public class UI_Simulation_Navigation : MonoBehaviour
 
                     UpdateSpecies(new StatisticDisplayBatch()
                     {
-                        Count = _display_Lion_Count,
                         Males = _display_Lion_Males,
                         Females = _display_Lion_Females,
                         DeathsBy = _display_Lion_DeathsBy
@@ -298,7 +291,6 @@ public class UI_Simulation_Navigation : MonoBehaviour
 
                     UpdateSpecies(new StatisticDisplayBatch()
                     {
-                        Count = _display_Boar_Count,
                         Males = _display_Boar_Males,
                         Females = _display_Boar_Females,
                         DeathsBy = _display_Boar_DeathsBy
@@ -306,7 +298,6 @@ public class UI_Simulation_Navigation : MonoBehaviour
 
                     UpdateSpecies(new StatisticDisplayBatch()
                     {
-                        Count = _display_Rabbit_Count,
                         Males = _display_Rabbit_Males,
                         Females = _display_Rabbit_Females,
                         DeathsBy = _display_Rabbit_DeathsBy
@@ -318,9 +309,8 @@ public class UI_Simulation_Navigation : MonoBehaviour
                     string deathsBy = "";
                     if (dr.Count > 0)
                         deathsBy = $"{dr.OrderBy(x => x.Value).First()}";
-                    batch.Count.text = $"{cd[^1].Count}";
-                    batch.Males.text = $"{cd[^1].Males}";
-                    batch.Females.text = $"{cd[^1].Females}";
+                    batch.Males.text = $"({cd[^1].Males}/{cd[^1].Count})";
+                    batch.Females.text = $"({cd[^1].Females}/{cd[^1].Count})";
                     batch.DeathsBy.text = deathsBy;
                 }
             }
