@@ -31,12 +31,14 @@ public class Menu_Main : MonoBehaviour
 {
     [SerializeField] private Button _btn_Start;
     [SerializeField] private Button _btn_Settings;
+    [SerializeField] private Button _btn_Quit;
 
     // Start is called before the first frame update
     void Start()
     {
         _btn_Start.onClick.AddListener(ToSimulation);
         _btn_Settings.onClick.AddListener(ToSettings);
+        _btn_Quit.onClick.AddListener(Quit);
     }
 
     private void ToSimulation()
@@ -47,6 +49,11 @@ public class Menu_Main : MonoBehaviour
     private void ToSettings()
     {
         GameManager.LoadScene(GameManager.Scenes.SETTINGS_MENU);
+    }
+
+    private void Quit()
+    {
+        Application.Quit();
     }
 
 

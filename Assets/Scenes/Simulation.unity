@@ -6689,19 +6689,15 @@ MonoBehaviour:
   _display_Human_Males: {fileID: 447617768}
   _display_Human_Females: {fileID: 1530339571}
   _display_Human_DeathsBy: {fileID: 1665992115}
-  _display_Human_Count: {fileID: 0}
   _display_Lion_Males: {fileID: 470644163}
   _display_Lion_Females: {fileID: 465008003}
   _display_Lion_DeathsBy: {fileID: 1540469028}
-  _display_Lion_Count: {fileID: 0}
   _display_Boar_Males: {fileID: 1155219519}
   _display_Boar_Females: {fileID: 140084270}
   _display_Boar_DeathsBy: {fileID: 2107606601}
-  _display_Boar_Count: {fileID: 0}
   _display_Rabbit_Males: {fileID: 1580162546}
   _display_Rabbit_Females: {fileID: 1975990186}
   _display_Rabbit_DeathsBy: {fileID: 367061458}
-  _display_Rabbit_Count: {fileID: 0}
   _sdr_TicksPerSecond: {fileID: 1595497643}
   _sdr_TicksToTime: {fileID: 592486142}
   _display_Day: {fileID: 575581665}
@@ -9084,7 +9080,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &905535330
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11991,7 +11987,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1257502398
 RectTransform:
   m_ObjectHideFlags: 0
