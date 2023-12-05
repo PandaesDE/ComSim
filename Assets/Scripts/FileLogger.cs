@@ -17,14 +17,14 @@ public class FileLogger
     public string GetLog() { return _output; }
     public void ClearLog() { _output = ""; }
 
-    public void AddLogEntry_Count(string title, List<int> counts)
+    public void AddLogEntry_Count(string title, List<Statistics.CountData> counts)
     {
         StringBuilder stringBuilder = new();
         stringBuilder.AppendLine(getTitle(title));
 
-        foreach (int num in counts)
+        foreach (Statistics.CountData cd in counts)
         {
-            stringBuilder.Append($"{num}\n");
+            stringBuilder.Append($"{cd.Count} ({cd.Males}/{cd.Females})\n");
         }
 
         _output += stringBuilder.ToString();

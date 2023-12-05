@@ -26,16 +26,27 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
+public delegate void StatisticUpdateEvent();
+
 public class Statistics : MonoBehaviour
 {
     private FileLogger _logger;
     private Timer _timeBetweenValues = new(Gamevariables.MINUTES_PER_HOUR);
 
+    public event StatisticUpdateEvent StatisticUpdateEvent;
+
+    public class CountData
+    {
+        public int Count = 0;
+        public int Males = 0;
+        public int Females = 0;
+    }
+
     //Count History
-    public static List<int> HumanCounts {get; private set;}= new();
-    public static List<int> LionCounts {get; private set;}= new();
-    public static List<int> BoarCounts {get; private set;}= new();
-    public static List<int> RabbitCounts {get; private set;}= new();
+    public static List<CountData> HumanCounts {get; private set;}= new();
+    public static List<CountData> LionCounts {get; private set;}= new();
+    public static List<CountData> BoarCounts {get; private set;}= new();
+    public static List<CountData> RabbitCounts {get; private set;}= new();
 
     //Death Reasons
     public static Dictionary<Creature.DeathReason, int> HumanDeathReasons {get; private set;}= new();
@@ -57,10 +68,11 @@ public class Statistics : MonoBehaviour
         }
         _timeBetweenValues.Reset();
 
-        HumanCounts.Add(ObjectManager.AllHumans.Count);
-        LionCounts.Add(ObjectManager.AllLions.Count);
-        BoarCounts.Add(ObjectManager.AllBoars.Count);
-        RabbitCounts.Add(ObjectManager.AllRabbits.Count);
+        HumanCounts.Add(SetCountData(ObjectManager.AllHumans));
+        LionCounts.Add(SetCountData(ObjectManager.AllLions));
+        BoarCounts.Add(SetCountData(ObjectManager.AllBoars));
+        RabbitCounts.Add(SetCountData(ObjectManager.AllRabbits));
+        StatisticUpdateEvent();
     }
 
     public string GetLog()
@@ -110,6 +122,23 @@ public class Statistics : MonoBehaviour
             drList[dr] = 0;
         }
         drList[dr]++;
+    }
+
+    private CountData SetCountData<T>(Dictionary<int, T> creatureDict) where T : Creature
+    {
+        int males = 0;
+        int female = 0;
+        foreach(KeyValuePair<int, T> kvp in creatureDict)
+        {
+            if (kvp.Value.Gender.IsMale) males++;
+            else female++;
+        }
+        return new CountData()
+        {
+            Count = creatureDict.Count,
+            Males = males,
+            Females = female
+        };
     }
 
     private void FillLog()

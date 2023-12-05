@@ -22,6 +22,8 @@
  *      - 
  */
 
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,7 +31,7 @@ using UnityEngine.UI;
 public class UI_Simulation_Navigation : MonoBehaviour
 {
 
-    InputManager im;
+    private InputManager im;
 
     //Functionality
     [SerializeField] private Button _btn_Pause;
@@ -72,6 +74,34 @@ public class UI_Simulation_Navigation : MonoBehaviour
     //Statistics
     [SerializeField] private ContextMenu _statistics;
     [SerializeField] private GameObject _go_statistics_content;
+
+    private class StatisticDisplayBatch
+    {
+        public TMP_Text Males;
+        public TMP_Text Females;
+        public TMP_Text DeathsBy;
+        public TMP_Text Count;
+    }
+
+    [SerializeField] private TMP_Text _display_Human_Males;
+    [SerializeField] private TMP_Text _display_Human_Females;
+    [SerializeField] private TMP_Text _display_Human_DeathsBy;
+    [SerializeField] private TMP_Text _display_Human_Count;
+
+    [SerializeField] private TMP_Text _display_Lion_Males;
+    [SerializeField] private TMP_Text _display_Lion_Females;
+    [SerializeField] private TMP_Text _display_Lion_DeathsBy;
+    [SerializeField] private TMP_Text _display_Lion_Count;
+
+    [SerializeField] private TMP_Text _display_Boar_Males;
+    [SerializeField] private TMP_Text _display_Boar_Females;
+    [SerializeField] private TMP_Text _display_Boar_DeathsBy;
+    [SerializeField] private TMP_Text _display_Boar_Count;
+
+    [SerializeField] private TMP_Text _display_Rabbit_Males;
+    [SerializeField] private TMP_Text _display_Rabbit_Females;
+    [SerializeField] private TMP_Text _display_Rabbit_DeathsBy;
+    [SerializeField] private TMP_Text _display_Rabbit_Count;
 
     //Time
     [SerializeField] private Slider _sdr_TicksPerSecond;
@@ -134,6 +164,7 @@ public class UI_Simulation_Navigation : MonoBehaviour
             InitializeContextMenuNavigation();
             InitializeVisualizationContextMenu();
             InitializeEntitiesContextMenu();
+            InitializeStatisticsContextMenu();
 
             void InitializeContextMenuNavigation()
             {
@@ -240,6 +271,57 @@ public class UI_Simulation_Navigation : MonoBehaviour
                 {
                     int amount = int.Parse(Util.UI.PreventNullOrEmptyInputNumber(_ipt_Rabbit_Adder.text));
                     Spawner.SpawnRabbits(new SpawnOptions(amount, true, true));
+                }
+            }
+
+            void InitializeStatisticsContextMenu()
+            {
+                //subscribe event
+                GetComponent<Statistics>().StatisticUpdateEvent += UpdateStatistics;
+
+                void UpdateStatistics() {
+                    UpdateSpecies(new StatisticDisplayBatch()
+                    {
+                        Count = _display_Human_Count,
+                        Males = _display_Human_Males,
+                        Females = _display_Human_Females,
+                        DeathsBy = _display_Human_DeathsBy
+                    }, Statistics.HumanCounts, Statistics.HumanDeathReasons);
+
+                    UpdateSpecies(new StatisticDisplayBatch()
+                    {
+                        Count = _display_Lion_Count,
+                        Males = _display_Lion_Males,
+                        Females = _display_Lion_Females,
+                        DeathsBy = _display_Lion_DeathsBy
+                    }, Statistics.LionCounts, Statistics.LionDeathReasons);
+
+                    UpdateSpecies(new StatisticDisplayBatch()
+                    {
+                        Count = _display_Boar_Count,
+                        Males = _display_Boar_Males,
+                        Females = _display_Boar_Females,
+                        DeathsBy = _display_Boar_DeathsBy
+                    }, Statistics.BoarCounts, Statistics.BoarDeathReasons);
+
+                    UpdateSpecies(new StatisticDisplayBatch()
+                    {
+                        Count = _display_Rabbit_Count,
+                        Males = _display_Rabbit_Males,
+                        Females = _display_Rabbit_Females,
+                        DeathsBy = _display_Rabbit_DeathsBy
+                    }, Statistics.RabbitCounts, Statistics.RabbitDeathReasons);
+                }
+
+                void UpdateSpecies(StatisticDisplayBatch batch, List<Statistics.CountData> cd, Dictionary<Creature.DeathReason, int> dr)
+                {
+                    string deathsBy = "";
+                    if (dr.Count > 0)
+                        deathsBy = $"{dr.OrderBy(x => x.Value).First()}";
+                    batch.Count.text = $"{cd[^1].Count}";
+                    batch.Males.text = $"{cd[^1].Males}";
+                    batch.Females.text = $"{cd[^1].Females}";
+                    batch.DeathsBy.text = deathsBy;
                 }
             }
         }

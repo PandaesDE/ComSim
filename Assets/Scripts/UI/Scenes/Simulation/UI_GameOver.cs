@@ -45,9 +45,9 @@ public class UI_GameOver : MonoBehaviour
             $"{SpeciesSpecificStatistic("Rabbit", Statistics.RabbitCounts, Statistics.RabbitDeathReasons)}\n";
     }
 
-    private string SpeciesSpecificStatistic(string species, List<int> counts, Dictionary<Creature.DeathReason, int> drDict)
+    private string SpeciesSpecificStatistic(string species, List<Statistics.CountData> counts, Dictionary<Creature.DeathReason, int> drDict)
     {
-        return  $"{species} amount: {counts[1]} - {counts[^1]}, " +
+        return  $"{species} amount: {counts[1].Count} - {counts[^1].Count}, " +
                 $"deathsBy: {DeathReasonDictToString(drDict)}";
     }
 
