@@ -126,13 +126,41 @@ public class ObjectManager : MonoBehaviour
         }
     }
 
-
     public static void ChangeTrailColor()
     {
 
         foreach (Creature c in GetAllCreatures().Values)
         {
             c.Trail.SetColor();
+        }
+    }
+
+    public static void SetCreatureAttributes(bool normalized)
+    {
+        if (normalized)
+        {
+            foreach (Creature c in GetAllCreatures().Values)
+            {
+                c.SetAttributes(Gamevariables.NORMALIZED_ATTRIBUTES);
+            }
+        } else
+        {
+            foreach(Human h in AllHumans.Values)
+            {
+                h.SetAttributes(Gamevariables.HUMAN_ATTRIBUTES);
+            }
+            foreach(Lion l in AllLions.Values)
+            {
+                l.SetAttributes(Gamevariables.LION_ATTRIBUTES);
+            }
+            foreach(Boar b in AllBoars.Values)
+            {
+                b.SetAttributes(Gamevariables.BOAR_ATTRIBUTES);
+            }
+            foreach(Rabbit r in AllRabbits.Values)
+            {
+                r.SetAttributes(Gamevariables.RABBIT_ATTRIBUTES);
+            }
         }
     }
 

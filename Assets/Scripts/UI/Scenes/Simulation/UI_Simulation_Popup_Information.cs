@@ -37,6 +37,7 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
     [SerializeField] private TMP_Text _display_Target;
     [SerializeField] private TMP_Text _display_Age;
     [SerializeField] private TMP_Text _display_AgeStage;
+    [SerializeField] private TMP_Text _display_Damage;
 
     [SerializeField] private Image _img_Species;
     [SerializeField] private Image _img_Gender;
@@ -47,6 +48,7 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
 
     [SerializeField] private Slider _sdr_Desire;
     [SerializeField] private Slider _sdr_Health;
+    [SerializeField] private TMP_Text _display_Health;
     [SerializeField] private Slider _sdr_Hunger;
     [SerializeField] private Slider _sdr_Thirst;
     [SerializeField] private Slider _sdr_Energy;
@@ -65,7 +67,7 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
         _tgl_Follow.onValueChanged.AddListener(delegate { FollowTarget(_tgl_Follow.isOn); });
     }
 
-    private void FixedUpdate()
+    public void FixedUpdate()
     {
         if (_target == null)
         {
@@ -113,6 +115,7 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
         //Details
         UpdateGender(initialize);
         UpdateAge();
+        UpdateDamage();
         //Debug
         UpdatePosition();
         UpdateTarget();
@@ -202,10 +205,15 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
         _sdr_Desire.value = _target.Gender.Desire / IGender.MAX_DESIRE;
     }
 
+    private void UpdateDamage()
+    {
+        _display_Damage.text = $"{_target.Damage}";
+    }
 
     private void UpdateHealthBar()
     {
         _sdr_Health.value = (float)_target.Health / (float)_target.MaxHealth;
+        _display_Health.text = $"/{_target.MaxHealth}";
     }
 
     private void UpdateHungerBar()

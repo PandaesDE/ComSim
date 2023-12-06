@@ -32,6 +32,7 @@ public class UI_Simulation_Navigation : MonoBehaviour
 {
 
     private InputManager im;
+    UI_Simulation_Popup_Information ui_spi;
 
     //Functionality
     [SerializeField] private Button _btn_Pause;
@@ -64,6 +65,8 @@ public class UI_Simulation_Navigation : MonoBehaviour
     [SerializeField] private TMP_InputField _ipt_Boar_Adder;
     [SerializeField] private TMP_InputField _ipt_Rabbit_Adder;
 
+    private bool _creatures_normalized = false;
+    [SerializeField] private Button _btn_Creature_Normalizer;
     [SerializeField] private Button _btn_All_Adder;
     [SerializeField] private Button _btn_All_Remover;
     [SerializeField] private Button _btn_Human_Adder;
@@ -111,6 +114,7 @@ public class UI_Simulation_Navigation : MonoBehaviour
     private void Awake()
     {
         im = GetComponent<InputManager>();
+        ui_spi = GameObject.Find("InfoMenu").GetComponent<UI_Simulation_Popup_Information>();
 
         _btn_Pause.onClick.AddListener(delegate
         {
@@ -210,6 +214,13 @@ public class UI_Simulation_Navigation : MonoBehaviour
 
             void InitializeEntitiesContextMenu()
             {
+                _btn_Creature_Normalizer.onClick.AddListener(delegate
+                {
+                    _creatures_normalized = !_creatures_normalized;
+                    ObjectManager.SetCreatureAttributes(_creatures_normalized);
+                    ui_spi.FixedUpdate();
+                });
+
                 _btn_All_Remover.onClick.AddListener(delegate
                 {
                     ObjectManager.DeleteAllCreatures();
