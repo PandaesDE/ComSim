@@ -32,7 +32,7 @@ public class AnimationBackground : MonoBehaviour
     private int _cellsVertical;
     private readonly int MAP_SCALER = 3;
 
-    private Vector2 _speed = new Vector2(30f, 30f);
+    private Vector2 _speed = new(3f, 3f);
 
     private CameraManager _cameraManager;
 

@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         ConfigManager.LoadSettings();
-        Time.fixedDeltaTime = Gamevariables.TICKRATE;
+        InitScene();
         InitNewSimulation();
     }
 
@@ -82,26 +82,35 @@ public class GameManager : MonoBehaviour
         if (scene == Scenes.SIMULATION)
         {
             SceneManager.LoadScene(Scenes.SIMULATION);
+            InitScene();
             return;
         }
 
         if (scene == Scenes.SETTINGS_MENU)
         {
             SceneManager.LoadScene(Scenes.SETTINGS_MENU);
+            InitScene();
             return;
         }
 
         if (scene == Scenes.MAIN_MENU)
         {
             SceneManager.LoadScene(Scenes.MAIN_MENU);
+            InitScene();
             return;
         }
 
         if (scene == Scenes.EDITOR_MAP_GENERATION)
         {
             SceneManager.LoadScene(Scenes.EDITOR_MAP_GENERATION);
+            InitScene();
             return;
         }
+    }
+
+    private static void InitScene()
+    {
+        Time.fixedDeltaTime = Gamevariables.TICKRATE;
     }
 
     public void InitNewSimulation()

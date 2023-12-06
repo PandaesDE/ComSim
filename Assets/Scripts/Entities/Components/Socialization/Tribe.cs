@@ -39,7 +39,7 @@ public class Tribe
 
     public Vector2 GetHomeArea()
     {
-        return Util.Random.CoordinateInAreaOfPlayground(10, 10, Home);
+        return Util.Random.CoordinateInAreaOfPlayground(_areaWidthHeight, _areaWidthHeight, Home);
     }
     
 }
