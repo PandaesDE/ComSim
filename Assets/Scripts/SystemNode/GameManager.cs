@@ -9,10 +9,12 @@
  *  Description:
  *      - Manages The Game (main)
  *          - Initialize generic settings
+ *          - Set Game Over
+ *          - Manage Scene switching
  *  
  *  References:
  *      Scene:
- *          - 
+ *          - Simulation scene(s)
  *      Script:
  *          - 
  *          
@@ -38,8 +40,15 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject _gameOverBody;
 
+    private Statistics _statistics;
+
     private static readonly int _S_MAX_CREATURES = 350;
     private static bool _gameOver = false;
+
+    private void Awake()
+    {
+        _statistics = GetComponent<Statistics>();
+    }
 
     private void Start()
     {

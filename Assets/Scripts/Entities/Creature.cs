@@ -17,7 +17,7 @@
  *          
  *  Notes:
  *      - Awake will create a Creature with random Settings.
- *      | To make a custom Creature (e.g Birth) you overwrite after Awake (see Spawner.cs)
+ *      | To make a custom Creature (e.g Birth) you override after Awake (see Spawner.cs)
  *  
  *  Sources:
  *      - 
@@ -160,7 +160,7 @@ public abstract class Creature : MonoBehaviour
     #region Attribute & Components inititialize
     /*  Here defined as:
      *      Build: Set without overwriting the variable(s)
-     *      Set: overwrite the variable(s)
+     *      Set: override the variable(s)
      */
     public abstract Creature BuildGender(bool isMale);
     
@@ -222,6 +222,20 @@ public abstract class Creature : MonoBehaviour
                 this.Damage = atr.Damage;
             }
         }
+    }
+
+    protected Attributes GetAttributesForBirth()
+    {
+        return new Attributes()
+        {
+            MaxAge = this.MaxAge,
+            Age = 0,
+            FertilityAge = this.FertilityAge,
+            Health = this.Health,
+            Weight = this.Weight,
+            Damage = this.Damage,
+            Speed = Movement.Speed
+        };
     }
     #endregion
 

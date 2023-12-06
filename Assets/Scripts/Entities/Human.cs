@@ -71,7 +71,7 @@ public class Human : Creature
         SpawnOptions options = new()
         {
             Amount = amount,
-            Age = 0,
+            Attributes = GetAttributesForBirth(),
             Position = gameObject.transform.position,
         };
         Gender.Children = amount;

@@ -59,7 +59,7 @@ public class Statistics : MonoBehaviour
         _logger = new(Path.Combine(Application.dataPath, "LogData"));
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         if (!Spawner.S_InitializedSpawns) return;
 

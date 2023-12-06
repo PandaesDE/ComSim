@@ -72,23 +72,9 @@ public class SpawnOptions
 
     }
     #endregion
-    #region Age
-    /* 
-     * Age is by Creature initialization random, by setting the value negative we essentialy say,
-     * that we don't want to override. Setting the value to >=0 will result in a successful overwrite
-     */
-    private int _age = -1;
-    public int Age
-    {
-        get
-        {
-            return _age;
-        }
-        set
-        {
-            _age = value;
-        }
-    }
+    #region Attributes
+    public Creature.Attributes Attributes { get; set; } = new();
+ 
     #endregion
 
     public SpawnOptions() { }

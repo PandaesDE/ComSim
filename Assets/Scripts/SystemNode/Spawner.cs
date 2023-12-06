@@ -51,7 +51,7 @@ public class Spawner : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(spawnEntitiesAfterTime(.1f));
+        StartCoroutine(SpawnEntitiesAfterTime(.1f));
     }
 
     /*  There is no particular reason to spawn all Entities after a given Time, the only reason why it's implemented that way,
@@ -59,7 +59,7 @@ public class Spawner : MonoBehaviour
      *  The reason for that is probably that all colliders are at position 0,0 from the start before the map got initialized.
      *  A wait for map initialized method did not work out as planed and so waiting to spawn all Entities seemed to be the most reliable and realistic way to go around this issue.
      */
-    IEnumerator spawnEntitiesAfterTime(float time)
+    IEnumerator SpawnEntitiesAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
         S_InitializedSpawns = true;
@@ -81,21 +81,20 @@ public class Spawner : MonoBehaviour
         List<Human> outp = new();
         for (int i = 0; i < so.Amount; i++)
         {
-            outp.Add(SpawnHuman(so.Position, so.IsMale, so.Age));
+            outp.Add(SpawnHuman(so.Position, so.IsMale, so.Attributes));
         }
         return outp;
     }
 
-    private static Human SpawnHuman(Vector2 position, bool isMale, int age)
+    private static Human SpawnHuman(Vector2 position, bool isMale, Creature.Attributes atr)
     {
         GameObject human = new()
         {
             name = AddValuesToName("Human", isMale)
         };
         human.AddComponent<Human>()
-            .BuildGender(isMale);
-
-        if (age >= 0) human.GetComponent<Human>().Age = age;
+            .BuildGender(isMale)
+            .SetAttributes(atr);
 
         if (isMale)
             return SpawnCreature(human, _instance._Spr_Human_Male, position).GetComponent<Human>();
@@ -112,21 +111,20 @@ public class Spawner : MonoBehaviour
         List<Lion> outp = new();
         for (int i = 0; i < so.Amount; i++)
         {
-            outp.Add(SpawnLion(so.Position, so.IsMale, so.Age));
+            outp.Add(SpawnLion(so.Position, so.IsMale, so.Attributes));
         }
         return outp;
     }
 
-    private static Lion SpawnLion(Vector2 position, bool isMale, int age)
+    private static Lion SpawnLion(Vector2 position, bool isMale, Creature.Attributes atr)
     {
         GameObject lion = new()
         {
             name = AddValuesToName("Lion", isMale)
         };
         lion.AddComponent<Lion>()
-            .BuildGender(isMale);
-
-        if (age >= 0) lion.GetComponent<Lion>().Age = age;
+            .BuildGender(isMale)
+            .SetAttributes(atr);
 
 
         return SpawnCreature(lion, _instance._Spr_Lion, position).GetComponent<Lion>();
@@ -141,21 +139,20 @@ public class Spawner : MonoBehaviour
         List<Boar> outp = new();
         for (int i = 0; i < so.Amount; i++)
         {
-            outp.Add(SpawnBoar(so.Position, so.IsMale, so.Age));
+            outp.Add(SpawnBoar(so.Position, so.IsMale, so.Attributes));
         }
         return outp;
     }
 
-    private static Boar SpawnBoar(Vector2 position, bool isMale, int age)
+    private static Boar SpawnBoar(Vector2 position, bool isMale, Creature.Attributes atr)
     {
         GameObject boar = new()
         {
             name = AddValuesToName("Boar", isMale)
         };
         boar.AddComponent<Boar>()
-            .BuildGender(isMale);
-
-        if (age >= 0) boar.GetComponent<Boar>().Age = age;
+            .BuildGender(isMale)
+            .SetAttributes(atr);
 
         return SpawnCreature(boar, _instance._Spr_Boar, position).GetComponent<Boar>();
     }
@@ -169,21 +166,21 @@ public class Spawner : MonoBehaviour
         List<Rabbit> outp = new();
         for (int i = 0; i < so.Amount; i++)
         {
-            outp.Add(SpawnRabbit(so.Position, so.IsMale, so.Age));
+            outp.Add(SpawnRabbit(so.Position, so.IsMale, so.Attributes));
         }
         return outp;
     }
 
-    private static Rabbit SpawnRabbit(Vector2 position, bool isMale, int age)
+    private static Rabbit SpawnRabbit(Vector2 position, bool isMale, Creature.Attributes atr)
     {
         GameObject rabbit = new()
         {
             name = AddValuesToName("Rabbit", isMale)
         };
         rabbit.AddComponent<Rabbit>()
-            .BuildGender(isMale);
+            .BuildGender(isMale)
+            .SetAttributes(atr);
 
-        if (age >= 0) rabbit.GetComponent<Rabbit>().Age = age;
 
         return SpawnCreature(rabbit, _instance._Spr_Rabbit, position).GetComponent<Rabbit>();
     }
