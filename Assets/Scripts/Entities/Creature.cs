@@ -210,29 +210,37 @@ public abstract class Creature : MonoBehaviour
             }
             if (atr.FertilityAge != -1)
             {
-                this.FertilityAge = atr.FertilityAge;
+                this.FertilityAge = ApplyEvolutionRate(atr.FertilityAge);
             }
             if (atr.MaxAge != -1)
             {
-                this.MaxAge = atr.MaxAge;
+                this.MaxAge = ApplyEvolutionRate(atr.MaxAge);
             }
             if (atr.Health != -1)
             {
-                this._maxHealth = atr.Health;
-                this._health = atr.Health;
+                this._maxHealth = ApplyEvolutionRate(atr.Health);
+                this._health = _maxHealth;
             }
             if (atr.Weight != -1)
             {
-                this._weight = atr.Weight;
+                this._weight = ApplyEvolutionRate(atr.Weight);
             }
             if (atr.Speed != -1)
             {
-                this.Movement.Speed = atr.Speed;
+                this.Movement.Speed = atr.Speed; //experimental -> no evultion
             }
             if (atr.Damage != -1)
             {
-                this._damage = atr.Damage;
+                this._damage = ApplyEvolutionRate(atr.Damage);
             }
+        }
+
+        float ApplyEvolutionRate(float val)
+        {
+            float dif = val * Gamevariables.EVOLUTION_RATE;
+            float r = Util.Random.Float(val - dif, val + dif);
+            if (r <= 0) r = .01f; //worst possible value
+            return r;
         }
     }
 
@@ -721,9 +729,9 @@ public abstract class Creature : MonoBehaviour
         }
     }
 
-    protected void Regenerate(float addPercentPerHour = .01f)
+    protected void Regenerate(float addPercentPerHour = .05f)
     {
-        float add = addPercentPerHour * _health * (float)Gamevariables.MinutesPerTick / (float)Gamevariables.MINUTES_PER_HOUR;
+        float add = addPercentPerHour * _maxHealth * (float)Gamevariables.MinutesPerTick / (float)Gamevariables.MINUTES_PER_HOUR;
         _health = Mathf.Clamp(_health + add, 0, _maxHealth);
     }
 

@@ -73,7 +73,7 @@ public class SpawnOptions
     }
     #endregion
     #region Attributes
-    public Creature.Attributes Attributes { get; set; } = new() { Age = 0};
+    public Creature.Attributes Attributes { get; set; } = new();
  
     #endregion
 

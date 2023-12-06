@@ -62,6 +62,8 @@ public class Gamevariables
     public static float LightIntensity = 1f;
 
     //Creatures
+    public static readonly float EVOLUTION_RATE = .1f;
+
     public static readonly Creature.Attributes HUMAN_ATTRIBUTES = new ()
         {
         /*  MaxAge:
