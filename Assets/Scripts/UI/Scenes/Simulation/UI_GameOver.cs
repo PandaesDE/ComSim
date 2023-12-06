@@ -7,7 +7,7 @@ public class UI_GameOver : MonoBehaviour
 {
     [SerializeField] private Button _btn_Continue;
     [SerializeField] private Button _btn_Copy;
-    [SerializeField] private Button _btn_Quit;
+    [SerializeField] private Button _btn_NewSim;
     [SerializeField] private TMP_Text _display_GameOverText;
 
     private GameManager gameManager;
@@ -20,7 +20,7 @@ public class UI_GameOver : MonoBehaviour
 
         _btn_Continue.onClick.AddListener(delegate
         {
-            gameManager.InitNewSimulation();
+            gameManager.ContinueSimulation();
             gameObject.SetActive(false);
         });
 
@@ -29,9 +29,10 @@ public class UI_GameOver : MonoBehaviour
             GUIUtility.systemCopyBuffer = statistics.GetLog();
         });
         
-        _btn_Quit.onClick.AddListener(delegate
+        _btn_NewSim.onClick.AddListener(delegate
         {
-            GameManager.LoadScene(GameManager.Scenes.MAIN_MENU);
+            gameManager.InitNewSimulation();
+            gameObject.SetActive(false);
         });
     }
 
@@ -47,7 +48,14 @@ public class UI_GameOver : MonoBehaviour
 
     private string SpeciesSpecificStatistic(string species, List<Statistics.CountData> counts, Dictionary<Creature.DeathReason, int> drDict)
     {
-        return  $"{species} amount: {counts[1].Count} - {counts[^1].Count}, " +
+        int startVal = 0;
+        int endVal = 0;
+        if (counts.Count > 0)
+        {
+            startVal = counts[0].Count;
+            endVal = counts[^1].Count;
+        }
+        return  $"{species} amount: {startVal} - {endVal}, " +
                 $"deathsBy: {DeathReasonDictToString(drDict)}";
     }
 

@@ -11407,7 +11407,7 @@ GameObject:
   - component: {fileID: 1143667924}
   - component: {fileID: 1143667923}
   m_Layer: 5
-  m_Name: Quit
+  m_Name: New Sim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11491,7 +11491,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7830189, g: 0.5313771, b: 0.49123356, a: 1}
+  m_Color: {r: 0.6226415, g: 0.46247742, b: 0.3495016, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -17348,7 +17348,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1746087609
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17384,7 +17384,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _btn_Continue: {fileID: 511774169}
   _btn_Copy: {fileID: 1814151515}
-  _btn_Quit: {fileID: 1143667923}
+  _btn_NewSim: {fileID: 1143667923}
   _display_GameOverText: {fileID: 1588483027}
 --- !u!114 &1746087611
 MonoBehaviour:
@@ -17482,9 +17482,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Quit
-
-'
+  m_text: New Simulation
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -17511,8 +17509,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

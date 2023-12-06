@@ -25,6 +25,7 @@
  *      - 
  */
 
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -43,6 +44,7 @@ public class GameManager : MonoBehaviour
     private Statistics _statistics;
 
     private static readonly int _S_MAX_CREATURES = 350;
+    private static readonly int _S_GAMEOVER_COOLDOWN = 60;
     private static bool _gameOver = false;
 
     private void Awake()
@@ -112,6 +114,15 @@ public class GameManager : MonoBehaviour
         Spawner.NewStartSpawn();
     }
 
+
+
+
+    public void ContinueSimulation()
+    {
+        StartCoroutine(GameOverCheckCoolDown());
+        Time.timeScale = 1;
+    }
+
     private void GameOver(string gameOverReason)
     {
         _gameOver = true;
@@ -119,6 +130,13 @@ public class GameManager : MonoBehaviour
         _gameOverBody.SetActive(true);
         Time.timeScale = 0;
     }
+
+    IEnumerator GameOverCheckCoolDown()
+    {
+        yield return new WaitForSeconds(_S_GAMEOVER_COOLDOWN);
+        _gameOver = false;
+    }
+
 
     private void CheckGameOverConditions()
     {
@@ -137,9 +155,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private static void InitGameSettings()
+    private void InitGameSettings()
     {
-        _gameOver = false;
+        StartCoroutine(GameOverCheckCoolDown());
 
         Time.timeScale = 1;
 
