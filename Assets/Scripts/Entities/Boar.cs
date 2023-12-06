@@ -30,17 +30,11 @@ public class Boar : Creature
     {
         base.Awake();
 
-        //MaxAge:       https://feralhogs.extension.org/feral-hog-population-biology/#:~:text=The%20maximum%20lifespan%20is%20estimated,9%2D26%20months%20of%20age.
-        //FertilityAge: https://www.pigprogress.net/topic/boar-infertility/#:~:text=The%20production%20of%20normal%20sperm,of%20the%20testes%20and%20accessory
-
-        BuildAge(.42f, 10);
+        SetAttributes(Gamevariables.BOAR_ATTRIBUTES);
         BuildGender(Util.Random.IsMale());
         BuildSocialBehaviour(new NonSocializer());
         BuildDietary(new Omnivore(this));
-        BuildHealth(110);
-        BuildWeight(130);
-        BuildDamage(15);
-        BuildSpeed(.2f);
+
     }
 
     protected override void FixedUpdate()

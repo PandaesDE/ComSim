@@ -29,13 +29,24 @@ public abstract class Creature : MonoBehaviour
 {
     public enum DeathReason
     {
-        forthirst,
-        starvation,
-        casualty_byHuman,
-        casualty_byBoar,
-        casualty_byLion,
-        maternal,
-        senescence
+        forthirst,          //thirst
+        starvation,         //hunger
+        casualty_byHuman,   //attack
+        casualty_byBoar,    //attack
+        casualty_byLion,    //attack
+        maternal,           //birth
+        senescence          //age
+    }
+
+    public class Attributes
+    {
+        public float MaxAge = -1;
+        public float Age = -1;
+        public float FertilityAge = -1;
+        public float Health = -1;
+        public int Weight = -1;
+        public float Damage = -1;
+        public float Speed = -1;
     }
 
     //Constants
@@ -48,7 +59,7 @@ public abstract class Creature : MonoBehaviour
     //Attributes
     private Timer _aging;
     public float MaxAge { get; private set; } = 0;
-    public float Age { get; set; } = 0;
+    public float Age { get; set; } = -1;
     public float FertilityAge { get; private set; } = 0;
     public int MaxHealth { get; private set; } = 0;
     public float Energy { get; protected set; } = MAX_ENERGY;
@@ -71,7 +82,7 @@ public abstract class Creature : MonoBehaviour
         //Handles reproductive behaviour
     public IGender Gender { get; protected set; }
         //Handles social behaviour
-    public ISocialBehaviour socialBehaviour { get; protected set; }
+    public ISocialBehaviour SocialBehaviour { get; protected set; }
 
         //Movement
     public Movement Movement { get; protected set; }
@@ -146,15 +157,11 @@ public abstract class Creature : MonoBehaviour
         Trail.FixedUpdate();
     }
 
-    #region Builder
-    public Creature BuildAge(float fertilityAge, float maxAge)
-    {
-        this.Age = Util.Random.Float(0, maxAge);
-        this.FertilityAge = fertilityAge;
-        this.MaxAge = maxAge;
-        return this;
-    }
-
+    #region Attribute & Components inititialize
+    /*  Here defined as:
+     *      Build: Set without overwriting the variable(s)
+     *      Set: overwrite the variable(s)
+     */
     public abstract Creature BuildGender(bool isMale);
     
     protected Creature BuildGender(IGender gender)
@@ -165,7 +172,7 @@ public abstract class Creature : MonoBehaviour
 
     protected Creature BuildSocialBehaviour(ISocialBehaviour socialBehaviour)
     {
-        this.socialBehaviour ??= socialBehaviour;
+        this.SocialBehaviour ??= socialBehaviour;
         return this;
     }
 
@@ -174,35 +181,47 @@ public abstract class Creature : MonoBehaviour
         this.dietary ??= dietary;
         return this;
     }
-    protected Creature BuildHealth(int health)
+
+    public void SetAttributes(Attributes atr)
     {
-        if (this.Health == 0)
+        SetAllValuesIfSpecified();
+        if (this.Age == -1)
         {
-            this.MaxHealth = health;
-            this.Health = health;
+            this.Age = Util.Random.Float(0, MaxAge);
         }
-        return this;
-    }
 
-    protected Creature BuildWeight(int weight)
-    {
-        if (this.Weight == 0)
-            this.Weight = weight;
-        return this;
-    }
-
-    protected Creature BuildSpeed(float speed)
-    {
-        if (this.Movement.Speed == 0)
-            this.Movement.Speed = speed;
-        return this;
-    }
-
-    protected Creature BuildDamage(float damage)
-    {
-        if (this.Damage == 0)
-            this.Damage = damage;
-        return this;
+        void SetAllValuesIfSpecified()
+        {
+            if (atr.Age != -1)
+            {
+                this.Age = atr.Age;
+            }
+            if (atr.FertilityAge != -1)
+            {
+                this.FertilityAge = atr.FertilityAge;
+            }
+            if (atr.MaxAge != -1)
+            {
+                this.MaxAge = atr.MaxAge;
+            }
+            if (atr.Health != -1)
+            {
+                this.MaxHealth = (int)atr.Health;
+                this.Health = atr.Health;
+            }
+            if (atr.Weight != -1)
+            {
+                this.Weight = atr.Weight;
+            }
+            if (atr.Speed != -1)
+            {
+                this.Movement.Speed = atr.Speed;
+            }
+            if (atr.Damage != -1)
+            {
+                this.Damage = atr.Damage;
+            }
+        }
     }
     #endregion
 
@@ -371,18 +390,19 @@ public abstract class Creature : MonoBehaviour
     {
         int stopFleeDistance = 15;
         /*Set Target*/
-        if (brain.activeFlee == null)
+        if (brain.ActiveFlee == null)
         {
             brain.SetActiveFlee();
         }
         /*Exit Condition*/
-        if (brain.activeFlee == null) return;
-        if (!Util.InRange(gameObject.transform.position, brain.activeFlee.transform.position, stopFleeDistance)) return;
+        if (brain.ActiveFlee == null) return;
+        if (!Util.InRange(gameObject.transform.position, brain.ActiveFlee.transform.position, stopFleeDistance)) return;
 
         /*Target Too Close*/
-        Movement.SetStaticTarget(-brain.activeFlee.gameObject.transform.position);
+        Movement.SetStaticTarget(-brain.ActiveFlee.gameObject.transform.position);
+        SocialBehaviour.OnFleeing(brain.ActiveFlee);
     }
-
+    
     protected void OnHunting()
     {
         /*Exit Condition*/
@@ -392,16 +412,16 @@ public abstract class Creature : MonoBehaviour
             return;
         }
         /*Set Target*/
-        if (brain.activeHunt == null || !Movement.IsFollowing())
+        if (brain.ActiveHunt == null || !Movement.IsFollowing())
         {
             if (brain.HasSpottedCreature())
             {
                 brain.SetActiveHunt();
             }
 
-            if (brain.activeHunt != null)
+            if (brain.ActiveHunt != null)
             {
-                Movement.SetMovingTarget(brain.activeHunt.gameObject);
+                Movement.SetMovingTarget(brain.ActiveHunt.gameObject);
             }
             else
             {
@@ -410,9 +430,10 @@ public abstract class Creature : MonoBehaviour
             }
         }
         /*Target Reached*/
-        if (Util.InRange(transform.position, brain.activeHunt.transform.position))
+        if (Util.InRange(transform.position, brain.ActiveHunt.transform.position))
         {
-            brain.activeHunt.Attack(Damage, this);
+            SocialBehaviour.OnAttacking(brain.ActiveHunt);
+            brain.ActiveHunt.Attack(Damage, this);
         }
     }
 
@@ -425,13 +446,13 @@ public abstract class Creature : MonoBehaviour
             return;
         }
         /*Set Target*/
-        if (brain.activeFood == null)
+        if (brain.ActiveFood == null)
         {
             if (brain.HasFoodSource())
             {
                 brain.SetActiveFoodSource();
-                if (brain.activeFood != null)
-                    Movement.SetStaticTarget(brain.activeFood.gameObject.transform.position);
+                if (brain.ActiveFood != null)
+                    Movement.SetStaticTarget(brain.ActiveFood.gameObject.transform.position);
                 else
                     Movement.SetRandomTargetIfReached();
             }
@@ -447,14 +468,14 @@ public abstract class Creature : MonoBehaviour
         /*Target Reached*/
         if (Movement.TargetReached())
         {
-            if (!brain.activeFood.HasFood)
+            if (!brain.ActiveFood.HasFood)
             {
-                brain.SetInactiveFoodSource(brain.activeFood);
+                brain.SetInactiveFoodSource(brain.ActiveFood);
                 DetermineStatus();
                 return;
             }
 
-            Eat(brain.activeFood.Consume());
+            Eat(brain.ActiveFood.Consume());
             return;
         }
     }
@@ -469,11 +490,11 @@ public abstract class Creature : MonoBehaviour
             return;
         }
         /*Set Target*/
-        if (brain.activeWater == null)
+        if (brain.ActiveWater == null)
         {
             brain.setActiveWaterSource();
-            if (brain.activeWater != null)
-                Movement.SetStaticTarget(brain.activeWater.transform.position);
+            if (brain.ActiveWater != null)
+                Movement.SetStaticTarget(brain.ActiveWater.transform.position);
             else
                 Movement.SetRandomTargetIfReached();
             return;
@@ -494,19 +515,19 @@ public abstract class Creature : MonoBehaviour
             return;
         }
         /*Set Target*/
-        if (brain.activeMate == null || !Movement.IsFollowing())
+        if (brain.ActiveMate == null || !Movement.IsFollowing())
         {
             brain.SetActiveMate();
-            if (brain.activeMate != null)
-                Movement.SetMovingTarget(brain.activeMate.gameObject);
+            if (brain.ActiveMate != null)
+                Movement.SetMovingTarget(brain.ActiveMate.gameObject);
             else
                 Movement.SetRandomTargetIfReached();
             return;
         }
         /*Target Reached*/
-        if (Util.InRange(transform.position, brain.activeMate.transform.position))
+        if (Util.InRange(transform.position, brain.ActiveMate.transform.position))
         {
-            Gender.MateWith(brain.activeMate.Gender);
+            Gender.MateWith(brain.ActiveMate.Gender);
         }
     }
 
@@ -651,7 +672,6 @@ public abstract class Creature : MonoBehaviour
     public void Attack(float damage, Creature attacker)
     {
         Health -= damage;
-        StatusManager.SetState(dietary.OnAttacked());
         if (Health <= 0)
         {
             if (attacker.TryGetComponent<Lion>(out _))
@@ -661,6 +681,9 @@ public abstract class Creature : MonoBehaviour
             if (attacker.TryGetComponent<Human>(out _))
                 OnDeath(DeathReason.casualty_byHuman);
         }
+        
+        StatusManager.SetState(dietary.OnAttacked());
+        SocialBehaviour.OnAttacked(attacker);
     }
 
     private void BirthDamage(float birthDamage)

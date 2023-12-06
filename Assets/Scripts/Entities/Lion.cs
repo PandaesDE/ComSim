@@ -30,17 +30,10 @@ public class Lion : Creature
     {
         base.Awake();
 
-        //MaxAge:       https://www.discoveryuk.com/big-cats/how-long-do-lions-live/#:~:text=Overall%2C%20lions%20can%20expect%20to,to%20make%20it%20to%20adulthood.
-        //FertilityAge: https://ypte.org.uk/factsheets/lion/breeding
-
-        BuildAge(2, 12);
+        SetAttributes(Gamevariables.LION_ATTRIBUTES);
         BuildGender(Util.Random.IsMale());
         BuildSocialBehaviour(new NonSocializer());
         BuildDietary(new Carnivore(this));
-        BuildHealth(65);
-        BuildWeight(80);
-        BuildDamage(35);
-        BuildSpeed(.2f);
     }
 
     protected override void FixedUpdate()

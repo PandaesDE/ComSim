@@ -30,18 +30,10 @@ public class Human : Creature
     {
         base.Awake();
 
-        //MaxAge:       https://www.wissenschaftsjahr.de/2013/rueckblicke/forschungsmuseen-erklaeren-den-wandel/senckenberg-naturmuseum.html
-        //MaxAge:       https://www.spiegel.de/wissenschaft/mensch/homo-sapiens-und-neandertaler-40-jahre-alte-greise-a-738722.html
-        //FertilityAge: https://www.researchgate.net/figure/Age-of-menarche-and-the-first-reproduction-A-regression-line-and-95-confidence-limits_fig1_51589335
-
-        BuildAge(18, 30);
+        SetAttributes(Gamevariables.HUMAN_ATTRIBUTES);
         BuildGender(Util.Random.IsMale());
         BuildSocialBehaviour(new TribeMember(this));
         BuildDietary(new Omnivore(this));
-        BuildHealth(80);
-        BuildWeight(80);
-        BuildDamage(10);
-        BuildSpeed(.2f);
     }
 
     protected override void FixedUpdate()
@@ -63,7 +55,7 @@ public class Human : Creature
         StatusManager.SetState(StatusManager.State.hunting);
 
         brain.SetActiveHunt(toAttack);
-        Movement.SetMovingTarget(brain.activeHunt.gameObject);
+        Movement.SetMovingTarget(brain.ActiveHunt.gameObject);
     }
 
     /*Gets called by Parent*/

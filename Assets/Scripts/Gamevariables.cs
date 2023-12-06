@@ -61,6 +61,74 @@ public class Gamevariables
     /* between 0 - 1*/
     public static float LightIntensity = 1f;
 
+    //Creatures
+    public static readonly Creature.Attributes HUMAN_ATTRIBUTES = new ()
+        {
+        /*  MaxAge:
+         *      - https://www.wissenschaftsjahr.de/2013/rueckblicke/forschungsmuseen-erklaeren-den-wandel/senckenberg-naturmuseum.html
+         *      - https://www.spiegel.de/wissenschaft/mensch/homo-sapiens-und-neandertaler-40-jahre-alte-greise-a-738722.html
+         *  FertilityAge:
+         *      - https://www.researchgate.net/figure/Age-of-menarche-and-the-first-reproduction-A-regression-line-and-95-confidence-limits_fig1_51589335
+         */
+            FertilityAge = 18,
+            MaxAge = 30,
+            Health = 80,
+            Weight = 80,
+            Damage = 10,
+            Speed = .2f,
+        };
+    public static readonly Creature.Attributes LION_ATTRIBUTES = new()
+    {
+        /*  MaxAge:
+         *      - https://www.discoveryuk.com/big-cats/how-long-do-lions-live/#:~:text=Overall%2C%20lions%20can%20expect%20to,to%20make%20it%20to%20adulthood.
+         *  FertilityAge:
+         *      - https://ypte.org.uk/factsheets/lion/breeding
+         */
+        FertilityAge = 2,
+        MaxAge = 12,
+        Health = 65,
+        Weight = 80,
+        Damage = 35,
+        Speed = .2f,
+    };
+    public static readonly Creature.Attributes BOAR_ATTRIBUTES = new()
+    {
+        /*  MaxAge:
+         *      - https://feralhogs.extension.org/feral-hog-population-biology/#:~:text=The%20maximum%20lifespan%20is%20estimated,9%2D26%20months%20of%20age.
+         *  FertilityAge:
+         *      - https://www.pigprogress.net/topic/boar-infertility/#:~:text=The%20production%20of%20normal%20sperm,of%20the%20testes%20and%20accessory
+         */
+        FertilityAge = .42f,
+        MaxAge = 10,
+        Health = 110,
+        Weight = 130,
+        Damage = 15,
+        Speed = .2f,
+    };
+    public static readonly Creature.Attributes RABBIT_ATTRIBUTES = new()
+    {
+        /*  MaxAge:
+         *      - https://agriculture.vic.gov.au/livestock-and-animals/animal-welfare-victoria/other-pets/rabbits/owning-a-rabbit#:~:text=Rabbits%20generally%20live%20for%205,care%20for%20them%20that%20long.
+         *  FertlityAge:
+         *      - https://www.msdvetmanual.com/all-other-pets/rabbits/breeding-and-reproduction-of-rabbits#:~:text=Rabbit%20breeds%20of%20medium%20to,of%20hormones%20as%20in%20humans.
+         */
+        FertilityAge = .3f,
+        MaxAge = 7,
+        Health = 45,
+        Weight = 30,
+        Damage = 1,
+        Speed = .2f,
+    };
+    public static readonly Creature.Attributes NORMALIZED_ATTRIBUTES = new()
+    {
+        FertilityAge = 3,
+        MaxAge = 10,
+        Health = 100,
+        Weight = 80,
+        Damage = 10,
+        Speed = .2f
+    };
+
 
     //Error - Values
     public static readonly Vector2 ERROR_VECTOR2 = Vector2.negativeInfinity;

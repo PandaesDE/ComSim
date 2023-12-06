@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject _gameOverBody;
 
-    private static readonly int _S_MAX_CREATURES = 200; //200 DEFAULT
+    private static readonly int _S_MAX_CREATURES = 350;
     private static bool _gameOver = false;
 
     private void Start()

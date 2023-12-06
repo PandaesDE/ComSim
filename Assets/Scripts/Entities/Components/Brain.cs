@@ -32,11 +32,11 @@ public class Brain
 {
     private Creature _creature;
 
-    public IConsumable activeFood { get; private set; }
-    public GameObject activeWater { get; private set; }
-    public Creature activeHunt { get; private set; }
-    public Creature activeFlee { get; private set; }
-    public Creature activeMate { get; private set; }
+    public IConsumable ActiveFood { get; private set; }
+    public GameObject ActiveWater { get; private set; }
+    public Creature ActiveHunt { get; private set; }
+    public Creature ActiveFlee { get; private set; }
+    public Creature ActiveMate { get; private set; }
 
 
     private Dictionary<int, IConsumable> _spottedFoods;
@@ -58,22 +58,22 @@ public class Brain
 
     public void OnStateChange()
     {
-        activeFood = null;
-        activeWater = null;
-        activeHunt = null;
-        activeFlee = null;
-        activeMate = null;
+        ActiveFood = null;
+        ActiveWater = null;
+        ActiveHunt = null;
+        ActiveFlee = null;
+        ActiveMate = null;
     }
 
     #region SetActives
     public void SetActiveFoodSource()
     {
-        activeFood = GetNearestFoodSource();
+        ActiveFood = GetNearestFoodSource();
     }
 
     public void setActiveWaterSource()
     {
-        activeWater = getNearestWaterSource();
+        ActiveWater = getNearestWaterSource();
     }
 
     public void SetActiveHunt()
@@ -83,17 +83,17 @@ public class Brain
 
     public void SetActiveHunt(Creature toHunt)
     {
-        activeHunt = toHunt;
+        ActiveHunt = toHunt;
     }
 
     public void SetActiveFlee()
     {
-        activeFlee = GetNearestCreature();
+        ActiveFlee = GetNearestCreature();
     }
 
     public void SetActiveMate()
     {
-        activeMate = GetNearestMate();
+        ActiveMate = GetNearestMate();
     }
     #endregion
 
@@ -276,7 +276,7 @@ public class Brain
     public void SetInactiveFoodSource(IConsumable food)
     {
         int ID = food.gameObject.GetInstanceID();
-        activeFood = null;
+        ActiveFood = null;
         SetInactiveFoodSource(ID);
     }
 
