@@ -722,6 +722,12 @@ public abstract class Creature : MonoBehaviour
 
     private void Aging()
     {
+        if (Age <= FertilityAge)
+        {
+            float scale = Mathf.Clamp(Age / FertilityAge, .25f, 1);
+            transform.localScale = new Vector3(scale, scale, scale);
+        }
+
         if (_aging.Finished())
         {
             if (Age == MaxAge)
@@ -731,11 +737,6 @@ public abstract class Creature : MonoBehaviour
             }
 
             Age++;
-            if (Age <= FertilityAge)
-            {
-                float scale = Mathf.Clamp(Age / FertilityAge, .25f, 1);
-                transform.localScale = new Vector3(scale, scale, scale);
-            }
             _aging.Reset();
         }
         _aging.Tick();

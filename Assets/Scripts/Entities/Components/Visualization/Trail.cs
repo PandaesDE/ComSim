@@ -48,6 +48,7 @@ public class Trail
     private IDietary _dietary;
     private LineRenderer _lr;
     private LinkedList<Vertex> _verticies = new();
+    private float _minWidth = .1f;
 
     public Trail (Creature creature, IDietary dietary)
     {
@@ -55,7 +56,7 @@ public class Trail
         this._dietary = dietary;
         _lr = creature.GetComponent<LineRenderer>();
 
-        _lr.startWidth = Mathf.Clamp(_creature.Age / _creature.FertilityAge, 0, 1);
+        _lr.startWidth = Mathf.Clamp(_creature.Age / _creature.FertilityAge, _minWidth, 1);
         _lr.endWidth = 0;
         SetColor();
     }
@@ -66,7 +67,7 @@ public class Trail
         {
             if (_creature.Age <= _creature.FertilityAge)
             {
-                _lr.startWidth = _creature.Age / _creature.FertilityAge;
+                _lr.startWidth = Mathf.Clamp(_creature.Age / _creature.FertilityAge, _minWidth, 1);
             }
             AddVertex(new Vertex(_creature.transform.position, GetStatusColor()));
             RenderLine();
