@@ -61,11 +61,52 @@ public abstract class Creature : MonoBehaviour
     public float MaxAge { get; private set; } = 0;
     public float Age { get; set; } = -1;
     public float FertilityAge { get; private set; } = 0;
-    public int MaxHealth { get; private set; } = 0;
+    private float _health;
+    public float Health
+    {
+        get
+        {
+            return _health * GrowthFactor;
+        }
+        set
+        {
+            _health = value;
+        }
+    }
+    private float _maxHealth;
+    public float MaxHealth
+    {
+        get
+        {
+            return _maxHealth * GrowthFactor;
+        }
+        set
+        {
+            _maxHealth = value;
+        }
+    }
     public float Energy { get; protected set; } = MAX_ENERGY;
-    public float Health { get; protected set; } = 0;
     public int Weight { get; protected set; } = 0;
-    public float Damage { get; protected set; } = 0;
+    private float _damage;
+    public float Damage
+    {
+        get
+        {
+            return _damage * GrowthFactor;
+        }
+        set
+        {
+            _damage = value;
+        }
+    }
+
+    public float GrowthFactor
+    {
+        get
+        {
+            return Mathf.Clamp(Age / FertilityAge, .05f, 1f);
+        }
+    }
     
 
 
@@ -206,7 +247,7 @@ public abstract class Creature : MonoBehaviour
             }
             if (atr.Health != -1)
             {
-                this.MaxHealth = (int)atr.Health;
+                this.MaxHealth = atr.Health;
                 this.Health = atr.Health;
             }
             if (atr.Weight != -1)
@@ -447,7 +488,7 @@ public abstract class Creature : MonoBehaviour
         if (Util.InRange(transform.position, brain.ActiveHunt.transform.position))
         {
             SocialBehaviour.OnAttacking(brain.ActiveHunt);
-            brain.ActiveHunt.Attack(Damage, this);
+            brain.ActiveHunt.Attack(Damage * GrowthFactor, this);
         }
     }
 
@@ -724,7 +765,7 @@ public abstract class Creature : MonoBehaviour
     {
         if (Age <= FertilityAge)
         {
-            float scale = Mathf.Clamp(Age / FertilityAge, .25f, 1);
+            float scale = Mathf.Clamp(GrowthFactor, .25f, 1);
             transform.localScale = new Vector3(scale, scale, scale);
         }
 

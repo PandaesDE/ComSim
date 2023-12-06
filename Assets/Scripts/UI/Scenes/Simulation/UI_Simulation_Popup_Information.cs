@@ -207,13 +207,13 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
 
     private void UpdateDamage()
     {
-        _display_Damage.text = $"{_target.Damage}";
+        _display_Damage.text = cutFloatString($"{_target.Damage}", 4);
     }
 
     private void UpdateHealthBar()
     {
-        _sdr_Health.value = (float)_target.Health / (float)_target.MaxHealth;
-        _display_Health.text = $"/{_target.MaxHealth}";
+        _sdr_Health.value = _target.Health / _target.MaxHealth;
+        _display_Health.text = cutFloatString($"{_target.MaxHealth}", 4);
     }
 
     private void UpdateHungerBar()
@@ -239,5 +239,11 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
     private void SetActive(bool state) 
     {
         gameObject.SetActive(state);
+    }
+
+    private string cutFloatString(string fl, int maxLength)
+    {
+        if (fl.Length < maxLength) maxLength = fl.Length;
+        return fl[..maxLength];
     }
 }

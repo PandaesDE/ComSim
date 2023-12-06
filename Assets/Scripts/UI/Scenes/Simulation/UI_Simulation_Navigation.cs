@@ -217,6 +217,8 @@ public class UI_Simulation_Navigation : MonoBehaviour
                 _btn_Creature_Normalizer.onClick.AddListener(delegate
                 {
                     _creatures_normalized = !_creatures_normalized;
+                    if (_creatures_normalized ) { _btn_Creature_Normalizer.GetComponentInChildren<TMP_Text>().text = "Unequal Values"; }
+                    else { _btn_Creature_Normalizer.GetComponentInChildren<TMP_Text>().text = "Equal Values"; }
                     ObjectManager.SetCreatureAttributes(_creatures_normalized);
                     ui_spi.FixedUpdate();
                 });
