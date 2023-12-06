@@ -383,8 +383,7 @@ public abstract class Creature : MonoBehaviour
 
         if (StatusManager.Status == StatusManager.State.wandering)
         {
-            Movement.SetRandomTargetIfReached();
-            DetermineStatus();
+            OnWandering();
         }
     }
 
@@ -570,6 +569,12 @@ public abstract class Creature : MonoBehaviour
         GiveBirth();
         BirthDamage(20);
         StatusManager.SetState(StatusManager.State.wandering);
+    }
+
+    protected void OnWandering()
+    {
+        Movement.SetStaticTargetIfReached(SocialBehaviour.GetHomeArea());
+        DetermineStatus();
     }
     #endregion
 

@@ -76,12 +76,30 @@ public static class Util
             return UnityEngine.Random.Range(min, max + 1);
         }
 
+        public static Vector2 CoordinateInAreaOfPlayground(int areaWidth, int areaHeight, Vector2 areaMiddle)
+        {
+            int halfWidth = areaWidth / 2;
+            int halfHeight = areaHeight / 2;
+            int playGroundLimiterX = Gamevariables.PLAYGROUND_SIZE.x / 2;
+            int playGroundLimiterY = Gamevariables.PLAYGROUND_SIZE.y / 2;
+
+            int xMin = Mathf.Clamp((int)areaMiddle.x - halfWidth, -playGroundLimiterX, playGroundLimiterX);
+            int xMax = Mathf.Clamp((int)areaMiddle.x + halfWidth, -playGroundLimiterX, playGroundLimiterX);
+            int yMin = Mathf.Clamp((int)areaMiddle.y - halfHeight, -playGroundLimiterY, playGroundLimiterY);
+            int yMax = Mathf.Clamp((int)areaMiddle.y + halfHeight, -playGroundLimiterY, playGroundLimiterY);
+
+            return new Vector2(
+                UnityEngine.Random.Range(xMin, xMax),
+                UnityEngine.Random.Range(yMin, yMax));
+        }
 
         public static Vector2 CoordinateInPlayground()
         {
-            int halfW = Gamevariables.PLAYGROUND_SIZE.x / 2;
-            int halfH = Gamevariables.PLAYGROUND_SIZE.y / 2;
-            return new Vector2(UnityEngine.Random.Range(-halfW, halfW), UnityEngine.Random.Range(-halfH, halfH));
+            int maxWidth = Gamevariables.PLAYGROUND_SIZE.x / 2;
+            int maxHeight = Gamevariables.PLAYGROUND_SIZE.y / 2;
+            return new Vector2(
+                UnityEngine.Random.Range(-maxWidth, maxWidth), 
+                UnityEngine.Random.Range(-maxHeight, maxHeight));
         }
     }
 

@@ -81,6 +81,11 @@ public class Movement
         return _isMoving;
     }
 
+    public void SetStaticTargetIfReached(Vector2 destination)
+    {
+        if (TargetReached()) SetStaticTarget(destination);
+    }
+
     public void SetStaticTarget(Vector2 destination)
     {
         _isMoving = false;

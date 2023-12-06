@@ -31,4 +31,5 @@ public interface ISocialBehaviour
     public void OnAttacked(Creature attacker);
     public void OnAttacking(Creature victim);
     public void OnFleeing(Creature attacker);
+    public Vector2 GetHomeArea();
 }

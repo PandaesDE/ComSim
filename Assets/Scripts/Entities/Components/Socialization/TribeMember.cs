@@ -7,40 +7,48 @@
  *      University:         Technische Hochschule Nürnberg
  *  
  *  Description:
- *      - 
+ *      - this class defines simple methods to simulate social behaviour by:
+ *          - alarming nearby folks on certain scenarios
+ *          - increasing the chance to stay in groups
  *  
  *  References:
  *      Scene:
- *          - 
+ *          - Simulation scene(s)
  *      Script:
- *          - 
+ *          - Attached to social creatures
  *          
  *  Notes:
- *      -
- *  
+ *      - Ideas:
+ *          - Groupbias: [0,100]
+ *              - chance to stay close to other people(gets inhereted to children)
+ *              - expectation: people in groups are more likely to survive a predator
+ *
  *  Sources:
  *      - 
  */
 
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class TribeMember : ISocialBehaviour
 {
-    //Popularty System
-    /*Idea:
-            - int Groupbias: [0,100]
-                - chance to stay close to other people(gets inhereted to children)
-                - expectation: people in groups are more likely to survive a predator*/
-    private float _alertDistance = 10f;
+    private readonly float _alertDistance = 10f;
     private Creature _creature;
+    private Tribe _tribe;
 
     public TribeMember(Creature creature)
     {
+        _tribe = new();
         _creature = creature;
     }
+
+    #region Home System
+    public Vector2 GetHomeArea()
+    {
+        return _tribe.GetHomeArea();
+    }
+    #endregion
 
     #region Alert System
     public void OnAttacked(Creature attacker)
@@ -76,7 +84,7 @@ public class TribeMember : ISocialBehaviour
     {
         //this shortcut can only be made when Human is the only social creature around!
         return GameObject.FindObjectsOfType<Human>().ToList()
-            .Where(human => Vector3.Distance(_creature.transform.position, human.transform.position) <= _alertDistance * distanceFactor).ToList();
+            .Where(human => Util.InRange(_creature.transform.position, human.transform.position, _alertDistance * distanceFactor)).ToList();
     }
     #endregion
 }

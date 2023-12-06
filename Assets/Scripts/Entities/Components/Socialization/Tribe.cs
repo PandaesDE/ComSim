@@ -7,43 +7,39 @@
  *      University:         Technische Hochschule Nürnberg
  *  
  *  Description:
- *      - 
+ *      - this class defines a group of social creatures
  *  
  *  References:
  *      Scene:
- *          - 
+ *          - Simulation scene(s)
  *      Script:
- *          - 
+ *          - Attached to social creatures
  *          
  *  Notes:
- *      -
- *  
+ *      - Ideas:
+ *          - Popularty System
+ *      
  *  Sources:
  *      - 
  */
 
-
 using UnityEngine;
 
-public class NonSocializer : ISocialBehaviour
+public class Tribe
 {
-    public void OnAttacked(Creature attacker)
+    public Vector2 Home;
+    private readonly int _areaWidthHeight = 10;
+    public Tribe()
     {
-
-    }
-
-    public void OnAttacking(Creature victim)
-    {
-
-    }
-
-    public void OnFleeing(Creature attacker)
-    {
-
+        if (Home == null)
+        {
+            Home = Util.Random.CoordinateInPlayground();
+        }
     }
 
     public Vector2 GetHomeArea()
     {
-        return Util.Random.CoordinateInPlayground();
+        return Util.Random.CoordinateInAreaOfPlayground(10, 10, Home);
     }
+    
 }
