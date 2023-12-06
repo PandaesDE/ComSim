@@ -31,5 +31,5 @@ public interface IConsumable
     public bool IsMeat { get; }
     public bool HasFood { get; }
     public GameObject gameObject { get; }   //TODO DELETE?
-    public float Consume();
+    public float Consume(float amount);
 }

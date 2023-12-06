@@ -28,8 +28,8 @@ public class Corpse : MonoBehaviour, IConsumable
 {
     private static readonly int _s_decayDays = 3;
 
-    private int _weightStart;
-    private int _weight = 0;
+    private float _weightStart;
+    private float _weight = 0;
     private bool _isConsumed = false;
 
     [SerializeField] private int _decayMinutes;
@@ -73,11 +73,9 @@ public class Corpse : MonoBehaviour, IConsumable
         _decayMinutes -= Gamevariables.MinutesPerTick;
     }
 
-    public float Consume()
+    public float Consume(float amount)
     {
         if (_weight <= 0) return 0;
-
-        int amount = _weightStart / 10;
 
         if (_weight - amount <= 0) {
             return _weight;
@@ -89,7 +87,7 @@ public class Corpse : MonoBehaviour, IConsumable
     }
 
     //getter & setter
-    public void SetWeight(int w)
+    public void SetWeight(float w)
     {
         this._weight = w;
         this._weightStart = w;

@@ -36,7 +36,7 @@ public class Male : IGender
     {
         get
         {
-            return  _creature.Age >= _creature.FertilityAge &&
+            return  _creature.GrowthFactor >= 1f &&
                     _cooldownMating.Finished();
         }
     }
@@ -89,6 +89,8 @@ public class Male : IGender
 
     public void MateWith(IGender partner)
     {
+        if (!IsReadyForMating) return;
+
         partner.MateWith(this);
         Desire = 0;
         _cooldownMating.Reset();
@@ -96,6 +98,7 @@ public class Male : IGender
 
     private void IncreaseDesire()
     {
+        if (_creature.GrowthFactor < 1f) return;
         if (Desire >= IGender.MAX_DESIRE) return;
         float increase = _desireIncreaseRatePerMinute * Gamevariables.MinutesPerTick;
         Desire = Mathf.Clamp(Desire + increase, 0 , IGender.MAX_DESIRE);

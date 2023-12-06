@@ -93,6 +93,7 @@ public class ObjectManager : MonoBehaviour
         {
             foreach (Creature c in creatureDict.Values)
             {
+                if (c == null) continue;
                 Destroy(c.gameObject);
             }
             creatureDict.Clear();
@@ -205,6 +206,7 @@ public class ObjectManager : MonoBehaviour
     {
         foreach (Corpse c in AllCorpses.Values)
         {
+            if (c == null) continue;
             Destroy(c.gameObject);
         }
         AllCorpses.Clear();

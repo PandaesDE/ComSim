@@ -166,7 +166,7 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
         string ageStage = "Adult";
         Color fertile = Color.green;
         
-        if (_target.Age < _target.FertilityAge)
+        if (_target.GrowthFactor < 1f)
         {
             ageStage = "Child";
             fertile = Color.red;
@@ -207,13 +207,13 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
 
     private void UpdateDamage()
     {
-        _display_Damage.text = cutFloatString($"{_target.Damage}", 4);
+        _display_Damage.text = CutFloatString($"{_target.Damage}", 4);
     }
 
     private void UpdateHealthBar()
     {
         _sdr_Health.value = _target.Health / _target.MaxHealth;
-        _display_Health.text = cutFloatString($"{_target.MaxHealth}", 4);
+        _display_Health.text = CutFloatString($"{_target.MaxHealth}", 4);
     }
 
     private void UpdateHungerBar()
@@ -241,7 +241,7 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
         gameObject.SetActive(state);
     }
 
-    private string cutFloatString(string fl, int maxLength)
+    private string CutFloatString(string fl, int maxLength)
     {
         if (fl.Length < maxLength) maxLength = fl.Length;
         return fl[..maxLength];

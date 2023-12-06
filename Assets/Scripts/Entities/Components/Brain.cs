@@ -366,6 +366,12 @@ public class Brain
                 continue;
             }
 
+            //Mate not Adult
+            if (keyValue.Value.GrowthFactor < 1f)
+            {
+                continue;
+            }
+
             float distance = Vector3.Distance(keyValue.Value.gameObject.transform.position, _creature.transform.position);
             if (distance < minDistance)
             {

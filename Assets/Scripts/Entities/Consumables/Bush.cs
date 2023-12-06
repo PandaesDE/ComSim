@@ -91,7 +91,7 @@ public class Bush : MonoBehaviour, IConsumable
     }
 
 
-    public float Consume()
+    public float Consume(float amount)
     {
         if (_berries <= 0) return 0;
 

@@ -102,6 +102,7 @@ public class Female : IGender
     public void MateWith(IGender partner)
     {
         if (!IsSuitable(partner)) return;
+        if (!IsReadyForMating) return;
         //chance of failure ?
         _durationPregnancy.Reset();
         _cooldownPregnancy.Reset();

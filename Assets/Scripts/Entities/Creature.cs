@@ -44,7 +44,7 @@ public abstract class Creature : MonoBehaviour
         public float Age = -1;
         public float FertilityAge = -1;
         public float Health = -1;
-        public int Weight = -1;
+        public float Weight = -1;
         public float Damage = -1;
         public float Speed = -1;
     }
@@ -61,44 +61,15 @@ public abstract class Creature : MonoBehaviour
     public float MaxAge { get; private set; } = 0;
     public float Age { get; set; } = -1;
     public float FertilityAge { get; private set; } = 0;
-    private float _health;
-    public float Health
-    {
-        get
-        {
-            return _health * GrowthFactor;
-        }
-        set
-        {
-            _health = value;
-        }
-    }
-    private float _maxHealth;
-    public float MaxHealth
-    {
-        get
-        {
-            return _maxHealth * GrowthFactor;
-        }
-        set
-        {
-            _maxHealth = value;
-        }
-    }
-    public float Energy { get; protected set; } = MAX_ENERGY;
-    public int Weight { get; protected set; } = 0;
-    private float _damage;
-    public float Damage
-    {
-        get
-        {
-            return _damage * GrowthFactor;
-        }
-        set
-        {
-            _damage = value;
-        }
-    }
+    private float _health = 0;
+    public float Health { get { return _health * GrowthFactor; } }
+    private float _maxHealth = 0;
+    public float MaxHealth { get { return _maxHealth * GrowthFactor; } }
+    public float Energy { get; private set; } = MAX_ENERGY;
+    private float _weight = 0;
+    public float Weight { get { return _weight * GrowthFactor; } }
+    private float _damage = 0;
+    public float Damage { get { return _damage * GrowthFactor; } }
 
     public float GrowthFactor
     {
@@ -247,12 +218,12 @@ public abstract class Creature : MonoBehaviour
             }
             if (atr.Health != -1)
             {
-                this.MaxHealth = atr.Health;
-                this.Health = atr.Health;
+                this._maxHealth = atr.Health;
+                this._health = atr.Health;
             }
             if (atr.Weight != -1)
             {
-                this.Weight = atr.Weight;
+                this._weight = atr.Weight;
             }
             if (atr.Speed != -1)
             {
@@ -260,7 +231,7 @@ public abstract class Creature : MonoBehaviour
             }
             if (atr.Damage != -1)
             {
-                this.Damage = atr.Damage;
+                this._damage = atr.Damage;
             }
         }
     }
@@ -530,7 +501,7 @@ public abstract class Creature : MonoBehaviour
                 return;
             }
 
-            Eat(brain.ActiveFood.Consume());
+            Eat(brain.ActiveFood.Consume(Damage));
             return;
         }
     }
@@ -726,7 +697,7 @@ public abstract class Creature : MonoBehaviour
 
     public void Attack(float damage, Creature attacker)
     {
-        Health -= damage;
+        _health -= damage;
         if (Health <= 0)
         {
             if (attacker.TryGetComponent<Lion>(out _))
@@ -743,7 +714,7 @@ public abstract class Creature : MonoBehaviour
 
     private void BirthDamage(float birthDamage)
     {
-        Health -= birthDamage;
+        _health -= birthDamage;
         if (Health <= 0)
         {
             OnDeath(DeathReason.maternal);
@@ -752,8 +723,8 @@ public abstract class Creature : MonoBehaviour
 
     protected void Regenerate(float addPercentPerHour = .01f)
     {
-        float add = addPercentPerHour * Health * (float)Gamevariables.MinutesPerTick / (float)Gamevariables.MINUTES_PER_HOUR;
-        Health = Mathf.Clamp(Health + add, 0, MaxHealth);
+        float add = addPercentPerHour * _health * (float)Gamevariables.MinutesPerTick / (float)Gamevariables.MINUTES_PER_HOUR;
+        _health = Mathf.Clamp(_health + add, 0, _maxHealth);
     }
 
     protected abstract void OnDeath(DeathReason dr);
@@ -763,12 +734,6 @@ public abstract class Creature : MonoBehaviour
 
     private void Aging()
     {
-        if (Age <= FertilityAge)
-        {
-            float scale = Mathf.Clamp(GrowthFactor, .25f, 1);
-            transform.localScale = new Vector3(scale, scale, scale);
-        }
-
         if (_aging.Finished())
         {
             if (Age == MaxAge)
@@ -781,6 +746,12 @@ public abstract class Creature : MonoBehaviour
             _aging.Reset();
         }
         _aging.Tick();
+
+        if (Age <= FertilityAge) //cannot used GrowthFactor, since it's capped to one
+        {
+            float scale = Mathf.Clamp(GrowthFactor, .25f, 1);
+            transform.localScale = new Vector3(scale, scale, scale);
+        }
     }
 
 }
