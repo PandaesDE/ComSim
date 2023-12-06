@@ -51,7 +51,7 @@ public static class Util
 
     public static class Random
     {
-        public static bool IsMale()
+        public static bool Bool()
         {
             return UnityEngine.Random.value > .5f;
         }

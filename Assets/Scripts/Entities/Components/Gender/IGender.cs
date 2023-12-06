@@ -26,6 +26,8 @@
 public interface IGender
 {
     public static readonly float MAX_DESIRE = 100;
+    public Creature Creature { get; }
+    public Creature Partner { get; set; }
     public bool IsReadyForMating { get; }
     public bool IsMale { get; }
     public bool IsPregnant { get; }

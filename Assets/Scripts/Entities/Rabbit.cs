@@ -30,7 +30,7 @@ public class Rabbit : Creature
         base.Awake();
 
         SetAttributes(Gamevariables.RABBIT_ATTRIBUTES);
-        BuildGender(Util.Random.IsMale());
+        BuildGender(Util.Random.Bool());
         BuildSocialBehaviour(new NonSocializer());
         BuildDietary(new Herbivore(this));
 
@@ -54,17 +54,22 @@ public class Rabbit : Creature
         return true;
     }
 
-    protected override void GiveBirth()
+    protected override void GiveBirth(Creature partner)
     {
         //https://www.rspca.org.uk/adviceandwelfare/pets/rabbits/health/pregnancy#:~:text=Rabbits%20have%20evolved%20to%20reproduce,eight%20kits%20(baby%20rabbits).
         int amount = Util.Random.Int(5, 8);
+
+        Attributes femaleDNA = GetAttributesForBirth();
+        Attributes maleDNA = partner.GetAttributesForBirth();
+
         SpawnOptions options = new()
         {
             Amount = amount,
-            Attributes = GetAttributesForBirth(),
+            Attributes = mixAttributes(femaleDNA, maleDNA),
             Position = gameObject.transform.position,
         };
-        Gender.Children = amount;
+        Gender.Children += amount;
+        partner.Gender.Children += amount;
         Spawner.SpawnRabbits(options);
     }
 

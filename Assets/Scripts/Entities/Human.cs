@@ -31,7 +31,7 @@ public class Human : Creature
         base.Awake();
 
         SetAttributes(Gamevariables.HUMAN_ATTRIBUTES);
-        BuildGender(Util.Random.IsMale());
+        BuildGender(Util.Random.Bool());
         BuildSocialBehaviour(new TribeMember(this));
         BuildDietary(new Omnivore(this));
     }
@@ -65,16 +65,21 @@ public class Human : Creature
         return true;
     }
 
-    protected override void GiveBirth()
+    protected override void GiveBirth(Creature partner)
     {
         int amount = Util.Random.Int(1, 2);
+
+        Attributes femaleDNA = GetAttributesForBirth();
+        Attributes maleDNA = partner.GetAttributesForBirth();
+
         SpawnOptions options = new()
         {
             Amount = amount,
-            Attributes = GetAttributesForBirth(),
+            Attributes = mixAttributes(femaleDNA, maleDNA),
             Position = gameObject.transform.position,
         };
-        Gender.Children = amount;
+        Gender.Children += amount;
+        partner.Gender.Children += amount;
         Spawner.SpawnHumans(options);
     }
 

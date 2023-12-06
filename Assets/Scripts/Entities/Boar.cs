@@ -31,7 +31,7 @@ public class Boar : Creature
         base.Awake();
 
         SetAttributes(Gamevariables.BOAR_ATTRIBUTES);
-        BuildGender(Util.Random.IsMale());
+        BuildGender(Util.Random.Bool());
         BuildSocialBehaviour(new NonSocializer());
         BuildDietary(new Omnivore(this));
 
@@ -55,17 +55,22 @@ public class Boar : Creature
         return true;
     }
 
-    protected override void GiveBirth()
+    protected override void GiveBirth(Creature partner)
     {
         //https://www.researchgate.net/publication/259823483_Birth_rate_and_offspring_survival_in_a_free-ranging_wild_boar_Sus_scrofa_population
         int amount = Util.Random.Int(5, 10);
+
+        Attributes femaleDNA = GetAttributesForBirth();
+        Attributes maleDNA = partner.GetAttributesForBirth();
+
         SpawnOptions options = new()
         {
             Amount = amount,
-            Attributes = GetAttributesForBirth(),
+            Attributes = mixAttributes(femaleDNA, maleDNA),
             Position = gameObject.transform.position,
         };
-        Gender.Children = amount;
+        Gender.Children += amount;
+        partner.Gender.Children += amount;
         Spawner.SpawnBoars(options);
     }
 

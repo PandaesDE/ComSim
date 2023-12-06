@@ -37,7 +37,7 @@ public class SpawnOptions
         get
         {
             if (_randomGender)
-                return Util.Random.IsMale();
+                return Util.Random.Bool();
             else
                 return _isMale;
         }

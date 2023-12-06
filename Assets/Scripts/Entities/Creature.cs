@@ -242,9 +242,10 @@ public abstract class Creature : MonoBehaviour
             if (r <= 0) r = .01f; //worst possible value
             return r;
         }
+
     }
 
-    protected Attributes GetAttributesForBirth()
+    public Attributes GetAttributesForBirth()
     {
         return new Attributes()
         {
@@ -256,6 +257,36 @@ public abstract class Creature : MonoBehaviour
             Damage = this.Damage,
             Speed = Movement.Speed
         };
+    }
+
+    protected Attributes mixAttributes(Attributes a, Attributes b)
+    {
+        return new Attributes()
+        {
+            MaxAge =  DecideBetweenValues(a.MaxAge, b.MaxAge),
+            Age = DecideBetweenValues(a.Age, b.Age),
+            FertilityAge = DecideBetweenValues(a.FertilityAge, b.FertilityAge),
+            Health = DecideBetweenValues(a.Health, b.Health),
+            Weight = DecideBetweenValues(a.Weight, b.Weight),
+            Damage = DecideBetweenValues(a.Damage, b.Damage),
+            Speed = DecideBetweenValues(a.Speed, b.Speed),
+        };
+
+        float DecideBetweenValues(float x, float y)
+        {
+            //both values set
+            if (x != -1 && y != -1)
+            {
+                if (Util.Random.Bool()) return x;
+                else return y;
+            }
+            //one value set
+            if (x == -1) return y;
+            if (y == -1) return x;
+
+            //no value set
+            return -1;
+        }
     }
     #endregion
 
@@ -566,7 +597,8 @@ public abstract class Creature : MonoBehaviour
 
     protected void OnGivingBirth()
     {
-        GiveBirth();
+        GiveBirth(Gender.Partner);
+        Gender.Partner = null;  
         BirthDamage(20);
         StatusManager.SetState(StatusManager.State.wandering);
     }
@@ -603,7 +635,7 @@ public abstract class Creature : MonoBehaviour
         return Gender.IsMale != partner.Gender.IsMale;
     }
 
-    protected abstract void GiveBirth();
+    protected abstract void GiveBirth(Creature male);
     #endregion
 
 

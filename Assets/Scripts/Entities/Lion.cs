@@ -31,7 +31,7 @@ public class Lion : Creature
         base.Awake();
 
         SetAttributes(Gamevariables.LION_ATTRIBUTES);
-        BuildGender(Util.Random.IsMale());
+        BuildGender(Util.Random.Bool());
         BuildSocialBehaviour(new NonSocializer());
         BuildDietary(new Carnivore(this));
     }
@@ -54,17 +54,22 @@ public class Lion : Creature
         return true;
     }
 
-    protected override void GiveBirth()
+    protected override void GiveBirth(Creature partner)
     {
         //https://nationalzoo.si.edu/animals/lion#:~:text=They%20typically%20give%20birth%20to,eating%20meat%20at%20three%20months.
         int amount = Util.Random.Int(1, 4);
+
+        Attributes femaleDNA = GetAttributesForBirth();
+        Attributes maleDNA = partner.GetAttributesForBirth();
+
         SpawnOptions options = new()
         {
             Amount = amount,
-            Attributes = GetAttributesForBirth(),
+            Attributes = mixAttributes(femaleDNA, maleDNA),
             Position = gameObject.transform.position,
         };
-        Gender.Children = amount;
+        Gender.Children += amount;
+        partner.Gender.Children += amount;
         Spawner.SpawnLions(options);
     }
 
