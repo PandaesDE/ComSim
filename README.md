@@ -1,4 +1,3 @@
-
 # ComSim [Bachelor thesis]
 
 ## Description
@@ -17,7 +16,26 @@ used explained. Although it needs to be mentioned that the goal was not to make
 a recreation as realistic as possible, but rather to display the statistical relevance of
 social structures and the effects on the survival rate of that species.
 
+## Control Settings:
+During a Simulation you have the following input options:
+|Input|Action|
+|---|---|
+|[P]|Pause Game|
+|[Scroll Up]|Zoom In|
+|[Scroll Down]|Zoom Out|
+|While [MiddleMouseButton]|Move Camera|
 
+
+
+## Details
+
+Author: [Erik Schneider](https://github.com/PandaesDE)
+
+First supervisor: [Professor Ralph Lano](https://www.th-nuernberg.de/person/lano-ralph/)
+
+Second supervisor: [Professor Matthias Hopf](https://www.th-nuernberg.de/person/hopf-matthias/)
+
+University: [Technische Hochschule Nürnberg](https://www.th-nuernberg.de/)
 ## Details
 
 Author: [Erik Schneider](https://github.com/PandaesDE)
