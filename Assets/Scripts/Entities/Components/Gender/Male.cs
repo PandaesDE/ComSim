@@ -69,7 +69,7 @@ public class Male : IGender
     {
         get;
         set;
-    }
+    } = 0;
 
     public Male(Creature creature, int cooldownMating, float daysUntilMaxDesire)
     {

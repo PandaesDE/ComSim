@@ -38,6 +38,7 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
     [SerializeField] private TMP_Text _display_Age;
     [SerializeField] private TMP_Text _display_AgeStage;
     [SerializeField] private TMP_Text _display_Damage;
+    [SerializeField] private TMP_Text _display_Children;
 
     [SerializeField] private Image _img_Species;
     [SerializeField] private Image _img_Gender;
@@ -116,6 +117,7 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
         UpdateGender(initialize);
         UpdateAge();
         UpdateDamage();
+        UpdateChildren();
         //Debug
         UpdatePosition();
         UpdateTarget();
@@ -172,7 +174,7 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
             fertile = Color.red;
         }
 
-        _display_Age.text = $"{(int)_target.Age}/{_target.MaxAge}";
+        _display_Age.text = $"{(int)_target.Age}/{CutFloatString(_target.MaxAge+"", 4)}";
         _display_AgeStage.text = ageStage;
         _display_AgeStage.color = fertile;
     }
@@ -203,6 +205,11 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
         if (!_target.Gender.IsMale) return;
 
         _sdr_Desire.value = _target.Gender.Desire / IGender.MAX_DESIRE;
+    }
+
+    private void UpdateChildren()
+    {
+        _display_Children.text = $"{_target.Gender.Children}";
     }
 
     private void UpdateDamage()

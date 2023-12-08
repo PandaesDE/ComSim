@@ -69,7 +69,7 @@ public class Female : IGender
     {
         get;
         set;
-    }
+    } = 0;
 
     public Female(Creature creature, int cooldownPregancy, int durationPregnancy)
     {
