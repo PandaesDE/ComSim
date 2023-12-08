@@ -78,7 +78,7 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
             return;
         }
 
-        UpdateChangingInfo(false);
+        UpdateChangingInfo(true);
     }
 
     public void SetTarget(Creature t)
@@ -107,14 +107,14 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
         _wasPregnant = _target.Gender.IsPregnant;
 
         UpdateSpecies();
-        UpdateChangingInfo(true);
+        UpdateChangingInfo(false);
     }
 
     //called every FixedUpdate
-    private void UpdateChangingInfo(bool initialize)
+    private void UpdateChangingInfo(bool initialized)
     {
         //Details
-        UpdateGender(initialize);
+        UpdateGender(initialized);
         UpdateAge();
         UpdateDamage();
         UpdateChildren();
@@ -122,7 +122,7 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
         UpdatePosition();
         UpdateTarget();
         //Stats
-        UpdateDesireBar(initialize);
+        UpdateDesireBar(initialized);
         UpdateHealthBar();
         UpdateHungerBar();
         UpdateThirstBar();
@@ -141,10 +141,10 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
         _img_Species.sprite = _target.GetComponent<SpriteRenderer>().sprite;
     }
 
-    private void UpdateGender(bool initialize)
+    private void UpdateGender(bool initialized)
     {
         //do nothing if state didn't change
-        if (_wasPregnant == _target.Gender.IsPregnant && !initialize)
+        if (_wasPregnant == _target.Gender.IsPregnant && !initialized)
             return;
 
         if (_target.Gender.IsMale)
@@ -156,10 +156,12 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
         if (_target.Gender.IsPregnant)
         {
             _img_Gender.sprite= _spr_Pregnant;
+            _wasPregnant = true;
         } 
         else
         {
             _img_Gender.sprite = _spr_Female;
+            _wasPregnant = false;
         }
     }
 
