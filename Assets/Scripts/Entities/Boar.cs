@@ -57,8 +57,7 @@ public class Boar : Creature
 
     protected override void GiveBirth(Creature partner)
     {
-        //https://www.researchgate.net/publication/259823483_Birth_rate_and_offspring_survival_in_a_free-ranging_wild_boar_Sus_scrofa_population
-        int amount = Util.Random.Int(5, 10);
+        int amount = Util.Random.Int(MinBirths, MaxBirths);
 
         Attributes femaleDNA = GetAttributesForBirth();
         Attributes maleDNA = partner.GetAttributesForBirth();
@@ -66,7 +65,7 @@ public class Boar : Creature
         SpawnOptions options = new()
         {
             Amount = amount,
-            Attributes = mixAttributes(femaleDNA, maleDNA),
+            Attributes = MixAttributes(femaleDNA, maleDNA),
             Position = gameObject.transform.position,
         };
         Gender.Children += amount;

@@ -57,7 +57,7 @@ public class Lion : Creature
     protected override void GiveBirth(Creature partner)
     {
         //https://nationalzoo.si.edu/animals/lion#:~:text=They%20typically%20give%20birth%20to,eating%20meat%20at%20three%20months.
-        int amount = Util.Random.Int(1, 4);
+        int amount = Util.Random.Int(MinBirths, MaxBirths);
 
         Attributes femaleDNA = GetAttributesForBirth();
         Attributes maleDNA = partner.GetAttributesForBirth();
@@ -65,7 +65,7 @@ public class Lion : Creature
         SpawnOptions options = new()
         {
             Amount = amount,
-            Attributes = mixAttributes(femaleDNA, maleDNA),
+            Attributes = MixAttributes(femaleDNA, maleDNA),
             Position = gameObject.transform.position,
         };
         Gender.Children += amount;
@@ -89,7 +89,6 @@ public class Lion : Creature
         }
         else
         {
-            //https://lionalert.org/lion-cubs/#:~:text=Female%20lions%2C%20lionesses%2C%20are%20able,bushes%2C%20or%20even%20a%20cave.
             int durationPregnancy = (int)( 110/270 * (float)Gamevariables.HUMAN_PREGNANCY_TIME_DAYS * (float)Gamevariables.MINUTES_PER_HOUR * (float)Gamevariables.HOURS_PER_DAY);
             int cooldownPregnancy = durationPregnancy / 2;
             this.Gender = new Female(this, cooldownPregnancy, durationPregnancy);

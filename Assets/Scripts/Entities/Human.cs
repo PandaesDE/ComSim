@@ -67,7 +67,7 @@ public class Human : Creature
 
     protected override void GiveBirth(Creature partner)
     {
-        int amount = Util.Random.Int(1, 2);
+        int amount = Util.Random.Int(MinBirths, MaxBirths);
 
         Attributes femaleDNA = GetAttributesForBirth();
         Attributes maleDNA = partner.GetAttributesForBirth();
@@ -75,7 +75,7 @@ public class Human : Creature
         SpawnOptions options = new()
         {
             Amount = amount,
-            Attributes = mixAttributes(femaleDNA, maleDNA),
+            Attributes = MixAttributes(femaleDNA, maleDNA),
             Position = gameObject.transform.position,
         };
         Gender.Children += amount;

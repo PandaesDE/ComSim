@@ -43,6 +43,8 @@ public abstract class Creature : MonoBehaviour
         public float MaxAge = -1;
         public float Age = -1;
         public float FertilityAge = -1;
+        public int MinBirths = -1;
+        public int MaxBirths = -1;
         public float Health = -1;
         public float Weight = -1;
         public float Damage = -1;
@@ -70,6 +72,8 @@ public abstract class Creature : MonoBehaviour
     public float Weight { get { return _weight * GrowthFactor; } }
     private float _damage = 0;
     public float Damage { get { return _damage * GrowthFactor; } }
+    public int MinBirths { get; protected set; } = 0;
+    public int MaxBirths { get; protected set; } = 0;
 
     public float GrowthFactor
     {
@@ -233,6 +237,14 @@ public abstract class Creature : MonoBehaviour
             {
                 this._damage = ApplyEvolutionRate(atr.Damage);
             }
+            if (atr.MinBirths != -1)
+            {
+                this.MinBirths = atr.MinBirths;
+            }
+            if (atr.MaxBirths != -1)
+            {
+                this.MaxBirths = atr.MaxBirths;
+            }
         }
 
         float ApplyEvolutionRate(float val)
@@ -255,21 +267,25 @@ public abstract class Creature : MonoBehaviour
             Health = this.Health,
             Weight = this.Weight,
             Damage = this.Damage,
-            Speed = Movement.Speed
+            Speed = Movement.Speed,
+            MinBirths = this.MinBirths,
+            MaxBirths = this.MaxBirths,
         };
     }
 
-    protected Attributes mixAttributes(Attributes a, Attributes b)
+    protected Attributes MixAttributes(Attributes mother, Attributes father)
     {
         return new Attributes()
         {
-            MaxAge =  DecideBetweenValues(a.MaxAge, b.MaxAge),
-            Age = DecideBetweenValues(a.Age, b.Age),
-            FertilityAge = DecideBetweenValues(a.FertilityAge, b.FertilityAge),
-            Health = DecideBetweenValues(a.Health, b.Health),
-            Weight = DecideBetweenValues(a.Weight, b.Weight),
-            Damage = DecideBetweenValues(a.Damage, b.Damage),
-            Speed = DecideBetweenValues(a.Speed, b.Speed),
+            MaxAge =  DecideBetweenValues(mother.MaxAge, father.MaxAge),
+            Age = mother.Age,
+            FertilityAge = DecideBetweenValues(mother.FertilityAge, father.FertilityAge),
+            MinBirths = mother.MinBirths,
+            MaxBirths = mother.MaxBirths,
+            Health = DecideBetweenValues(mother.Health, father.Health),
+            Weight = DecideBetweenValues(mother.Weight, father.Weight),
+            Damage = DecideBetweenValues(mother.Damage, father.Damage),
+            Speed = DecideBetweenValues(mother.Speed, father.Speed),
         };
 
         float DecideBetweenValues(float x, float y)

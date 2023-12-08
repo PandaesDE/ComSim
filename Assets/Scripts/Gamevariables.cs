@@ -74,6 +74,8 @@ public class Gamevariables
          */
             FertilityAge = 18,
             MaxAge = 30,
+            MinBirths = 1,
+            MaxBirths = 2,
             Health = 80,
             Weight = 80,
             Damage = 10,
@@ -82,12 +84,16 @@ public class Gamevariables
     public static readonly Creature.Attributes LION_ATTRIBUTES = new()
     {
         /*  MaxAge:
-         *      - https://www.discoveryuk.com/big-cats/how-long-do-lions-live/#:~:text=Overall%2C%20lions%20can%20expect%20to,to%20make%20it%20to%20adulthood.
+         *      - https://www.discoveryuk.com/big-cats/how-long-do-lions-live/#:~:text=Overall%2C%20lions%20can%20expect%20to,to%20make%20it%20to%20adulthood
          *  FertilityAge:
          *      - https://ypte.org.uk/factsheets/lion/breeding
+         *  Min/Max-Births:
+         *      - https://lionalert.org/lion-cubs/#:~:text=Female%20lions%2C%20lionesses%2C%20are%20able,bushes%2C%20or%20even%20a%20cave
          */
         FertilityAge = 2,
         MaxAge = 12,
+        MinBirths = 1,
+        MaxBirths = 4,
         Health = 65,
         Weight = 80,
         Damage = 35,
@@ -96,12 +102,16 @@ public class Gamevariables
     public static readonly Creature.Attributes BOAR_ATTRIBUTES = new()
     {
         /*  MaxAge:
-         *      - https://feralhogs.extension.org/feral-hog-population-biology/#:~:text=The%20maximum%20lifespan%20is%20estimated,9%2D26%20months%20of%20age.
+         *      - https://feralhogs.extension.org/feral-hog-population-biology/#:~:text=The%20maximum%20lifespan%20is%20estimated,9%2D26%20months%20of%20age
          *  FertilityAge:
          *      - https://www.pigprogress.net/topic/boar-infertility/#:~:text=The%20production%20of%20normal%20sperm,of%20the%20testes%20and%20accessory
+         *  Min/Max-Births:
+         *      - //https://www.researchgate.net/publication/259823483_Birth_rate_and_offspring_survival_in_a_free-ranging_wild_boar_Sus_scrofa_population
          */
         FertilityAge = .42f,
         MaxAge = 10,
+        MinBirths = 5,
+        MaxBirths = 10,
         Health = 110,
         Weight = 130,
         Damage = 15,
@@ -110,12 +120,16 @@ public class Gamevariables
     public static readonly Creature.Attributes RABBIT_ATTRIBUTES = new()
     {
         /*  MaxAge:
-         *      - https://agriculture.vic.gov.au/livestock-and-animals/animal-welfare-victoria/other-pets/rabbits/owning-a-rabbit#:~:text=Rabbits%20generally%20live%20for%205,care%20for%20them%20that%20long.
+         *      - https://agriculture.vic.gov.au/livestock-and-animals/animal-welfare-victoria/other-pets/rabbits/owning-a-rabbit#:~:text=Rabbits%20generally%20live%20for%205,care%20for%20them%20that%20long
          *  FertlityAge:
-         *      - https://www.msdvetmanual.com/all-other-pets/rabbits/breeding-and-reproduction-of-rabbits#:~:text=Rabbit%20breeds%20of%20medium%20to,of%20hormones%20as%20in%20humans.
+         *      - https://www.msdvetmanual.com/all-other-pets/rabbits/breeding-and-reproduction-of-rabbits#:~:text=Rabbit%20breeds%20of%20medium%20to,of%20hormones%20as%20in%20humans
+         *  Min/Max-Births:
+         *      - //https://www.rspca.org.uk/adviceandwelfare/pets/rabbits/health/pregnancy#:~:text=Rabbits%20have%20evolved%20to%20reproduce,eight%20kits%20(baby%20rabbits
          */
         FertilityAge = .3f,
         MaxAge = 7,
+        MinBirths = 5,
+        MaxBirths = 8,
         Health = 45,
         Weight = 30,
         Damage = 1,
@@ -125,6 +139,8 @@ public class Gamevariables
     {
         FertilityAge = 3,
         MaxAge = 10,
+        MinBirths = 1,
+        MaxBirths = 1,
         Health = 100,
         Weight = 80,
         Damage = 10,

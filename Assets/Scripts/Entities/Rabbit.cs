@@ -56,8 +56,7 @@ public class Rabbit : Creature
 
     protected override void GiveBirth(Creature partner)
     {
-        //https://www.rspca.org.uk/adviceandwelfare/pets/rabbits/health/pregnancy#:~:text=Rabbits%20have%20evolved%20to%20reproduce,eight%20kits%20(baby%20rabbits).
-        int amount = Util.Random.Int(5, 8);
+        int amount = Util.Random.Int(MinBirths, MaxBirths);
 
         Attributes femaleDNA = GetAttributesForBirth();
         Attributes maleDNA = partner.GetAttributesForBirth();
@@ -65,7 +64,7 @@ public class Rabbit : Creature
         SpawnOptions options = new()
         {
             Amount = amount,
-            Attributes = mixAttributes(femaleDNA, maleDNA),
+            Attributes = MixAttributes(femaleDNA, maleDNA),
             Position = gameObject.transform.position,
         };
         Gender.Children += amount;
