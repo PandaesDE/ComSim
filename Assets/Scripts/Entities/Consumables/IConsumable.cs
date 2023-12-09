@@ -30,5 +30,6 @@ public interface IConsumable
     public bool IsConsumed { get; }
     public bool IsMeat { get; }
     public bool HasFood { get; }
+    public GameObject gameObject { get; }
     public float Consume(float amount);
 }
