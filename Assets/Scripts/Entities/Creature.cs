@@ -329,9 +329,9 @@ public abstract class Creature : MonoBehaviour
                 }
 
                 /* Creature Evaluation */
-                if (g.TryGetComponent<Creature>(out _))
+                if (g.TryGetComponent<Creature>(out Creature c))
                 {
-                    EvaluateCreature(g.GetComponent<Creature>());
+                    EvaluateCreature(c);
                     continue;
                 }
 
