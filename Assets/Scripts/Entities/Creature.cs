@@ -319,7 +319,7 @@ public abstract class Creature : MonoBehaviour
                 GameObject g = overlaps[overlapIndex].gameObject;
 
                 /* If self, or Another Vision Collidor -> do nothing*/
-                if (g == this.gameObject) return;
+                if (g == this.gameObject) continue;
 
                 /* Food Source (IConsumable)*/
                 if (IsEdibleFoodSource(g))
