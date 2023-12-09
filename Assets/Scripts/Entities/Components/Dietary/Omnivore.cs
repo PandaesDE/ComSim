@@ -33,7 +33,7 @@ public class Omnivore : IDietary
         this._creature = creature;
     }
 
-    public IDietary.Specification specification
+    public IDietary.Specification Spec
     {
         get
         {

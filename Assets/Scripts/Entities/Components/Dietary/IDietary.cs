@@ -30,7 +30,7 @@ public interface IDietary
         CARNIVORE,
         HERBIVORE
     }
-    public Specification specification { get; }
+    public Specification Spec { get; }
     public bool IsEdibleFoodSource(IConsumable food);
     public bool IsInDangerZone(Creature creature);
     public StatusManager.State OnNoFood();

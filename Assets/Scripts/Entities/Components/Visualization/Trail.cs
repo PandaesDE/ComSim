@@ -135,19 +135,19 @@ public class Trail
 
     private void SetDietaryColor()
     {
-        if (_dietary.specification == IDietary.Specification.OMNIVORE)
+        if (_dietary.Spec == IDietary.Specification.OMNIVORE)
         {
             _lr.startColor = new Color(1, 1, 0, .5f);
             _lr.endColor = new Color(1, 1, 0, 0);
             return;
         }
-        if (_dietary.specification == IDietary.Specification.CARNIVORE)
+        if (_dietary.Spec == IDietary.Specification.CARNIVORE)
         {
             _lr.startColor = new Color(1, 0, 0, .5f);
             _lr.endColor = new Color(1, 0, 0, 0);
             return;
         }
-        if (_dietary.specification == IDietary.Specification.HERBIVORE)
+        if (_dietary.Spec == IDietary.Specification.HERBIVORE)
         {
             _lr.startColor = new Color(0, 1, 0, .5f);
             _lr.endColor = new Color(0, 1, 0, 0);
