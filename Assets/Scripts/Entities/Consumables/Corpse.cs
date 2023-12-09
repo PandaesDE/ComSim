@@ -28,7 +28,6 @@ public class Corpse : MonoBehaviour, IConsumable
 {
     private static readonly int _s_decayDays = 3;
 
-    private float _weightStart;
     private float _weight = 0;
     private bool _isConsumed = false;
 
@@ -90,7 +89,6 @@ public class Corpse : MonoBehaviour, IConsumable
     public void SetWeight(float w)
     {
         this._weight = w;
-        this._weightStart = w;
     }
 
 
