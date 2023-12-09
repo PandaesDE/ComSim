@@ -54,8 +54,8 @@ public class Human : Creature
 
         StatusManager.SetState(StatusManager.State.hunting);
 
-        brain.SetActiveHunt(toAttack);
-        Movement.SetMovingTarget(brain.ActiveHunt.gameObject);
+        Brain.SetActiveHunt(toAttack);
+        Movement.SetMovingTarget(Brain.ActiveHunt.gameObject);
     }
 
     /*Gets called by Parent*/

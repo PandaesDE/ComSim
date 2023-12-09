@@ -67,7 +67,7 @@ public class Omnivore : IDietary
         {
             return StatusManager.State.fleeing;
         }
-        if (_creature.hunger < 60)
+        if (_creature.Hunger < 60)
         {
             return StatusManager.State.hunting;
         }

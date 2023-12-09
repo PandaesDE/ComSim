@@ -56,17 +56,17 @@ public class DayNightCycle : MonoBehaviour
             return 0;
 
         if (_clock_minutes <= DARK_morningMinutes + UPRISE_morningMinutes)
-            return getPercentage(_clock_minutes - DARK_morningMinutes, UPRISE_morningMinutes);
+            return GetPercentage(_clock_minutes - DARK_morningMinutes, UPRISE_morningMinutes);
 
         if (_clock_minutes <= DARK_morningMinutes + UPRISE_morningMinutes + BRIGHT_dayMinutes)
             return 1f;
 
         if (_clock_minutes <= DARK_morningMinutes + UPRISE_morningMinutes + BRIGHT_dayMinutes + DOWNFALL_eveningMinutes)
-            return 1f - getPercentage(_clock_minutes - DARK_morningMinutes - UPRISE_morningMinutes - BRIGHT_dayMinutes, DOWNFALL_eveningMinutes);
+            return 1f - GetPercentage(_clock_minutes - DARK_morningMinutes - UPRISE_morningMinutes - BRIGHT_dayMinutes, DOWNFALL_eveningMinutes);
 
         return 0;
 
-        float getPercentage(int val, int max)
+        float GetPercentage(int val, int max)
         {
             return (float)val/(float)max;
         }

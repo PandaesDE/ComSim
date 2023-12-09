@@ -69,7 +69,7 @@ public class Carnivore : IDietary
         {
             return StatusManager.State.fleeing;
         }
-        if (_creature.hunger < 90)
+        if (_creature.Hunger < 90)
         {
             return StatusManager.State.hunting;
         }

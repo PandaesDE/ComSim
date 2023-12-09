@@ -29,8 +29,8 @@ public class Senses
 {
     private Creature _creature;
 
-    private static readonly int VISION_DISTANCE = 15;
-    private static readonly int VISION_WIDTH = 7;
+    private static readonly int S_VISION_DISTANCE = 15;
+    private static readonly int S_VISION_WIDTH = 7;
 
     public Senses(Creature creature)
     {
@@ -39,55 +39,55 @@ public class Senses
 
     public Vector2[] GetVisionCoordinates()
     {
-        Vector2[] vc = new Vector2[VISION_DISTANCE * VISION_WIDTH];
+        Vector2[] vc = new Vector2[S_VISION_DISTANCE * S_VISION_WIDTH];
         
 
         switch (_creature.Facing)
         {
             case Movement.Direction.north:
-                for (int i = 0; i < VISION_DISTANCE; i++)
+                for (int i = 0; i < S_VISION_DISTANCE; i++)
                 {
-                    for (int j = 0; j < VISION_WIDTH; j++)
+                    for (int j = 0; j < S_VISION_WIDTH; j++)
                     {
-                        vc[j + VISION_WIDTH * i] = new Vector2(
-                            _creature.transform.position.x + j - (VISION_WIDTH/2),
+                        vc[j + S_VISION_WIDTH * i] = new Vector2(
+                            _creature.transform.position.x + j - (S_VISION_WIDTH/2),
                             _creature.transform.position.y + i
                         );
                     }
                 }
                 return vc;
             case Movement.Direction.east:
-                for (int i = 0; i < VISION_DISTANCE; i++)
+                for (int i = 0; i < S_VISION_DISTANCE; i++)
                 {
-                    for (int j = 0; j < VISION_WIDTH; j++)
+                    for (int j = 0; j < S_VISION_WIDTH; j++)
                     {
-                        vc[j + VISION_WIDTH * i] = new Vector2(
+                        vc[j + S_VISION_WIDTH * i] = new Vector2(
                             _creature.transform.position.x + i,
-                            _creature.transform.position.y + j - (VISION_WIDTH / 2)
+                            _creature.transform.position.y + j - (S_VISION_WIDTH / 2)
                         );
                     }
                 }
                 return vc;
             case Movement.Direction.south:
-                for (int i = 0; i < VISION_DISTANCE; i++)
+                for (int i = 0; i < S_VISION_DISTANCE; i++)
                 {
-                    for (int j = 0; j < VISION_WIDTH; j++)
+                    for (int j = 0; j < S_VISION_WIDTH; j++)
                     {
-                        vc[j + VISION_WIDTH * i] = new Vector2(
-                            _creature.transform.position.x + j - (VISION_WIDTH / 2),
+                        vc[j + S_VISION_WIDTH * i] = new Vector2(
+                            _creature.transform.position.x + j - (S_VISION_WIDTH / 2),
                             _creature.transform.position.y - i
                         );
                     }
                 }
                 return vc;
             default: //WEST
-                for (int i = 0; i < VISION_DISTANCE; i++)
+                for (int i = 0; i < S_VISION_DISTANCE; i++)
                 {
-                    for (int j = 0; j < VISION_WIDTH; j++)
+                    for (int j = 0; j < S_VISION_WIDTH; j++)
                     {
-                        vc[j + VISION_WIDTH * i] = new Vector2(
+                        vc[j + S_VISION_WIDTH * i] = new Vector2(
                             _creature.transform.position.x - i,
-                            _creature.transform.position.y + j - (VISION_WIDTH / 2)
+                            _creature.transform.position.y + j - (S_VISION_WIDTH / 2)
                         );
                     }
                 }

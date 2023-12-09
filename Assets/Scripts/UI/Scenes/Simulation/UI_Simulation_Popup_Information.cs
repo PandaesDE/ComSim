@@ -227,12 +227,12 @@ public class UI_Simulation_Popup_Information : MonoBehaviour
 
     private void UpdateHungerBar()
     {
-        _sdr_Hunger.value = _target.hunger / Creature.MAX_HUNGER;
+        _sdr_Hunger.value = _target.Hunger / Creature.MAX_HUNGER;
     }
 
     private void UpdateThirstBar()
     {
-        _sdr_Thirst.value = _target.thirst / Creature.MAX_THIRST;
+        _sdr_Thirst.value = _target.Thirst / Creature.MAX_THIRST;
     }
 
     private void UpdateEnergyBar()

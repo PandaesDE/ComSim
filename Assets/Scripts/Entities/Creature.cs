@@ -87,13 +87,13 @@ public abstract class Creature : MonoBehaviour
 
     //Components
         //Information storing and handling
-    [SerializeField]protected Brain brain;
+    [SerializeField]protected Brain Brain;
 
         //Sensory of environment
-    [SerializeField]protected Senses senses;
+    [SerializeField]protected Senses Senses;
 
         //Handles food, hunt and flee associated behaviour
-    [SerializeField]protected IDietary dietary;
+    [SerializeField]protected IDietary Dietary;
 
         //Handles reproductive behaviour
     public IGender Gender { get; protected set; }
@@ -130,8 +130,8 @@ public abstract class Creature : MonoBehaviour
 
 
     //Needs
-    public float hunger = 100f;
-    public float thirst = 100f;
+    public float Hunger { get; private set; } = 100f;
+    public float Thirst { get; private set; } = 100f;
 
     protected virtual void Awake()
     {
@@ -145,9 +145,9 @@ public abstract class Creature : MonoBehaviour
 
         void InitializeCreatureComponents()
         {
-            senses ??= new(this);
-            brain ??= new(this);
-            StatusManager ??= new(brain);
+            Senses ??= new(this);
+            Brain ??= new(this);
+            StatusManager ??= new(Brain);
             Movement ??= new(this);
         }
     }
@@ -155,7 +155,7 @@ public abstract class Creature : MonoBehaviour
     protected void Start()
     {
         /*needs to be initialized after Awake*/
-        Trail = new(this, dietary);
+        Trail = new(this, Dietary);
     }
 
 
@@ -194,7 +194,7 @@ public abstract class Creature : MonoBehaviour
 
     protected Creature BuildDietary(IDietary dietary)
     {
-        this.dietary ??= dietary;
+        this.Dietary ??= dietary;
         return this;
     }
 
@@ -310,7 +310,7 @@ public abstract class Creature : MonoBehaviour
     protected void EvaluateVision()
     {
         if (StatusManager.Status == StatusManager.State.sleeping) return;
-        Vector2[] visionCoordinates = senses.GetVisionCoordinates();
+        Vector2[] visionCoordinates = Senses.GetVisionCoordinates();
         for (int i = 0; i < visionCoordinates.Length; i++)
         {
             Collider2D[] overlaps = Physics2D.OverlapPointAll(visionCoordinates[i]);
@@ -324,7 +324,7 @@ public abstract class Creature : MonoBehaviour
                 /* Food Source (IConsumable)*/
                 if (IsEdibleFoodSource(g))
                 {
-                    brain.AddFoodSource(g);
+                    Brain.AddFoodSource(g);
                     continue;
                 }
 
@@ -338,7 +338,7 @@ public abstract class Creature : MonoBehaviour
                 /* Water Source*/
                 if (tbm.IsWater(g))
                 {
-                    brain.addWaterSource(g);
+                    Brain.addWaterSource(g);
                     continue;
                 }
             }
@@ -356,30 +356,30 @@ public abstract class Creature : MonoBehaviour
         float normal_cap = 80;
 
         //Important States
-        if (thirst <= important_cap && thirst < hunger)
+        if (Thirst <= important_cap && Thirst < Hunger)
         {
             StatusManager.SetState(StatusManager.State.dehydrated);
             return;
         }
-        if (hunger <= important_cap)
+        if (Hunger <= important_cap)
         {
             StatusManager.SetState(StatusManager.State.starving);
             return;
         }
 
-        if (Gender.IsReadyForMating && Gender.IsMale && hunger > desire_cap && thirst > desire_cap)
+        if (Gender.IsReadyForMating && Gender.IsMale && Hunger > desire_cap && Thirst > desire_cap)
         {
             StatusManager.SetState(StatusManager.State.looking_for_partner);
             return;
         }
 
         //Normal States
-        if (thirst <= normal_cap && thirst < hunger)
+        if (Thirst <= normal_cap && Thirst < Hunger)
         {
             StatusManager.SetState(StatusManager.State.thirsty);
             return;
         }
-        if (hunger <= normal_cap)
+        if (Hunger <= normal_cap)
         {
             StatusManager.SetState(StatusManager.State.hungry);
             return;
@@ -440,17 +440,17 @@ public abstract class Creature : MonoBehaviour
         {
             if (IsValidPartner(creature))
             {
-                brain.AddPotentialMate(creature);
+                Brain.AddPotentialMate(creature);
             }
         } else
         {
-            if (dietary.IsInDangerZone(creature))
+            if (Dietary.IsInDangerZone(creature))
             {
-                StatusManager.State evaluation = dietary.OnApproached();
+                StatusManager.State evaluation = Dietary.OnApproached();
                 if (evaluation != StatusManager.State.wandering)
                     StatusManager.SetState(evaluation);
             }
-            brain.AddSpottedCreature(creature);
+            Brain.AddSpottedCreature(creature);
         }
     }
     #region State Machine Actions
@@ -470,38 +470,44 @@ public abstract class Creature : MonoBehaviour
     {
         int stopFleeDistance = 15;
         /*Set Target*/
-        if (brain.ActiveFlee == null)
+        if (Brain.ActiveFlee == null)
         {
-            brain.SetActiveFlee();
+            Brain.SetActiveFlee();
         }
-        /*Exit Condition*/
-        if (brain.ActiveFlee == null) return;
-        if (!Util.InRange(gameObject.transform.position, brain.ActiveFlee.transform.position, stopFleeDistance)) return;
 
-        /*Target Too Close*/
-        Movement.SetStaticTarget(-brain.ActiveFlee.gameObject.transform.position);
-        SocialBehaviour.OnFleeing(brain.ActiveFlee);
+        if (Brain.ActiveFlee == null) return;
+
+        /*Exit Condition*/
+        if (Util.InRange(gameObject.transform.position, Brain.ActiveFlee.transform.position, stopFleeDistance))
+        {
+            StatusManager.SetState(StatusManager.State.wandering);
+        } else
+        {
+            /*Target Too Close*/
+            Movement.SetStaticTarget(-Brain.ActiveFlee.gameObject.transform.position);
+            SocialBehaviour.OnFleeing(Brain.ActiveFlee);
+        }
     }
     
     protected void OnHunting()
     {
         /*Exit Condition*/
-        if (hunger >= MAX_HUNGER)
+        if (Hunger >= MAX_HUNGER)
         {
             DetermineStatus();
             return;
         }
         /*Set Target*/
-        if (brain.ActiveHunt == null || !Movement.IsFollowing())
+        if (Brain.ActiveHunt == null || !Movement.IsFollowing())
         {
-            if (brain.HasSpottedCreature())
+            if (Brain.HasSpottedCreature())
             {
-                brain.SetActiveHunt();
+                Brain.SetActiveHunt();
             }
 
-            if (brain.ActiveHunt != null)
+            if (Brain.ActiveHunt != null)
             {
-                Movement.SetMovingTarget(brain.ActiveHunt.gameObject);
+                Movement.SetMovingTarget(Brain.ActiveHunt.gameObject);
             }
             else
             {
@@ -510,35 +516,35 @@ public abstract class Creature : MonoBehaviour
             }
         }
         /*Target Reached*/
-        if (Util.InRange(transform.position, brain.ActiveHunt.transform.position))
+        if (Util.InRange(transform.position, Brain.ActiveHunt.transform.position))
         {
-            SocialBehaviour.OnAttacking(brain.ActiveHunt);
-            brain.ActiveHunt.Attack(Damage * GrowthFactor, this);
+            SocialBehaviour.OnAttacking(Brain.ActiveHunt);
+            Brain.ActiveHunt.Attack(Damage * GrowthFactor, this);
         }
     }
 
     protected void OnHunger()
     {
         /*Exit Condition*/
-        if (hunger >= MAX_HUNGER)
+        if (Hunger >= MAX_HUNGER)
         {
             DetermineStatus();
             return;
         }
         /*Set Target*/
-        if (brain.ActiveFood == null)
+        if (Brain.ActiveFood == null)
         {
-            if (brain.HasFoodSource())
+            if (Brain.HasFoodSource())
             {
-                brain.SetActiveFoodSource();
-                if (brain.ActiveFood != null)
-                    Movement.SetStaticTarget(brain.ActiveFood.gameObject.transform.position);
+                Brain.SetActiveFoodSource();
+                if (Brain.ActiveFood != null)
+                    Movement.SetStaticTarget(Brain.ActiveFood.gameObject.transform.position);
                 else
                     Movement.SetRandomTargetIfReached();
             }
             else
             {
-                StatusManager.SetState(dietary.OnNoFood());
+                StatusManager.SetState(Dietary.OnNoFood());
                 if (StatusManager.Status == StatusManager.State.hunting)
                     return;
                 else
@@ -548,14 +554,14 @@ public abstract class Creature : MonoBehaviour
         /*Target Reached*/
         if (Movement.TargetReached())
         {
-            if (!brain.ActiveFood.HasFood)
+            if (!Brain.ActiveFood.HasFood)
             {
-                brain.SetInactiveFoodSource(brain.ActiveFood);
+                Brain.SetInactiveFoodSource(Brain.ActiveFood);
                 DetermineStatus();
                 return;
             }
 
-            Eat(brain.ActiveFood.Consume(Damage));
+            Eat(Brain.ActiveFood.Consume(Damage));
             return;
         }
     }
@@ -563,18 +569,18 @@ public abstract class Creature : MonoBehaviour
     protected void OnThirst()
     {
         /*Exit Condition*/
-        if (thirst >= MAX_THIRST)
+        if (Thirst >= MAX_THIRST)
         {
             //brain.activeWater = null;
             DetermineStatus();
             return;
         }
         /*Set Target*/
-        if (brain.ActiveWater == null)
+        if (Brain.ActiveWater == null)
         {
-            brain.setActiveWaterSource();
-            if (brain.ActiveWater != null)
-                Movement.SetStaticTarget(brain.ActiveWater.transform.position);
+            Brain.setActiveWaterSource();
+            if (Brain.ActiveWater != null)
+                Movement.SetStaticTarget(Brain.ActiveWater.transform.position);
             else
                 Movement.SetRandomTargetIfReached();
             return;
@@ -595,19 +601,19 @@ public abstract class Creature : MonoBehaviour
             return;
         }
         /*Set Target*/
-        if (brain.ActiveMate == null || !Movement.IsFollowing())
+        if (Brain.ActiveMate == null || !Movement.IsFollowing())
         {
-            brain.SetActiveMate();
-            if (brain.ActiveMate != null)
-                Movement.SetMovingTarget(brain.ActiveMate.gameObject);
+            Brain.SetActiveMate();
+            if (Brain.ActiveMate != null)
+                Movement.SetMovingTarget(Brain.ActiveMate.gameObject);
             else
                 Movement.SetRandomTargetIfReached();
             return;
         }
         /*Target Reached*/
-        if (Util.InRange(transform.position, brain.ActiveMate.transform.position))
+        if (Util.InRange(transform.position, Brain.ActiveMate.transform.position))
         {
-            Gender.MateWith(brain.ActiveMate.Gender);
+            Gender.MateWith(Brain.ActiveMate.Gender);
         }
     }
 
@@ -634,7 +640,7 @@ public abstract class Creature : MonoBehaviour
     protected bool IsEdibleFoodSource(GameObject g)
     {
         if (!g.TryGetComponent<IConsumable>(out IConsumable food)) return false;    //if null return false, if not save in food variable
-        return dietary.IsEdibleFoodSource(food);
+        return Dietary.IsEdibleFoodSource(food);
     }
     #endregion
     #region Thirst
@@ -680,7 +686,7 @@ public abstract class Creature : MonoBehaviour
     #region Hunger
     protected void Eat(float value)
     {
-        hunger = Mathf.Clamp(hunger + value, 0, MAX_HUNGER);
+        Hunger = Mathf.Clamp(Hunger + value, 0, MAX_HUNGER);
     }
     
     /*
@@ -690,8 +696,8 @@ public abstract class Creature : MonoBehaviour
     {
         float restingFactor = 1f;
         if (StatusManager.Status == StatusManager.State.sleeping) restingFactor = .85f; //[4] https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2929498/#:~:text=It%20is%20believed%20that%20during,prolonged%20state%20of%20physical%20inactivity.
-        hunger -= subPerMinute * (float)Gamevariables.MinutesPerTick * restingFactor;
-        if (hunger <= 0) OnDeath(DeathReason.starvation);
+        Hunger -= subPerMinute * (float)Gamevariables.MinutesPerTick * restingFactor;
+        if (Hunger <= 0) OnDeath(DeathReason.starvation);
     }
     #endregion
     #region Thirst
@@ -700,24 +706,24 @@ public abstract class Creature : MonoBehaviour
         float add = addPerMinute * (float)Gamevariables.MinutesPerTick;
         //if (tbm.isWater(GetTile(transform.position)))
         {
-            thirst = Mathf.Clamp(thirst + add, 0, MAX_THIRST);
+            Thirst = Mathf.Clamp(Thirst + add, 0, MAX_THIRST);
         }
     }
 
     /*
-     * subPerHour Default = 3 days without water
+     * subPerMinute Default = 3 days without water
      */
     protected void ThirstSubtractor(float subPerMinute = .0231f)
     {
         float restingFactor = 1f;
         if (StatusManager.Status == StatusManager.State.sleeping) restingFactor = .85f; //[4] https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2929498/#:~:text=It%20is%20believed%20that%20during,prolonged%20state%20of%20physical%20inactivity.
-        thirst -= subPerMinute * (float)Gamevariables.MinutesPerTick * restingFactor;
-        if (thirst <= 0) OnDeath(DeathReason.forthirst);
+        Thirst -= subPerMinute * (float)Gamevariables.MinutesPerTick * restingFactor;
+        if (Thirst <= 0) OnDeath(DeathReason.forthirst);
     }
     #endregion
     #region Energy
     /*
-     * addPerHour Default = 100% Energy after 8h (without lightfactor)
+     * addPerMinute Default = 100% Energy after 8h (without lightfactor)
      * lightScaler -> Scales how much the Light affects the rest
      */
     protected void Rest(float addPerMinute = .208f, float lightScaler = 1f)
@@ -728,11 +734,11 @@ public abstract class Creature : MonoBehaviour
 
         Energy = Mathf.Clamp(Energy + addPerTick + lightfactor, 0, MAX_ENERGY);
         if (Energy >= MAX_ENERGY    ||  //Full
-            Energy >= hunger        ||  //Hungry
-            Energy >= thirst)           //Thirsty
+            Energy >= Hunger        ||  //Hungry
+            Energy >= Thirst)           //Thirsty
         {
             //REGULAR WAKE UP
-            brain.ActivateAllInactiveFoodSources();
+            Brain.ActivateAllInactiveFoodSources();
             StatusManager.SetState(StatusManager.State.wandering);
         }
     }
@@ -769,7 +775,7 @@ public abstract class Creature : MonoBehaviour
                 OnDeath(DeathReason.casualty_byHuman);
         }
         
-        StatusManager.SetState(dietary.OnAttacked());
+        StatusManager.SetState(Dietary.OnAttacked());
         SocialBehaviour.OnAttacked(attacker);
     }
 

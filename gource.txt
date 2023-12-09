@@ -1,0 +1,1 @@
+gource -f -1920x1080 --hide bloom,filenames,users --file-idle-time 0 --seconds-per-day 1 --auto-skip-seconds 1 --highlight-dirs --font-scale 2
