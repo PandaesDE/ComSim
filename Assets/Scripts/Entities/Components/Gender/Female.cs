@@ -106,7 +106,9 @@ public class Female : IGender
         if (!IsReadyForMating) return;
         if (Partner != null) return;
 
-        //chance of failure ?
+        //chance of failure
+        if (Util.Random.Bool()) return;
+
         _durationPregnancy.Reset();
         _cooldownPregnancy.Reset();
         IsPregnant = true;
