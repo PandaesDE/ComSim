@@ -151,6 +151,7 @@ public static class Util
     public static class MapGeneration {
 
         //https://adrianb.io/2014/08/09/perlinnoise.html
+        //(Help by Timoteus Kowohl)
         public static float OctavePerlin(float xOffset, float yOffset, PerlinSettingsObject pso)
         {
             float x = pso.xOrg + xOffset / pso.zoom;

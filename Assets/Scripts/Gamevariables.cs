@@ -90,7 +90,7 @@ public class Gamevariables
          *  Min/Max-Births:
          *      - https://lionalert.org/lion-cubs/#:~:text=Female%20lions%2C%20lionesses%2C%20are%20able,bushes%2C%20or%20even%20a%20cave
          */
-        FertilityAge = 2,
+        FertilityAge = 4,
         MaxAge = 12,
         MinBirths = 1,
         MaxBirths = 4,
