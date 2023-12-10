@@ -621,7 +621,7 @@ public abstract class Creature : MonoBehaviour
     {
         GiveBirth(Gender.Partner);
         Gender.Partner = null;  
-        BirthDamage(20);
+        BirthDamage(20); //amount of children?
         StatusManager.SetState(StatusManager.State.wandering);
     }
 

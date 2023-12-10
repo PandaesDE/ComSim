@@ -23,6 +23,7 @@ During a Simulation you have the following input options:
 |[P]|Pause Game|
 |[Scroll Up]|Zoom In|
 |[Scroll Down]|Zoom Out|
+|[LeftMouseButton]|Select Entity|
 |While [MiddleMouseButton]|Move Camera|
 
 
