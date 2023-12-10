@@ -231,7 +231,7 @@ public abstract class Creature : MonoBehaviour
             }
             if (atr.Speed != -1)
             {
-                this.Movement.Speed = atr.Speed; //experimental -> no evultion
+                this.Movement.Speed = atr.Speed; //experimental -> no evoltion
             }
             if (atr.Damage != -1)
             {
