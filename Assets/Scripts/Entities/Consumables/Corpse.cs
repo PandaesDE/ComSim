@@ -28,7 +28,7 @@ public class Corpse : MonoBehaviour, IConsumable
 {
     private static readonly int _s_decayDays = 3;
 
-    private float _weight = 0;
+    [SerializeField] private float _weight = 0;
     private bool _isConsumed = false;
 
     [SerializeField] private int _decayMinutes;
@@ -77,7 +77,9 @@ public class Corpse : MonoBehaviour, IConsumable
         if (_weight <= 0) return 0;
 
         if (_weight - amount <= 0) {
-            return _weight;
+            float tmp_weight = _weight;
+            _weight = 0;
+            return tmp_weight;
         }
 
         _weight -= amount;

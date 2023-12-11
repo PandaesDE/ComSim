@@ -21,10 +21,11 @@ public class FileLogger
     {
         StringBuilder stringBuilder = new();
         stringBuilder.AppendLine(getTitle(title));
+        stringBuilder.Append($"Count, Males, Females\n");
 
         foreach (Statistics.CountData cd in counts)
         {
-            stringBuilder.Append($"{cd.Count} ({cd.Males}/{cd.Females})\n");
+            stringBuilder.Append($"{cd.Count}, {cd.Males}, {cd.Females}\n");
         }
 
         _output += stringBuilder.ToString();
