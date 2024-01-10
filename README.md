@@ -37,12 +37,5 @@ First supervisor: [Professor Ralph Lano](https://www.th-nuernberg.de/person/lano
 Second supervisor: [Professor Matthias Hopf](https://www.th-nuernberg.de/person/hopf-matthias/)
 
 University: [Technische Hochschule Nürnberg](https://www.th-nuernberg.de/)
-## Details
 
-Author: [Erik Schneider](https://github.com/PandaesDE)
-
-First supervisor: [Professor Ralph Lano](https://www.th-nuernberg.de/person/lano-ralph/)
-
-Second supervisor: [Professor Matthias Hopf](https://www.th-nuernberg.de/person/hopf-matthias/)
-
-University: [Technische Hochschule Nürnberg](https://www.th-nuernberg.de/)
+https://www.th-nuernberg.de/)

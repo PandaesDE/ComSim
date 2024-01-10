@@ -77,9 +77,10 @@ public class Corpse : MonoBehaviour, IConsumable
         if (_weight <= 0) return 0;
 
         if (_weight - amount <= 0) {
-            float tmp_weight = _weight;
-            _weight = 0;
-            return tmp_weight;
+            //float tmp_weight = _weight;
+            //_weight = 0;
+            //return tmp_weight; 
+            return _weight; //#TOTO bug but no time to fix :(
         }
 
         _weight -= amount;
