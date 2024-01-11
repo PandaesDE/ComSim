@@ -22,6 +22,7 @@
  *      - 
  */
 
+using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -78,16 +79,35 @@ public class TileBaseManager : MonoBehaviour
         return TileType.snow;
     }
 
+    public Color GetColor(string color = "")
+    {
+        if (color == "grey")
+        {
+            return new Color(groundSample, groundSample, groundSample);
+        }
+
+        Color c = Color.white; //error
+
+        TileType t = GetTileType();
+        if (t == TileType.water_deep) c = _go_water_deep.GetComponent<SpriteRenderer>().color;
+        else if (t == TileType.water) c = _go_water.GetComponent<SpriteRenderer>().color;
+        else if (t == TileType.sand) c = _go_sand.GetComponent<SpriteRenderer>().color;
+        else if (t == TileType.bush) c = _go_bush.GetComponent<SpriteRenderer>().color;
+        else if (t == TileType.grass) c = _go_grass.GetComponent<SpriteRenderer>().color;
+        else if (t == TileType.stone) c = _go_stone.GetComponent<SpriteRenderer>().color;
+        else if (t == TileType.snow) c = _go_snow.GetComponent<SpriteRenderer>().color;
+
+        if (color == "grey_pixel")
+        {
+            c = new Color(c.grayscale, c.grayscale, c.grayscale);
+        }
+
+        return c;
+    }
+
     public Color GetColor()
     {
-        TileType t = GetTileType();
-        if (t == TileType.water_deep) return _go_water_deep.GetComponent<SpriteRenderer>().color;
-        if (t == TileType.water) return _go_water.GetComponent<SpriteRenderer>().color;
-        if (t == TileType.sand) return _go_sand.GetComponent<SpriteRenderer>().color;
-        if (t == TileType.bush) return _go_bush.GetComponent<SpriteRenderer>().color;
-        if (t == TileType.grass) return _go_grass.GetComponent<SpriteRenderer>().color;
-        if (t == TileType.stone) return _go_stone.GetComponent<SpriteRenderer>().color;
-        if (t == TileType.snow) return _go_snow.GetComponent<SpriteRenderer>().color;
+
         return Color.magenta;
     }
 
